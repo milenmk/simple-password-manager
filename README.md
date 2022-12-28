@@ -38,8 +38,9 @@ Simple password manager written on PHP with Bootstrap and PDO database connectio
 * The Directory in the vhost file must point to the script's `web` folder
 * 
 * <b>`docs` folder contains sensitive information and MUST NOT be accessible from browser, but only locally</b>
-* 
-* Go to `docs` folder and rename `secret.key.example` to `secret.key` and vill the values for $decryption_iv/$encryption_iv and $decryption_key/$encryption_key
+*
+* Go to `docs` folder and rename `secret.key.example` to `secret.key` and fill the values for
+  $decryption_iv/$encryption_iv and $decryption_key/$encryption_key
 * <b>Carefully read the comments what those keys might contain and how long they must be!!!</b>
 
 ### From your browser:
