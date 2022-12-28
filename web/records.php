@@ -125,16 +125,8 @@ if ($action == 'create') {
 		print $result;
 	}
 }
-if ($action == 'logout') {
-	$_SESSION = [];
 
-	// Destroy the session.
-	session_destroy();
-
-	// Redirect to login page
-	header('location: ' . MAIN_URL_ROOT . '/login.php');
-	exit;
-}
+pm_logout_block();
 
 //View
 pm_header();
@@ -145,7 +137,7 @@ if ($action == 'view') {
 	?>
     <div class="container mt-5">
 		<?php
-		pm_error_block()
+		pm_message_block()
 		?>
         <table class="table table-success table-striped">
             <thead>
@@ -220,7 +212,7 @@ if ($action == 'view') {
 	?>
     <div class="container mt-5">
 		<?php
-		pm_error_block()
+		pm_message_block()
 		?>
         <form method="post">
             <table class="table table-success table-striped">
@@ -295,7 +287,7 @@ if ($action == 'view') {
 	?>
     <div class="container mt-5">
 		<?php
-		pm_error_block()
+		pm_message_block()
 		?>
         <table class="table table-success table-striped">
             <thead>
@@ -367,7 +359,7 @@ if ($action == 'view') {
 	?>
     <div class="container mt-5">
 		<?php
-		pm_error_block()
+		pm_message_block()
 		?>
         <form method="get">
             <input type="hidden" name="action" value="create"/>

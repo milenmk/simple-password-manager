@@ -78,18 +78,12 @@ if ($action == 'create') {
 if ($action == 'view_records') {
 	header('Location:' . MAIN_URL_ROOT . '/records.php?action=view&fk_domain=' . $id);
 }
-if ($action == 'logout') {
-	$_SESSION = [];
 
-	// Destroy the session.
-	session_destroy();
-
-	// Redirect to login page
-	header('location: ' . MAIN_URL_ROOT . '/login.php');
-	exit;
-}
+pm_logout_block();
 
 //View
+$error = '';
+
 pm_header();
 
 pm_navbar();
@@ -98,7 +92,7 @@ if ($action == 'view') {
 	?>
     <div class="container mt-5">
 		<?php
-		pm_error_block()
+		pm_message_block()
 		?>
         <table class="table table-success table-striped">
             <thead>
@@ -167,7 +161,7 @@ if ($action == 'view') {
 	?>
     <div class="container mt-5">
 		<?php
-		pm_error_block()
+		pm_message_block()
 		?>
         <form method="post">
             <table class="table table-success table-striped">
@@ -223,7 +217,7 @@ if ($action == 'view') {
 	?>
     <div class="container mt-5">
 		<?php
-		pm_error_block()
+		pm_message_block()
 		?>
         <table class="table table-success table-striped">
             <thead>
@@ -292,7 +286,7 @@ if ($action == 'view') {
 	?>
     <div class="container mt-5">
 		<?php
-		pm_error_block()
+		pm_message_block()
 		?>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="<?= MAIN_URL_ROOT ?>/theme/<?= $theme ?>/js/focus.input.js"></script>

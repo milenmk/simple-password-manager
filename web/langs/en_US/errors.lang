@@ -1,0 +1,17 @@
+DIRECTION=ltr
+GeneralError=Oops! Something went wrong. Please try again later.
+PasswordEmpty=Please enter password
+PasswordNewEmpty=Please enter new password
+PasswordConfirmEmpty=Please confirm your password
+PasswordNewConfirmEmpty=Please confirm your new password
+PasswordsDidNotMatch=New passwords did not match
+WrongPassword=Wrong password
+PassUpdateSuccess=Password updated successfully
+PleaseEnterUsername=Please enter username
+PleaseEnterPassword=Please enter your password
+InvalidNameOrPassword=Invalid username or password
+PasswordLengthError=Password must have at least 6 characters
+UserNameTaken=User with this email already exists
+FirstNameContentError=First name can only contain letters, numbers and underscores
+LastNameContentError=Last name can only contain letters, numbers and underscores
+UsernameContentError=Email can only contain letters, numbers, underscores and @

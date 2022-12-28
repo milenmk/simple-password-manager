@@ -29,6 +29,10 @@ include_once('main.inc.php');
 
 global $user, $langs;
 
+$error = '';
+
+$langs->loadLangs(['errors']);
+
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if ($user->id > 0) {
 	header('location: ' . MAIN_URL_ROOT);
@@ -45,10 +49,6 @@ $last_name = GETPOST('last_name', 'alpha');
 $username = GETPOST('email', 'az09');
 $password = GETPOST('password', 'az09');
 $confirm_password = GETPOST('confirm_password', 'az09');
-$username_err = GETPOST('username_err', 'az09');
-$password_err = GETPOST('password_err', 'az09');
-$confirm_password_err = GETPOST('confirm_password_err', 'az09');
-$general_error = GETPOST('general_error', 'alpha');
 
 //Actions
 if ($action == 'create_user') {
@@ -56,44 +56,45 @@ if ($action == 'create_user') {
 	//Validate firstname
 	if ($first_name) {
 		if (!preg_match('/^[a-zA-Z0-9_]+$/', trim($first_name))) {
-			$username_err = 'First name can only contain letters, numbers, and underscores.';
+			$error = $langs->trans('FirstNameContentError');
 		}
 	}
 
 	//Validate last name
 	if ($last_name) {
 		if (!preg_match('/^[a-zA-Z0-9_]+$/', trim($last_name))) {
-			$username_err = 'Last name can only contain letters, numbers, and underscores.';
+			$error = $langs->trans('LastNameContentError');
 		}
 	}
 
 	// Validate password
 	if (empty(trim($password))) {
-		$password_err = 'Please enter a password.';
+		$error = $langs->trans('PasswordEmpty');
 	} elseif (strlen(trim($password)) < 6) {
-		$password_err = 'Password must have at least 6 characters.';
+		$error = $langs->trans('PasswordLengthError');
 	}
 
 	// Validate confirm password
 	if (empty(trim($confirm_password))) {
-		$confirm_password_err = 'Please confirm password.';
+		$error = $langs->trans('PasswordConfirmEmpty');
 	} else {
 		$confirm_password = trim($confirm_password);
 		if (empty($password_err) && ($password != $confirm_password)) {
-			$confirm_password_err = 'Password did not match.';
+			$error = $langs->trans('PasswordsDidNotMatch');
 		}
 	}
 
 	if (empty(trim($username))) {
-		$username_err = 'Please enter a username.';
+		$username_err = $langs->trans('PleaseEnterUsername');
 	} elseif (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i', trim($username))) {
-		$username_err = 'Username can only contain letters, numbers, underscores and @.';
-	} else {
+		$error = $langs->trans('UsernameContentError');
+	}
+	if (!$error) {
 		$result = $user->fetch('', '', '', '', $username);
 
 		if ($user->num > 0) {
-			$username_err = 'This username is already taken.';
-		} elseif ((empty($user->num) || $result < 0) && empty($username_err) && empty($password_err) && empty($confirm_password_err)) {
+			$error = $langs->trans('UserNameTaken');
+		} elseif ((empty($user->num) || $result < 0) && empty($error)) {
 			$usertmp = new user();
 			$usertmp->first_name = $first_name;
 			$usertmp->last_name = $last_name;
@@ -105,10 +106,10 @@ if ($action == 'create_user') {
 			if ($res > 0) {
 				header('Location: ' . MAIN_URL_ROOT . '/login.php');
 			} else {
-				$general_error = 'Oops! Something went wrong. Please try again later.';
+				$error = $langs->trans('GeneralError');
 			}
 		} else {
-			$general_error = 'Oops! Something went wrong. Please try again later.';
+			$error = $langs->trans('GeneralError');
 		}
 	}
 }
@@ -120,31 +121,8 @@ pm_navbar();
 ?>
     <div class="container-fluid h-custom mt-5">
 		<?php
-		pm_error_block()
+		pm_message_block()
 		?>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col"></div>
-                <div class="col">
-					<?php
-					if ($username_err || $password_err || $confirm_password_err || $general_error) {
-						print '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
-						if ($username_err) {
-							print '<strong>' . $username_err . '</strong>';
-						} elseif ($password_err) {
-							print '<strong>' . $password_err . '</strong>';
-						} elseif ($confirm_password_err) {
-							print '<strong>' . $confirm_password_err . '</strong>';
-						} elseif ($general_error) {
-							print '<strong>' . $general_error . '</strong>';
-						}
-						print '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-						print '</div>';
-					}
-					?>
-                </div>
-            </div>
-        </div>
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-md-9 col-lg-6 col-xl-5">
                 <img src="<?= MAIN_URL_ROOT ?>/theme/<?= $theme ?>/img/draw2.webp" class="img-fluid" alt="login image">

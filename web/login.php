@@ -29,6 +29,10 @@ include_once('main.inc.php');
 
 global $user, $langs;
 
+$error = '';
+
+$langs->loadLangs(['errors']);
+
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if ($user->id > 0) {
 	header('location: ' . MAIN_URL_ROOT);
@@ -43,28 +47,25 @@ $action = GETPOST('action', 'alpha') ? GETPOST('action', 'alpha') : 'view';
 $username = GETPOST('email', 'az09');
 $password = GETPOST('password', 'az09');
 $confirm_password = GETPOST('confirm_password', 'az09');
-$username_err = GETPOST('username_err', 'az09');
-$password_err = GETPOST('password_err', 'az09');
-$login_err = GETPOST('login_err', 'alpha');
 
 //Actions
 if ($action == 'login_user') {
 
 	// Check if username is empty
 	if (empty(trim($username))) {
-		$username_err = 'Please enter username.';
+		$error = $langs->trans('PleaseEnterUsername');
 	} else {
 		$username = trim($username);
 	}
 
 	// Check if password is empty
 	if (empty(trim($password))) {
-		$password_err = 'Please enter your password.';
+		$error = $langs->trans('PleaseEnterPassword');
 	} else {
 		$password = trim($password);
 	}
 
-	if (empty($username_err) && empty($password_err)) {
+	if (empty($error)) {
 		$result = $user->fetch('', '', '', '', $username);
 		if ($result > 0) {
 			if (password_verify($password, $user->password)) {
@@ -80,11 +81,11 @@ if ($action == 'login_user') {
 				header('location: ' . MAIN_URL_ROOT);
 			} else {
 				// Password is not valid, display a generic error message
-				$login_err = 'Invalid username or password.';
+				$error = $langs->trans('InvalidNameOrPassword');
 			}
 		} else {
 			// Username doesn't exist, display a generic error message
-			$login_err = 'Invalid username or password.';
+			$error = $langs->trans('InvalidNameOrPassword');
 		}
 	}
 }
@@ -97,29 +98,8 @@ pm_navbar();
 ?>
     <div class="container-fluid h-custom mt-5">
 		<?php
-		pm_error_block()
+		pm_message_block()
 		?>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col"></div>
-                <div class="col">
-					<?php
-					if ($username_err || $password_err || $login_err) {
-						print '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
-						if ($username_err) {
-							print '<strong>' . $username_err . '</strong>';
-						} elseif ($password_err) {
-							print '<strong>' . $password_err . '</strong>';
-						} elseif ($login_err) {
-							print '<strong>' . $login_err . '</strong>';
-						}
-						print '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-						print '</div>';
-					}
-					?>
-                </div>
-            </div>
-        </div>
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-md-9 col-lg-6 col-xl-5">
                 <img src="<?= MAIN_URL_ROOT ?>/theme/<?= $theme ?>/img/draw2.webp" class="img-fluid" alt="login image">

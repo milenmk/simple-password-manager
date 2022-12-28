@@ -39,7 +39,11 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 	$language = $user->language ? : 'en_US';
 }
 $langs = new translator('');
-$langs->setDefaultLang('auto');
+if ($user->language) {
+	$langs->setDefaultLang($user->language);
+} else {
+	$langs->setDefaultLang('auto');
+}
 
 $langs->loadLangs(['main']);
 
@@ -86,7 +90,7 @@ function pm_header()
 function pm_navbar()
 {
 
-	global $user, $theme, $langs;
+	global $user, $theme, $langs, $error;
 
 	$background1 = '';
 	$background2 = '';
@@ -121,28 +125,28 @@ function pm_navbar()
 	print '</li>';
 	print '</ul>';
 
-	if ($user->id > 0) {
+	if ($user->id > 0 && !$error) {
 		print '<form class="d-flex" role="search" method="post">';
 		print '<input type="hidden" name="action" value="search"/>';
-		print '<input class="form-control me-2" name="search_string" type="text" placeholder="'.$langs->trans('Search').'..." aria-label="Search">';
-		print '<input class="btn btn-outline-success" type="submit" name="submit" value="'.$langs->trans('Search').'"/>';
+		print '<input class="form-control me-2" name="search_string" type="text" placeholder="' . $langs->trans('Search') . '..." aria-label="Search">';
+		print '<input class="btn btn-outline-success" type="submit" name="submit" value="' . $langs->trans('Search') . '"/>';
 		print '</form>';
 	}
 	print '</div>';
 	print '</div>';
 	print '</nav>';
 
-	if ($user->id > 0) {
-		print '<nav class="navbar navbar-expand '.$background2.'">';
+	if ($user->id > 0 && !$error) {
+		print '<nav class="navbar navbar-expand ' . $background2 . '">';
 		print '<div class="container">';
 		print '<div class="collapse navbar-collapse" id="navbarSupportedContent">';
 		print '<div class="d-flex ms-auto">';
 		if ($user->first_name || $user->last_name) {
-			print '<span class="me-3">'.$langs->trans('Hi').' <b>' . $user->first_name .' '. $user->last_name . '</b></span>';
+			print '<span class="me-3">' . $langs->trans('Hi') . ' <b>' . $user->first_name . ' ' . $user->last_name . '</b></span>';
 		} else {
-			print '<span class="me-3">'.$langs->trans('Hi').' <b>' . $user->username . '</b></span>';
+			print '<span class="me-3">' . $langs->trans('Hi') . ' <b>' . $user->username . '</b></span>';
 		}
-		print '<a class="nav-link me-3" aria-current="page" href="profile.php"><i class="bi bi-person-fill"></i>&nbsp;'.$langs->trans('Profile').'</a>';
+		print '<a class="nav-link me-3" aria-current="page" href="profile.php"><i class="bi bi-person-fill"></i>&nbsp;' . $langs->trans('Profile') . '</a>';
 		print '<a class="nav-link" aria-current="page" href="' . htmlspecialchars($_SERVER['PHP_SELF']) . '?action=logout"><i class="bi bi-box-arrow-right"></i>&nbsp;'.$langs->trans('Logout').'?</a>';
 		print '<div>';
 		print '<div>';
@@ -162,15 +166,58 @@ function pm_navbar()
  *
  * @return void
  */
-function pm_error_block()
+function pm_message_block()
 {
-	global $error;
+
+	global $error, $message;
 
 	if ($error) {
+		print '<div class="container text-center">';
+		print '<div class="row">';
+		print '<div class="col"></div>';
+		print '<div class="col">';
 		print '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
 		print '<strong>' . $error . '</strong>';
 		print '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
 		print '</div>';
+		print '</div>';
+		print '</div>';
+		print '</div>';
+	}
+	if ($message) {
+		print '<div class="container text-center">';
+		print '<div class="row">';
+		print '<div class="col"></div>';
+		print '<div class="col">';
+		print '<div class="alert alert-success alert-dismissible fade show" role="alert">';
+		print '<strong>' . $message . '</strong>';
+		print '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+		print '</div>';
+		print '</div>';
+		print '</div>';
+		print '</div>';
+	}
+}
+
+/**
+ * Global block to redirect on logout
+ *
+ * @return void
+ */
+function pm_logout_block()
+{
+
+	global $action;
+
+	if ($action == 'logout') {
+		$_SESSION = [];
+
+		// Destroy the session.
+		session_destroy();
+
+		// Redirect to login page
+		header('location: ' . MAIN_URL_ROOT . '/login.php');
+		exit;
 	}
 }
 
