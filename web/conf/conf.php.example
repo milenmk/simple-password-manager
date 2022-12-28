@@ -1,0 +1,19 @@
+<?php
+
+declare(strict_types = 1);
+
+/**
+ * \file        conf/conf.php
+ */
+
+$main_url_root='';
+$main_document_root='';
+$db_host='';
+$db_port='';
+$db_name='';
+$db_prefix='';
+$db_user='';
+$db_pass='';
+$main_db_character_set='';
+$main_db_collation='';
+$main_application_title='';
