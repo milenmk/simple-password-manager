@@ -2,6 +2,18 @@
 
 Simple password manager written on PHP with Bootstrap and PDO database connection
 
+#### Login
+
+![Screenshot](web/theme/default/img/Screenshot_1.png?raw=true)
+
+#### Domains
+
+![Screenshot](web/theme/default/img/Screenshot_2.png?raw=true)
+
+#### Records
+
+![Screenshot](web/theme/default/img/Screenshot_3.png?raw=true)
+
 ## Requirements
 
 * PHP > 7.3
