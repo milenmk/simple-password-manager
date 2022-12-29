@@ -14,7 +14,7 @@
 			console.log("char: " + chr);
 
 
-			var matchedCase = new Array();
+			var matchedCase = [];
 			matchedCase.push("[!@#$%&*_?/]"); // Special Charector
 			matchedCase.push("[A-Z]");      // Uppercase Alpabates
 			matchedCase.push("[0-9]");      // Numbers
@@ -39,7 +39,7 @@
 
     //Validate Password to have more than 8 Characters and A capital Letter, small letter, number and special character
 		// Create an array and push all possible values that you want in password
-		var matchedCase = new Array();
+		var matchedCase = [];
 		matchedCase.push("[$@$$!%*#?&]"); // Special Charector
 		matchedCase.push("[A-Z]");      // Uppercase Alpabates
 		matchedCase.push("[0-9]");      // Numbers
@@ -48,7 +48,7 @@
 
 		form.validationPassword.addEventListener('keyup', function(){
 
-		var messageCase = new Array();
+		var messageCase = [];
 		messageCase.push(" Special Charector"); // Special Charector
 		messageCase.push(" Upper Case");      // Uppercase Alpabates
 		messageCase.push(" Numbers");      // Numbers

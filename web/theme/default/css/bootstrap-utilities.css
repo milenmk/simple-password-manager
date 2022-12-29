@@ -1947,8 +1947,8 @@
 }
 
 .bg-body-emphasis {
-  --bs-bg-opacity: 1;
-  background-color: rgba(var(--bs-emphasis-bg-rgb), var(--bs-bg-opacity)) !important;
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(var(--bs-bg-opacity))) !important;
 }
 
 .bg-opacity-10 {

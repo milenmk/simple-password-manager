@@ -26,277 +26,276 @@ session_start();
  * \file        install/step2.php
  */
 
-print '<!DOCTYPE html>';
+?>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head><title>Install</title>
+        <meta charset="UTF-8">
+        <meta name="robots" content="noindex,nofollow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="blacktiehost.com">
+		<?php
 
-print '<html lang="en">' . "\n";
+		$favicon = '../theme/default/img/favicon.png';
+		print '<link rel="shortcut icon" type="image/x-icon" href="' . $favicon . '"/>' . "\n";
 
-print '<head>' . "\n" . '<title>Install</title>' . "\n";
+		$themepathcss = '../theme/default/css';
+		$themeuricss = htmlspecialchars($_SERVER['REQUEST_SCHEME']) . '://' . htmlspecialchars($_SERVER['HTTP_HOST']) . htmlspecialchars($_SERVER['CONTEXT_PREFIX']) . '/theme/default/css';
+		foreach (glob($themepathcss . '/*.css') as $css) {
+			$file = str_replace($themepathcss, $themeuricss, $css);
+			print '<link type="text/css" rel="stylesheet" href="' . htmlspecialchars($file) . '">' . "\n";
+		}
 
-print '<meta charset="UTF-8">' . "\n";
-print '<meta name="robots" content="noindex,nofollow">' . "\n";
-print '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . "\n";
-print '<meta name="author" content="blacktiehost.com">' . "\n";
+		print '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>' . "\n";
 
-$favicon = '../theme/default/img/favicon.png';
-print '<link rel="shortcut icon" type="image/x-icon" href="' . $favicon . '"/>' . "\n";
+		print "</head>\n";
 
-$themepathcss = '../theme/default/css';
-$themeuricss = htmlspecialchars($_SERVER['REQUEST_SCHEME']) . '://' . htmlspecialchars($_SERVER['HTTP_HOST']) . htmlspecialchars($_SERVER['CONTEXT_PREFIX']) . '/theme/default/css';
-foreach (glob($themepathcss . '/*.css') as $css) {
-	$file = str_replace($themepathcss, $themeuricss, $css);
-	print '<link type="text/css" rel="stylesheet" href="' . htmlspecialchars($file) . '">' . "\n";
-}
+		$error = '';
+		$lockerror = '';
 
-print '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>' . "\n";
+		$lockfile = '../../docs/install.lock';
+		if (file_exists($lockfile)) {
+			$lockerror = 'Install pages have been disabled for security (by the existence of a lock file <strong>install.lock</strong> in the docs directory).<br>';
+			$lockerror .= 'If you always reach this page, you must remove install.lock file manually.<br>';
+			$error++;
+		}
 
-print "</head>\n";
+		if (!$lockerror) {
+			include_once('../conf/conf.php');
 
-$error = '';
-$lockerror = '';
+			global $db_host, $port, $db_name, $db_user, $db_pass, $main_db_character_set, $main_db_collation;
 
-$lockfile = '../../docs/install.lock';
-if (file_exists($lockfile)) {
-	$lockerror = 'Install pages have been disabled for security (by the existence of a lock file <strong>install.lock</strong> in the docs directory).<br>';
-	$lockerror .= 'If you always reach this page, you must remove install.lock file manually.<br>';
-	$error++;
-}
+			$create_db = $_SESSION['create_database'];
+			$root_user = $_SESSION['root_db_user'];
+			$root_password = $_SESSION['root_db_pass'];
 
-if (!$lockerror) {
-	include_once('../conf/conf.php');
+			$main_db_character_set = str_replace('-', '', $main_db_character_set);
 
-	global $db_host, $port, $db_name, $db_user, $db_pass, $main_db_character_set, $main_db_collation;
+			//Create database using root user
+			if ($create_db && !$lockerror) {
+				try {
+					$conn = new PDO("mysql:host=$db_host;port=$port", $root_user, $root_password);
+					$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-	$create_db = $_SESSION['create_database'];
-	$root_user = $_SESSION['root_db_user'];
-	$root_password = $_SESSION['root_db_pass'];
-
-	$main_db_character_set = str_replace('-', '', $main_db_character_set);
-
-	//Create database using root user
-	if ($create_db && !$lockerror) {
-		try {
-			$conn = new PDO("mysql:host=$db_host;port=$port", $root_user, $root_password);
-			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-			$conn->exec(
-				"CREATE DATABASE $db_name DEFAULT CHARACTER SET $main_db_character_set COLLATE $main_db_collation;
+					$conn->exec(
+						"CREATE DATABASE $db_name DEFAULT CHARACTER SET $main_db_character_set COLLATE $main_db_collation;
                 CREATE USER $db_user@'localhost' IDENTIFIED BY '$db_pass';
                 GRANT ALL ON $db_name.* TO $db_user@'localhost';
                 FLUSH PRIVILEGES;"
-			) or die(print_r($conn->errorInfo(), true));
-		}
-		catch (PDOException $e) {
-			$error = 'Connection failed: ' . $e->getMessage();
-		}
-	}
-
-	$conn = null;
-
-	//Try connecting to database with normal user credentials
-	if (!$error || !$lockerror) {
-		try {
-			$conn2 = new PDO("mysql:host=$db_host;dbname=$db_name;port=$port", $db_user, $db_pass);
-			// set the PDO error mode to exception
-			$conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		}
-		catch (PDOException $e) {
-			$error = 'Connection failed: ' . $e->getMessage();
-		}
-	}
-}
-
-$requestnb = 0;
-
-//Start creating tables
-if (!$error || !$lockerror) {
-
-	/***************************************************************************************
-	 *
-	 * Create database tables from *.sql files
-	 * Must be done before *.key.sql files
-	 *
-	 ***************************************************************************************/
-
-	$dir = 'tables/';
-	$ok = 0;
-	$handle = opendir($dir) or die ('Cannot open dir');
-	$tablefound = 0;
-	$tabledata = [];
-	if (is_resource($handle)) {
-		while (($file = readdir($handle)) !== false) {
-			if (preg_match('/\.sql$/i', $file) && preg_match('/^pm_/i', $file) && !preg_match('/\.key\.sql$/i', $file)) {
-				$tablefound++;
-				$tabledata[] = $file;
-			}
-		}
-		closedir($handle);
-	}
-
-	// Sort list of sql files on alphabetical order (load order is important)
-	sort($tabledata);
-
-	foreach ($tabledata as $file) {
-		$name = substr($file, 0, strlen($file) - 4);
-		$buffer = '';
-		$fp = fopen($dir . $file, 'r');
-		if ($fp) {
-			while (!feof($fp)) {
-				$buf = fgets($fp, 4096);
-				if (substr($buf, 0, 2) <> '--') {
-					$buf = preg_replace('/--(.+)*/', '', $buf);
-					$buf = trim($buf, "\xEF\xBB\xBF");
-					$buffer .= $buf;
+					) or die(print_r($conn->errorInfo(), true));
+				}
+				catch (PDOException $e) {
+					$error = 'Connection failed: ' . $e->getMessage();
 				}
 			}
-			fclose($fp);
 
-			$buffer = trim($buffer);
+			$conn = null;
 
-			// Replace the prefix tables
-			if (MAIN_DB_PREFIX != 'pm_') {
-				$buffer = preg_replace('/pm_/i', MAIN_DB_PREFIX, $buffer);
-			}
-
-			$buffer = preg_replace('/table_collation/i', $main_db_collation, $buffer);
-			$buffer = preg_replace('/table_character_set/i', $main_db_character_set, $buffer);
-
-			$requestnb++;
-
-			if (!$conn2->inTransaction()) {
-				$conn2->beginTransaction();
-			}
-
-			try {
-				$conn2->exec($buffer);
-			}
-			catch (PDOException $e) {
-				$error = 'Cannot create database tables from file ' . $file . '. ' . $e->getMessage();
-			}
-		} else {
-			$error = 'Failed to open file ' . $file;
-		}
-
-		if ($tablefound) {
-			if ($error == 0) {
-				$ok = 1;
-			}
-		} else {
-			$error = 'Failed to find files to create database in directory!';
-		}
-	}
-	$buffer = '';
-
-	if (!$error) {
-
-		/***************************************************************************************
-		 *
-		 * Create database tables from *key.sql files
-		 * Must be done after *.sql files
-		 *
-		 ***************************************************************************************/
-		$ok = 0;
-		$okkeys = 0;
-		$handle = opendir($dir) or die ('Cannot open dir');
-		$tablefound = 0;
-		$tabledata = [];
-		if (is_resource($handle)) {
-			while (($file = readdir($handle)) !== false) {
-				if (preg_match('/\.sql$/i', $file) && preg_match('/^pm_/i', $file) && preg_match('/\.key\.sql$/i', $file)) {
-					$tablefound++;
-					$tabledata[] = $file;
+			//Try connecting to database with normal user credentials
+			if (!$error || !$lockerror) {
+				try {
+					$conn2 = new PDO("mysql:host=$db_host;dbname=$db_name;port=$port", $db_user, $db_pass);
+					// set the PDO error mode to exception
+					$conn2->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				}
+				catch (PDOException $e) {
+					$error = 'Connection failed: ' . $e->getMessage();
 				}
 			}
-			closedir($handle);
 		}
 
-		// Sort list of sql files on alphabetical order (load order is important)
-		sort($tabledata);
-		foreach ($tabledata as $file) {
-			$name = substr($file, 0, strlen($file) - 4);
-			$buffer = '';
-			$fp = fopen($dir . $file, 'r');
-			if ($fp) {
-				while (!feof($fp)) {
-					$buf = fgets($fp, 4096);
-					$buf = preg_replace('/--(.+)*/', '', $buf);
-					$buf = trim($buf, "\xEF\xBB\xBF");
-					$buffer .= $buf;
-				}
-				fclose($fp);
+		$requestnb = 0;
 
-				$listesql = explode(';', $buffer);
-				foreach ($listesql as $req) {
-					$buffer = trim($req);
-					if ($buffer) {
-						// Replace the prefix tables
-						if (MAIN_DB_PREFIX != 'pm_') {
-							$buffer = preg_replace('/pm_/i', MAIN_DB_PREFIX, $buffer);
-						}
+		//Start creating tables
+		if (!$error || !$lockerror) {
 
-						$buffer = preg_replace('/table_collation/i', $main_db_collation, $buffer);
-						$buffer = preg_replace('/table_character_set/i', $main_db_character_set, $buffer);
+			/***************************************************************************************
+			 *
+			 * Create database tables from *.sql files
+			 * Must be done before *.key.sql files
+			 *
+			 ***************************************************************************************/
 
-						$requestnb++;
-
-						if (!$conn2->inTransaction()) {
-							$conn2->beginTransaction();
-						}
-
-						try {
-							$conn2->exec($buffer);
-						}
-						catch (PDOException $e) {
-							$error = 'Cannot create database tables from file ' . $file . '. ' . $e->getMessage();
-						}
+			$dir = 'tables/';
+			$ok = 0;
+			$handle = opendir($dir) or die ('Cannot open dir');
+			$tablefound = 0;
+			$tabledata = [];
+			if (is_resource($handle)) {
+				while (($file = readdir($handle)) !== false) {
+					if (preg_match('/\.sql$/i', $file) && preg_match('/^pm_/i', $file) && !preg_match('/\.key\.sql$/i', $file)) {
+						$tablefound++;
+						$tabledata[] = $file;
 					}
 				}
-			} else {
-				$error = 'Failed to open file ' . $file;
+				closedir($handle);
 			}
 
-			if ($tablefound) {
-				if ($error == 0) {
-					$ok = 1;
+			// Sort list of sql files on alphabetical order (load order is important)
+			sort($tabledata);
+
+			foreach ($tabledata as $file) {
+				$name = substr($file, 0, strlen($file) - 4);
+				$buffer = '';
+				$fp = fopen($dir . $file, 'r');
+				if ($fp) {
+					while (!feof($fp)) {
+						$buf = fgets($fp, 4096);
+						if (substr($buf, 0, 2) <> '--') {
+							$buf = preg_replace('/--(.+)*/', '', $buf);
+							$buf = trim($buf, "\xEF\xBB\xBF");
+							$buffer .= $buf;
+						}
+					}
+					fclose($fp);
+
+					$buffer = trim($buffer);
+
+					// Replace the prefix tables
+					if (MAIN_DB_PREFIX != 'pm_') {
+						$buffer = preg_replace('/pm_/i', MAIN_DB_PREFIX, $buffer);
+					}
+
+					$buffer = preg_replace('/table_collation/i', $main_db_collation, $buffer);
+					$buffer = preg_replace('/table_character_set/i', $main_db_character_set, $buffer);
+
+					$requestnb++;
+
+					if (!$conn2->inTransaction()) {
+						$conn2->beginTransaction();
+					}
+
+					try {
+						$conn2->exec($buffer);
+					}
+					catch (PDOException $e) {
+						$error = 'Cannot create database tables from file ' . $file . '. ' . $e->getMessage();
+					}
+				} else {
+					$error = 'Failed to open file ' . $file;
 				}
-			} else {
-				$error = 'Failed to find files to create database in directory!';
+
+				if ($tablefound) {
+					if ($error == 0) {
+						$ok = 1;
+					}
+				} else {
+					$error = 'Failed to find files to create database in directory!';
+				}
+			}
+			$buffer = '';
+
+			if (!$error) {
+
+				/***************************************************************************************
+				 *
+				 * Create database tables from *key.sql files
+				 * Must be done after *.sql files
+				 *
+				 ***************************************************************************************/
+				$ok = 0;
+				$okkeys = 0;
+				$handle = opendir($dir) or die ('Cannot open dir');
+				$tablefound = 0;
+				$tabledata = [];
+				if (is_resource($handle)) {
+					while (($file = readdir($handle)) !== false) {
+						if (preg_match('/\.sql$/i', $file) && preg_match('/^pm_/i', $file) && preg_match('/\.key\.sql$/i', $file)) {
+							$tablefound++;
+							$tabledata[] = $file;
+						}
+					}
+					closedir($handle);
+				}
+
+				// Sort list of sql files on alphabetical order (load order is important)
+				sort($tabledata);
+				foreach ($tabledata as $file) {
+					$name = substr($file, 0, strlen($file) - 4);
+					$buffer = '';
+					$fp = fopen($dir . $file, 'r');
+					if ($fp) {
+						while (!feof($fp)) {
+							$buf = fgets($fp, 4096);
+							$buf = preg_replace('/--(.+)*/', '', $buf);
+							$buf = trim($buf, "\xEF\xBB\xBF");
+							$buffer .= $buf;
+						}
+						fclose($fp);
+
+						$listesql = explode(';', $buffer);
+						foreach ($listesql as $req) {
+							$buffer = trim($req);
+							if ($buffer) {
+								// Replace the prefix tables
+								if (MAIN_DB_PREFIX != 'pm_') {
+									$buffer = preg_replace('/pm_/i', MAIN_DB_PREFIX, $buffer);
+								}
+
+								$buffer = preg_replace('/table_collation/i', $main_db_collation, $buffer);
+								$buffer = preg_replace('/table_character_set/i', $main_db_character_set, $buffer);
+
+								$requestnb++;
+
+								if (!$conn2->inTransaction()) {
+									$conn2->beginTransaction();
+								}
+
+								try {
+									$conn2->exec($buffer);
+								}
+								catch (PDOException $e) {
+									$error = 'Cannot create database tables from file ' . $file . '. ' . $e->getMessage();
+								}
+							}
+						}
+					} else {
+						$error = 'Failed to open file ' . $file;
+					}
+
+					if ($tablefound) {
+						if ($error == 0) {
+							$ok = 1;
+						}
+					} else {
+						$error = 'Failed to find files to create database in directory!';
+					}
+				}
 			}
 		}
-	}
-}
 
-if (!$error) {
-	$con2 = null;
-} elseif (!$lockerror) {
-	$con2 = null;
+		if (!$error) {
+			$con2 = null;
+		} elseif (!$lockerror) {
+			$con2 = null;
 
-	$_SESSION['error'] = $error;
-	$file = '../conf/conf.php';
-	if (isset($_SERVER['WINDIR'])) {
-		// Host OS is Windows
-		$file = str_replace('/', '\\', $file);
-		unset($res);
-		exec('attrib -R ' . escapeshellarg($file), $res);
-		$res = $res[0];
-	} else {
-		// Host OS is *nix
-		$res = chmod($file, 0755);
-	}
-	unlink($file);
-	header('Location: index.php');
-}
+			$_SESSION['error'] = $error;
+			$file = '../conf/conf.php';
+			if (isset($_SERVER['WINDIR'])) {
+				// Host OS is Windows
+				$file = str_replace('/', '\\', $file);
+				unset($res);
+				exec('attrib -R ' . escapeshellarg($file), $res);
+				$res = $res[0];
+			} else {
+				// Host OS is *nix
+				$res = chmod($file, 0755);
+			}
+			unlink($file);
+			header('Location: index.php');
+		}
 
-if (!$error || !$lockerror) {
-	session_destroy();
+		if (!$error || !$lockerror) {
+			session_destroy();
 
-	//create lock file to prevent access to install files
-	$file = '../../docs/install.lock';
-	touch($file);
+			//create lock file to prevent access to install files
+			$file = '../../docs/install.lock';
+			touch($file);
 
-	header('Location: ../register.php');
-}
+			header('Location: ../register.php');
+		}
 
-?>
+		?>
     <body class="d-flex vh-100 flex-column">
     <div class="flex-grow-1">
         <nav class="navbar navbar-expand bg-body-tertiary">

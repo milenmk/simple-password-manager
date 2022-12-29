@@ -89,7 +89,6 @@
   --bs-white-rgb: 255, 255, 255;
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 33, 37, 41;
-  --bs-body-bg-rgb: 255, 255, 255;
   --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
@@ -131,10 +130,8 @@
   --bs-box-shadow-sm: 0 0.125rem 0.25rem rgba(var(--bs-body-color-rgb), 0.075);
   --bs-box-shadow-lg: 0 1rem 3rem rgba(var(--bs-body-color-rgb), 0.175);
   --bs-box-shadow-inset: inset 0 1px 2px rgba(var(--bs-body-color-rgb), 0.075);
-  --bs-emphasis-color: #000;
   --bs-form-control-bg: var(--bs-body-bg);
   --bs-form-control-disabled-bg: var(--bs-secondary-bg);
-  --bs-highlight-bg: #fff3cd;
   --bs-breakpoint-xs: 0;
   --bs-breakpoint-sm: 576px;
   --bs-breakpoint-md: 768px;
@@ -158,7 +155,6 @@
   --bs-tertiary-color-rgb: 173, 181, 189;
   --bs-tertiary-bg: #2b3035;
   --bs-tertiary-bg-rgb: 43, 48, 53;
-  --bs-emphasis-color: #fff;
   --bs-primary-text: #6ea8fe;
   --bs-secondary-text: #dee2e6;
   --bs-success-text: #75b798;
@@ -254,7 +250,7 @@
 }
 
 .col {
-  flex: 1 0 0%;
+    flex: 1 0 0;
 }
 
 .row-cols-auto > * {
@@ -463,7 +459,7 @@
 
 @media (min-width: 576px) {
   .col-sm {
-    flex: 1 0 0%;
+      flex: 1 0 0;
   }
   .row-cols-sm-auto > * {
     flex: 0 0 auto;
@@ -632,7 +628,7 @@
 }
 @media (min-width: 768px) {
   .col-md {
-    flex: 1 0 0%;
+      flex: 1 0 0;
   }
   .row-cols-md-auto > * {
     flex: 0 0 auto;
@@ -801,7 +797,7 @@
 }
 @media (min-width: 992px) {
   .col-lg {
-    flex: 1 0 0%;
+      flex: 1 0 0;
   }
   .row-cols-lg-auto > * {
     flex: 0 0 auto;
@@ -970,7 +966,7 @@
 }
 @media (min-width: 1200px) {
   .col-xl {
-    flex: 1 0 0%;
+      flex: 1 0 0;
   }
   .row-cols-xl-auto > * {
     flex: 0 0 auto;
@@ -1139,7 +1135,7 @@
 }
 @media (min-width: 1400px) {
   .col-xxl {
-    flex: 1 0 0%;
+      flex: 1 0 0;
   }
   .row-cols-xxl-auto > * {
     flex: 0 0 auto;

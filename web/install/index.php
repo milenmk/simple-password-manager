@@ -25,31 +25,28 @@ declare(strict_types = 1);
  */
 
 if (file_exists('../conf/conf.php')) {
-    header('Location: ../index.php');
+	header('Location: ../index.php');
 }
 
 session_start();
+?>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head><title>Install</title>
+        <meta charset="UTF-8">
+        <meta name="robots" content="noindex,nofollow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="blacktiehost.com">
+		<?php
+		$favicon = '../theme/default/img/favicon.png';
+		print '<link rel="shortcut icon" type="image/x-icon" href="' . $favicon . '"/>' . "\n";
 
-print '<!DOCTYPE html>';
-
-print '<html lang="en">' . "\n";
-
-print '<head>'."\n".'<title>Install</title>' . "\n";
-
-print '<meta charset="UTF-8">' . "\n";
-print '<meta name="robots" content="noindex,nofollow">' . "\n";
-print '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . "\n";
-print '<meta name="author" content="blacktiehost.com">' . "\n";
-
-$favicon = '../theme/default/img/favicon.png';
-print '<link rel="shortcut icon" type="image/x-icon" href="' . $favicon . '"/>' . "\n";
-
-$themepathcss = '../theme/default/css';
-$themeuricss = htmlspecialchars($_SERVER['REQUEST_SCHEME']) . '://' . htmlspecialchars($_SERVER['HTTP_HOST']) . htmlspecialchars($_SERVER['CONTEXT_PREFIX']) . '/theme/default/css';
-foreach (glob($themepathcss . '/*.css') as $css) {
-	$file = str_replace($themepathcss, $themeuricss, $css);
-	print '<link type="text/css" rel="stylesheet" href="'.htmlspecialchars($file).'">' . "\n";
-}
+		$themepathcss = '../theme/default/css';
+		$themeuricss = htmlspecialchars($_SERVER['REQUEST_SCHEME']) . '://' . htmlspecialchars($_SERVER['HTTP_HOST']) . htmlspecialchars($_SERVER['CONTEXT_PREFIX']) . '/theme/default/css';
+		foreach (glob($themepathcss . '/*.css') as $css) {
+			$file = str_replace($themepathcss, $themeuricss, $css);
+			print '<link type="text/css" rel="stylesheet" href="' . htmlspecialchars($file) . '">' . "\n";
+		}
 
 print '<script src="../theme/default/js/validation.js"></script>' . "\n";
 print '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>' . "\n";

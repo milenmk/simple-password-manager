@@ -104,24 +104,24 @@ function pm_navbar()
 		$background2 = 'bg-dark-subtle';
 	}
 
-	print '<nav class="navbar navbar-expand '.$background1.'">';
+	print '<nav class="navbar navbar-expand ' . $background1 . '">';
 	print '<div class="container">';
 	print '<a class="navbar-brand" href="' . MAIN_URL_ROOT . '">';
-	print '<img src="'.MAIN_URL_ROOT.'/theme/' . $theme . '/img/logo.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top me-2">';
+	print '<img src="' . MAIN_URL_ROOT . '/theme/' . $theme . '/img/logo.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top me-2">';
 	print MAIN_APPLICATION_TITLE . '</a>';
 	print '<div class="collapse navbar-collapse" id="navbarSupportedContent">';
 	print '<ul class="navbar-nav me-auto mb-2 mb-lg-0">';
 	print '<li class="nav-item">';
-	print '<a class="nav-link" aria-current="page" href="' . MAIN_URL_ROOT . '">'. $langs->trans('Domains') .'</a>';
+	print '<a class="nav-link" aria-current="page" href="' . MAIN_URL_ROOT . '">' . $langs->trans('Domains') . '</a>';
 	print '</li>';
 	print '<li class="nav-item">';
-	print '<a class="nav-link" href="' . MAIN_URL_ROOT . '/records.php">'. $langs->trans('Records') .'</a>';
+	print '<a class="nav-link" href="' . MAIN_URL_ROOT . '/records.php">' . $langs->trans('Records') . '</a>';
 	print '</li>';
 	print '<li class="nav-item">';
-	print '<a class="nav-link" aria-current="page" href="' . MAIN_URL_ROOT . '/index.php?action=add_domain">'. $langs->trans('AddDomain') .'</a>';
+	print '<a class="nav-link" aria-current="page" href="' . MAIN_URL_ROOT . '/index.php?action=add_domain">' . $langs->trans('AddDomain') . '</a>';
 	print '</li>';
 	print '<li class="nav-item">';
-	print '<a class="nav-link" aria-current="page" href="' . MAIN_URL_ROOT . '/records.php?action=add_record">'. $langs->trans('AddRecord') .'</a>';
+	print '<a class="nav-link" aria-current="page" href="' . MAIN_URL_ROOT . '/records.php?action=add_record">' . $langs->trans('AddRecord') . '</a>';
 	print '</li>';
 	print '</ul>';
 
@@ -147,7 +147,7 @@ function pm_navbar()
 			print '<span class="me-3">' . $langs->trans('Hi') . ' <b>' . $user->username . '</b></span>';
 		}
 		print '<a class="nav-link me-3" aria-current="page" href="profile.php"><i class="bi bi-person-fill"></i>&nbsp;' . $langs->trans('Profile') . '</a>';
-		print '<a class="nav-link" aria-current="page" href="' . htmlspecialchars($_SERVER['PHP_SELF']) . '?action=logout"><i class="bi bi-box-arrow-right"></i>&nbsp;'.$langs->trans('Logout').'?</a>';
+		print '<a class="nav-link" aria-current="page" href="' . htmlspecialchars($_SERVER['PHP_SELF']) . '?action=logout"><i class="bi bi-box-arrow-right"></i>&nbsp;' . $langs->trans('Logout') . '?</a>';
 		print '<div>';
 		print '<div>';
 		print '<div>';
@@ -158,7 +158,7 @@ function pm_navbar()
 	} elseif ($theme == 'dark') {
 		$background = 'bg-dark-subtle';
 	}
-	print '<div class="flex-grow-1 '.$background.' ">';
+	print '<div class="flex-grow-1 ' . $background . ' ">';
 }
 
 /**
@@ -228,6 +228,7 @@ function pm_logout_block()
  */
 function pm_footer()
 {
+
 	global $langs, $theme;
 
 	$background = '';
@@ -241,9 +242,9 @@ function pm_footer()
 		$background = 'bg-dark';
 		$text_color = '#fff';
 	}
-	print '<footer class="text-center text-lg-start '.$background.' text-muted">';
-	print '<div class="text-center p-4" style="color: '.$text_color.';">';
-	print '&copy; 2020 - 2022 '.$langs->trans('AllRightsReserved').'. ';
+	print '<footer class="text-center text-lg-start ' . $background . ' text-muted">';
+	print '<div class="text-center p-4" style="color: ' . $text_color . ';">';
+	print '&copy; 2020 - 2022 ' . $langs->trans('AllRightsReserved') . '. ';
 	print '<a class="text-reset fw-bold" href="https://blacktiehost.com/">BlackTieHost.com</a>';
 	print '</div>';
 	print '</footer>';

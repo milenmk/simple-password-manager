@@ -26,140 +26,138 @@ session_start();
  * \file        install/step1.php
  */
 
-print '<!DOCTYPE html>';
+?>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head><title>Install</title>
+        <meta charset="UTF-8">
+        <meta name="robots" content="noindex,nofollow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="blacktiehost.com">
+		<?php
+		$favicon = '../theme/default/img/favicon.png';
+		print '<link rel="shortcut icon" type="image/x-icon" href="' . $favicon . '"/>' . "\n";
 
-print '<html lang="en">' . "\n";
-
-print '<head>' . "\n" . '<title>Install</title>' . "\n";
-
-print '<meta charset="UTF-8">' . "\n";
-print '<meta name="robots" content="noindex,nofollow">' . "\n";
-print '<meta name="viewport" content="width=device-width, initial-scale=1.0">' . "\n";
-print '<meta name="author" content="blacktiehost.com">' . "\n";
-
-$favicon = '../theme/default/img/favicon.png';
-print '<link rel="shortcut icon" type="image/x-icon" href="' . $favicon . '"/>' . "\n";
-
-$themepathcss = '../theme/default/css';
-$themeuricss = htmlspecialchars($_SERVER['REQUEST_SCHEME']) . '://' . htmlspecialchars($_SERVER['HTTP_HOST']) . htmlspecialchars($_SERVER['CONTEXT_PREFIX']) . '/theme/default/css';
-foreach (glob($themepathcss . '/*.css') as $css) {
-	$file = str_replace($themepathcss, $themeuricss, $css);
-	print '<link type="text/css" rel="stylesheet" href="' . htmlspecialchars($file) . '">' . "\n";
-}
-
-print '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>' . "\n";
-
-print "</head>\n";
-
-$error = '';
-
-$lockerror = '';
-$lockfile = '../../docs/install.lock';
-
-if (file_exists($lockfile)) {
-	$lockerror = 'Install pages have been disabled for security (by the existence of a lock file <strong>install.lock</strong> in the docs directory).<br>';
-	$lockerror .= 'If you always reach this page, you must remove install.lock file manually.<br>';
-    $error++;
-}
-
-if (!$error || !$lockerror) {
-	$main_url_root = $_SESSION['main_url_root'];
-	$main_document_root = $_SESSION['main_document_root'];
-	$server = $_SESSION['db_host'];
-	$port = $_SESSION['db_port'];
-	$db_prefix = $_SESSION['db_prefix'];
-	$db = $_SESSION['db_name'];
-	$username = $_SESSION['db_user'];
-	$password = $_SESSION['db_pass'];
-	$charset = $_SESSION['db_character_set'];
-	$collation = $_SESSION['db_collation'];
-	$create_db = $_SESSION['create_database'];
-	$root_user = $_SESSION['root_db_user'];
-	$root_password = $_SESSION['root_db_pass'];
-	$application_title = $_SESSION['application_title'];
-
-	$file = '../conf/conf.php';
-	if (!file_exists($file)) {
-		touch($file);
-	} else {
-		$error = 'Config file already exists';
-		$_SESSION['error'] = $error;
-		header('Location: ../login.php');
-	}
-
-	if (!$error || !$lockerror) {
-		$new_file = fopen($file, 'w') or die("can't open/create config file");
-
-		fputs($new_file, '<?php' . "\n");
-		fputs($new_file, "\n");
-		fputs($new_file, 'declare(strict_types = 1);' . "\n");
-		fputs($new_file, "\n");
-		fputs($new_file, '/**' . "\n");
-		fputs($new_file, ' * \file        conf/conf.php' . "\n");
-		fputs($new_file, ' */' . "\n");
-		fputs($new_file, "\n");
-
-		fputs($new_file, '$main_url_root=\'' . $main_url_root . '\';');
-		fputs($new_file, "\n");
-		fputs($new_file, '$main_document_root=\'' . $main_document_root . '\';');
-		fputs($new_file, "\n");
-
-		fputs($new_file, '$db_host=\'' . $server . '\';');
-		fputs($new_file, "\n");
-
-		fputs($new_file, '$db_port=\'' . $port . '\';');
-		fputs($new_file, "\n");
-
-		fputs($new_file, '$db_name=\'' . $db . '\';');
-		fputs($new_file, "\n");
-
-		fputs($new_file, '$db_prefix=\'' . $db_prefix . '\';');
-		fputs($new_file, "\n");
-
-		fputs($new_file, '$db_user=\'' . $username . '\';');
-		fputs($new_file, "\n");
-		fputs($new_file, '$db_pass=\'' . $password . '\';');
-		fputs($new_file, "\n");
-
-		fputs($new_file, '$main_db_character_set=\'' . $charset . '\';');
-		fputs($new_file, "\n");
-
-		fputs($new_file, '$main_db_collation=\'' . $collation . '\';');
-		fputs($new_file, "\n");
-
-		fputs($new_file, '$main_application_title=\'' . $application_title . '\';');
-		fputs($new_file, "\n");
-
-		fputs($new_file, 'define(\'MAIN_DOCUMENT_ROOT\', $main_document_root);');
-		fputs($new_file, "\n");
-
-		fputs($new_file, 'define(\'MAIN_URL_ROOT\', $main_url_root);');
-		fputs($new_file, "\n");
-
-		fputs($new_file, 'define(\'MAIN_DB_PREFIX\', $db_prefix);');
-		fputs($new_file, "\n");
-
-		fputs($new_file, 'define(\'MAIN_APPLICATION_TITLE\', $main_application_title);');
-		fputs($new_file, "\n");
-
-		fclose($new_file);
-
-		if (isset($_SERVER['WINDIR'])) {
-			// Host OS is Windows
-			$file = str_replace('/', '\\', $file);
-			unset($res);
-			exec('attrib +R ' . escapeshellarg($file), $res);
-			$res = $res[0];
-		} else {
-			// Host OS is *nix
-			$res = chmod($file, 0444);
+		$themepathcss = '../theme/default/css';
+		$themeuricss = htmlspecialchars($_SERVER['REQUEST_SCHEME']) . '://' . htmlspecialchars($_SERVER['HTTP_HOST']) . htmlspecialchars($_SERVER['CONTEXT_PREFIX']) . '/theme/default/css';
+		foreach (glob($themepathcss . '/*.css') as $css) {
+			$file = str_replace($themepathcss, $themeuricss, $css);
+			print '<link type="text/css" rel="stylesheet" href="' . htmlspecialchars($file) . '">' . "\n";
 		}
 
-		header('Location: step2.php');
-	}
-}
+		print '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>' . "\n";
 
-?>
+		print "</head>\n";
+
+		$error = '';
+
+		$lockerror = '';
+		$lockfile = '../../docs/install.lock';
+
+		if (file_exists($lockfile)) {
+			$lockerror = 'Install pages have been disabled for security (by the existence of a lock file <strong>install.lock</strong> in the docs directory).<br>';
+			$lockerror .= 'If you always reach this page, you must remove install.lock file manually.<br>';
+			$error++;
+		}
+
+		if (!$error || !$lockerror) {
+			$main_url_root = $_SESSION['main_url_root'];
+			$main_document_root = $_SESSION['main_document_root'];
+			$server = $_SESSION['db_host'];
+			$port = $_SESSION['db_port'];
+			$db_prefix = $_SESSION['db_prefix'];
+			$db = $_SESSION['db_name'];
+			$username = $_SESSION['db_user'];
+			$password = $_SESSION['db_pass'];
+			$charset = $_SESSION['db_character_set'];
+			$collation = $_SESSION['db_collation'];
+			$create_db = $_SESSION['create_database'];
+			$root_user = $_SESSION['root_db_user'];
+			$root_password = $_SESSION['root_db_pass'];
+			$application_title = $_SESSION['application_title'];
+
+			$file = '../conf/conf.php';
+			if (!file_exists($file)) {
+				touch($file);
+			} else {
+				$error = 'Config file already exists';
+				$_SESSION['error'] = $error;
+				header('Location: ../login.php');
+			}
+
+			if (!$error || !$lockerror) {
+				$new_file = fopen($file, 'w') or die("can't open/create config file");
+
+				fputs($new_file, '<?php' . "\n");
+				fputs($new_file, "\n");
+				fputs($new_file, 'declare(strict_types = 1);' . "\n");
+				fputs($new_file, "\n");
+				fputs($new_file, '/**' . "\n");
+				fputs($new_file, ' * \file        conf/conf.php' . "\n");
+				fputs($new_file, ' */' . "\n");
+				fputs($new_file, "\n");
+
+				fputs($new_file, '$main_url_root=\'' . $main_url_root . '\';');
+				fputs($new_file, "\n");
+				fputs($new_file, '$main_document_root=\'' . $main_document_root . '\';');
+				fputs($new_file, "\n");
+
+				fputs($new_file, '$db_host=\'' . $server . '\';');
+				fputs($new_file, "\n");
+
+				fputs($new_file, '$db_port=\'' . $port . '\';');
+				fputs($new_file, "\n");
+
+				fputs($new_file, '$db_name=\'' . $db . '\';');
+				fputs($new_file, "\n");
+
+				fputs($new_file, '$db_prefix=\'' . $db_prefix . '\';');
+				fputs($new_file, "\n");
+
+				fputs($new_file, '$db_user=\'' . $username . '\';');
+				fputs($new_file, "\n");
+				fputs($new_file, '$db_pass=\'' . $password . '\';');
+				fputs($new_file, "\n");
+
+				fputs($new_file, '$main_db_character_set=\'' . $charset . '\';');
+				fputs($new_file, "\n");
+
+				fputs($new_file, '$main_db_collation=\'' . $collation . '\';');
+				fputs($new_file, "\n");
+
+				fputs($new_file, '$main_application_title=\'' . $application_title . '\';');
+				fputs($new_file, "\n");
+
+				fputs($new_file, 'define(\'MAIN_DOCUMENT_ROOT\', $main_document_root);');
+				fputs($new_file, "\n");
+
+				fputs($new_file, 'define(\'MAIN_URL_ROOT\', $main_url_root);');
+				fputs($new_file, "\n");
+
+				fputs($new_file, 'define(\'MAIN_DB_PREFIX\', $db_prefix);');
+				fputs($new_file, "\n");
+
+				fputs($new_file, 'define(\'MAIN_APPLICATION_TITLE\', $main_application_title);');
+				fputs($new_file, "\n");
+
+				fclose($new_file);
+
+				if (isset($_SERVER['WINDIR'])) {
+					// Host OS is Windows
+					$file = str_replace('/', '\\', $file);
+					unset($res);
+					exec('attrib +R ' . escapeshellarg($file), $res);
+					$res = $res[0];
+				} else {
+					// Host OS is *nix
+					$res = chmod($file, 0444);
+				}
+
+				header('Location: step2.php');
+			}
+		}
+
+		?>
     <body class="d-flex vh-100 flex-column">
     <div class="flex-grow-1">
         <nav class="navbar navbar-expand bg-body-tertiary">

@@ -105,7 +105,6 @@ Options -Indexes
 	RedirectMatch 403 \{
 	RedirectMatch 403 \}
 	RedirectMatch 403 \~
-	RedirectMatch 403 \"
 	RedirectMatch 403 \$
 	RedirectMatch 403 \<
 	RedirectMatch 403 \>
@@ -214,7 +213,6 @@ Options -Indexes
 	RedirectMatch 403 (?i)(https?|ftp|php):/
 	RedirectMatch 403 (?i)(base64_encode)(.*)(\()
 	RedirectMatch 403 (?i)(=\'|=\%27|/\'/?)\.
-	RedirectMatch 403 (?i)/(\$(\&)?|\*|\"|\.|,|&|&amp;?)/?$
 	RedirectMatch 403 (?i)(\{0\}|\(/\(|\.\.\.|\+\+\+|\\"\\")
 	RedirectMatch 403 (?i)(~|>|:|;|,|%|\|\s|\{|\}|\[|\]|\|)
 	RedirectMatch 403 (?i)/(=|\$&|_mm|cgi-|etc/passwd|muieblack)
@@ -266,7 +264,6 @@ Options -Indexes
 	RedirectMatch 403 /(https?|ima|ucp)/
 	RedirectMatch 403 /(Permanent|Better)$
 	RedirectMatch 403 (\=\\\'|\=\\%27|/\\\'/?|\)\.css\()$
-	RedirectMatch 403 (\,|\)\+|/\,/|\{0\}|\(/\(|\.\.\.|\+\+\+|\||\\\"\\\")
 	RedirectMatch 403 \.(cgi|asp|aspx|cfg|dll|exe|jsp|mdb|sql|ini|rar)$
 	RedirectMatch 403 /(contac|fpw|install|pingserver)\.php$
 	RedirectMatch 403 (base64|crossdomain|localhost|wwwroot|e107\_)
@@ -420,7 +417,7 @@ ExpiresByType application/zip A31536000
 BrowserMatch ^Mozilla/4 gzip-only-text/html
 BrowserMatch ^Mozilla/4\.0[678] no-gzip
 BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
-BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
 </IfModule>
 AddOutputFilterByType DEFLATE text/css text/x-component application/x-javascript application/javascript text/javascript text/x-js text/html text/richtext text/plain text/xsd text/xsl text/xml image/bmp application/java application/msword application/vnd.ms-fontobject application/x-msdownload image/x-icon application/json application/vnd.ms-access video/webm application/vnd.ms-project font/ttf font/otf font/opentype application/xhtml+xml application/x-font-truetype application/x-font-opentype application/x-font application/x-font-otf application/vnd.ms-opentype application/vnd.oasis.opendocument.database application/vnd.oasis.opendocument.chart application/vnd.oasis.opendocument.formula application/vnd.oasis.opendocument.graphics application/vnd.oasis.opendocument.presentation application/vnd.oasis.opendocument.spreadsheet application/vnd.oasis.opendocument.text audio/ogg application/pdf application/vnd.ms-powerpoint image/svg+xml application/x-shockwave-flash image/tiff application/x-font-ttf application/vnd.ms-opentype audio/wav application/vnd.ms-write application/font-woff application/font-woff2 application/vnd.ms-excel
 <IfModule mod_mime.c>

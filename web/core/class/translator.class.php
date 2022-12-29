@@ -30,6 +30,9 @@ class translator
 	public $dir;
 	public $defaultlang;
 
+	public $origlang;
+	public $shortlang;
+
 	public  $tab_translate  = [];       // Array of all translations key=>value
 	public  $charset_output = 'UTF-8';  // Array to store result after loading each language file
 	public  $error;
@@ -269,8 +272,8 @@ class translator
 			$str = $this->tab_translate[$key];
 
 			$str = str_replace(
-				['"', '<b>', '</b>', '<u>', '</u>', '<i', '</i>', '<center>', '</center>', '<strong>', '</strong>', '<a ', '</a>', '<br>', '<span', '</span>', '< ', '>'], // We accept '< ' but not '<'. We can accept however '>'
-				['__quot__', '__tagb__', '__tagbend__', '__tagu__', '__taguend__', '__tagi__', '__tagiend__', '__tagcenter__', '__tagcenterend__', '__tagb__', '__tagbend__', '__taga__', '__tagaend__', '__tagbr__', '__tagspan__', '__tagspanend__', '__ltspace__', '__gt__'],
+				['"', '<b>', '</b>', '<u>', '</u>', '<i', '</i>', '<strong>', '</strong>', '<a ', '</a>', '<br>', '<span', '</span>', '< ', '>'], // We accept '< ' but not '<'. We can accept however '>'
+				['__quot__', '__tagb__', '__tagbend__', '__tagu__', '__taguend__', '__tagi__', '__tagiend__', '__tagb__', '__tagbend__', '__taga__', '__tagaend__', '__tagbr__', '__tagspan__', '__tagspanend__', '__ltspace__', '__gt__'],
 				$str
 			);
 
@@ -281,8 +284,8 @@ class translator
 			$str = htmlentities($str, ENT_COMPAT, $this->charset_output); // Do not convert simple quotes in translation
 
 			return str_replace(
-				['__quot__', '__tagb__', '__tagbend__', '__tagu__', '__taguend__', '__tagi__', '__tagiend__', '__tagcenter__', '__tagcenterend__', '__taga__', '__tagaend__', '__tagbr__', '__tagspan__', '__tagspanend__', '__ltspace__', '__gt__'],
-				['"', '<b>', '</b>', '<u>', '</u>', '<i', '</i>', '<center>', '</center>', '<a ', '</a>', '<br>', '<span', '</span>', '< ', '>'],
+				['__quot__', '__tagb__', '__tagbend__', '__tagu__', '__taguend__', '__tagi__', '__tagiend__', '__taga__', '__tagaend__', '__tagbr__', '__tagspan__', '__tagspanend__', '__ltspace__', '__gt__'],
+				['"', '<b>', '</b>', '<u>', '</u>', '<i', '</i>', '<a ', '</a>', '<br>', '<span', '</span>', '< ', '>'],
 				$str
 			);
 		}
