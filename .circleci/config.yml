@@ -1,71 +1,185 @@
-# PHP CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-php/ for more details
-#
-version: 2.1
+# This code is licensed from CircleCI to the user under the MIT license.
+# See here for details: https://circleci.com/developer/orbs/licensing
+commands:
+  install-composer:
+    description: Install Composer
+    parameters:
+      install-dir:
+        default: /usr/local/bin
+        description: |
+          By default, composer will be installed at "/usr/local/bin/composer", use this to override the install directory.
+        type: string
+      install-version:
+        default: ""
+        description: |
+          By default, composer will install the latest composer version, use this to override the installed version.
+        type: string
+    steps:
+      - run:
+          command: |
+            curl -sS https://getcomposer.org/installer -o composer-setup.php
+            sudo php composer-setup.php --filename=composer --install-dir=<<parameters.install-dir>> <<#parameters.install-version>>--version=<<parameters.install-version>><</parameters.install-version>>
+          name: Install Composer
+  install-packages:
+    description: |
+      Install your composer packages with automated caching and best practices applied.
+    parameters:
+      cache-files-dir:
+        default: .circleci/.composer/cache/files
+        description: Absolute path to the file cache folder. This should be inline with "composer global config cache-files-dir --absolute".
+        type: string
+      cache-key:
+        default: composer.lock
+        description: If this file is updated a new cache bucket will be created. Recommended to use composer.lock. Use composer.json when composer.lock is absent.
+        type: string
+      install-flags:
+        default: --no-interaction --prefer-dist
+        description: |
+          By default, packages will be installed with "composer install --no-interaction --prefer-dist", use this to override the standard install flags.
+        type: string
+      vendor-dir:
+        default: vendor
+        description: Relative path to the vendor folder. Relative to "app-dir". This should be inline with "composer config vendor-dir".
+        type: string
+      with-cache:
+        default: true
+        description: Enable automatic caching of your dependencies for increased speed.
+        type: boolean
+    steps:
+      - when:
+          condition: << parameters.with-cache >>
+          steps:
+            - restore_cache:
+                keys:
+                  - composer-deps-<<parameters.cache-version>>-{{ checksum "<<parameters.app-dir>>/<<parameters.cache-key>>" }}
+      - run:
+          command: |
+            if [ ! -f "composer.json" ] && [ ! -f "composer.lock" ]; then
+              echo
+              echo "---"
+              echo "Unable to find your composer.json and composer.lock files. Did you forget to set the app-dir parameter?"
+              echo "---"
+              echo
+              echo "Current directory: $(pwd)"
+              echo
+              echo
+              echo "List directory: "
+              echo
+              ls
+              exit 1
+            fi
+          name: Verify composer.json and/or composer.lock exist
+          working_directory: <<parameters.app-dir>>
+      - run:
+          command: composer install <<parameters.install-flags>>
+          name: Installing Composer Packages
+          working_directory: <<parameters.app-dir>>
+      - when:
+          condition: << parameters.with-cache >>
+          steps:
+            - save_cache:
+                key: composer-deps-<<parameters.cache-version>>-{{ checksum "<<parameters.app-dir>>/<<parameters.cache-key>>" }}
+                paths:
+                  - <<parameters.app-dir>>/<<parameters.vendor-dir>>
+                  - <<parameters.cache-files-dir>>
+  install-php:
+    description: Install PHP into your Ubuntu or Debian based image.
+    parameters:
+      version:
+        default: "7.4"
+        description: The PHP version.
+        type: string
+    steps:
+      - detect/init
+      - run:
+          command: |
+            sudo apt update && sudo apt install -y software-properties-common
+            if [[ $OSD_ID == "ubuntu" ]]; then
+              sudo add-apt-repository -yu ppa:ondrej/php
+            elif [[ $OSD_ID == "debian" ]]; then
+              curl -fsSL https://packages.sury.org/php/apt.gpg | sudo apt-key add -
+              sudo add-apt-repository "deb https://packages.sury.org/php/ $(lsb_release -cs) main"
+            else
+              echo "OS not supported."
+            fi
+            sudo apt-get update
+            sudo apt-get install -y php<< parameters.version >>
+          name: Install PHP
+description: |
+  Common CircleCI tasks for the PHP programming language.
+display:
+  source_url: https://github.com/circleci-public/php-orb
+examples:
+  install_composer_packages:
+    description: |
+      Example showing how to install Composer then installing packages for a project.
+    usage:
+      jobs:
+        install_composer_packages:
+          executor: php/default
+          steps:
+            - checkout
+            - php/install-composer:
+                install-version: 1.10.16
+            - php/install-packages
+      orbs:
+        php: circleci/php@x.y
+      version: 2.1
+      workflows:
+        install:
+          jobs:
+            - install_composer_packages
+  test_application:
+    description: |
+      Run composer test on your application in a more opinionated manner.
+    usage:
+      orbs:
+        php: circleci/php@x.y
+      version: 2.1
+      workflows:
+        test:
+          jobs:
+            - php/test
+executors:
+  default:
+    description: The official CircleCI CIMG PHP Docker image.
+    docker:
+      - image: cimg/php:<< parameters.tag >>
+    parameters:
+      tag:
+        default: "7.4"
+        description: The `cimg/php` Docker image version tag.
+        type: string
 jobs:
   test:
-    docker:
-      # Specify the version you desire here
-      - image: circleci/php:7.4.33
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # Using the RAM variation mitigates I/O contention
-      # for database intensive operations.
-      # - image: circleci/mysql:5.7-ram
-      # - image: redis:3
-      - image: circleci/mysql:8.0.20-ram
-        command: mysqld --default-authentication-plugin=mysql_native_password
-        environment:
-          MYSQL_USER: forge
-          MYSQL_DATABASE: forge
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_PASSWORD: 'forge'
-
+    description: |
+      Simple drop-in job to test your PHP application automatically.
+    executor:
+      name: default
+      tag: << parameters.version >>
+    parameters:
+      setup:
+        default: [ ]
+        description: Provide any optional steps you would like to run prior to installing the composer packages. This is a good place to install global packages.
+        type: steps
+      test-command:
+        default: test
+        description: The name of the script within your composer.json which will run your tests.
+        type: string
+      version:
+        default: "7.4"
+        description: The `cimg/php` Docker image version tag.
+        type: string
     steps:
       - checkout
+      - steps: << parameters.setup >>
+      - install-packages:
+          app-dir: <<parameters.app-dir>>
       - run:
-          name: Install MySQL driver
-          command: |
-            sudo docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd
-            sudo docker-php-ext-install zip bcmath pdo_mysql
-      - run:
-          name: Check PHP version
-          command: php --version
-      # Download and cache dependencies
+          command: composer <<parameters.test-command>>
+          name: Run Tests
+          working_directory: <<parameters.app-dir>>
+orbs:
+  detect: circleci/os-detect@0.1
+version: 2.1
 
-      # composer cache
-      - restore_cache:
-          keys:
-            # "composer.json" can be used if "composer.json"
-            # is not committed to the repository.
-            - composer-{{ checksum "composer.lock" }}
-            # fallback to using the latest cache if no exact match is found
-            - composer-
-      - run: composer install -n --prefer-dist
-      - save_cache:
-          key: composer-{{ checksum "composer.lock" }}
-          paths:
-            - vendor
-
-      # prepare the database
-      - run: touch storage/testing.sqlite
-      - run: php artisan migrate --env=testing --database=mysql --force
-
-      # run tests with phpunit or codecept
-      #- run: ./vendor/bin/phpunit
-      # this example uses codecept but you're not limited to it
-      - run: ./vendor/bin/phpunit build
-      - run: ./vendor/bin/phpunit run --xml result.xml
-      - store_test_results:
-          path: tests/_output
-      - store_artifacts:
-          path: tests/_output
-
-workflows:
-  version: 2.1
-  workflow:
-    jobs:
-      - test
