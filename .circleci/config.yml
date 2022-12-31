@@ -1,71 +1,25 @@
-# PHP CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-php/ for more details
-#
 version: 2.1
+orbs:
+  php: circleci/php@1.1.0
+  phpunit: stockfiller/phpunit@1.1.0
 jobs:
-  test:
+  example-job:
     docker:
-      # Specify the version you desire here
-      - image: circleci/php:7.4.33
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # Using the RAM variation mitigates I/O contention
-      # for database intensive operations.
-      # - image: circleci/mysql:5.7-ram
-      # - image: redis:3
-      - image: circleci/mysql:8.0.20-ram
-        command: mysqld --default-authentication-plugin=mysql_native_password
-        environment:
-          MYSQL_USER: forge
-          MYSQL_DATABASE: forge
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_PASSWORD: 'forge'
-
+      # replace with your preferred image
+      - image: cimg/base:stable
     steps:
-      - checkout
-      - run:
-          name: Install MySQL driver
-          command: |
-            sudo docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd
-            sudo docker-php-ext-install zip bcmath pdo_mysql
-      - run:
-          name: Check PHP version
-          command: php --version
-      # Download and cache dependencies
-
-      # composer cache
-      - restore_cache:
-          keys:
-            # "composer.json" can be used if "composer.json"
-            # is not committed to the repository.
-            - composer-{{ checksum "composer.lock" }}
-            # fallback to using the latest cache if no exact match is found
-            - composer-
-      - run: composer install -n --prefer-dist
-      - save_cache:
-          key: composer-{{ checksum "composer.lock" }}
-          paths:
-            - vendor
-
-      # prepare the database
-      - run: touch storage/testing.sqlite
-      - run: php artisan migrate --env=testing --database=mysql --force
-
-      # run tests with phpunit or codecept
-      #- run: ./vendor/bin/phpunit
-      # this example uses codecept but you're not limited to it
-      - run: ./vendor/bin/phpunit build
-      - run: ./vendor/bin/phpunit run --xml result.xml
-      - store_test_results:
-          path: tests/_output
-      - store_artifacts:
-          path: tests/_output
-
+      - php/install-php:
+          version: '7.4.33'
+      - php/install-composer
+      - php/install-packages:
+          with-cache: true
+          cache-files-dir: circleci/composer/cache
+          cache-key: composer.lock
+          cache-version: v1
+          vendor-dir: /vendor
+          install-flags: --no-interaction --prefer-dist
 workflows:
-  version: 2.1
   workflow:
     jobs:
-      - test
+      - example-job
+      
