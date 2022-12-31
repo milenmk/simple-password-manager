@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: Parser.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -25,6 +43,10 @@ use Twig\Node\NodeOutputInterface;
 use Twig\Node\PrintNode;
 use Twig\Node\TextNode;
 use Twig\TokenParser\TokenParserInterface;
+use function chr;
+use function count;
+use function get_class;
+use function is_array;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -148,7 +170,7 @@ class Parser
 							$this->stream->next();
 						}
 
-						if (1 === \count($rv)) {
+						if (1 === count($rv)) {
 							return $rv[0];
 						}
 
@@ -159,7 +181,7 @@ class Parser
 						if (null !== $test) {
 							$e = new SyntaxError(sprintf('Unexpected "%s" tag', $token->getValue()), $token->getLine(), $this->stream->getSourceContext());
 
-							if (\is_array($test) && isset($test[0]) && $test[0] instanceof TokenParserInterface) {
+							if (is_array($test) && isset($test[0]) && $test[0] instanceof TokenParserInterface) {
 								$e->appendMessage(sprintf(' (expecting closing tag for the "%s" tag defined near line %s).', $test[0]->getTag(), $lineno));
 							}
 						} else {
@@ -184,7 +206,7 @@ class Parser
 			}
 		}
 
-		if (1 === \count($rv)) {
+		if (1 === count($rv)) {
 			return $rv[0];
 		}
 
@@ -206,7 +228,7 @@ class Parser
 			||
 			(!$node instanceof TextNode && !$node instanceof BlockReferenceNode && $node instanceof NodeOutputInterface)
 		) {
-			if (false !== strpos((string)$node, \chr(0xEF) . \chr(0xBB) . \chr(0xBF))) {
+			if (false !== strpos((string)$node, chr(0xEF) . chr(0xBB) . chr(0xBF))) {
 				$t = substr($node->getAttribute('data'), 3);
 				if ('' === $t || ctype_space($t)) {
 					// bypass empty nodes starting with a BOM
@@ -236,7 +258,7 @@ class Parser
 
 		// here, $nested means "being at the root level of a child template"
 		// we need to discard the wrapping "Node" for the "body" node
-		$nested = $nested || Node::class !== \get_class($node);
+		$nested = $nested || Node::class !== get_class($node);
 		foreach ($node as $k => $n) {
 			if (null !== $n && null === $this->filterBodyNodes($n, $nested)) {
 				$node->removeNode($k);
@@ -255,7 +277,7 @@ class Parser
 	public function peekBlockStack()
 	{
 
-		return $this->blockStack[\count($this->blockStack) - 1] ?? null;
+		return $this->blockStack[count($this->blockStack) - 1] ?? null;
 	}
 
 	public function popBlockStack(): void
@@ -309,7 +331,7 @@ class Parser
 	public function hasTraits(): bool
 	{
 
-		return \count($this->traits) > 0;
+		return count($this->traits) > 0;
 	}
 
 	public function embedTemplate(ModuleNode $template)
@@ -330,13 +352,13 @@ class Parser
 	{
 
 		// if the symbol does not exist in the current scope (0), try in the main/global scope (last index)
-		return $this->importedSymbols[0][$type][$alias] ?? ($this->importedSymbols[\count($this->importedSymbols) - 1][$type][$alias] ?? null);
+		return $this->importedSymbols[0][$type][$alias] ?? ($this->importedSymbols[count($this->importedSymbols) - 1][$type][$alias] ?? null);
 	}
 
 	public function isMainScope(): bool
 	{
 
-		return 1 === \count($this->importedSymbols);
+		return 1 === count($this->importedSymbols);
 	}
 
 	public function pushLocalScope(): void

@@ -4,11 +4,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: register.php
- *  Last Modified: 31.12.22 г., 10:25 ч.
+ *  Last Modified: 31.12.22 г., 18:16 ч.
  *
  * @link          https://blacktiehost.com
- * @since         1.0
- * @version       2.0
+ * @since         1.0.0
+ * @version       2.1.0
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+
@@ -38,9 +38,14 @@ $langs->loadLangs(['errors']);
 
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if (isset($user->id) && $user->id > 0) {
-	header('location: ' . MAIN_URL_ROOT);
+	echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '";});</script>';
 	exit;
 }
+
+/*
+ * Objects
+ */
+$user = new user($db);
 
 /*
  * Initiate POST values
@@ -140,23 +145,35 @@ print $twig->render(
 	]
 );
 
-if ($theme == 'default') {
-	$background = 'bg-light';
-} elseif ($theme == 'dark') {
-	$background = 'bg-dark-subtle';
-}
 print $twig->render(
 	'footer.html.twig',
 	[
-		'langs'      => $langs,
-		'theme'      => $theme,
-		'background' => $background,
+		'langs' => $langs,
+		'theme' => $theme,
 	]
 );
 
-print $twig->render('javascripts.html.twig');
+if ($theme != 'default') {
+	$js_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/js/';
+
+	if (is_dir($js_path)) {
+		$js_array = [];
+		foreach (array_filter(glob($js_path . '*.js'), 'is_file') as $file) {
+			$js_array[] = str_replace($js_path, '', $file);
+		}
+	}
+}
+print $twig->render(
+	'javascripts.html.twig',
+	[
+		'theme'    => $theme,
+		'main_url' => PM_MAIN_URL_ROOT,
+		'js_array' => $js_array,
+	]
+);
+
 print $twig->render('endpage.html.twig');
 
 if ($created == 'OK') {
-	echo '<script>setTimeout(function(){ window.location.href= "'.PM_MAIN_URL_ROOT.'/login.php";}, 2000);</script>';
+	echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/login.php";}, 2000);</script>';
 }

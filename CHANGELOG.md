@@ -1,6 +1,13 @@
-## v 2.0.0 [Released 31.12.2022]
+## v2.1.0 [Released 31.12.2022]
+
+* [NEW] template HERO added
+* [NEW] ability to copy username and password for records on click
+* [NEW] All domain's and record's URL are now clickable and opens on new tab
+
+## v 2.0.0
+
 * [IMPORTANT] Minimum PHP version now is 7.4
-* 
+*
 * [NEW] folder structure
 * Class methods are more abstract
 * [NEW] New DB Helper class to manage database connections and queries

@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: ProfilerExtension.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -13,6 +31,7 @@ namespace Twig\Extension;
 
 use Twig\Profiler\NodeVisitor\ProfilerNodeVisitor;
 use Twig\Profiler\Profile;
+use function count;
 
 class ProfilerExtension extends AbstractExtension
 {
@@ -44,7 +63,7 @@ class ProfilerExtension extends AbstractExtension
 		$profile->leave();
 		array_shift($this->actives);
 
-		if (1 === \count($this->actives)) {
+		if (1 === count($this->actives)) {
 			$this->actives[0]->leave();
 		}
 	}

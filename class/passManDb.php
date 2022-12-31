@@ -3,12 +3,12 @@
  *
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
- *  File name: config.php
- *  Last Modified: 29.12.22 г., 20:36 ч.
+ *  File name: passManDb.php
+ *  Last Modified: 31.12.22 г., 18:18 ч.
  *
  * @link          https://blacktiehost.com
- * @since         1.0
- * @version       2.0
+ * @since         1.0.0
+ * @version       2.1.0
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+
@@ -440,7 +440,7 @@ class passManDb
 			}
 		}
 		if ($search_user > 0) {
-			$sql .= ' AND t.'.$user_key.' = :' . $user_key;
+			$sql .= ' AND t.' . $user_key . ' = :' . $user_key;
 		}
 		if (!empty($sqlwhere)) {
 			$sql .= ' AND (' . implode(' ' . $filter_mode . ' ', $sqlwhere) . ')';
@@ -544,16 +544,14 @@ class passManDb
 		$sqlwhere = [];
 		if (!empty($filter)) {
 			foreach ($filter as $key => $value) {
-				if ($key == 'fk_user') {
-					if ($key == 'rowid' || $key == 'id') {
-						$sqlwhere[] = 't.rowid = :' . $key;
-					} elseif ($key == 'customsql') {
-						foreach ($value as $field => $val) {
-							$sqlwhere[] = 't.' . $field . ' = :' . $field;
-						}
-					} else {
-						$sqlwhere[] = 't.' . $key . ' = :' . $key;
+				if ($key == 'rowid' || $key == 'id') {
+					$sqlwhere[] = 't.rowid = :' . $key;
+				} elseif ($key == 'customsql') {
+					foreach ($value as $field => $val) {
+						$sqlwhere[] = 't.' . $field . ' = :' . $field;
 					}
+				} else {
+					$sqlwhere[] = 't.' . $key . ' = :' . $key;
 				}
 			}
 		}

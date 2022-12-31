@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: ChainLoader.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -13,6 +31,7 @@ namespace Twig\Loader;
 
 use Twig\Error\LoaderError;
 use Twig\Source;
+use function get_class;
 
 /**
  * Loads templates from other loaders.
@@ -101,7 +120,7 @@ final class ChainLoader implements LoaderInterface
 				return $loader->getCacheKey($name);
 			}
 			catch (LoaderError $e) {
-				$exceptions[] = \get_class($loader) . ': ' . $e->getMessage();
+				$exceptions[] = get_class($loader) . ': ' . $e->getMessage();
 			}
 		}
 
@@ -121,7 +140,7 @@ final class ChainLoader implements LoaderInterface
 				return $loader->isFresh($name, $time);
 			}
 			catch (LoaderError $e) {
-				$exceptions[] = \get_class($loader) . ': ' . $e->getMessage();
+				$exceptions[] = get_class($loader) . ': ' . $e->getMessage();
 			}
 		}
 

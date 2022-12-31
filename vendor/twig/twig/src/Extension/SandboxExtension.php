@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: SandboxExtension.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -17,6 +35,7 @@ use Twig\Sandbox\SecurityNotAllowedPropertyError;
 use Twig\Sandbox\SecurityPolicyInterface;
 use Twig\Source;
 use Twig\TokenParser\SandboxTokenParser;
+use function is_object;
 
 final class SandboxExtension extends AbstractExtension
 {
@@ -107,7 +126,7 @@ final class SandboxExtension extends AbstractExtension
 	public function ensureToStringAllowed($obj, int $lineno = -1, Source $source = null)
 	{
 
-		if ($this->isSandboxed() && \is_object($obj) && method_exists($obj, '__toString')) {
+		if ($this->isSandboxed() && is_object($obj) && method_exists($obj, '__toString')) {
 			try {
 				$this->policy->checkMethodAllowed($obj, '__toString');
 			}

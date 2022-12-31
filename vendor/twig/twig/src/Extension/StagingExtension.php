@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: StagingExtension.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -11,6 +29,7 @@
 
 namespace Twig\Extension;
 
+use LogicException;
 use Twig\NodeVisitor\NodeVisitorInterface;
 use Twig\TokenParser\TokenParserInterface;
 use Twig\TwigFilter;
@@ -37,7 +56,7 @@ final class StagingExtension extends AbstractExtension
 	{
 
 		if (isset($this->functions[$function->getName()])) {
-			throw new \LogicException(sprintf('Function "%s" is already registered.', $function->getName()));
+			throw new LogicException(sprintf('Function "%s" is already registered.', $function->getName()));
 		}
 
 		$this->functions[$function->getName()] = $function;
@@ -53,7 +72,7 @@ final class StagingExtension extends AbstractExtension
 	{
 
 		if (isset($this->filters[$filter->getName()])) {
-			throw new \LogicException(sprintf('Filter "%s" is already registered.', $filter->getName()));
+			throw new LogicException(sprintf('Filter "%s" is already registered.', $filter->getName()));
 		}
 
 		$this->filters[$filter->getName()] = $filter;
@@ -81,7 +100,7 @@ final class StagingExtension extends AbstractExtension
 	{
 
 		if (isset($this->tokenParsers[$parser->getTag()])) {
-			throw new \LogicException(sprintf('Tag "%s" is already registered.', $parser->getTag()));
+			throw new LogicException(sprintf('Tag "%s" is already registered.', $parser->getTag()));
 		}
 
 		$this->tokenParsers[$parser->getTag()] = $parser;
@@ -97,7 +116,7 @@ final class StagingExtension extends AbstractExtension
 	{
 
 		if (isset($this->tests[$test->getName()])) {
-			throw new \LogicException(sprintf('Test "%s" is already registered.', $test->getName()));
+			throw new LogicException(sprintf('Test "%s" is already registered.', $test->getName()));
 		}
 
 		$this->tests[$test->getName()] = $test;

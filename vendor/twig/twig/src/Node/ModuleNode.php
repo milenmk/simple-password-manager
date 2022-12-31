@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: ModuleNode.php
+ *  Last Modified: 30.12.22 г., 5:53 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -12,10 +30,12 @@
 
 namespace Twig\Node;
 
+use LogicException;
 use Twig\Compiler;
 use Twig\Node\Expression\AbstractExpression;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Source;
+use function count;
 
 /**
  * Represents a module node.
@@ -150,7 +170,7 @@ final class ModuleNode extends Node
 			$compiler->write("\$this->parent = false;\n\n");
 		}
 
-		$countTraits = \count($this->getNode('traits'));
+		$countTraits = count($this->getNode('traits'));
 		if ($countTraits) {
 			// traits
 			foreach ($this->getNode('traits') as $i => $trait) {
@@ -354,7 +374,7 @@ final class ModuleNode extends Node
 		//
 		// Put another way, a template can be used as a trait if it
 		// only contains blocks and use statements.
-		$traitable = !$this->hasNode('parent') && 0 === \count($this->getNode('macros'));
+		$traitable = !$this->hasNode('parent') && 0 === count($this->getNode('macros'));
 		if ($traitable) {
 			if ($this->getNode('body') instanceof BodyNode) {
 				$nodes = $this->getNode('body')->getNode(0);
@@ -362,12 +382,12 @@ final class ModuleNode extends Node
 				$nodes = $this->getNode('body');
 			}
 
-			if (!\count($nodes)) {
+			if (!count($nodes)) {
 				$nodes = new Node([$nodes]);
 			}
 
 			foreach ($nodes as $node) {
-				if (!\count($node)) {
+				if (!count($node)) {
 					continue;
 				}
 
@@ -446,7 +466,7 @@ final class ModuleNode extends Node
 				->repr($node->getTemplateLine())
 				->raw(");\n");
 		} else {
-			throw new \LogicException('Trait templates can only be constant nodes.');
+			throw new LogicException('Trait templates can only be constant nodes.');
 		}
 	}
 

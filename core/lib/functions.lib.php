@@ -4,11 +4,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: functions.lib.php
- *  Last Modified: 29.12.22 г., 22:57 ч.
+ *  Last Modified: 31.12.22 г., 18:10 ч.
  *
  * @link          https://blacktiehost.com
- * @since         1.0
- * @version       2.0
+ * @since         1.0.0
+ * @version       2.1.0
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+
@@ -446,7 +446,8 @@ function pm_logout_block()
 		session_destroy();
 
 		// Redirect to login page
-		header('location: ' . PM_MAIN_URL_ROOT . '/login.php');
+		//header('location: ' . PM_MAIN_URL_ROOT . '/login.php');
+		echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/login.php";});</script>';
 		exit;
 	}
 }

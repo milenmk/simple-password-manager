@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: Compiler.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -12,7 +30,14 @@
 
 namespace Twig;
 
+use LogicException;
 use Twig\Node\Node;
+use function is_array;
+use function is_bool;
+use function is_float;
+use function is_int;
+use function strlen;
+use const LC_NUMERIC;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -100,21 +125,21 @@ class Compiler
 	public function repr($value)
 	{
 
-		if (\is_int($value) || \is_float($value)) {
-			if (false !== $locale = setlocale(\LC_NUMERIC, '0')) {
-				setlocale(\LC_NUMERIC, 'C');
+		if (is_int($value) || is_float($value)) {
+			if (false !== $locale = setlocale(LC_NUMERIC, '0')) {
+				setlocale(LC_NUMERIC, 'C');
 			}
 
 			$this->raw(var_export($value, true));
 
 			if (false !== $locale) {
-				setlocale(\LC_NUMERIC, $locale);
+				setlocale(LC_NUMERIC, $locale);
 			}
 		} elseif (null === $value) {
 			$this->raw('null');
-		} elseif (\is_bool($value)) {
+		} elseif (is_bool($value)) {
 			$this->raw($value ? 'true' : 'false');
-		} elseif (\is_array($value)) {
+		} elseif (is_array($value)) {
 			$this->raw('array(');
 			$first = true;
 			foreach ($value as $key => $v) {
@@ -170,7 +195,7 @@ class Compiler
 			$this->write(sprintf("// line %d\n", $node->getTemplateLine()));
 
 			$this->sourceLine += substr_count($this->source, "\n", $this->sourceOffset);
-			$this->sourceOffset = \strlen($this->source);
+			$this->sourceOffset = strlen($this->source);
 			$this->debugInfo[$this->sourceLine] = $node->getTemplateLine();
 
 			$this->lastLine = $node->getTemplateLine();
@@ -216,14 +241,14 @@ class Compiler
 	/**
 	 * @return $this
 	 *
-	 * @throws \LogicException When trying to outdent too much so the indentation would become negative
+	 * @throws LogicException When trying to outdent too much so the indentation would become negative
 	 */
 	public function outdent(int $step = 1)
 	{
 
 		// can't outdent by more steps than the current indentation level
 		if ($this->indentation < $step) {
-			throw new \LogicException('Unable to call outdent() as the indentation would become negative.');
+			throw new LogicException('Unable to call outdent() as the indentation would become negative.');
 		}
 
 		$this->indentation -= $step;

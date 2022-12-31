@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: EscaperExtension.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -15,6 +33,8 @@ namespace Twig\Extension {
 	use Twig\NodeVisitor\EscaperNodeVisitor;
 	use Twig\TokenParser\AutoEscapeTokenParser;
 	use Twig\TwigFilter;
+	use function call_user_func;
+	use function is_string;
 
 	final class EscaperExtension extends AbstractExtension
 	{
@@ -71,8 +91,8 @@ namespace Twig\Extension {
 
 			// disable string callables to avoid calling a function named html or js,
 			// or any other upcoming escaping strategy
-			if (!\is_string($this->defaultStrategy) && false !== $this->defaultStrategy) {
-				return \call_user_func($this->defaultStrategy, $name);
+			if (!is_string($this->defaultStrategy) && false !== $this->defaultStrategy) {
+				return call_user_func($this->defaultStrategy, $name);
 			}
 
 			return $this->defaultStrategy;
@@ -183,10 +203,10 @@ namespace {
 			return $string;
 		}
 
-		if (!\is_string($string)) {
-			if (\is_object($string) && method_exists($string, '__toString')) {
+		if (!is_string($string)) {
+			if (is_object($string) && method_exists($string, '__toString')) {
 				if ($autoescape) {
-					$c = \get_class($string);
+					$c = get_class($string);
 					$ext = $env->getExtension(EscaperExtension::class);
 					if (!isset($ext->safeClasses[$c])) {
 						$ext->safeClasses[$c] = [];
@@ -205,7 +225,7 @@ namespace {
 				}
 
 				$string = (string)$string;
-			} elseif (\in_array($strategy, ['html', 'js', 'css', 'html_attr', 'url'])) {
+			} elseif (in_array($strategy, ['html', 'js', 'css', 'html_attr', 'url'])) {
 				return $string;
 			}
 		}
@@ -243,18 +263,18 @@ namespace {
 				];
 
 				if (isset($htmlspecialcharsCharsets[$charset])) {
-					return htmlspecialchars($string, \ENT_QUOTES | \ENT_SUBSTITUTE, $charset);
+					return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
 				}
 
 				if (isset($htmlspecialcharsCharsets[strtoupper($charset)])) {
 					// cache the lowercase variant for future iterations
 					$htmlspecialcharsCharsets[$charset] = true;
 
-					return htmlspecialchars($string, \ENT_QUOTES | \ENT_SUBSTITUTE, $charset);
+					return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
 				}
 
 				$string = twig_convert_encoding($string, 'UTF-8', $charset);
-				$string = htmlspecialchars($string, \ENT_QUOTES | \ENT_SUBSTITUTE, 'UTF-8');
+				$string = htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 
 				return iconv('UTF-8', $charset, $string);
 
@@ -328,7 +348,7 @@ namespace {
 
 					$char = $matches[0];
 
-					return sprintf('\\%X ', 1 === \strlen($char) ? \ord($char) : mb_ord($char, 'UTF-8'));
+					return sprintf('\\%X ', 1 === strlen($char) ? ord($char) : mb_ord($char, 'UTF-8'));
 				},  $string
 				);
 
@@ -357,7 +377,7 @@ namespace {
 					 * @license   https://framework.zend.com/license/new-bsd New BSD License
 					 */
 					$chr = $matches[0];
-					$ord = \ord($chr);
+					$ord = ord($chr);
 
 					/*
 					 * The following replaces characters undefined in HTML with the
@@ -371,7 +391,7 @@ namespace {
 					 * Check if the current character to escape has a name entity we should
 					 * replace it with while grabbing the hex value of the character.
 					 */
-					if (1 === \strlen($chr)) {
+					if (1 === strlen($chr)) {
 						/*
 						 * While HTML supports far more named entities, the lowest common denominator
 						 * has become HTML5's XML Serialisation which is restricted to the those named

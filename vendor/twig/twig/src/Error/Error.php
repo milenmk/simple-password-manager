@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: Error.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -11,8 +29,15 @@
 
 namespace Twig\Error;
 
+use Exception;
+use ReflectionObject;
 use Twig\Source;
 use Twig\Template;
+use function get_class;
+use function is_object;
+use function is_string;
+use const DEBUG_BACKTRACE_IGNORE_ARGS;
+use const DEBUG_BACKTRACE_PROVIDE_OBJECT;
 
 /**
  * Twig base exception.
@@ -36,7 +61,7 @@ use Twig\Template;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Error extends \Exception
+class Error extends Exception
 {
 
 	private $lineno;
@@ -54,7 +79,7 @@ class Error extends \Exception
 	 * @param int         $lineno  The template line where the error occurred
 	 * @param Source|null $source  The source context where the error occurred
 	 */
-	public function __construct(string $message, int $lineno = -1, Source $source = null, \Exception $previous = null)
+	public function __construct(string $message, int $lineno = -1, Source $source = null, Exception $previous = null)
 	{
 
 		parent::__construct('', 0, $previous);
@@ -98,7 +123,7 @@ class Error extends \Exception
 		}
 
 		if ($this->name) {
-			if (\is_string($this->name) || (\is_object($this->name) && method_exists($this->name, '__toString'))) {
+			if (is_string($this->name) || (is_object($this->name) && method_exists($this->name, '__toString'))) {
 				$name = sprintf('"%s"', $this->name);
 			} else {
 				$name = json_encode($this->name);
@@ -166,14 +191,14 @@ class Error extends \Exception
 		$template = null;
 		$templateClass = null;
 
-		$backtrace = debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS | \DEBUG_BACKTRACE_PROVIDE_OBJECT);
+		$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS | DEBUG_BACKTRACE_PROVIDE_OBJECT);
 		foreach ($backtrace as $trace) {
 			if (isset($trace['object']) && $trace['object'] instanceof Template) {
-				$currentClass = \get_class($trace['object']);
+				$currentClass = get_class($trace['object']);
 				$isEmbedContainer = null === $templateClass ? false : 0 === strpos($templateClass, $currentClass);
 				if (null === $this->name || ($this->name == $trace['object']->getTemplateName() && !$isEmbedContainer)) {
 					$template = $trace['object'];
-					$templateClass = \get_class($trace['object']);
+					$templateClass = get_class($trace['object']);
 				}
 			}
 		}
@@ -194,7 +219,7 @@ class Error extends \Exception
 			return;
 		}
 
-		$r = new \ReflectionObject($template);
+		$r = new ReflectionObject($template);
 		$file = $r->getFileName();
 
 		$exceptions = [$e = $this];

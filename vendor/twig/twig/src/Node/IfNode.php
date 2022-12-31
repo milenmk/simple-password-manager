@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: IfNode.php
+ *  Last Modified: 30.12.22 г., 5:53 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -13,6 +31,7 @@
 namespace Twig\Node;
 
 use Twig\Compiler;
+use function count;
 
 /**
  * Represents an if node.
@@ -37,7 +56,7 @@ class IfNode extends Node
 	{
 
 		$compiler->addDebugInfo($this);
-		for ($i = 0, $count = \count($this->getNode('tests')); $i < $count; $i += 2) {
+		for ($i = 0, $count = count($this->getNode('tests')); $i < $count; $i += 2) {
 			if ($i > 0) {
 				$compiler
 					->outdent()

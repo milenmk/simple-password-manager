@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: ExpressionParser.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -32,6 +50,10 @@ use Twig\Node\Expression\Unary\NegUnary;
 use Twig\Node\Expression\Unary\NotUnary;
 use Twig\Node\Expression\Unary\PosUnary;
 use Twig\Node\Node;
+use function count;
+use function get_class;
+use function in_array;
+use const E_USER_DEPRECATED;
 
 /**
  * Parses expressions.
@@ -79,7 +101,7 @@ class ExpressionParser
 				$stream->expect(/* Token::NAME_TYPE */ 5, null, 'Only variables can be assigned to');
 			}
 			$value = $token->getValue();
-			if (\in_array(strtr($value, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), ['true', 'false', 'none', 'null'])) {
+			if (in_array(strtr($value, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), ['true', 'false', 'none', 'null'])) {
 				throw new SyntaxError(sprintf('You cannot assign a value to "%s".', $value), $token->getLine(), $stream->getSourceContext());
 			}
 			$targets[] = new AssignNameExpression($value, $token->getLine());
@@ -366,7 +388,7 @@ class ExpressionParser
 			$name = null;
 			if ($namedArguments && $token = $stream->nextIf(/* Token::OPERATOR_TYPE */ 8, '=')) {
 				if (!$value instanceof NameExpression) {
-					throw new SyntaxError(sprintf('A parameter name must be a string, "%s" given.', \get_class($value)), $token->getLine(), $stream->getSourceContext());
+					throw new SyntaxError(sprintf('A parameter name must be a string, "%s" given.', get_class($value)), $token->getLine(), $stream->getSourceContext());
 				}
 				$name = $value->getAttribute('name');
 
@@ -454,7 +476,7 @@ class ExpressionParser
 
 				if (isset($this->unaryOperators[$token->getValue()])) {
 					$class = $this->unaryOperators[$token->getValue()]['class'];
-					if (!\in_array($class, [NegUnary::class, PosUnary::class])) {
+					if (!in_array($class, [NegUnary::class, PosUnary::class])) {
 						throw new SyntaxError(sprintf('Unexpected unary operator "%s".', $token->getValue()), $token->getLine(), $this->parser->getStream()->getSourceContext());
 					}
 
@@ -487,7 +509,7 @@ class ExpressionParser
 		switch ($name) {
 			case 'parent':
 				$this->parseArguments();
-				if (!\count($this->parser->getBlockStack())) {
+				if (!count($this->parser->getBlockStack())) {
 					throw new SyntaxError('Calling "parent" outside a block is forbidden.', $line, $this->parser->getStream()->getSourceContext());
 				}
 
@@ -498,18 +520,18 @@ class ExpressionParser
 				return new ParentExpression($this->parser->peekBlockStack(), $line);
 			case 'block':
 				$args = $this->parseArguments();
-				if (\count($args) < 1) {
+				if (count($args) < 1) {
 					throw new SyntaxError('The "block" function takes one argument (the block name).', $line, $this->parser->getStream()->getSourceContext());
 				}
 
-				return new BlockReferenceExpression($args->getNode(0), \count($args) > 1 ? $args->getNode(1) : null, $line);
+				return new BlockReferenceExpression($args->getNode(0), count($args) > 1 ? $args->getNode(1) : null, $line);
 			case 'attribute':
 				$args = $this->parseArguments();
-				if (\count($args) < 2) {
+				if (count($args) < 2) {
 					throw new SyntaxError('The "attribute" function takes at least two arguments (the variable and the attributes).', $line, $this->parser->getStream()->getSourceContext());
 				}
 
-				return new GetAttrExpression($args->getNode(0), $args->getNode(1), \count($args) > 2 ? $args->getNode(2) : null, Template::ANY_CALL, $line);
+				return new GetAttrExpression($args->getNode(0), $args->getNode(1), count($args) > 2 ? $args->getNode(2) : null, Template::ANY_CALL, $line);
 			default:
 				if (null !== $alias = $this->parser->getImportedSymbol('function', $name)) {
 					$arguments = new ArrayExpression([], $line);
@@ -551,7 +573,7 @@ class ExpressionParser
 			$src = $this->parser->getStream()->getSourceContext();
 			$message .= sprintf(' in %s at line %d.', $src->getPath() ? : $src->getName(), $line);
 
-			@trigger_error($message, \E_USER_DEPRECATED);
+			@trigger_error($message, E_USER_DEPRECATED);
 		}
 
 		return $function->getNodeClass();
@@ -705,7 +727,7 @@ class ExpressionParser
 			$src = $this->parser->getStream()->getSourceContext();
 			$message .= sprintf(' in %s at line %d.', $src->getPath() ? : $src->getName(), $line);
 
-			@trigger_error($message, \E_USER_DEPRECATED);
+			@trigger_error($message, E_USER_DEPRECATED);
 		}
 
 		return $filter->getNodeClass();
@@ -823,7 +845,7 @@ class ExpressionParser
 			$src = $stream->getSourceContext();
 			$message .= sprintf(' in %s at line %d.', $src->getPath() ? : $src->getName(), $stream->getCurrent()->getLine());
 
-			@trigger_error($message, \E_USER_DEPRECATED);
+			@trigger_error($message, E_USER_DEPRECATED);
 		}
 
 		return $test->getNodeClass();

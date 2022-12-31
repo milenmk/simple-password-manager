@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: ForTokenParser.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -16,6 +34,7 @@ use Twig\Node\Expression\AssignNameExpression;
 use Twig\Node\ForNode;
 use Twig\Node\Node;
 use Twig\Token;
+use function count;
 
 /**
  * Loops over each item of a sequence.
@@ -50,7 +69,7 @@ final class ForTokenParser extends AbstractTokenParser
 		}
 		$stream->expect(/* Token::BLOCK_END_TYPE */ 3);
 
-		if (\count($targets) > 1) {
+		if (count($targets) > 1) {
 			$keyTarget = $targets->getNode(0);
 			$keyTarget = new AssignNameExpression($keyTarget->getAttribute('name'), $keyTarget->getTemplateLine());
 			$valueTarget = $targets->getNode(1);

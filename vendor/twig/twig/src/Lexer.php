@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: Lexer.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -12,7 +30,12 @@
 
 namespace Twig;
 
+use LogicException;
 use Twig\Error\SyntaxError;
+use function count;
+use function strlen;
+use const PHP_INT_MAX;
+use const PREG_OFFSET_CAPTURE;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -195,7 +218,7 @@ class Lexer
 		$this->code = str_replace(["\r\n", "\r"], "\n", $source->getCode());
 		$this->cursor = 0;
 		$this->lineno = 1;
-		$this->end = \strlen($this->code);
+		$this->end = strlen($this->code);
 		$this->tokens = [];
 		$this->state = self::STATE_DATA;
 		$this->states = [];
@@ -203,7 +226,7 @@ class Lexer
 		$this->position = -1;
 
 		// find all token starts in one go
-		preg_match_all($this->regexes['lex_tokens_start'], $this->code, $matches, \PREG_OFFSET_CAPTURE);
+		preg_match_all($this->regexes['lex_tokens_start'], $this->code, $matches, PREG_OFFSET_CAPTURE);
 		$this->positions = $matches;
 
 		while ($this->cursor < $this->end) {
@@ -246,7 +269,7 @@ class Lexer
 	{
 
 		// if no matches are left we return the rest of the template as simple text token
-		if ($this->position == \count($this->positions[0]) - 1) {
+		if ($this->position == count($this->positions[0]) - 1) {
 			$this->pushToken(/* Token::TEXT_TYPE */ 0, substr($this->code, $this->cursor));
 			$this->cursor = $this->end;
 
@@ -256,7 +279,7 @@ class Lexer
 		// Find the first token after the current cursor
 		$position = $this->positions[0][++$this->position];
 		while ($position[1] < $this->cursor) {
-			if ($this->position == \count($this->positions[0]) - 1) {
+			if ($this->position == count($this->positions[0]) - 1) {
 				return;
 			}
 			$position = $this->positions[0][++$this->position];
@@ -322,14 +345,14 @@ class Lexer
 	private function moveCursor($text): void
 	{
 
-		$this->cursor += \strlen($text);
+		$this->cursor += strlen($text);
 		$this->lineno += substr_count($text, "\n");
 	}
 
 	private function lexComment(): void
 	{
 
-		if (!preg_match($this->regexes['lex_comment'], $this->code, $match, \PREG_OFFSET_CAPTURE, $this->cursor)) {
+		if (!preg_match($this->regexes['lex_comment'], $this->code, $match, PREG_OFFSET_CAPTURE, $this->cursor)) {
 			throw new SyntaxError('Unclosed comment.', $this->lineno, $this->source);
 		}
 
@@ -339,7 +362,7 @@ class Lexer
 	private function lexRawData(): void
 	{
 
-		if (!preg_match($this->regexes['lex_raw_data'], $this->code, $match, \PREG_OFFSET_CAPTURE, $this->cursor)) {
+		if (!preg_match($this->regexes['lex_raw_data'], $this->code, $match, PREG_OFFSET_CAPTURE, $this->cursor)) {
 			throw new SyntaxError('Unexpected end of file: Unclosed "verbatim" block.', $this->lineno, $this->source);
 		}
 
@@ -383,8 +406,8 @@ class Lexer
 	private function popState(): void
 	{
 
-		if (0 === \count($this->states)) {
-			throw new \LogicException('Cannot pop state without a previous state.');
+		if (0 === count($this->states)) {
+			throw new LogicException('Cannot pop state without a previous state.');
 		}
 
 		$this->state = array_pop($this->states);
@@ -417,7 +440,7 @@ class Lexer
 		} // numbers
 		elseif (preg_match(self::REGEX_NUMBER, $this->code, $match, 0, $this->cursor)) {
 			$number = (float)$match[0];  // floats
-			if (ctype_digit($match[0]) && $number <= \PHP_INT_MAX) {
+			if (ctype_digit($match[0]) && $number <= PHP_INT_MAX) {
 				$number = (int)$match[0]; // integers lower than the maximum
 			}
 			$this->pushToken(/* Token::NUMBER_TYPE */ 6, $number);
@@ -476,7 +499,7 @@ class Lexer
 			$this->pushToken(/* Token::INTERPOLATION_START_TYPE */ 10);
 			$this->moveCursor($match[0]);
 			$this->pushState(self::STATE_INTERPOLATION);
-		} elseif (preg_match(self::REGEX_DQ_STRING_PART, $this->code, $match, 0, $this->cursor) && \strlen($match[0]) > 0) {
+		} elseif (preg_match(self::REGEX_DQ_STRING_PART, $this->code, $match, 0, $this->cursor) && strlen($match[0]) > 0) {
 			$this->pushToken(/* Token::STRING_TYPE */ 7, stripcslashes($match[0]));
 			$this->moveCursor($match[0]);
 		} elseif (preg_match(self::REGEX_DQ_STRING_DELIM, $this->code, $match, 0, $this->cursor)) {

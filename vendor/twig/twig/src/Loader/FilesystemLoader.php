@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: FilesystemLoader.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -13,6 +31,10 @@ namespace Twig\Loader;
 
 use Twig\Error\LoaderError;
 use Twig\Source;
+use function is_array;
+use function strlen;
+use const DIRECTORY_SEPARATOR;
+use const PHP_URL_SCHEME;
 
 /**
  * Loads template from the filesystem.
@@ -38,9 +60,9 @@ class FilesystemLoader implements LoaderInterface
 	public function __construct($paths = [], string $rootPath = null)
 	{
 
-		$this->rootPath = (null === $rootPath ? getcwd() : $rootPath) . \DIRECTORY_SEPARATOR;
+		$this->rootPath = (null === $rootPath ? getcwd() : $rootPath) . DIRECTORY_SEPARATOR;
 		if (null !== $rootPath && false !== ($realPath = realpath($rootPath))) {
-			$this->rootPath = $realPath . \DIRECTORY_SEPARATOR;
+			$this->rootPath = $realPath . DIRECTORY_SEPARATOR;
 		}
 
 		if ($paths) {
@@ -63,7 +85,7 @@ class FilesystemLoader implements LoaderInterface
 	public function setPaths($paths, string $namespace = self::MAIN_NAMESPACE): void
 	{
 
-		if (!\is_array($paths)) {
+		if (!is_array($paths)) {
 			$paths = [$paths];
 		}
 
@@ -128,11 +150,11 @@ class FilesystemLoader implements LoaderInterface
 	{
 
 		return strspn($file, '/\\', 0, 1)
-			   || (\strlen($file) > 3 && ctype_alpha($file[0])
+			   || (strlen($file) > 3 && ctype_alpha($file[0])
 				   && ':' === $file[1]
 				   && strspn($file, '/\\', 2, 1)
 			   )
-			   || null !== parse_url($file, \PHP_URL_SCHEME);
+			   || null !== parse_url($file, PHP_URL_SCHEME);
 	}
 
 	public function getSourceContext(string $name): Source
@@ -263,7 +285,7 @@ class FilesystemLoader implements LoaderInterface
 		if (null === $path = $this->findTemplate($name)) {
 			return '';
 		}
-		$len = \strlen($this->rootPath);
+		$len = strlen($this->rootPath);
 		if (0 === strncmp($this->rootPath, $path, $len)) {
 			return substr($path, $len);
 		}

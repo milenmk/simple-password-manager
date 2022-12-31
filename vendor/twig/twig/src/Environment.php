@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: Environment.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -11,6 +29,8 @@
 
 namespace Twig;
 
+use Exception;
+use LogicException;
 use Twig\Cache\CacheInterface;
 use Twig\Cache\FilesystemCache;
 use Twig\Cache\NullCache;
@@ -32,6 +52,13 @@ use Twig\Node\Node;
 use Twig\NodeVisitor\NodeVisitorInterface;
 use Twig\RuntimeLoader\RuntimeLoaderInterface;
 use Twig\TokenParser\TokenParserInterface;
+use function array_key_exists;
+use function count;
+use function is_array;
+use function is_string;
+use const PHP_MAJOR_VERSION;
+use const PHP_MINOR_VERSION;
+use const PHP_VERSION_ID;
 
 /**
  * Stores the Twig configuration and renders templates.
@@ -141,8 +168,8 @@ class Environment
 		$this->optionsHash = implode(
 			':', [
 			$this->extensionSet->getSignature(),
-			\PHP_MAJOR_VERSION,
-			\PHP_MINOR_VERSION,
+			PHP_MAJOR_VERSION,
+			PHP_MINOR_VERSION,
 			self::VERSION,
 			(int)$this->debug,
 			(int)$this->strictVariables,
@@ -255,7 +282,7 @@ class Environment
 	public function setCache($cache)
 	{
 
-		if (\is_string($cache)) {
+		if (is_string($cache)) {
 			$this->originalCache = $cache;
 			$this->cache = new FilesystemCache($cache, $this->autoReload ? FilesystemCache::FORCE_BYTECODE_INVALIDATION : 0);
 		} elseif (false === $cache) {
@@ -264,7 +291,7 @@ class Environment
 		} elseif ($cache instanceof CacheInterface) {
 			$this->originalCache = $this->cache = $cache;
 		} else {
-			throw new \LogicException('Cache can only be a string, false, or a \Twig\Cache\CacheInterface implementation.');
+			throw new LogicException('Cache can only be a string, false, or a \Twig\Cache\CacheInterface implementation.');
 		}
 	}
 
@@ -416,7 +443,7 @@ class Environment
 			$e->setSourceContext($source);
 			throw $e;
 		}
-		catch (\Exception $e) {
+		catch (Exception $e) {
 			throw new SyntaxError(sprintf('An exception has been thrown during the compilation of a template ("%s").', $e->getMessage()), -1, $source, $e);
 		}
 	}
@@ -484,7 +511,7 @@ class Environment
 
 		$key = $this->getLoader()->getCacheKey($name) . $this->optionsHash;
 
-		return $this->templateClassPrefix . hash(\PHP_VERSION_ID < 80100 ? 'sha256' : 'xxh128', $key) . (null === $index ? '' : '___' . $index);
+		return $this->templateClassPrefix . hash(PHP_VERSION_ID < 80100 ? 'sha256' : 'xxh128', $key) . (null === $index ? '' : '___' . $index);
 	}
 
 	/**
@@ -516,7 +543,7 @@ class Environment
 	public function createTemplate(string $template, string $name = null): TemplateWrapper
 	{
 
-		$hash = hash(\PHP_VERSION_ID < 80100 ? 'sha256' : 'xxh128', $template, false);
+		$hash = hash(PHP_VERSION_ID < 80100 ? 'sha256' : 'xxh128', $template, false);
 		if (null !== $name) {
 			$name = sprintf('%s (string template %s)', $name, $hash);
 		} else {
@@ -553,11 +580,11 @@ class Environment
 	public function resolveTemplate($names): TemplateWrapper
 	{
 
-		if (!\is_array($names)) {
+		if (!is_array($names)) {
 			return $this->load($names);
 		}
 
-		$count = \count($names);
+		$count = count($names);
 		foreach ($names as $name) {
 			if ($name instanceof Template) {
 				return $name;
@@ -844,8 +871,8 @@ class Environment
 	public function addGlobal(string $name, $value)
 	{
 
-		if ($this->extensionSet->isInitialized() && !\array_key_exists($name, $this->getGlobals())) {
-			throw new \LogicException(sprintf('Unable to add global "%s" as the runtime or the extensions have already been initialized.', $name));
+		if ($this->extensionSet->isInitialized() && !array_key_exists($name, $this->getGlobals())) {
+			throw new LogicException(sprintf('Unable to add global "%s" as the runtime or the extensions have already been initialized.', $name));
 		}
 
 		if (null !== $this->resolvedGlobals) {
@@ -880,7 +907,7 @@ class Environment
 		// we don't use array_merge as the context being generally
 		// bigger than globals, this code is faster.
 		foreach ($this->getGlobals() as $key => $value) {
-			if (!\array_key_exists($key, $context)) {
+			if (!array_key_exists($key, $context)) {
 				$context[$key] = $value;
 			}
 		}

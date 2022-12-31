@@ -4,11 +4,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: records.php
- *  Last Modified: 31.12.22 г., 2:19 ч.
+ *  Last Modified: 31.12.22 г., 20:53 ч.
  *
  * @link          https://blacktiehost.com
- * @since         1.0
- * @version       2.0
+ * @since         1.0.0
+ * @version       2.1.0
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+
@@ -33,7 +33,7 @@ include_once('../includes/main.inc.php');
 
 // Check if the user is logged in, if not then redirect him to login page
 if (!isset($user->id) || $user->id < 1) {
-	header('location: ' . PM_MAIN_URL_ROOT . '/login.php');
+	echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/login.php";});</script>';
 	exit;
 }
 
@@ -59,6 +59,8 @@ $message = GETPOST('message', 'alpha');
  */
 $records = new records($db);
 $domains = new domains($db);
+
+$title = $langs->trans('Records');
 
 /*
  * Actions
@@ -91,8 +93,8 @@ if ($action == 'create') {
 	$records->pass_crypted = $password;
 	$result = $records->create();
 	if ($result > 0) {
-		$url = htmlspecialchars($_SERVER['PHP_SELF']);
-		header('Location:' . $url);
+		$action = 'view';
+		//header('Location:' . htmlspecialchars($_SERVER['PHP_SELF']));
 	} else {
 		print $result;
 	}
@@ -126,8 +128,8 @@ if ($action == 'confirm_edit') {
 	}
 	$result = $records->update();
 	if ($result > 0) {
-		$url = htmlspecialchars($_SERVER['PHP_SELF']);
-		header('Location:' . $url);
+		$action = 'view';
+		//header('Location:' . htmlspecialchars($_SERVER['PHP_SELF']));
 	} else {
 		print $result;
 	}
@@ -136,8 +138,8 @@ if ($action == 'delete') {
 	$records->id = (int)$id;
 	$result = $records->delete();
 	if ($result > 0) {
-		$url = htmlspecialchars($_SERVER['PHP_SELF']);
-		header('Location:' . $url);
+		$action = 'view';
+		//header('Location:' . htmlspecialchars($_SERVER['PHP_SELF']));
 	} else {
 		print $result;
 	}
@@ -146,6 +148,18 @@ if ($action == 'delete') {
 /*
  * View
  */
+print $twig->render(
+	'nav_menu.html.twig',
+	[
+		'langs'     => $langs,
+		'theme'     => $theme,
+		'app_title' => PM_MAIN_APPLICATION_TITLE,
+		'main_url'  => PM_MAIN_URL_ROOT,
+		'user'      => $user,
+		'title'     => $title,
+	]
+);
+
 $messageblock = $twig->render(
 	'messageblock.html.twig',
 	[
@@ -182,10 +196,10 @@ if ($action == 'view') {
 			'theme'    => $theme,
 			'count'    => $langs->trans('NumRecords', count($res)),
 			'domains'  => $domains,
-			'twigext'  => $twig_ext,
 		]
 	);
 
+	$i = 0;
 	foreach ($res as $result) {
 		require_once(PM_MAIN_APP_ROOT . '/docs/secret.key');
 		$password = openssl_decrypt($result['pass_crypted'], $ciphering, $decryption_key, $options, $decryption_iv);
@@ -198,8 +212,10 @@ if ($action == 'view') {
 				'theme'    => $theme,
 				'domains'  => $domains,
 				'password' => $password,
+				'i'        => $i,
 			]
 		);
+		$i += 2;
 	}
 
 	print $twig->render(
@@ -210,7 +226,6 @@ if ($action == 'view') {
 			'main_url' => PM_MAIN_URL_ROOT,
 			'theme'    => $theme,
 			'domains'  => $domains,
-			'twigext'  => $twig_ext,
 		]
 	);
 } elseif ($action == 'add_record') {
@@ -258,7 +273,6 @@ if ($action == 'view') {
 			'theme'    => $theme,
 			'count'    => $langs->trans('NumRecords', count($res)),
 			'domains'  => $domains,
-			'twigext'  => $twig_ext,
 		]
 	);
 
@@ -295,24 +309,36 @@ if ($action == 'view') {
 			'main_url' => PM_MAIN_URL_ROOT,
 			'theme'    => $theme,
 			'domains'  => $domains,
-			'twigext'  => $twig_ext,
 		]
 	);
 }
 
-if ($theme == 'default') {
-	$background = 'bg-light';
-} elseif ($theme == 'dark') {
-	$background = 'bg-dark-subtle';
-}
 print $twig->render(
 	'footer.html.twig',
 	[
 		'langs' => $langs,
 		'theme' => $theme,
-		'background'=> $background,
 	]
 );
-print $twig->render('javascripts.html.twig');
+
+if ($theme != 'default') {
+	$js_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/js/';
+
+	if (is_dir($js_path)) {
+		$js_array = [];
+		foreach (array_filter(glob($js_path . '*.js'), 'is_file') as $file) {
+			$js_array[] = str_replace($js_path, '', $file);
+		}
+	}
+}
+print $twig->render(
+	'javascripts.html.twig',
+	[
+		'theme'    => $theme,
+		'main_url' => PM_MAIN_URL_ROOT,
+		'js_array' => $js_array,
+	]
+);
+
 print $twig->render('endpage.html.twig');
 

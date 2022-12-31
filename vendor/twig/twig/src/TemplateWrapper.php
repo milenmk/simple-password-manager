@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: TemplateWrapper.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -10,6 +28,9 @@
  */
 
 namespace Twig;
+
+use Throwable;
+use function func_get_args;
 
 /**
  * Exposes a template to userland.
@@ -40,7 +61,7 @@ final class TemplateWrapper
 
 		// using func_get_args() allows to not expose the blocks argument
 		// as it should only be used by internal code
-		return $this->template->render($context, \func_get_args()[1] ?? []);
+		return $this->template->render($context, func_get_args()[1] ?? []);
 	}
 
 	public function display(array $context = [])
@@ -48,7 +69,7 @@ final class TemplateWrapper
 
 		// using func_get_args() allows to not expose the blocks argument
 		// as it should only be used by internal code
-		$this->template->display($context, \func_get_args()[1] ?? []);
+		$this->template->display($context, func_get_args()[1] ?? []);
 	}
 
 	public function hasBlock(string $name, array $context = []): bool
@@ -84,7 +105,7 @@ final class TemplateWrapper
 		try {
 			$this->template->displayBlock($name, $context);
 		}
-		catch (\Throwable $e) {
+		catch (Throwable $e) {
 			while (ob_get_level() > $level) {
 				ob_end_clean();
 			}

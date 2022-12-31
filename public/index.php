@@ -4,11 +4,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: index.php
- *  Last Modified: 29.12.22 г., 20:40 ч.
+ *  Last Modified: 31.12.22 г., 18:37 ч.
  *
  * @link          https://blacktiehost.com
- * @since         1.0
- * @version       2.0
+ * @since         1.0.0
+ * @version       2.1.0
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+
@@ -31,10 +31,9 @@ use Exception;
 
 include_once('../includes/main.inc.php');
 
-
 // Check if the user is logged in, if not then redirect him to login page
 if (!isset($user->id) || $user->id < 1) {
-	header('location: ' . PM_MAIN_URL_ROOT . '/login.php');
+	echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/login.php";});</script>';
 	exit;
 }
 
@@ -56,6 +55,8 @@ $message = GETPOST('message', 'alpha');
  */
 $domains = new domains($db);
 
+$title = $langs->trans('Domains');
+
 /*
  * Actions
  */
@@ -65,8 +66,8 @@ if ($action == 'create') {
 	$domains->fk_user = 1;
 	$result = $domains->create();
 	if ($result > 0) {
-		$url = htmlspecialchars($_SERVER['PHP_SELF']);
-		header('Location:' . $url);
+		$action = 'view';
+		//header('Location:' . htmlspecialchars($_SERVER['PHP_SELF']));
 	} else {
 		$error = $domains->error;
 	}
@@ -76,8 +77,8 @@ if ($action == 'confirm_edit') {
 	$domains->label = $label;
 	$result = $domains->update(['label']);
 	if ($result > 0) {
-		$url = htmlspecialchars($_SERVER['PHP_SELF']);
-		header('Location:' . $url);
+		$action = 'view';
+		//header('Location:' . htmlspecialchars($_SERVER['PHP_SELF']));
 	} else {
 		$error = $domains->error;
 	}
@@ -86,19 +87,31 @@ if ($action == 'delete') {
 	$domains->id = (int)$id;
 	$result = $domains->delete();
 	if ($result > 0) {
-		$url = htmlspecialchars($_SERVER['PHP_SELF']);
-		header('Location:' . $url);
+		$action = 'view';
+		//header('Location:' . htmlspecialchars($_SERVER['PHP_SELF']));
 	} else {
 		$error = $domains->error;
 	}
 }
 if ($action == 'view_records') {
-	header('Location:' . PM_MAIN_URL_ROOT . '/records.php?action=view&fk_domain=' . $id);
+	echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/records.php?action=view&fk_domain=' . $id . '";});</script>';
 }
 
 /*
  * View
  */
+print $twig->render(
+	'nav_menu.html.twig',
+	[
+		'langs'     => $langs,
+		'theme'     => $theme,
+		'app_title' => PM_MAIN_APPLICATION_TITLE,
+		'main_url'  => PM_MAIN_URL_ROOT,
+		'user'      => $user,
+		'title'     => $title,
+	]
+);
+
 $messageblock = $twig->render(
 	'messageblock.html.twig',
 	[
@@ -170,20 +183,33 @@ if ($action == 'view') {
 	);
 }
 
-
-if ($theme == 'default') {
-	$background = 'bg-light';
-} elseif ($theme == 'dark') {
-	$background = 'bg-dark-subtle';
-}
 print $twig->render(
 	'footer.html.twig',
 	[
-		'langs' => $langs,
-		'theme' => $theme,
-		'background'=> $background,
+		'langs'    => $langs,
+		'theme'    => $theme,
+		'main_url' => PM_MAIN_URL_ROOT,
 	]
 );
 
-print $twig->render('javascripts.html.twig');
+if ($theme != 'default') {
+	$js_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/js/';
+
+	if (is_dir($js_path)) {
+		$js_array = [];
+		foreach (array_filter(glob($js_path . '*.js'), 'is_file') as $file) {
+			$js_array[] = str_replace($js_path, '', $file);
+		}
+	}
+}
+
+print $twig->render(
+	'javascripts.html.twig',
+	[
+		'theme'    => $theme,
+		'main_url' => PM_MAIN_URL_ROOT,
+		'js_array' => $js_array,
+	]
+);
+
 print $twig->render('endpage.html.twig');

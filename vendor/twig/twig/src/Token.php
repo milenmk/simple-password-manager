@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: Token.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -11,6 +29,11 @@
  */
 
 namespace Twig;
+
+use LogicException;
+use function in_array;
+use function is_array;
+use function is_int;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -77,7 +100,7 @@ final class Token
 			case self::ARROW_TYPE:
 				return 'arrow function';
 			default:
-				throw new \LogicException(sprintf('Token of type "%s" does not exist.', $type));
+				throw new LogicException(sprintf('Token of type "%s" does not exist.', $type));
 		}
 	}
 
@@ -134,7 +157,7 @@ final class Token
 				$name = 'ARROW_TYPE';
 				break;
 			default:
-				throw new \LogicException(sprintf('Token of type "%s" does not exist.', $type));
+				throw new LogicException(sprintf('Token of type "%s" does not exist.', $type));
 		}
 
 		return $short ? $name : 'Twig\Token::' . $name;
@@ -154,14 +177,14 @@ final class Token
 	public function test($type, $values = null): bool
 	{
 
-		if (null === $values && !\is_int($type)) {
+		if (null === $values && !is_int($type)) {
 			$values = $type;
 			$type = self::NAME_TYPE;
 		}
 
 		return ($this->type === $type) && (
 				null === $values ||
-				(\is_array($values) && \in_array($this->value, $values)) ||
+				(is_array($values) && in_array($this->value, $values)) ||
 				$this->value == $values
 			);
 	}

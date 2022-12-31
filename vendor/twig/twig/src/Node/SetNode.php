@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: SetNode.php
+ *  Last Modified: 30.12.22 г., 5:53 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -13,6 +31,7 @@ namespace Twig\Node;
 
 use Twig\Compiler;
 use Twig\Node\Expression\ConstantExpression;
+use function count;
 
 /**
  * Represents a set node.
@@ -48,7 +67,7 @@ class SetNode extends Node implements NodeCaptureInterface
 
 		$compiler->addDebugInfo($this);
 
-		if (\count($this->getNode('names')) > 1) {
+		if (count($this->getNode('names')) > 1) {
 			$compiler->write('list(');
 			foreach ($this->getNode('names') as $idx => $node) {
 				if ($idx) {
@@ -79,7 +98,7 @@ class SetNode extends Node implements NodeCaptureInterface
 		if (!$this->getAttribute('capture')) {
 			$compiler->raw(' = ');
 
-			if (\count($this->getNode('names')) > 1) {
+			if (count($this->getNode('names')) > 1) {
 				$compiler->write('[');
 				foreach ($this->getNode('values') as $idx => $value) {
 					if ($idx) {

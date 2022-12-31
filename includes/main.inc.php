@@ -4,11 +4,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: main.inc.php
- *  Last Modified: 29.12.22 г., 23:33 ч.
+ *  Last Modified: 31.12.22 г., 18:57 ч.
  *
  * @link          https://blacktiehost.com
- * @since         1.0
- * @version       2.0
+ * @since         1.0.0
+ * @version       2.1.0
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+
@@ -108,8 +108,20 @@ catch (Exception $e) {
 	print $e->getMessage();
 }
 
+//Define css and .js files array for loading for themes different from default
+if ($theme != 'default') {
+	$css_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/css/';
+
+	if (is_dir($css_path)) {
+		$css_array = [];
+		foreach (array_filter(glob($css_path . '*.css'), 'is_file') as $file) {
+			$css_array[] = str_replace($css_path, '', $file);
+		}
+	}
+}
+
 //load twig
-$loader = new FilesystemLoader(PM_MAIN_DOCUMENT_ROOT . '/templates');
+$loader = new FilesystemLoader(PM_MAIN_DOCUMENT_ROOT . '/templates/' . $theme);
 $twig = new Environment(
 	$loader, [
 			   'debug' => true,
@@ -125,34 +137,7 @@ try {
 			'theme'     => $theme,
 			'app_title' => PM_MAIN_APPLICATION_TITLE,
 			'main_url'  => PM_MAIN_URL_ROOT,
-		]
-	);
-}
-catch (LoaderError|RuntimeError|SyntaxError $e) {
-	print $e->getMessage();
-}
-
-try {
-	if ($theme == 'default') {
-		$background1 = 'bg-body-secondary';
-		$background2 = 'bg-body-tertiary';
-		$background3 = 'bg-light';
-	} elseif ($theme == 'dark') {
-		$background1 = 'bg-dark';
-		$background2 = 'bg-dark-subtle';
-		$background3 = 'bg-dark-subtle';
-	}
-	print $twig->render(
-		'nav_menu.html.twig',
-		[
-			'langs'     => $langs,
-			'theme'     => $theme,
-			'app_title' => PM_MAIN_APPLICATION_TITLE,
-			'main_url'  => PM_MAIN_URL_ROOT,
-			'user'      => $user,
-			'background1'=> $background1,
-			'background2'=> $background2,
-			'background2'=> $background3,
+			'css_array' => $css_array,
 		]
 	);
 }

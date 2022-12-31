@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: DebugExtension.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -12,6 +30,8 @@
 namespace Twig\Extension {
 
 	use Twig\TwigFunction;
+	use function extension_loaded;
+	use const PHP_SAPI;
 
 	final class DebugExtension extends AbstractExtension
 	{
@@ -20,13 +40,13 @@ namespace Twig\Extension {
 		{
 
 			// dump is safe if var_dump is overridden by xdebug
-			$isDumpOutputHtmlSafe = \extension_loaded('xdebug')
+			$isDumpOutputHtmlSafe = extension_loaded('xdebug')
 									// false means that it was not set (and the default is on) or it explicitly enabled
 									&& (false === ini_get('xdebug.overload_var_dump') || ini_get('xdebug.overload_var_dump'))
 									// false means that it was not set (and the default is on) or it explicitly enabled
 									// xdebug.overload_var_dump produces HTML only when html_errors is also enabled
 									&& (false === ini_get('html_errors') || ini_get('html_errors'))
-									|| 'cli' === \PHP_SAPI;
+									|| 'cli' === PHP_SAPI;
 
 			return [
 				new TwigFunction('dump', 'twig_var_dump', ['is_safe' => $isDumpOutputHtmlSafe ? ['html'] : [], 'needs_context' => true, 'needs_environment' => true, 'is_variadic' => true]),

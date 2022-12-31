@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: OptimizerNodeVisitor.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -11,6 +29,7 @@
 
 namespace Twig\NodeVisitor;
 
+use InvalidArgumentException;
 use Twig\Environment;
 use Twig\Node\BlockReferenceNode;
 use Twig\Node\Expression\BlockReferenceExpression;
@@ -24,6 +43,7 @@ use Twig\Node\ForNode;
 use Twig\Node\IncludeNode;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
+use function in_array;
 
 /**
  * Tries to optimize the AST.
@@ -56,7 +76,7 @@ final class OptimizerNodeVisitor implements NodeVisitorInterface
 	{
 
 		if ($optimizers > (self::OPTIMIZE_FOR | self::OPTIMIZE_RAW_FILTER)) {
-			throw new \InvalidArgumentException(sprintf('Optimizer mode "%s" is not valid.', $optimizers));
+			throw new InvalidArgumentException(sprintf('Optimizer mode "%s" is not valid.', $optimizers));
 		}
 
 		$this->optimizers = $optimizers;
@@ -96,7 +116,7 @@ final class OptimizerNodeVisitor implements NodeVisitorInterface
 			$node->setAttribute('always_defined', true);
 			$this->addLoopToCurrent();
 		} // optimize access to loop targets
-		elseif ($node instanceof NameExpression && \in_array($node->getAttribute('name'), $this->loopsTargets)) {
+		elseif ($node instanceof NameExpression && in_array($node->getAttribute('name'), $this->loopsTargets)) {
 			$node->setAttribute('always_defined', true);
 		} // block reference
 		elseif ($node instanceof BlockReferenceNode || $node instanceof BlockReferenceExpression) {

@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: EscaperNodeVisitor.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -26,6 +44,9 @@ use Twig\Node\ModuleNode;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
 use Twig\NodeTraverser;
+use function count;
+use function get_class;
+use function in_array;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -71,8 +92,8 @@ final class EscaperNodeVisitor implements NodeVisitorInterface
 	private function needEscaping(Environment $env)
 	{
 
-		if (\count($this->statusStack)) {
-			return $this->statusStack[\count($this->statusStack) - 1];
+		if (count($this->statusStack)) {
+			return $this->statusStack[count($this->statusStack) - 1];
 		}
 
 		return $this->defaultStrategy ? $this->defaultStrategy : false;
@@ -141,7 +162,7 @@ final class EscaperNodeVisitor implements NodeVisitorInterface
 			$safe = $this->safeAnalysis->getSafe($expression);
 		}
 
-		return \in_array($type, $safe) || \in_array('all', $safe);
+		return in_array($type, $safe) || in_array('all', $safe);
 	}
 
 	private function getEscaperFilter(string $type, Node $node): FilterExpression
@@ -208,7 +229,7 @@ final class EscaperNodeVisitor implements NodeVisitorInterface
 			return $node;
 		}
 
-		$class = \get_class($node);
+		$class = get_class($node);
 
 		return new $class($this->getEscaperFilter($type, $expression), $node->getTemplateLine());
 	}

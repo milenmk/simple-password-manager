@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: SecurityPolicy.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -13,6 +31,9 @@ namespace Twig\Sandbox;
 
 use Twig\Markup;
 use Twig\Template;
+use function get_class;
+use function in_array;
+use function is_array;
 
 /**
  * Represents a security policy which need to be enforced when sandbox mode is enabled.
@@ -47,7 +68,7 @@ final class SecurityPolicy implements SecurityPolicyInterface
 				function ($value) {
 
 					return strtr($value, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
-				}, \is_array($m) ? $m : [$m]
+				}, is_array($m) ? $m : [$m]
 			);
 		}
 	}
@@ -80,19 +101,19 @@ final class SecurityPolicy implements SecurityPolicyInterface
 	{
 
 		foreach ($tags as $tag) {
-			if (!\in_array($tag, $this->allowedTags)) {
+			if (!in_array($tag, $this->allowedTags)) {
 				throw new SecurityNotAllowedTagError(sprintf('Tag "%s" is not allowed.', $tag), $tag);
 			}
 		}
 
 		foreach ($filters as $filter) {
-			if (!\in_array($filter, $this->allowedFilters)) {
+			if (!in_array($filter, $this->allowedFilters)) {
 				throw new SecurityNotAllowedFilterError(sprintf('Filter "%s" is not allowed.', $filter), $filter);
 			}
 		}
 
 		foreach ($functions as $function) {
-			if (!\in_array($function, $this->allowedFunctions)) {
+			if (!in_array($function, $this->allowedFunctions)) {
 				throw new SecurityNotAllowedFunctionError(sprintf('Function "%s" is not allowed.', $function), $function);
 			}
 		}
@@ -109,14 +130,14 @@ final class SecurityPolicy implements SecurityPolicyInterface
 		$method = strtr($method, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
 		foreach ($this->allowedMethods as $class => $methods) {
 			if ($obj instanceof $class) {
-				$allowed = \in_array($method, $methods);
+				$allowed = in_array($method, $methods);
 
 				break;
 			}
 		}
 
 		if (!$allowed) {
-			$class = \get_class($obj);
+			$class = get_class($obj);
 			throw new SecurityNotAllowedMethodError(sprintf('Calling "%s" method on a "%s" object is not allowed.', $method, $class), $class, $method);
 		}
 	}
@@ -127,14 +148,14 @@ final class SecurityPolicy implements SecurityPolicyInterface
 		$allowed = false;
 		foreach ($this->allowedProperties as $class => $properties) {
 			if ($obj instanceof $class) {
-				$allowed = \in_array($property, \is_array($properties) ? $properties : [$properties]);
+				$allowed = in_array($property, is_array($properties) ? $properties : [$properties]);
 
 				break;
 			}
 		}
 
 		if (!$allowed) {
-			$class = \get_class($obj);
+			$class = get_class($obj);
 			throw new SecurityNotAllowedPropertyError(sprintf('Calling "%s" property on a "%s" object is not allowed.', $property, $class), $class, $property);
 		}
 	}

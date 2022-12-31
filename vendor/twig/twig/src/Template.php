@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: Template.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -12,9 +30,13 @@
 
 namespace Twig;
 
+use Exception;
+use LogicException;
+use Throwable;
 use Twig\Error\Error;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
+use function is_array;
 
 /**
  * Default base class for compiled templates.
@@ -141,7 +163,7 @@ abstract class Template
 
 		// avoid RCEs when sandbox is enabled
 		if (null !== $template && !$template instanceof self) {
-			throw new \LogicException('A block must be a method on a \Twig\Template instance.');
+			throw new LogicException('A block must be a method on a \Twig\Template instance.');
 		}
 
 		if (null !== $template) {
@@ -161,7 +183,7 @@ abstract class Template
 
 				throw $e;
 			}
-			catch (\Exception $e) {
+			catch (Exception $e) {
 				$e = new RuntimeError(sprintf('An exception has been thrown during the rendering of a template ("%s").', $e->getMessage()), -1, $template->getSourceContext(), $e);
 				$e->guess();
 
@@ -236,7 +258,7 @@ abstract class Template
 	{
 
 		try {
-			if (\is_array($template)) {
+			if (is_array($template)) {
 				return $this->env->resolveTemplate($template);
 			}
 
@@ -407,7 +429,7 @@ abstract class Template
 		try {
 			$this->display($context);
 		}
-		catch (\Throwable $e) {
+		catch (Throwable $e) {
 			while (ob_get_level() > $level) {
 				ob_end_clean();
 			}
@@ -443,7 +465,7 @@ abstract class Template
 
 			throw $e;
 		}
-		catch (\Exception $e) {
+		catch (Exception $e) {
 			$e = new RuntimeError(sprintf('An exception has been thrown during the rendering of a template ("%s").', $e->getMessage()), -1, $this->getSourceContext(), $e);
 			$e->guess();
 

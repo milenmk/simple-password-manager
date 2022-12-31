@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: FileExtensionEscapingStrategy.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -10,6 +28,9 @@
  */
 
 namespace Twig;
+
+use function in_array;
+use const PATHINFO_EXTENSION;
 
 /**
  * Default autoescaping strategy based on file names.
@@ -35,7 +56,7 @@ class FileExtensionEscapingStrategy
 	public static function guess(string $name)
 	{
 
-		if (\in_array(substr($name, -1), ['/', '\\'])) {
+		if (in_array(substr($name, -1), ['/', '\\'])) {
 			return 'html'; // return html for directories
 		}
 
@@ -43,7 +64,7 @@ class FileExtensionEscapingStrategy
 			$name = substr($name, 0, -5);
 		}
 
-		$extension = pathinfo($name, \PATHINFO_EXTENSION);
+		$extension = pathinfo($name, PATHINFO_EXTENSION);
 
 		switch ($extension) {
 			case 'js':

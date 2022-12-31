@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: SafeAnalysisNodeVisitor.php
+ *  Last Modified: 30.12.22 г., 5:54 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -22,6 +40,7 @@ use Twig\Node\Expression\MethodCallExpression;
 use Twig\Node\Expression\NameExpression;
 use Twig\Node\Expression\ParentExpression;
 use Twig\Node\Node;
+use function in_array;
 
 /**
  * @internal
@@ -90,7 +109,7 @@ final class SafeAnalysisNodeVisitor implements NodeVisitorInterface
 			}
 		} elseif ($node instanceof GetAttrExpression && $node->getNode('node') instanceof NameExpression) {
 			$name = $node->getNode('node')->getAttribute('name');
-			if (\in_array($name, $this->safeVars)) {
+			if (in_array($name, $this->safeVars)) {
 				$this->setSafe($node, ['all']);
 			} else {
 				$this->setSafe($node, []);
@@ -128,11 +147,11 @@ final class SafeAnalysisNodeVisitor implements NodeVisitorInterface
 			return [];
 		}
 
-		if (\in_array('all', $a)) {
+		if (in_array('all', $a)) {
 			return $b;
 		}
 
-		if (\in_array('all', $b)) {
+		if (in_array('all', $b)) {
 			return $a;
 		}
 
@@ -152,7 +171,7 @@ final class SafeAnalysisNodeVisitor implements NodeVisitorInterface
 				continue;
 			}
 
-			if (\in_array('html_attr', $bucket['value'])) {
+			if (in_array('html_attr', $bucket['value'])) {
 				$bucket['value'][] = 'html';
 			}
 

@@ -4,11 +4,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: profile.php
- *  Last Modified: 31.12.22 г., 11:09 ч.
+ *  Last Modified: 31.12.22 г., 18:28 ч.
  *
  * @link          https://blacktiehost.com
- * @since         1.0
- * @version       2.0
+ * @since         1.0.0
+ * @version       2.1.0
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+
@@ -33,7 +33,7 @@ include_once('../includes/main.inc.php');
 
 // Check if the user is logged in, if not then redirect him to login page
 if (!isset($user->id) || $user->id < 1) {
-	header('location: ' . PM_MAIN_URL_ROOT . '/login.php');
+	echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/login.php";});</script>';
 	exit;
 }
 
@@ -60,6 +60,8 @@ $user_language = GETPOST('user_language', 'alpha');
  * Objects
  */
 $user = new user($db);
+
+$title = $langs->trans('Profile');
 
 $res = $user->fetch($_SESSION['id']);
 $user->id = (int)$res['id'];
@@ -122,10 +124,24 @@ if ($action == 'change_password') {
 				$error = $user->error;
 			}
 		}
-
 	}
 	$action = 'edit_password';
 }
+
+/*
+ * View
+ */
+print $twig->render(
+	'nav_menu.html.twig',
+	[
+		'langs'     => $langs,
+		'theme'     => $theme,
+		'app_title' => PM_MAIN_APPLICATION_TITLE,
+		'main_url'  => PM_MAIN_URL_ROOT,
+		'user'      => $user,
+		'title'     => $title,
+	]
+);
 
 $message = $twig->render(
 	'messageblock.html.twig',
@@ -176,19 +192,31 @@ if ($action == 'view' || empty($action)) {
 	);
 }
 
-if ($theme == 'default') {
-	$background = 'bg-light';
-} elseif ($theme == 'dark') {
-	$background = 'bg-dark-subtle';
-}
 print $twig->render(
 	'footer.html.twig',
 	[
-		'langs'      => $langs,
-		'theme'      => $theme,
-		'background' => $background,
+		'langs' => $langs,
+		'theme' => $theme,
 	]
 );
 
-print $twig->render('javascripts.html.twig');
+if ($theme != 'default') {
+	$js_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/js/';
+
+	if (is_dir($js_path)) {
+		$js_array = [];
+		foreach (array_filter(glob($js_path . '*.js'), 'is_file') as $file) {
+			$js_array[] = str_replace($js_path, '', $file);
+		}
+	}
+}
+print $twig->render(
+	'javascripts.html.twig',
+	[
+		'theme'    => $theme,
+		'main_url' => PM_MAIN_URL_ROOT,
+		'js_array' => $js_array,
+	]
+);
+
 print $twig->render('endpage.html.twig');

@@ -4,18 +4,20 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: index.php
- *  Last Modified: 31.12.22 г., 12:10 ч.
+ *  Last Modified: 31.12.22 г., 12:11 ч.
  *
- *  @link          https://blacktiehost.com
- *  @since         1.0
- *  @version       2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
+ * @link          https://blacktiehost.com
+ * @since         1.0.0
+ * @version       2.1.0
+ * @author        Milen Karaganski <milen@blacktiehost.com>
  *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ * @license       GPL-3.0+
+ * @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
  *
- */ /** @noinspection LongLine */
+ */
+
+/** @noinspection LongLine */
 
 declare(strict_types = 1);
 

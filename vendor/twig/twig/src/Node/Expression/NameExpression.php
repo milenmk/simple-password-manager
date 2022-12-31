@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: NameExpression.php
+ *  Last Modified: 30.12.22 г., 5:53 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.1.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Twig.
  *
@@ -13,6 +31,7 @@
 namespace Twig\Node\Expression;
 
 use Twig\Compiler;
+use const PHP_VERSION_ID;
 
 class NameExpression extends AbstractExpression
 {
@@ -39,7 +58,7 @@ class NameExpression extends AbstractExpression
 		if ($this->getAttribute('is_defined_test')) {
 			if ($this->isSpecial()) {
 				$compiler->repr(true);
-			} elseif (\PHP_VERSION_ID >= 70400) {
+			} elseif (PHP_VERSION_ID >= 70400) {
 				$compiler
 					->raw('array_key_exists(')
 					->string($name)
