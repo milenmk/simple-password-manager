@@ -16,5 +16,8 @@
     "twig/twig": "^3.5",
     "ext-pdo": "*",
     "ext-openssl": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5"
   }
 }
