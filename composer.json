@@ -1,10 +1,18 @@
 {
+  "name": "milenmk/simple-password-manager",
+  "type": "project",
+  "description": "Simple password manager written on PHP with Bootstrap and PDO database connection",
+  "homepage": "https://blacktiehost.com",
+  "license": "GPL-3.0-or-later",
   "autoload": {
     "psr-4": {
       "PasswordManager\\": "class"
     }
   },
   "require": {
+    "php": ">=7.4.0",
+    "ext-curl": "*",
+    "ext-mbstring": "*",
     "twig/twig": "^3.5",
     "ext-pdo": "*",
     "ext-openssl": "*"
