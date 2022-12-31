@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% block nav_menu %}
+    <header id="header" class="header fixed-top" data-scrollto-offset="0">
+        <div class="container-fluid d-flex align-items-center justify-content-between">
+            <a class="navbar-brand" href="{{ main_url }}">
+                <img src="{{ main_url }}/themes/{{ theme }}/img/logo.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top me-2">
+                {{ app_title }}</a>
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li class="dropdown"><a href="{{ main_url }}"><span>{{ langs.trans('Domains') }}</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                        <ul>
+                            <li><a aria-current="page" href="{{ main_url }}/index.php?action=add_domain">{{ langs.trans('AddDomain') }}</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown"><a href="{{ main_url }}/records.php"><span>{{ langs.trans('Records') }}</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                        <ul>
+                            <li><a aria-current="page" href="{{ main_url }}/records.php?action=add_record">{{ langs.trans('AddRecord') }}</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle d-none"></i>
+            </nav>
+            {% if user.id > 0 %}
+                <form class="d-flex" role="search" method="post">
+                    <input type="hidden" name="action" value="search"/>
+                    <input class="form-control me-2" name="search_string" type="text" placeholder="{{ langs.trans('Search') }}..." aria-label="Search">
+                    <input class="btn btn-outline-success" type="submit" name="submit" value="{{ langs.trans('Search') }}"/>
+                </form>
+            {% endif %}
+        </div>
+    </header>
+    <div class="flex-grow-1">
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>{{ title }}</h2>
+                <ol>
+                    {% if user.first_name or user.last_name %}
+                        <li><span class="me-3">{{ langs.trans('Hi') }}, <b>{{ user.first_name }} {{ user.last_name }}</b></span></li>
+                    {% else %}
+                        <li><span class="me-3">{{ langs.trans('Hi') }}, <b>{{ user.username }}</b></span></li>
+                    {% endif %}
+                    <li><a href="profile.php"><i class="bi bi-person-fill"></i>&nbsp;{{ langs.trans('Profile') }}</a></li>
+                    <li><a href="{{ main_url }}?action=logout"><i class="bi bi-box-arrow-right"></i>&nbsp;{{ langs.trans('Logout') }}?</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <main id="main">
+            <section class="inner-page">
+                <div class="container" data-aos="fade-up">
+{% endblock %}

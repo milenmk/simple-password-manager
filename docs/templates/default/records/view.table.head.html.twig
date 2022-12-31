@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h6>{{ count }}</h6>
+    <table class="table table-success table-striped">
+    <thead>
+    <tr>
+        <th scope="col">{{ langs.trans('Domain') }}</th>
+        <th scope="col">{{ langs.trans('Type') }}</th>
+        <th scope="col">{{ langs.trans('Link') }}</th>
+        <th scope="col">{{ langs.trans('Username') }}</th>
+        <th scope="col">{{ langs.trans('Password') }}</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+{% endblock %}

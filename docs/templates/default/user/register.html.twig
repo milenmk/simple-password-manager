@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-9 col-lg-6 col-xl-5">
+            <img src="{{ main_url }}/themes/{{ theme }}/img/draw2.webp" class="img-fluid" alt="login image">
+        </div>
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+            <form method="post">
+                <input type="hidden" name="action" value="create_user"/>
+
+                <!-- First name input -->
+                <div class="form-outline mb-4">
+                    <input name="first_name" type="text" id="form3Example3" class="form-control form-control-lg" placeholder="{{ langs.trans('FirstName') }}"/>
+                    <label class="form-label" for="form3Example3">{{ langs.trans('FirstName') }}</label>
+                </div>
+
+                <!-- Last name input -->
+                <div class="form-outline mb-4">
+                    <input name="last_name" type="text" id="form3Example3" class="form-control form-control-lg" placeholder="{{ langs.trans('LastName') }}"/>
+                    <label class="form-label" for="form3Example3">{{ langs.trans('LastName') }}</label>
+                </div>
+
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                    <input name="email" type="email" id="form3Example3" class="form-control form-control-lg" placeholder="{{ langs.trans('EnterValidEmail') }}"/>
+                    <label class="form-label" for="form3Example3">{{ langs.trans('EmailAddress') }}</label>
+                </div>
+
+                <!-- Password input -->
+                <div class="form-outline mb-3">
+                    <input name="password" type="password" id="form3Example4" class="form-control form-control-lg" placeholder="{{ langs.trans('EnterPassword') }}"/>
+                    <label class="form-label" for="form3Example4">{{ langs.trans('Password') }}</label>
+                </div>
+
+                <!-- Confirm Password input -->
+                <div class="form-outline mb-3">
+                    <input name="confirm_password" type="password" id="form3Example4" class="form-control form-control-lg"
+                           placeholder="{{ langs.trans('ConfirmPassword') }}"/>
+                    <label class="form-label" for="form3Example4">{{ langs.trans('ConfirmPassword') }}</label>
+                </div>
+
+                <div class="text-center text-lg-start mt-4 pt-2">
+                    <input class="btn btn-primary btn-lg" type="submit" name="submit" value="{{ langs.trans('Register') }}"
+                           style="padding-left: 2.5rem; padding-right: 2.5rem;"/>
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock %}

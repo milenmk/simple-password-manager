@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if result > 0 %}
+        <tr>
+            <td><a href="https://{{ result.label }}" target="_blank">{{ result.label }}</a></td>
+            {% if result.is_db > 0 %}
+                <td>{{ langs.trans('Database') }}</td>
+                <td><a href="https://{{ result.dbase_name }}" target="_blank">{{ result.dbase_name }}</a></td>
+            {% elseif result.is_site > 0 %}
+                <td>{{ langs.trans('Website') }}</td>
+                <td><a href="https://{{ result.url }}" target="_blank">{{ result.url }}</a></td>
+            {% elseif result.is_ftp > 0 %}
+                <td>{{ langs.trans('FTP') }}</td>
+                <td><a href="https://{{ result.ftp_server }}" target="_blank">{{ result.ftp_server }}</a></td>
+            {% endif %}
+            <td>{{ result.username }}&nbsp;
+                <i class="bi bi-clipboard-plus" id="copy_icon" onclick="copyToClipboard('{{ result.username }}')" data-toggle="tooltip" title="{{ langs.trans('Copy') }}"></i>
+            </td>
+            <td>{{ password }}&nbsp;
+                <i class="bi bi-clipboard-plus" id="copy_icon" onclick="copyToClipboard('{{ password }}')" data-toggle="tooltip" title="{{ langs.trans('Copy') }}"></i>
+            </td>
+            <td>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <form method="get">
+                        <input type="hidden" name="id" value="{{ result.id }}"/>
+                        <input type="hidden" name="action" value="edit"/>
+                        <input class="btn btn-success btn-sm" type="submit" name="submit" value="{{ langs.trans('Edit') }}"/>
+                    </form>
+                    <form method="get">
+                        <input type="hidden" name="id" value="{{ result.id }}"/>
+                        <input type="hidden" name="action" value="delete"/>
+                        <input class="btn btn-danger btn-sm" type="submit" name="submit" value="{{ langs.trans('Delete') }}"/>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    {% endif %}
+{% endblock %}
