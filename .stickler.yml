@@ -1,12 +1,13 @@
 linters:
   phpcs:
-    standard: PSR2
+    standard: PSR12
+    extensions: 'php'
+    tab_width: 4
     fixer: true
-  csslint: {  }
+  csslint: { }
 files:
   ignore:
     - 'vendor/*'
-    - 'bower_components/*'
-    - 'node_modules/*'
 fixers:
   enable: true
+
