@@ -31,6 +31,9 @@ jobs:
           command: |
             sudo docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd
             sudo docker-php-ext-install zip bcmath pdo_mysql
+      - run:
+          name: Check PHP version
+          command: php --version
       # Download and cache dependencies
 
       # composer cache
@@ -43,7 +46,7 @@ jobs:
             - composer-
       - run: composer install -n --prefer-dist
       - save_cache:
-          key: composer-v1-{{ checksum "composer.lock" }}
+          key: composer-{{ checksum "composer.lock" }}
           paths:
             - vendor
 
