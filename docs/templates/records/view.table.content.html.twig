@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+        {% if result > 0 %}
+                <tr>
+                    <td>{{ result.label }}</td>
+                    {% if result.is_db > 0 %}
+                        <td>{{ langs.trans('Database') }}</td>
+                        <td>{{ result.dbase_name }}</td>
+                    {% elseif result.is_site > 0 %}
+                        <td>{{ langs.trans('Website') }}</td>
+                        <td>{{ result.url }}</td>
+                    {% elseif result.is_ftp > 0 %}
+                        <td>{{ langs.trans('FTP') }}</td>
+                        <td>{{ result.ftp_server }}</td>
+                    {% endif %}
+
+                    <td>{{ result.username }}</td>
+                    <td>{{ password }}</td>
+                    <td>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <form method="get">
+                                <input type="hidden" name="id" value="{{ result.id }}"/>
+                                <input type="hidden" name="action" value="edit"/>
+                                <input class="btn btn-success btn-sm" type="submit" name="submit" value="{{ langs.trans('Edit') }}"/>
+                            </form>
+                            <form method="get">
+                                <input type="hidden" name="id" value="{{ result.id }}"/>
+                                <input type="hidden" name="action" value="delete"/>
+                                <input class="btn btn-danger btn-sm" type="submit" name="submit" value="{{ langs.trans('Delete') }}"/>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+        {% endif %}
+{% endblock %}

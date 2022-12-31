@@ -1,0 +1,11 @@
+{
+  "autoload": {
+    "psr-4": {
+      "PasswordManager\\": "class"
+    }
+  },
+  "require": {
+    "twig/twig": "^3.5",
+    "ext-pdo": "*"
+  }
+}

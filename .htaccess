@@ -1,0 +1,483 @@
+#BLOCK_FILE_ACCESS_START
+<Files LICENSE>
+	<IfModule mod_authz_core.c>
+		Require all denied
+	</IfModule>
+	<IfModule !mod_authz_core.c>
+		Order deny,allow
+		Deny from all
+	</IfModule>
+</Files>
+<Files /conf/conf.php.example>
+	<IfModule mod_authz_core.c>
+		Require all denied
+	</IfModule>
+	<IfModule !mod_authz_core.c>
+		Order deny,allow
+		Deny from all
+	</IfModule>
+</Files>
+<Files /conf/conf.php>
+	<IfModule mod_authz_core.c>
+		Require all denied
+	</IfModule>
+	<IfModule !mod_authz_core.c>
+		Order deny,allow
+		Deny from all
+	</IfModule>
+</Files>
+<Files readme>
+	<IfModule mod_authz_core.c>
+		Require all denied
+	</IfModule>
+	<IfModule !mod_authz_core.c>
+		Order deny,allow
+		Deny from all
+	</IfModule>
+</Files>
+#BLOCK_FILE_ACCESS_END
+
+#BASIC_HTACCESS_RULES_START
+<Files .htaccess>
+	<IfModule mod_authz_core.c>
+		Require all denied
+	</IfModule>
+	<IfModule !mod_authz_core.c>
+		Order deny,allow
+		Deny from all
+	</IfModule>
+</Files>
+ServerSignature Off
+LimitRequestBody 10485760
+#BASIC_HTACCESS_RULES_END
+
+#DISABLE_INDEX_VIEWS_START
+Options -Indexes
+#DISABLE_INDEX_VIEWS_END
+
+#DISABLE_TRACE_TRACK_START
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+	RewriteRule .* - [F]
+</IfModule>
+#DISABLE_TRACE_TRACK_END
+
+#FORBID_PROXY_COMMENTS_START
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteCond %{REQUEST_METHOD} ^POST
+	RewriteCond %{HTTP:VIA} !^$ [OR]
+	RewriteCond %{HTTP:FORWARDED} !^$ [OR]
+	RewriteCond %{HTTP:USERAGENT_VIA} !^$ [OR]
+	RewriteCond %{HTTP:X_FORWARDED_FOR} !^$ [OR]
+	RewriteCond %{HTTP:X_FORWARDED_HOST} !^$ [OR]
+	RewriteCond %{HTTP:PROXY_CONNECTION} !^$ [OR]
+	RewriteCond %{HTTP:XPROXY_CONNECTION} !^$ [OR]
+	RewriteCond %{HTTP:HTTP_PC_REMOTE_ADDR} !^$ [OR]
+	RewriteCond %{HTTP:HTTP_CLIENT_IP} !^$
+	RewriteRule wp-comments-post\.php - [F]
+</IfModule>
+#FORBID_PROXY_COMMENTS_END
+
+#DENY_BAD_QUERY_STRINGS_START
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteCond %{QUERY_STRING} ftp:     [NC,OR]
+	RewriteCond %{QUERY_STRING} http:    [NC,OR]
+	RewriteCond %{QUERY_STRING} https:   [NC,OR]
+	RewriteCond %{QUERY_STRING} mosConfig [NC,OR]
+	RewriteCond %{QUERY_STRING} ^.*(globals|encode|localhost|loopback).* [NC,OR]
+	RewriteCond %{QUERY_STRING} (\;|'|\"|%22).*(request|insert|union|declare|drop) [NC]
+	RewriteRule ^(.*)$ - [F,L]
+</IfModule>
+#DENY_BAD_QUERY_STRINGS_END
+
+#ADVANCED_CHAR_STRING_FILTER_START
+<IfModule mod_alias.c>
+	RedirectMatch 403 \,
+	RedirectMatch 403 \:
+	RedirectMatch 403 \;
+	RedirectMatch 403 \=
+	RedirectMatch 403 \[
+	RedirectMatch 403 \]
+	RedirectMatch 403 \^
+	RedirectMatch 403 \{
+	RedirectMatch 403 \}
+	RedirectMatch 403 \~
+	RedirectMatch 403 \$
+	RedirectMatch 403 \<
+	RedirectMatch 403 \>
+	RedirectMatch 403 \|
+	RedirectMatch 403 \.\.
+	RedirectMatch 403 \%0
+	RedirectMatch 403 \%A
+	RedirectMatch 403 \%B
+	RedirectMatch 403 \%C
+	RedirectMatch 403 \%D
+	RedirectMatch 403 \%E
+	RedirectMatch 403 \%F
+	RedirectMatch 403 \%22
+	RedirectMatch 403 \%27
+	RedirectMatch 403 \%28
+	RedirectMatch 403 \%29
+	RedirectMatch 403 \%3C
+	RedirectMatch 403 \%3E
+	RedirectMatch 403 \%3F
+	RedirectMatch 403 \%5B
+	RedirectMatch 403 \%5C
+	RedirectMatch 403 \%5D
+	RedirectMatch 403 \%7B
+	RedirectMatch 403 \%7C
+	RedirectMatch 403 \%7D
+# COMMON PATTERNS
+	Redirectmatch 403 \_vpi
+	RedirectMatch 403 \.inc
+	Redirectmatch 403 xAou6
+	Redirectmatch 403 db\_name
+	Redirectmatch 403 select\(
+	Redirectmatch 403 convert\(
+	Redirectmatch 403 \/query\/
+	RedirectMatch 403 ImpEvData
+	Redirectmatch 403 \.XMLHTTP
+	Redirectmatch 403 proxydeny
+	RedirectMatch 403 function\.
+	Redirectmatch 403 remoteFile
+	Redirectmatch 403 servername
+	Redirectmatch 403 \&rptmode\=
+	Redirectmatch 403 sys\_cpanel
+	RedirectMatch 403 db\_connect
+	RedirectMatch 403 doeditconfig
+	RedirectMatch 403 check\_proxy
+	Redirectmatch 403 system\_user
+	Redirectmatch 403 \/\(null\)\/
+	Redirectmatch 403 clientrequest
+	Redirectmatch 403 option\_value
+	RedirectMatch 403 ref\.outcontrol
+# SPECIFIC EXPLOITS
+	RedirectMatch 403 errors\.
+	RedirectMatch 403 conf\.
+	RedirectMatch 403 include\.
+	RedirectMatch 403 display\.
+	Redirectmatch 403 password\.
+	RedirectMatch 403 maincore\.
+	RedirectMatch 403 authorize\.
+	Redirectmatch 403 macromates\.
+	RedirectMatch 403 head\_auth\.
+	RedirectMatch 403 submit\_links\.
+	RedirectMatch 403 change\_action\.
+	Redirectmatch 403 com\_facileforms\/
+	RedirectMatch 403 admin\_db\_utilities\.
+	RedirectMatch 403 admin\.webring\.docs\.
+	Redirectmatch 403 Table\/Latest\/index\.
+</IfModule>
+#ADVANCED_CHAR_STRING_FILTER_END
+
+#SIX_G_BLACKLIST_START
+# 6G FIREWALL/BLACKLIST
+# @ https://perishablepress.com/6g/
+
+# 6G:[QUERY STRINGS]
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteCond %{QUERY_STRING} (eval\() [NC,OR]
+	RewriteCond %{QUERY_STRING} (127\.0\.0\.1) [NC,OR]
+	RewriteCond %{QUERY_STRING} ([a-z0-9]{2000,}) [NC,OR]
+	RewriteCond %{QUERY_STRING} (javascript:)(.*)(;) [NC,OR]
+	RewriteCond %{QUERY_STRING} (base64_encode)(.*)(\() [NC,OR]
+	RewriteCond %{QUERY_STRING} (GLOBALS|REQUEST)(=|\[|%) [NC,OR]
+	RewriteCond %{QUERY_STRING} (<|%3C)(.*)script(.*)(>|%3) [NC,OR]
+	RewriteCond %{QUERY_STRING} (\|\.\.\.|\.\./|~|<|>|\|) [NC,OR]
+	RewriteCond %{QUERY_STRING} (boot\.ini|etc/passwd|self/environ) [NC,OR]
+	RewriteCond %{QUERY_STRING} (thumbs?(_editor|open)?|tim(thumb)?)\.php [NC,OR]
+	RewriteCond %{QUERY_STRING} ('|\")(.*)(drop|insert|md5|select|union) [NC]
+	RewriteRule .* - [F]
+</IfModule>
+
+# 6G:[REQUEST METHOD]
+<IfModule mod_rewrite.c>
+	RewriteCond %{REQUEST_METHOD} ^(connect|debug|move|put|trace|track) [NC]
+	RewriteRule .* - [F]
+</IfModule>
+
+# 6G:[REFERRERS]
+<IfModule mod_rewrite.c>
+	RewriteCond %{HTTP_REFERER} ([a-z0-9]{2000,}) [NC,OR]
+	RewriteCond %{HTTP_REFERER} (semalt.com|todaperfeita) [NC]
+	RewriteRule .* - [F]
+</IfModule>
+
+# 6G:[REQUEST STRINGS]
+<IfModule mod_alias.c>
+	RedirectMatch 403 (?i)([a-z0-9]{2000,})
+	RedirectMatch 403 (?i)(https?|ftp|php):/
+	RedirectMatch 403 (?i)(base64_encode)(.*)(\()
+	RedirectMatch 403 (?i)(=\'|=\%27|/\'/?)\.
+	RedirectMatch 403 (?i)(\{0\}|\(/\(|\.\.\.|\+\+\+|\\"\\")
+	RedirectMatch 403 (?i)(~|>|:|;|,|%|\|\s|\{|\}|\[|\]|\|)
+	RedirectMatch 403 (?i)/(=|\$&|_mm|cgi-|etc/passwd|muieblack)
+	RedirectMatch 403 (?i)(&pws=0|_vti_|\(null\)|\{\$itemURL\}|echo(.*)kae|etc/passwd|eval\(|self/environ)
+	RedirectMatch 403 (?i)\.(aspx?|bash|bak?|cfg|cgi|dll|exe|git|hg|ini|jsp|log|mdb|out|sql|svn|swp|tar|rar|rdf)$
+	RedirectMatch 403 (?i)/(^$|(wp-)?config|mobiquo|phpinfo|shell|sqlpatch|thumb|thumb_editor|thumbopen|timthumb|webshell)\.php
+</IfModule>
+
+# 6G:[USER AGENTS]
+<IfModule mod_setenvif.c>
+	SetEnvIfNoCase User-Agent ([a-z0-9]{2000,}) bad_bot
+	SetEnvIfNoCase User-Agent (archive.org|binlar|casper|checkpriv|choppy|clshttp|cmsworld|diavol|dotbot|extract|feedfinder|flicky|g00g1e|harvest|heritrix|httrack|kmccrew|loader|miner|nikto|nutch|planetwork|postrank|purebot|pycurl|python|seekerspider|siclab|skygrid|sqlmap|sucker|turnit|vikspider|winhttp|xxxyy|youda|zmeu|zune) bad_bot
+</IfModule>
+#SIX_G_BLACKLIST_END
+
+#FIVE_G_BLACKLIST_START
+# 5G BLACKLIST/FIREWALL (2013)
+# @ http://perishablepress.com/5g-blacklist-2013/
+
+# 5G:[QUERY STRINGS]
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /
+	RewriteCond %{QUERY_STRING} (\"|%22).*(<|>|%3) [NC,OR]
+	RewriteCond %{QUERY_STRING} (javascript:).*(\;) [NC,OR]
+	RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3) [NC,OR]
+	RewriteCond %{QUERY_STRING} (\\|\.\./|='$|=%27$) [NC,OR]
+	RewriteCond %{QUERY_STRING} (\;|'|\"|%22).*(union|select|insert|drop|update|md5|benchmark|or|and|if) [NC,OR]
+	RewriteCond %{QUERY_STRING} (base64_encode|localhost|mosconfig) [NC,OR]
+	RewriteCond %{QUERY_STRING} (boot\.ini|echo.*kae|etc/passwd) [NC,OR]
+	RewriteCond %{QUERY_STRING} (GLOBALS|REQUEST)(=|\[|%) [NC]
+	RewriteRule .* - [F]
+</IfModule>
+
+# 5G:[USER AGENTS]
+<IfModule mod_setenvif.c>
+# SetEnvIfNoCase User-Agent ^$ keep_out
+	SetEnvIfNoCase User-Agent (binlar|casper|cmsworldmap|comodo|diavol|dotbot|feedfinder|flicky|ia_archiver|jakarta|kmccrew|nutch|planetwork|purebot|pycurl|skygrid|sucker|turnit|vikspider|zmeu) keep_out
+	<limit GET POST PUT>
+		Order Allow,Deny
+		Allow from all
+		Deny from env=keep_out
+	</limit>
+</IfModule>
+
+# 5G:[REQUEST STRINGS]
+<IfModule mod_alias.c>
+	RedirectMatch 403 (https?|ftp|php)\://
+	RedirectMatch 403 /(https?|ima|ucp)/
+	RedirectMatch 403 /(Permanent|Better)$
+	RedirectMatch 403 (\=\\\'|\=\\%27|/\\\'/?|\)\.css\()$
+	RedirectMatch 403 \.(cgi|asp|aspx|cfg|dll|exe|jsp|mdb|sql|ini|rar)$
+	RedirectMatch 403 /(contac|fpw|install|pingserver)\.php$
+	RedirectMatch 403 (base64|crossdomain|localhost|wwwroot|e107\_)
+	RedirectMatch 403 (eval\(|\_vti\_|\(null\)|echo.*kae|config\.xml)
+	RedirectMatch 403 \.well\-known/host\-meta
+	RedirectMatch 403 /function\.array\-rand
+	RedirectMatch 403 \)\;\$\(this\)\.html\(
+	RedirectMatch 403 proc/self/environ
+	RedirectMatch 403 msnbot\.htm\)\.\_
+	RedirectMatch 403 /ref\.outcontrol
+	RedirectMatch 403 com\_cropimage
+	RedirectMatch 403 indonesia\.htm
+	RedirectMatch 403 \{\$itemURL\}
+	RedirectMatch 403 function\(\)
+	RedirectMatch 403 labels\.rdf
+	RedirectMatch 403 /playing.php
+	RedirectMatch 403 muieblackcat
+</IfModule>
+#FIVE_G_BLACKLIST_END
+
+# BEGIN Browser Cache
+<IfModule mod_mime.c>
+AddType text/css .css
+AddType text/x-component .htc
+AddType application/x-javascript .js
+AddType application/javascript .js2
+AddType text/javascript .js3
+AddType text/x-js .js4
+AddType text/html .html .htm
+AddType text/richtext .rtf .rtx
+AddType text/plain .txt
+AddType text/xsd .xsd
+AddType text/xsl .xsl
+AddType text/xml .xml
+AddType video/asf .asf .asx .wax .wmv .wmx
+AddType video/avi .avi
+AddType image/bmp .bmp
+AddType application/java .class
+AddType video/divx .divx
+AddType application/msword .doc .docx
+AddType application/vnd.ms-fontobject .eot
+AddType application/x-msdownload .exe
+AddType image/gif .gif
+AddType application/x-gzip .gz .gzip
+AddType image/x-icon .ico
+AddType image/jpeg .jpg .jpeg .jpe
+AddType image/webp .webp
+AddType application/json .json
+AddType application/vnd.ms-access .mdb
+AddType audio/midi .mid .midi
+AddType video/quicktime .mov .qt
+AddType audio/mpeg .mp3 .m4a
+AddType video/mp4 .mp4 .m4v
+AddType video/mpeg .mpeg .mpg .mpe
+AddType video/webm .webm
+AddType application/vnd.ms-project .mpp
+AddType application/x-font-otf .otf
+AddType application/vnd.ms-opentype ._otf
+AddType application/vnd.oasis.opendocument.database .odb
+AddType application/vnd.oasis.opendocument.chart .odc
+AddType application/vnd.oasis.opendocument.formula .odf
+AddType application/vnd.oasis.opendocument.graphics .odg
+AddType application/vnd.oasis.opendocument.presentation .odp
+AddType application/vnd.oasis.opendocument.spreadsheet .ods
+AddType application/vnd.oasis.opendocument.text .odt
+AddType audio/ogg .ogg
+AddType application/pdf .pdf
+AddType image/png .png
+AddType application/vnd.ms-powerpoint .pot .pps .ppt .pptx
+AddType audio/x-realaudio .ra .ram
+AddType image/svg+xml .svg .svgz
+AddType application/x-shockwave-flash .swf
+AddType application/x-tar .tar
+AddType image/tiff .tif .tiff
+AddType application/x-font-ttf .ttf .ttc
+AddType application/vnd.ms-opentype ._ttf
+AddType audio/wav .wav
+AddType audio/wma .wma
+AddType application/vnd.ms-write .wri
+AddType application/font-woff .woff
+AddType application/font-woff2 .woff2
+AddType application/vnd.ms-excel .xla .xls .xlsx .xlt .xlw
+AddType application/zip .zip
+</IfModule>
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType text/css A31536000
+ExpiresByType text/x-component A31536000
+ExpiresByType application/x-javascript A31536000
+ExpiresByType application/javascript A31536000
+ExpiresByType text/javascript A31536000
+ExpiresByType text/x-js A31536000
+ExpiresByType text/html A3600
+ExpiresByType text/richtext A3600
+ExpiresByType text/plain A3600
+ExpiresByType text/xsd A3600
+ExpiresByType text/xsl A3600
+ExpiresByType text/xml A3600
+ExpiresByType video/asf A31536000
+ExpiresByType video/avi A31536000
+ExpiresByType image/bmp A31536000
+ExpiresByType application/java A31536000
+ExpiresByType video/divx A31536000
+ExpiresByType application/msword A31536000
+ExpiresByType application/vnd.ms-fontobject A31536000
+ExpiresByType application/x-msdownload A31536000
+ExpiresByType image/gif A31536000
+ExpiresByType application/x-gzip A31536000
+ExpiresByType image/x-icon A31536000
+ExpiresByType image/jpeg A31536000
+ExpiresByType image/webp A31536000
+ExpiresByType application/json A31536000
+ExpiresByType application/vnd.ms-access A31536000
+ExpiresByType audio/midi A31536000
+ExpiresByType video/quicktime A31536000
+ExpiresByType audio/mpeg A31536000
+ExpiresByType video/mp4 A31536000
+ExpiresByType video/mpeg A31536000
+ExpiresByType video/webm A31536000
+ExpiresByType application/vnd.ms-project A31536000
+ExpiresByType application/x-font-otf A31536000
+ExpiresByType application/vnd.ms-opentype A31536000
+ExpiresByType application/vnd.oasis.opendocument.database A31536000
+ExpiresByType application/vnd.oasis.opendocument.chart A31536000
+ExpiresByType application/vnd.oasis.opendocument.formula A31536000
+ExpiresByType application/vnd.oasis.opendocument.graphics A31536000
+ExpiresByType application/vnd.oasis.opendocument.presentation A31536000
+ExpiresByType application/vnd.oasis.opendocument.spreadsheet A31536000
+ExpiresByType application/vnd.oasis.opendocument.text A31536000
+ExpiresByType audio/ogg A31536000
+ExpiresByType application/pdf A31536000
+ExpiresByType image/png A31536000
+ExpiresByType application/vnd.ms-powerpoint A31536000
+ExpiresByType audio/x-realaudio A31536000
+ExpiresByType image/svg+xml A31536000
+ExpiresByType application/x-shockwave-flash A31536000
+ExpiresByType application/x-tar A31536000
+ExpiresByType image/tiff A31536000
+ExpiresByType application/x-font-ttf A31536000
+ExpiresByType application/vnd.ms-opentype A31536000
+ExpiresByType audio/wav A31536000
+ExpiresByType audio/wma A31536000
+ExpiresByType application/vnd.ms-write A31536000
+ExpiresByType application/font-woff A31536000
+ExpiresByType application/font-woff2 A31536000
+ExpiresByType application/vnd.ms-excel A31536000
+ExpiresByType application/zip A31536000
+</IfModule>
+<IfModule mod_deflate.c>
+<IfModule mod_setenvif.c>
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+BrowserMatch ^Mozilla/4\.0[678] no-gzip
+BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+</IfModule>
+AddOutputFilterByType DEFLATE text/css text/x-component application/x-javascript application/javascript text/javascript text/x-js text/html text/richtext text/plain text/xsd text/xsl text/xml image/bmp application/java application/msword application/vnd.ms-fontobject application/x-msdownload image/x-icon application/json application/vnd.ms-access video/webm application/vnd.ms-project font/ttf font/otf font/opentype application/xhtml+xml application/x-font-truetype application/x-font-opentype application/x-font application/x-font-otf application/vnd.ms-opentype application/vnd.oasis.opendocument.database application/vnd.oasis.opendocument.chart application/vnd.oasis.opendocument.formula application/vnd.oasis.opendocument.graphics application/vnd.oasis.opendocument.presentation application/vnd.oasis.opendocument.spreadsheet application/vnd.oasis.opendocument.text audio/ogg application/pdf application/vnd.ms-powerpoint image/svg+xml application/x-shockwave-flash image/tiff application/x-font-ttf application/vnd.ms-opentype audio/wav application/vnd.ms-write application/font-woff application/font-woff2 application/vnd.ms-excel
+<IfModule mod_mime.c>
+# DEFLATE by extension
+AddOutputFilter DEFLATE js css htm html xml
+</IfModule>
+</IfModule>
+<FilesMatch "\.(css|htc|less|js|js2|js3|js4|CSS|HTC|LESS|JS|JS2|JS3|JS4)$">
+FileETag MTime Size
+<IfModule mod_headers.c>
+Header set Pragma "public"
+Header append Cache-Control "public"
+Header unset Set-Cookie
+</IfModule>
+</FilesMatch>
+<FilesMatch "\.(html|htm|rtf|rtx|txt|xsd|xsl|xml|HTML|HTM|RTF|RTX|TXT|XSD|XSL|XML)$">
+FileETag MTime Size
+<IfModule mod_headers.c>
+Header set Pragma "public"
+Header append Cache-Control "public"
+</IfModule>
+</FilesMatch>
+<FilesMatch "\.(asf|asx|wax|wmv|wmx|avi|bmp|class|divx|doc|docx|eot|exe|gif|gz|gzip|ico|jpg|jpeg|jpe|webp|json|mdb|mid|midi|mov|qt|mp3|m4a|mp4|m4v|mpeg|mpg|mpe|webm|mpp|otf|_otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|png|pot|pps|ppt|pptx|ra|ram|svg|svgz|swf|tar|tif|tiff|ttf|ttc|_ttf|wav|wma|wri|woff|woff2|xla|xls|xlsx|xlt|xlw|zip|ASF|ASX|WAX|WMV|WMX|AVI|BMP|CLASS|DIVX|DOC|DOCX|EOT|EXE|GIF|GZ|GZIP|ICO|JPG|JPEG|JPE|WEBP|JSON|MDB|MID|MIDI|MOV|QT|MP3|M4A|MP4|M4V|MPEG|MPG|MPE|WEBM|MPP|OTF|_OTF|ODB|ODC|ODF|ODG|ODP|ODS|ODT|OGG|PDF|PNG|POT|PPS|PPT|PPTX|RA|RAM|SVG|SVGZ|SWF|TAR|TIF|TIFF|TTF|TTC|_TTF|WAV|WMA|WRI|WOFF|WOFF2|XLA|XLS|XLSX|XLT|XLW|ZIP)$">
+FileETag MTime Size
+<IfModule mod_headers.c>
+Header set Pragma "public"
+Header append Cache-Control "public"
+Header unset Set-Cookie
+</IfModule>
+</FilesMatch>
+<FilesMatch "\.(bmp|class|doc|docx|eot|exe|ico|json|mdb|webm|mpp|otf|_otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|pot|pps|ppt|pptx|svg|svgz|swf|tif|tiff|ttf|ttc|_ttf|wav|wri|woff|woff2|xla|xls|xlsx|xlt|xlw|BMP|CLASS|DOC|DOCX|EOT|EXE|ICO|JSON|MDB|WEBM|MPP|OTF|_OTF|ODB|ODC|ODF|ODG|ODP|ODS|ODT|OGG|PDF|POT|PPS|PPT|PPTX|SVG|SVGZ|SWF|TIF|TIFF|TTF|TTC|_TTF|WAV|WRI|WOFF|WOFF2|XLA|XLS|XLSX|XLT|XLW)$">
+FileETag None
+<IfModule mod_headers.c>
+Header unset ETag
+Header unset Last-Modified
+</IfModule>
+</FilesMatch>
+<filesMatch "\.(x?html?|php)$">
+FileETag None
+<IfModule mod_headers.c>
+Header set Pragma "public"
+Header set Cache-Control "private, must-revalidate"
+</IfModule>
+</filesMatch>
+<IfModule mod_rewrite.c>
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.+)\.(x[0-9]{5})\.(css|htc|less|js|js2|js3|js4|asf|asx|wax|wmv|wmx|avi|bmp|class|divx|doc|docx|eot|exe|gif|gz|gzip|ico|jpg|jpeg|jpe|webp|json|mdb|mid|midi|mov|qt|mp3|m4a|mp4|m4v|mpeg|mpg|mpe|webm|mpp|otf|_otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|png|pot|pps|ppt|pptx|ra|ram|svg|svgz|swf|tar|tif|tiff|ttf|ttc|_ttf|wav|wma|wri|woff|woff2|xla|xls|xlsx|xlt|xlw|zip)$ $1.$3 [L]
+</IfModule>
+# END Browser Cache
+
+# START Response headers
+<IfModule mod_headers.c>
+Header set Connection: "keep-alive"
+Header set Cache-Control: "public; max-age=2592000; must-revalidate"
+Header set Referrer-Policy: "strict-origin"
+Header set X-XSS-Protection: "1; mode=block"
+Header set Strict-Transport-Security: "max-age=31536000; includeSubDomains; preload"
+Header set X-Permitted-Cross-Domain-Policies: "none"
+Header always set Permissions-Policy: "fullscreen=(), microphone=(), camera=()"
+Header edit Set-Cookie: ^(.*)$ $1;HttpOnly;Secure;SameSite
+Header set Content-security-Policy: "default-src 'self'; frame-ancestors 'none'; block-all-mixed-content; worker-src 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; img-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' data: https://cdn.jsdelivr.net *.fontawesome.com https://ajax.googleapis.com; style-src 'self' 'unsafe-inline' data: *.fontawesome.com https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' data: http: https://fonts.gstatic.com; connect-src 'self'; frame-src 'self' data: https://www.google.com;"
+</IfModule>
+# END Response headers

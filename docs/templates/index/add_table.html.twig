@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ main_url }}/themes/{{ theme }}/js/focus.input.js"></script>
+    <form method="get">
+        <input type="hidden" name="action" value="create"/>
+        <table class="table table-success table-striped">
+            <thead>
+            <tr>
+                <th scope="col">{{ langs.trans('Label') }}</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <label for="label"></label>
+                    <input type="text" name="label" id="label"/>
+                </td>
+                <td>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <input class="btn btn-info" type="submit" name="submit" value="{{ langs.trans('Confirm') }}"/>
+                        <input type="button" class="btn btn-danger" value="{{ langs.trans('Cancel') }}" onclick="javascript:history.go(-1)">
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+{% endblock %}

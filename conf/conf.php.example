@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types = 1);
+
+/**
+ * \file        conf/conf.php
+ */
+
+$main_url_root=''; //URL address
+$main_public_root= //Path to web folder
+$main_document_root=''; //Path to docs folder
+$db_host=''; //Database host (localhost, IP)
+$db_port=''; //Database port
+$db_name=''; //Database name
+$db_prefix=''; //Database tables prefix
+$db_user=''; //Database user. DO NOT use root
+$db_pass=''; //Password for database user
+$main_db_character_set=''; //Database character set
+$main_db_collation=''; //Database collation
+$main_application_title=''; //Application title shown on front end
