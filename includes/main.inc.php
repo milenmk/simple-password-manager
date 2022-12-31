@@ -84,7 +84,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 	}
 	catch (Exception $e) {
 		$error = $e->getMessage();
-		pm_syslog('Error trying to fetch user with ID ' . $_SESSION['id'] . ' with error ' . $error);
+		pm_syslog('Error trying to fetch user with ID ' . $_SESSION['id'] . ' with error ' . $error, LOG_ERR);
 	}
 }
 

@@ -17,7 +17,9 @@
                     <tr>
                         <input type="hidden" name="id" value="{{ result.id }}"/>
                         <input type="hidden" name="action" value="confirm_edit"/>
-                        <td><input type="text" name="label" value="{{ result.label }}"/></td>
+                        <td><label>
+                                <input type="text" name="label" value="{{ result.label }}"/>
+                            </label></td>
                         {% if result.website %}
                             <td><img src="{{ main_url }}/themes/{{ theme }}/img/yes.png" alt="yes.png"/></td>
                         {% else %}

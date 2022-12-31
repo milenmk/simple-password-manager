@@ -17,11 +17,13 @@
                 <tbody>
                 <tr>
                     <td>
-                        <select name="fk_domain">
-                            {% for result in res %}
-                                <option value="{{ result.id }}">{{ result.label }}</option>
-                            {% endfor %}
-                        </select>
+                        <label>
+                            <select name="fk_domain">
+                                {% for result in res %}
+                                    <option value="{{ result.id }}">{{ result.label }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
                     </td>
 
                     <td>

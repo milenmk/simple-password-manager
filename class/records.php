@@ -110,11 +110,6 @@ class records
 	public array $parentClassFields = ['label'];
 
 	/**
-	 * @var string
-	 */
-	public string $label;
-
-	/**
 	 * @var passManDb Database handler
 	 */
 	private passManDb $db;

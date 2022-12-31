@@ -18,15 +18,17 @@
             {% if res2 > 0 %}
                 <tr>
                     <td>
-                        <select name="fk_domain">
-                            {% for result in res1 %}
-                                {% if result.id == res2.fk_domain %}
-                                    <option value="{{ result.id }}" selected>{{ result.label }}</option>
-                                {% else %}
-                                    <option value="{{ result.id }}">{{ result.label }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
+                        <label>
+                            <select name="fk_domain">
+                                {% for result in res1 %}
+                                    {% if result.id == res2.fk_domain %}
+                                        <option value="{{ result.id }}" selected>{{ result.label }}</option>
+                                    {% else %}
+                                        <option value="{{ result.id }}">{{ result.label }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </label>
                     </td>
 
                     <td>
@@ -39,11 +41,17 @@
                         </label>
                     </td>
                     {% if res2.is_db > 0 %}
-                        <td><input type="text" name="url" value="{{ res2.dbase_name }}"/></td>
+                        <td><label>
+                                <input type="text" name="url" value="{{ res2.dbase_name }}"/>
+                            </label></td>
                     {% elseif res2.is_site > 0 %}
-                        <td><input type="text" name="url" value="{{ res2.url }}"/></td>
+                        <td><label>
+                                <input type="text" name="url" value="{{ res2.url }}"/>
+                            </label></td>
                     {% elseif res2.is_ftp > 0 %}
-                        <td><input type="text" name="url" value="{{ res2.ftp_server }}"/></td>
+                        <td><label>
+                                <input type="text" name="url" value="{{ res2.ftp_server }}"/>
+                            </label></td>
                     {% endif %}
                     <td>
                         <label>

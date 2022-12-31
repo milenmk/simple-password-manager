@@ -6,6 +6,7 @@
   },
   "require": {
     "twig/twig": "^3.5",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "ext-openssl": "*"
   }
 }

@@ -27,8 +27,6 @@ declare(strict_types = 1);
 
 namespace PasswordManager;
 
-use Exeption;
-
 include_once('../includes/main.inc.php');
 
 $error = '';

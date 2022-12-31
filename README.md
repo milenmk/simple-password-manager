@@ -8,15 +8,15 @@ Simple password manager written on PHP with Bootstrap and PDO database connectio
 
 #### Domains [Default template]
 
-![Screenshot](public/themes//default/img/Screenshot_2.png?raw=true)
+![Screenshot](public/themes/default/img/Screenshot_2.png?raw=true)
 
 #### Records [Default template]
 
-![Screenshot](public/themes//default/img/Screenshot_4.png?raw=true)
+![Screenshot](public/themes/default/img/Screenshot_4.png?raw=true)
 
 #### Records [HERO template]
 
-![Screenshot](public/themes//default/img/Screenshot_5.png?raw=true)
+![Screenshot](public/themes/default/img/Screenshot_5.png?raw=true)
 
 ## Requirements
 

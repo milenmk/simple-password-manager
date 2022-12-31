@@ -9,8 +9,8 @@ Default **language is english**. So please prepare your contributions in english
 
 1. Please [use the search engine](https://help.github.com/articles/searching-issues) to check if nobody's already reported your problem.
 2. [Create an issue](https://help.github.com/articles/creating-an-issue). Choose an appropriate title. Prepend appropriately with Bug or Feature Request.
-3. Write a report with as much detail as possible (Use [screenshots](https://help.github.com/articles/issue-attachments) or even screencasts and provide logging and debugging
-   informations whenever possible).
+3. Write a report with as much detail as possible (Use [screenshots](https://help.github.com/articles/issue-attachments) or even screencast and provide logging and debugging
+   information whenever possible).
 4. Delete unnecessary submissions.
 5. **Check your Message at Preview before sending.**
 
@@ -51,13 +51,13 @@ where
 
 In uppercase.
 
-The keyword can be ommitted if your commit does not fit in any of the following categories:
+The keyword can be omitted if your commit does not fit in any of the following categories:
 
 - Fix/FIX: for a bug fix
-- New/NEW: for an unreferenced new feature (Opening a feature request and using close is prefered)
+- New/NEW: for an unreferenced new feature (Opening a feature request and using close is preferred)
 - Close/CLOSE: for closing a referenced feature request
 
-#### Issuenum
+#### Issue number
 
 If your commit fixes a referenced bug or feature request.
 
@@ -92,7 +92,7 @@ CLOSE|Close #456 Short description (where #456 is number of feature request, if 
 or
 Short description (when the commit is not introducing feature nor closing a bug)
 
-Long description (Can span accross multiple lines).
+Long description (Can span across multiple lines).
 </pre>
 
 ### Pull Requests
@@ -100,7 +100,7 @@ Long description (Can span accross multiple lines).
 Pull Request (PR) process is the process to submit a change (enhancement, bug fix, ...) into the code of the project. There is some rules to know and
 a process to follow to optimize the chance to have PRs merged efficiently...
 
-* A PR must be atomic. It means it must contains the lower possible changes for 1 need (1 bug fix or 1 new feature) without breaking usability of code. If a PR can be split into
+* A PR must be atomic. It means it must contain the lower possible changes for 1 need (1 bug fix or 1 new feature) without breaking usability of code. If a PR can be split into
   several PRs, it often means your PR is not atomic.
 
 * When submitting a pull request, use same rule as [Commits](#commits) for the message. If your pull request only contains 1 commit, GitHub will be smart enough to fill it for you.

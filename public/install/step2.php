@@ -62,7 +62,7 @@ session_start();
 		}
 
 		if (!$lockerror) {
-			include_once('../conf/conf.php');
+			include_once('../../conf/conf.php');
 
 			global $db_host, $port, $db_name, $db_user, $db_pass, $main_db_character_set, $main_db_collation;
 
@@ -153,8 +153,8 @@ session_start();
 					$buffer = trim($buffer);
 
 					// Replace the prefix tables
-					if (MAIN_DB_PREFIX != 'pm_') {
-						$buffer = preg_replace('/pm_/i', MAIN_DB_PREFIX, $buffer);
+					if (PM_MAIN_DB_PREFIX != 'pm_') {
+						$buffer = preg_replace('/pm_/i', PM_MAIN_DB_PREFIX, $buffer);
 					}
 
 					$buffer = preg_replace('/table_collation/i', $main_db_collation, $buffer);
@@ -229,8 +229,8 @@ session_start();
 							$buffer = trim($req);
 							if ($buffer) {
 								// Replace the prefix tables
-								if (MAIN_DB_PREFIX != 'pm_') {
-									$buffer = preg_replace('/pm_/i', MAIN_DB_PREFIX, $buffer);
+								if (PM_MAIN_DB_PREFIX != 'pm_') {
+									$buffer = preg_replace('/pm_/i', PM_MAIN_DB_PREFIX, $buffer);
 								}
 
 								$buffer = preg_replace('/table_collation/i', $main_db_collation, $buffer);

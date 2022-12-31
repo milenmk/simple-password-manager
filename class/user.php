@@ -28,6 +28,7 @@ declare(strict_types = 1);
 namespace PasswordManager;
 
 use Exception;
+use PDOException;
 
 /**
  * Class for user
@@ -214,7 +215,8 @@ class user
 		pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
 		$result = $this->db->fetchAll(
-			$this->array_of_fields, $this->table_element, $filter, $filter_mode, $sortfield, $sortorder, $group, $limit, $offse		);
+			$this->array_of_fields, $this->table_element, $filter, $filter_mode, $sortfield, $sortorder, $group, $limit, $offset
+		);
 
 		if ($result > 0) {
 			return $result;

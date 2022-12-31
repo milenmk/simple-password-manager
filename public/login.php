@@ -36,7 +36,7 @@ $langs->loadLangs(['errors']);
 
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if (isset($user->id) && $user->id > 0) {
-	header('location: ' . MAIN_URL_ROOT);
+	header('location: ' . PM_MAIN_URL_ROOT);
 	exit;
 }
 

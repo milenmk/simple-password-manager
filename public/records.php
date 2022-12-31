@@ -28,6 +28,7 @@ declare(strict_types = 1);
 namespace PasswordManager;
 
 use Exception;
+use PDOException;
 
 include_once('../includes/main.inc.php');
 

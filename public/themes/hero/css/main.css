@@ -254,11 +254,6 @@ section {
     z-index: 997;
 }
 
-.header.sticked {
-    background: var(--color-white);
-    box-shadow: 0px 2px 20px rgba(var(--color-secondary-rgb), 0.1);
-}
-
 .header .logo img {
     max-height: 40px;
     margin-right: 6px;
@@ -276,29 +271,8 @@ section {
     font-weight: 500;
 }
 
-.header .btn-getstarted,
-.header .btn-getstarted:focus {
-    font-size: 16px;
-    color: var(--color-white);
-    background: var(--color-primary);
-    padding: 8px 23px;
-    border-radius: 4px;
-    transition: 0.3s;
-    font-family: var(--font-secondary);
-}
-
-.header .btn-getstarted:hover,
-.header .btn-getstarted:focus:hover {
-    color: var(--color-white);
-    background: rgba(var(--color-primary-rgb), 0.85);
-}
-
 @media (max-width: 1279px) {
 
-    .header .btn-getstarted,
-    .header .btn-getstarted:focus {
-        margin-right: 50px;
-    }
 }
 
 /*--------------------------------------------------------------
@@ -433,10 +407,6 @@ section {
         visibility: visible;
     }
 
-    .navbar .megamenu {
-        position: static;
-    }
-
     .navbar .megamenu ul {
         right: 0;
         padding: 10px;
@@ -568,12 +538,6 @@ section {
         color: var(--color-white);
     }
 
-    .mobile-nav-active {
-        overflow: hidden;
-        z-index: 9995;
-        position: relative;
-    }
-
     .mobile-nav-active .navbar {
         left: 0;
     }
@@ -593,14 +557,6 @@ section {
 /*--------------------------------------------------------------
 # Animated Hero Section
 --------------------------------------------------------------*/
-.hero-animated {
-    width: 100%;
-    min-height: 50vh;
-    background: url("../img/hero-bg.png") center center;
-    background-size: cover;
-    position: relative;
-    padding: 120px 0 60px;
-}
 
 .hero-animated h2 {
     margin: 0 0 10px 0;
@@ -660,25 +616,12 @@ section {
     background: rgba(var(--color-primary-rgb), 0.8);
 }
 
-.hero-animated .btn-watch-video {
-    font-size: 16px;
-    transition: 0.5s;
-    margin-left: 25px;
-    font-family: var(--font-secondary);
-    color: var(--color-secondary);
-    font-weight: 600;
-}
-
 .hero-animated .btn-watch-video i {
     color: var(--color-primary);
     font-size: 32px;
     transition: 0.3s;
     line-height: 0;
     margin-right: 8px;
-}
-
-.hero-animated .btn-watch-video:hover {
-    color: var(--color-primary);
 }
 
 .hero-animated .btn-watch-video:hover i {
@@ -695,10 +638,6 @@ section {
         margin-bottom: 30px;
     }
 
-    .hero-animated .btn-get-started,
-    .hero-animated .btn-watch-video {
-        font-size: 14px;
-    }
 }
 
 @-webkit-keyframes up-down {
@@ -724,20 +663,6 @@ section {
 /*--------------------------------------------------------------
 # Carousel Hero Section
 --------------------------------------------------------------*/
-.hero {
-    width: 100%;
-    padding: 0;
-    background: var(--color-black);
-    background: url("../img/hero-bg.png") center center;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 140px 0 60px 0;
-}
 
 .hero .carousel-item {
     overflow: hidden;
@@ -968,26 +893,8 @@ section {
 /*--------------------------------------------------------------
 # Fullscreen Hero Section
 --------------------------------------------------------------*/
-.hero-fullscreen {
-    width: 100%;
-    min-height: 100vh;
-    background: url("../img/hero-fullscreen-bg.jpg") center center;
-    background-size: cover;
-    position: relative;
-    padding: 120px 0 60px;
-}
-
-.hero-fullscreen:before {
-    content: "";
-    background: rgba(var(--color-white-rgb), 0.85);
-    position: absolute;
-    inset: 0;
-}
 
 @media (min-width: 1365px) {
-    .hero-fullscreen {
-        background-attachment: fixed;
-    }
 }
 
 .hero-fullscreen h2 {
@@ -1025,25 +932,12 @@ section {
     background: rgba(var(--color-primary-rgb), 0.8);
 }
 
-.hero-fullscreen .btn-watch-video {
-    font-size: 16px;
-    transition: 0.5s;
-    margin-left: 25px;
-    font-family: var(--font-secondary);
-    color: var(--color-secondary);
-    font-weight: 600;
-}
-
 .hero-fullscreen .btn-watch-video i {
     color: var(--color-primary);
     font-size: 32px;
     transition: 0.3s;
     line-height: 0;
     margin-right: 8px;
-}
-
-.hero-fullscreen .btn-watch-video:hover {
-    color: var(--color-primary);
 }
 
 .hero-fullscreen .btn-watch-video:hover i {
@@ -1060,23 +954,11 @@ section {
         margin-bottom: 30px;
     }
 
-    .hero-fullscreen .btn-get-started,
-    .hero-fullscreen .btn-watch-video {
-        font-size: 14px;
-    }
 }
 
 /*--------------------------------------------------------------
 # Static Hero Section
 --------------------------------------------------------------*/
-.hero-static {
-    width: 100%;
-    min-height: 50vh;
-    background: url("../img/hero-bg.png") center center;
-    background-size: cover;
-    position: relative;
-    padding: 120px 0 60px;
-}
 
 .hero-static h2 {
     margin: 0 0 10px 0;
@@ -1113,25 +995,12 @@ section {
     background: rgba(var(--color-primary-rgb), 0.8);
 }
 
-.hero-static .btn-watch-video {
-    font-size: 16px;
-    transition: 0.5s;
-    margin-left: 25px;
-    font-family: var(--font-secondary);
-    color: var(--color-secondary);
-    font-weight: 600;
-}
-
 .hero-static .btn-watch-video i {
     color: var(--color-primary);
     font-size: 32px;
     transition: 0.3s;
     line-height: 0;
     margin-right: 8px;
-}
-
-.hero-static .btn-watch-video:hover {
-    color: var(--color-primary);
 }
 
 .hero-static .btn-watch-video:hover i {
@@ -1148,21 +1017,11 @@ section {
         margin-bottom: 30px;
     }
 
-    .hero-static .btn-get-started,
-    .hero-static .btn-watch-video {
-        font-size: 14px;
-    }
 }
 
 /*--------------------------------------------------------------
 # Featured Services Section
 --------------------------------------------------------------*/
-.featured-services .service-item {
-    padding: 30px;
-    transition: all ease-in-out 0.4s;
-    background: var(--color-white);
-    height: 100%;
-}
 
 .featured-services .service-item .icon {
     margin-bottom: 10px;
@@ -1191,11 +1050,6 @@ section {
     margin-bottom: 0;
 }
 
-.featured-services .service-item:hover {
-    transform: translateY(-10px);
-    box-shadow: 0px 0 60px 0 rgba(var(--color-secondary-rgb), 0.1);
-}
-
 .featured-services .service-item:hover h4 a {
     color: var(--color-primary);
 }
@@ -1203,28 +1057,9 @@ section {
 /*--------------------------------------------------------------
 # About Section
 --------------------------------------------------------------*/
-.about .about-img {
-    position: relative;
-    margin: 60px 0 0 60px;
-}
-
-.about .about-img:before {
-    position: absolute;
-    inset: -60px 0 0 -60px;
-    z-index: -1;
-    content: "";
-    background: url("../img/about-bg.png") top left;
-    background-repeat: no-repeat;
-}
 
 @media (max-width: 575px) {
-    .about .about-img {
-        margin: 30px 0 0 30px;
-    }
 
-    .about .about-img:before {
-        inset: -30px 0 0 -30px;
-    }
 }
 
 .about h3 {
@@ -1289,9 +1124,6 @@ section {
 /*--------------------------------------------------------------
 # Clients Section
 --------------------------------------------------------------*/
-.clients {
-    padding: 0 0 60px 0;
-}
 
 .clients .swiper-slide img {
     opacity: 0.5;
@@ -1307,10 +1139,6 @@ section {
 /*--------------------------------------------------------------
 # Call To Action Section
 --------------------------------------------------------------*/
-.cta {
-    padding: 0;
-    margin-bottom: 60px;
-}
 
 .cta .container {
     padding: 80px;
@@ -1352,22 +1180,6 @@ section {
     font-size: 18px;
 }
 
-.cta .content .cta-btn {
-    color: var(--color-white);
-    font-weight: 500;
-    font-size: 16px;
-    display: inline-block;
-    padding: 12px 40px;
-    border-radius: 5px;
-    transition: 0.5s;
-    margin-top: 10px;
-    background: rgba(var(--color-primary-dark-rgb), 0.9);
-}
-
-.cta .content .cta-btn:hover {
-    background: var(--color-primary);
-}
-
 .cta .img {
     position: relative;
 }
@@ -1399,18 +1211,9 @@ section {
 /*--------------------------------------------------------------
 # On Focus Section
 --------------------------------------------------------------*/
-.onfocus {
-    padding: 0;
-}
-
-.onfocus .video-play {
-    min-height: 400px;
-    background: linear-gradient(rgba(var(--color-black-rgb), 0.4), rgba(var(--color-black-rgb), 0.7)), url("../img/onfocus-video-bg.jpg") center center;
-    background-size: cover;
-}
 
 .onfocus .content {
-    background: linear-gradient(rgba(var(--color-secondary-rgb), 0.5), rgba(var(--color-secondary-rgb), 0.8)), url("../img/onfocus-content-bg.jpg") center center;
+    background: linear-gradient(rgba(var(--color-secondary-rgb), 0.5), rgba(var(--color-secondary-rgb), 0.8)), center center;
     background-size: cover;
     color: rgba(var(--color-white-rgb), 0.8);
     padding: 40px;
@@ -1447,21 +1250,6 @@ section {
     margin-bottom: 0;
 }
 
-.onfocus .content .read-more {
-    font-family: var(--font-primary);
-    font-weight: 500;
-    font-size: 16px;
-    letter-spacing: 1px;
-    padding: 12px 24px;
-    border-radius: 5px;
-    transition: 0.3s;
-    display: -nline-flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-white);
-    background: var(--color-primary);
-}
-
 .onfocus .content .read-more i {
     font-size: 18px;
     margin-left: 5px;
@@ -1469,86 +1257,8 @@ section {
     transition: 0.3s;
 }
 
-.onfocus .content .read-more:hover {
-    background: rgba(var(--color-primary-rgb), 0.9);
-    padding-right: 19px;
-}
-
 .onfocus .content .read-more:hover i {
     margin-left: 10px;
-}
-
-.onfocus .play-btn {
-    width: 94px;
-    height: 94px;
-    background: radial-gradient(var(--color-primary) 50%, rgba(var(--color-primary-rgb), 0.4) 52%);
-    border-radius: 50%;
-    display: block;
-    position: absolute;
-    left: calc(50% - 47px);
-    top: calc(50% - 47px);
-    overflow: hidden;
-}
-
-.onfocus .play-btn:before {
-    content: "";
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    -webkit-animation-delay: 0s;
-    animation-delay: 0s;
-    -webkit-animation: pulsate-btn 2s;
-    animation: pulsate-btn 2s;
-    -webkit-animation-direction: forwards;
-    animation-direction: forwards;
-    -webkit-animation-iteration-count: infinite;
-    animation-iteration-count: infinite;
-    -webkit-animation-timing-function: steps;
-    animation-timing-function: steps;
-    opacity: 1;
-    border-radius: 50%;
-    border: 5px solid rgba(var(--color-primary-rgb), 0.7);
-    top: -15%;
-    left: -15%;
-    background: rgba(198, 16, 0, 0);
-}
-
-.onfocus .play-btn:after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-40%) translateY(-50%);
-    width: 0;
-    height: 0;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    border-left: 15px solid var(--color-white);
-    z-index: 100;
-    transition: all 400ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
-}
-
-.onfocus .play-btn:hover:before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-40%) translateY(-50%);
-    width: 0;
-    height: 0;
-    border: none;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    border-left: 15px solid var(--color-white);
-    z-index: 200;
-    -webkit-animation: none;
-    animation: none;
-    border-radius: 0;
-}
-
-.onfocus .play-btn:hover:after {
-    border-left: 15px solid var(--color-primary);
-    transform: scale(20);
 }
 
 @-webkit-keyframes pulsate-btn {
@@ -1692,11 +1402,10 @@ section {
     background: rgba(var(--color-white-rgb), 0.9);
     text-align: center;
     border-radius: 8px;
-    box-shadow: 0px 0 25px rgba(var(--color-black-rgb), 0.1);
+    box-shadow: 0 0 25px rgba(var(--color-black-rgb), 0.1);
 }
 
 .services .details .icon {
-    margin: 0;
     width: 72px;
     height: 72px;
     background: var(--color-primary);
@@ -1704,7 +1413,7 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
+    margin: 0 0 20px;
     color: var(--color-white);
     font-size: 28px;
     transition: ease-in-out 0.3s;
@@ -1748,40 +1457,9 @@ section {
 /*--------------------------------------------------------------
 # Testimonials Section
 --------------------------------------------------------------*/
-.testimonials {
-    padding: 80px 0;
-    background: url("../img/testimonials-bg.jpg") no-repeat;
-    background-position: center center;
-    background-size: cover;
-    position: relative;
-}
-
-.testimonials::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(var(--color-secondary-dark-rgb), 0.8);
-}
 
 .testimonials .section-header {
     margin-bottom: 40px;
-}
-
-.testimonials .testimonials-carousel,
-.testimonials .testimonials-slider {
-    overflow: hidden;
-}
-
-.testimonials .testimonial-item {
-    text-align: center;
-    color: var(--color-white);
-}
-
-.testimonials .testimonial-item .testimonial-img {
-    width: 100px;
-    border-radius: 50%;
-    border: 6px solid rgba(var(--color-white-rgb), 0.15);
-    margin: 0 auto;
 }
 
 .testimonials .testimonial-item h3 {
@@ -1795,10 +1473,6 @@ section {
     font-size: 14px;
     color: rgba(var(--color-white-rgb), 0.6);
     margin: 0 0 15px 0;
-}
-
-.testimonials .testimonial-item .stars {
-    margin-bottom: 15px;
 }
 
 .testimonials .testimonial-item .stars i {
@@ -1858,29 +1532,6 @@ section {
 /*--------------------------------------------------------------
 # Pricing Section
 --------------------------------------------------------------*/
-.pricing {
-    background: rgba(var(--color-secondary-rgb), 0.04);
-}
-
-.pricing .pricing-item {
-    padding: 60px 40px;
-    box-shadow: 0 3px 20px -2px rgba(var(--color-gray-rgb), 0.15);
-    background: var(--color-white);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    border: 4px solid var(--color-white);
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.pricing .pricing-header {
-    background: linear-gradient(rgba(var(--color-secondary-rgb), 0.9), rgba(var(--color-secondary-rgb), 0.9)), url("../img/pricing-bg.jpg") center center;
-    background-size: cover;
-    text-align: center;
-    padding: 40px;
-    margin: -60px -40px 0;
-}
 
 .pricing h3 {
     font-weight: 600;
@@ -1941,43 +1592,10 @@ section {
     text-decoration: line-through;
 }
 
-.pricing .buy-btn {
-    display: inline-block;
-    padding: 12px 40px;
-    border-radius: 6px;
-    color: var(--color-primary);
-    transition: none;
-    font-size: 16px;
-    font-weight: 700;
-    transition: 0.3s;
-    border: 1px solid var(--color-primary);
-}
-
-.pricing .buy-btn:hover {
-    background: var(--color-primary);
-    color: var(--color-white);
-}
-
-.pricing .featured {
-    border-color: var(--color-primary);
-}
-
-.pricing .featured .pricing-header {
-    background: linear-gradient(rgba(var(--color-primary-rgb), 0.9), rgba(var(--color-primary-rgb), 0.9)), url("../img/pricing-bg.jpg") center center;
-}
-
-.pricing .featured .buy-btn {
-    background: var(--color-primary);
-    color: var(--color-white);
-}
-
 /*--------------------------------------------------------------
 # F.A.Q Section
 --------------------------------------------------------------*/
 @media (max-width: 991px) {
-    .faq {
-        padding: 0;
-    }
 }
 
 .faq .content h3 {
@@ -2007,7 +1625,7 @@ section {
 .faq .accordion-item {
     border: 0;
     margin-top: 15px;
-    box-shadow: 0px 5px 25px 0px rgba(var(--color-black-rgb), 0.06);
+    box-shadow: 0 5px 25px 0 rgba(var(--color-black-rgb), 0.06);
 }
 
 .faq .accordion-collapse {
@@ -2032,14 +1650,6 @@ section {
     box-shadow: none;
 }
 
-.faq .question-icon {
-    position: absolute;
-    top: 14px;
-    left: 25px;
-    font-size: 20px;
-    color: var(--color-primary);
-}
-
 .faq .accordion-button:after {
     position: absolute;
     right: 15px;
@@ -2058,12 +1668,6 @@ section {
 /*--------------------------------------------------------------
 # Portfolio Section
 --------------------------------------------------------------*/
-.portfolio .portfolio-flters {
-    padding: 0;
-    margin: 0 auto 30px auto;
-    list-style: none;
-    text-align: center;
-}
 
 .portfolio .portfolio-flters li {
     cursor: pointer;
@@ -2071,9 +1675,8 @@ section {
     padding: 0;
     font-size: 18px;
     font-weight: 300;
-    margin: 0 10px;
     line-height: 1;
-    margin-bottom: 5px;
+    margin: 0 10px 5px;
     transition: all 0.3s ease-in-out;
 }
 
@@ -2097,35 +1700,8 @@ section {
     }
 }
 
-.portfolio .portfolio-item {
-    position: relative;
-    border: 1px solid var(--color-white);
-    overflow: hidden;
-    z-index: 1;
-}
-
 .portfolio .portfolio-item img {
     transition: all 0.3s;
-}
-
-.portfolio .portfolio-item:before {
-    content: "";
-    inset: 0;
-    position: absolute;
-    background: rgba(var(--color-secondary-rgb), 0.8);
-    z-index: 2;
-    transition: 0.5s;
-    visibility: hidden;
-    opacity: 0;
-}
-
-.portfolio .portfolio-item .portfolio-info {
-    opacity: 0;
-    position: absolute;
-    inset: auto 40px 40px 40px;
-    z-index: 3;
-    transition: all ease-in-out 0.3s;
-    padding: 20px;
 }
 
 .portfolio .portfolio-item .portfolio-info h4 {
@@ -2135,60 +1711,18 @@ section {
     padding-right: 50px;
 }
 
-.portfolio .portfolio-item .portfolio-info .preview-link,
-.portfolio .portfolio-item .portfolio-info .details-link {
-    position: absolute;
-    right: 50px;
-    font-size: 24px;
-    top: calc(50% - 14px);
-    color: rgba(var(--color-white-rgb), 0.7);
-    transition: 0.3s;
-    line-height: 0;
-}
-
-.portfolio .portfolio-item .portfolio-info .preview-link:hover,
-.portfolio .portfolio-item .portfolio-info .details-link:hover {
-    color: var(--color-white);
-}
-
 .portfolio .portfolio-item .portfolio-info .details-link {
     right: 14px;
     font-size: 28px;
-}
-
-.portfolio .portfolio-item:hover:before {
-    visibility: visible;
-    opacity: 1;
 }
 
 .portfolio .portfolio-item:hover img {
     transform: scale(1.2);
 }
 
-.portfolio .portfolio-item:hover .portfolio-info {
-    opacity: 1;
-    inset: auto 10px 0 10px;
-}
-
 /*--------------------------------------------------------------
 # Team Section
 --------------------------------------------------------------*/
-.team .team-member .member-img {
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.team .team-member .social {
-    position: absolute;
-    left: 0;
-    top: -18px;
-    right: 0;
-    opacity: 0;
-    transition: ease-in-out 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
 .team .team-member .social a {
     transition: color 0.3s;
@@ -2218,16 +1752,6 @@ section {
     margin: 0 2px;
 }
 
-.team .team-member .member-info {
-    padding: 30px 15px;
-    text-align: center;
-    box-shadow: 0px 2px 15px rgba(var(--color-black-rgb), 0.1);
-    background: var(--color-white);
-    margin: -50px 20px 0 20px;
-    position: relative;
-    border-radius: 8px;
-}
-
 .team .team-member .member-info h4 {
     font-weight: 400;
     margin-bottom: 5px;
@@ -2249,21 +1773,9 @@ section {
     color: var(--color-gray);
 }
 
-.team .team-member:hover .social {
-    opacity: 1;
-}
-
 /*--------------------------------------------------------------
 # Recent Blog Posts
 --------------------------------------------------------------*/
-.recent-blog-posts .post-box {
-    transition: 0.3s;
-    height: 100%;
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
 
 .recent-blog-posts .post-box .post-img {
     overflow: hidden;
@@ -2275,53 +1787,15 @@ section {
     transition: 0.5s;
 }
 
-.recent-blog-posts .post-box .meta {
-    margin-top: 15px;
-}
-
-.recent-blog-posts .post-box .meta .post-date {
-    font-size: 15px;
-    font-weight: 400;
-    color: var(--color-primary);
-}
-
-.recent-blog-posts .post-box .meta .post-author {
-    font-size: 15px;
-    font-weight: 400;
-    color: var(--color-secondary);
-}
-
-.recent-blog-posts .post-box .post-title {
-    font-size: 24px;
-    color: var(--color-secondary);
-    font-weight: 700;
-    margin: 15px 0 0 0;
-    position: relative;
-    transition: 0.3s;
-}
-
 .recent-blog-posts .post-box p {
     margin: 15px 0 0 0;
     color: rgba(var(--color-secondary-dark-rgb), 0.7);
-}
-
-.recent-blog-posts .post-box .readmore {
-    display: flex;
-    align-items: center;
-    font-weight: 600;
-    line-height: 1;
-    transition: 0.3s;
-    margin-top: 15px;
 }
 
 .recent-blog-posts .post-box .readmore i {
     line-height: 0;
     margin-left: 4px;
     font-size: 18px;
-}
-
-.recent-blog-posts .post-box:hover .post-title {
-    color: var(--color-primary);
 }
 
 .recent-blog-posts .post-box:hover .post-img img {
@@ -2343,7 +1817,7 @@ section {
 
 .contact .info {
     padding: 40px;
-    box-shadow: 0px 2px 15px rgba(var(--color-black-rgb), 0.1);
+    box-shadow: 0 2px 15px rgba(var(--color-black-rgb), 0.1);
     overflow: hidden;
 }
 
@@ -2386,11 +1860,6 @@ section {
     color: var(--color-secondary-light);
 }
 
-.contact .php-email-form {
-    width: 100%;
-    background: var(--color-white);
-}
-
 .contact .php-email-form .form-group {
     padding-bottom: 8px;
 }
@@ -2406,15 +1875,6 @@ section {
 
 .contact .php-email-form .error-message br + br {
     margin-top: 25px;
-}
-
-.contact .php-email-form .sent-message {
-    display: none;
-    color: var(--color-white);
-    background: var(--color-green);
-    text-align: center;
-    padding: 15px;
-    font-weight: 600;
 }
 
 .contact .php-email-form .loading {
@@ -2440,7 +1900,7 @@ section {
 .contact .php-email-form input[type=text],
 .contact .php-email-form input[type=email],
 .contact .php-email-form textarea {
-    border-radius: 0px;
+    border-radius: 0;
     box-shadow: none;
     font-size: 14px;
 }
@@ -2498,9 +1958,6 @@ section {
 /*--------------------------------------------------------------
 # Portfolio Details
 --------------------------------------------------------------*/
-.portfolio-details {
-    padding-top: 40px;
-}
 
 .portfolio-details .portfolio-details-slider img {
     width: 100%;
@@ -2523,11 +1980,6 @@ section {
     background-color: var(--color-primary);
 }
 
-.portfolio-details .portfolio-info {
-    padding: 30px;
-    box-shadow: 0px 0 30px rgba(var(--color-secondary-rgb), 0.15);
-}
-
 .portfolio-details .portfolio-info h3 {
     font-size: 22px;
     font-weight: 700;
@@ -2544,10 +1996,6 @@ section {
 
 .portfolio-details .portfolio-info ul li + li {
     margin-top: 10px;
-}
-
-.portfolio-details .portfolio-description {
-    padding-top: 30px;
 }
 
 .portfolio-details .portfolio-description h2 {
@@ -2598,11 +2046,6 @@ section {
     color: var(--color-primary);
 }
 
-.blog .posts-list .meta-top {
-    margin-top: 20px;
-    color: var(--color-gray);
-}
-
 .blog .posts-list .meta-top ul {
     display: flex;
     flex-wrap: wrap;
@@ -2651,10 +2094,6 @@ section {
 /*--------------------------------------------------------------
 # Blog Details Page
 --------------------------------------------------------------*/
-.blog .blog-details {
-    box-shadow: 0 4px 16px rgba(var(--color-black-rgb), 0.1);
-    padding: 30px;
-}
 
 .blog .blog-details .post-img {
     margin: -30px -30px 20px -30px;
@@ -2709,11 +2148,6 @@ section {
     margin-bottom: 20px;
 }
 
-.blog .blog-details .meta-top {
-    margin-top: 20px;
-    color: var(--color-gray);
-}
-
 .blog .blog-details .meta-top ul {
     display: flex;
     flex-wrap: wrap;
@@ -2741,11 +2175,6 @@ section {
     line-height: 1;
 }
 
-.blog .blog-details .meta-bottom {
-    padding-top: 10px;
-    border-top: 1px solid rgba(var(--color-secondary-rgb), 0.15);
-}
-
 .blog .blog-details .meta-bottom i {
     color: var(--color-secondary-light);
     display: inline;
@@ -2758,13 +2187,6 @@ section {
 
 .blog .blog-details .meta-bottom a:hover {
     color: var(--color-primary);
-}
-
-.blog .blog-details .meta-bottom .cats {
-    list-style: none;
-    display: inline;
-    padding: 0 20px 0 0;
-    font-size: 14px;
 }
 
 .blog .blog-details .meta-bottom .cats li {
@@ -2788,18 +2210,8 @@ section {
     content: ",";
 }
 
-.blog .blog-details .meta-bottom .share {
-    font-size: 16px;
-}
-
 .blog .blog-details .meta-bottom .share i {
     padding-left: 5px;
-}
-
-.blog .post-author {
-    padding: 20px;
-    margin-top: 30px;
-    box-shadow: 0 4px 16px rgba(var(--color-black-rgb), 0.1);
 }
 
 .blog .post-author img {
@@ -2810,13 +2222,9 @@ section {
 .blog .post-author h4 {
     font-weight: 600;
     font-size: 22px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     padding: 0;
     color: var(--color-secondary);
-}
-
-.blog .post-author .social-links {
-    margin: 0 10px 10px 0;
 }
 
 .blog .post-author .social-links a {
@@ -2833,22 +2241,6 @@ section {
 /*--------------------------------------------------------------
 # Blog Sidebar
 --------------------------------------------------------------*/
-.blog .sidebar {
-    padding: 30px;
-    box-shadow: 0 4px 16px rgba(var(--color-black-rgb), 0.1);
-}
-
-.blog .sidebar .sidebar-title {
-    font-size: 20px;
-    font-weight: 700;
-    padding: 0;
-    margin: 0;
-    color: var(--color-secondary);
-}
-
-.blog .sidebar .sidebar-item + .sidebar-item {
-    margin-top: 40px;
-}
 
 .blog .sidebar .search-form form {
     background: var(--color-white);
@@ -2917,14 +2309,6 @@ section {
     font-size: 14px;
 }
 
-.blog .sidebar .recent-posts .post-item {
-    display: flex;
-}
-
-.blog .sidebar .recent-posts .post-item + .post-item {
-    margin-top: 15px;
-}
-
 .blog .sidebar .recent-posts img {
     width: 80px;
     margin-right: 15px;
@@ -2989,13 +2373,6 @@ section {
 /*--------------------------------------------------------------
 # Blog Comments
 --------------------------------------------------------------*/
-.blog .comments {
-    margin-top: 30px;
-}
-
-.blog .comments .comments-count {
-    font-weight: bold;
-}
 
 .blog .comments .comment {
     margin-top: 30px;
@@ -3025,11 +2402,6 @@ section {
     color: var(--color-primary);
 }
 
-.blog .comments .comment h5 .reply {
-    padding-left: 10px;
-    color: var(--color-secondary);
-}
-
 .blog .comments .comment h5 .reply i {
     font-size: 20px;
 }
@@ -3039,16 +2411,6 @@ section {
     font-size: 14px;
     color: rgba(var(--color-secondary-rgb), 0.8);
     margin-bottom: 5px;
-}
-
-.blog .comments .comment.comment-reply {
-    padding-left: 40px;
-}
-
-.blog .comments .reply-form {
-    margin-top: 30px;
-    padding: 30px;
-    box-shadow: 0 4px 16px rgba(var(--color-black-rgb), 0.1);
 }
 
 .blog .comments .reply-form h4 {
@@ -3100,10 +2462,6 @@ section {
 /*--------------------------------------------------------------
 # Blog Home Pagination
 --------------------------------------------------------------*/
-.blog .blog-pagination {
-    margin-top: 30px;
-    color: var(--color-secondary-light);
-}
 
 .blog .blog-pagination ul {
     display: flex;
@@ -3271,12 +2629,6 @@ section {
 .footer .footer-legal {
     padding: 30px 0;
     background: var(--color-secondary-dark);
-}
-
-.footer .footer-legal .credits {
-    padding-top: 4px;
-    font-size: 13px;
-    color: var(--color-white);
 }
 
 .footer .footer-legal .credits a {
