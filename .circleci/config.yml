@@ -9,7 +9,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - php/install-php:
-          version: '7.4.33'
+          version: '7.4'
       - php/install-composer
       - php/install-packages:
           with-cache: true
