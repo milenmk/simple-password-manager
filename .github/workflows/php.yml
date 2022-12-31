@@ -15,6 +15,7 @@ jobs:
     strategy:      
       matrix:
         php-versions: ['7.4', '8.0']
+        twig-versions: [ '~3.0' ]
     runs-on: ubuntu-latest
 
     steps:
@@ -24,11 +25,14 @@ jobs:
         uses: shivammathur/setup-php@v1
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, intl, json, openssl, pdo
+          extensions: mbstring, openssl, pdo
           coverage: pcov
 
       - name: Validate composer.json and composer.lock
         run: composer validate
+
+      - name: Declare required twig version
+        run: composer require --no-update twig/twig ${{ matrix.twig-versions }}
 
       - name: Cache Composer packages
         id: composer-cache
