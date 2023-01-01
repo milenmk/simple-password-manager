@@ -193,12 +193,29 @@ class Domains
      * @return int
      * @throws PDOException|Exception
      */
-    public function fetchAll($filter = '', $filter_mode = 'AND', $sortfield = '', $sortorder = '', $group = '', $limit = 0, $offset = 0)
-    {
+    public function fetchAll(
+        $filter = '',
+        $filter_mode = 'AND',
+        $sortfield = '',
+        $sortorder = '',
+        $group = '',
+        $limit = 0,
+        $offset = 0
+    ) {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
-        $result = $this->db->fetchAll($this->array_of_fields, $this->table_element, $filter, $filter_mode, $sortfield, $sortorder, $group, $limit, $offset);
+        $result = $this->db->fetchAll(
+            $this->array_of_fields,
+            $this->table_element,
+            $filter,
+            $filter_mode,
+            $sortfield,
+            $sortorder,
+            $group,
+            $limit,
+            $offset
+        );
 
         if ($result > 0) {
             return $result;
@@ -223,12 +240,31 @@ class Domains
      * @return int
      * @throws PDOException|Exception
      */
-    public function fetch($id, $filter = '', $filter_mode = 'AND', $sortfield = '', $sortorder = '', $group = '', $limit = 0, $offset = 0)
-    {
+    public function fetch(
+        $id,
+        $filter = '',
+        $filter_mode = 'AND',
+        $sortfield = '',
+        $sortorder = '',
+        $group = '',
+        $limit = 0,
+        $offset = 0
+    ) {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
-        $result = $this->db->fetch($id, $this->array_of_fields, $this->table_element, $filter, $filter_mode, $sortfield, $sortorder, $group, $limit, $offset);
+        $result = $this->db->fetch(
+            $id,
+            $this->array_of_fields,
+            $this->table_element,
+            $filter,
+            $filter_mode,
+            $sortfield,
+            $sortorder,
+            $group,
+            $limit,
+            $offset
+        );
 
         if ($result > 0) {
             return $result;

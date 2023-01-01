@@ -28,28 +28,31 @@ declare(strict_types = 1);
 namespace PasswordManager;
 
 use Exception;
-use PDOException;
 
-include_once('../includes/main.inc.php');
+$error = '';
+
+try {
+    include_once('../includes/main.inc.php');
+} catch (Exception $e) {
+    $error = $e->getMessage();
+    pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
+    print 'File "includes/main.inc.php!"not found';
+    die();
+}
 
 // Check if the user is logged in, if not then redirect him to login page
 if (!isset($user->id) || $user->id < 1) {
-    echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/login.php";});</script>';
+    header('Location: '.PM_MAIN_URL_ROOT.'/login.php');
     exit;
 }
-
-$error = '';
-$message = '';
 
 /*
  * Initiate POST values
  */
-$action = GETPOST('action', 'alpha') ? GETPOST('action', 'alpha') : 'view';
+$action = GETPOST('action', 'alpha');
 $id = GETPOST('id', 'int');
 $label = GETPOST('label', 'az09');
 $search_string = GETPOST('search_string', 'az09');
-$error = GETPOST('error', 'alpha');
-$message = GETPOST('message', 'alpha');
 
 /*
  * Objects
@@ -61,153 +64,103 @@ $title = $langs->trans('Domains');
 /*
  * Actions
  */
+//Action for logout
 pm_logout_block();
+
+//Action to create
 if ($action == 'create') {
     $domains->label = $label;
     $domains->fk_user = 1;
     $result = $domains->create();
     if ($result > 0) {
         $action = 'view';
-        //header('Location:' . htmlspecialchars($_SERVER['PHP_SELF']));
     } else {
-        $error = $domains->error;
+        print $result;
     }
 }
-if ($action == 'confirm_edit') {
+//Action to edit
+if ($action == 'edit') {
     $domains->id = (int)$id;
     $domains->label = $label;
     $result = $domains->update(['label']);
     if ($result > 0) {
         $action = 'view';
-        //header('Location:' . htmlspecialchars($_SERVER['PHP_SELF']));
     } else {
-        $error = $domains->error;
+        print $result;
     }
 }
+//Action to delete
 if ($action == 'delete') {
     $domains->id = (int)$id;
     $result = $domains->delete();
     if ($result > 0) {
         $action = 'view';
-        //header('Location:' . htmlspecialchars($_SERVER['PHP_SELF']));
     } else {
-        $error = $domains->error;
+        print $result;
     }
-}
-if ($action == 'view_records') {
-    echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/records.php?action=view&fk_domain=' . $id . '";});</script>';
 }
 
 /*
  * View
  */
-print $twig->render(
-    'nav_menu.html.twig',
-    [
-        'langs'     => $langs,
-        'theme'     => $theme,
-        'app_title' => PM_MAIN_APPLICATION_TITLE,
-        'main_url'  => PM_MAIN_URL_ROOT,
-        'user'      => $user,
-        'title'     => $title,
-    ]
-);
-
-$messageblock = $twig->render(
-    'messageblock.html.twig',
-    [
-        'error'   => $error,
-        'message' => $message,
-    ]
-);
-
-if ($action == 'view') {
-    try {
-        $res = $domains->fetchAll(['fk_user' => $user->id]);
-    } catch (PDOException|Exception $e) {
-        $error = $e->getMessage();
-    }
-    print $messageblock;
+if ($action == 'add_domain') {
     print $twig->render(
-        'index/table.html.twig',
+        'index.add.html.twig',
         [
+            'langs'     => $langs,
+            'theme'     => $theme,
+            'app_title' => PM_MAIN_APPLICATION_TITLE,
+            'main_url'  => PM_MAIN_URL_ROOT,
+            'css_array' => $css_array,
+            'js_array' => $js_array,
+            'user'      => $user,
+            'title'     => $title,
+            'error'   => $errors,
+            'message' => $messages,
+        ]
+    );
+} elseif ($action == 'edit_domain') {
+    $res = $domains->fetchAll(['rowid' => $id, 'fk_user' => $user->id]);
+    print $twig->render(
+        'index.edit.html.twig',
+        [
+            'langs'     => $langs,
+            'theme'     => $theme,
+            'app_title' => PM_MAIN_APPLICATION_TITLE,
+            'main_url'  => PM_MAIN_URL_ROOT,
+            'css_array' => $css_array,
+            'js_array' => $js_array,
+            'user'      => $user,
+            'title'     => $title,
+            'error'   => $errors,
+            'message' => $messages,
             'res'      => $res,
-            'langs'    => $langs,
-            'main_url' => PM_MAIN_URL_ROOT,
-            'theme'    => $theme,
             'count'    => $langs->trans('NumRecords', count($res)),
         ]
     );
-} elseif ($action == 'add_domain') {
-    print $twig->render(
-        'index/add_table.html.twig',
-        [
-            'langs'    => $langs,
-            'main_url' => PM_MAIN_URL_ROOT,
-            'theme'    => $theme,
-        ]
-    );
-} elseif ($action == 'edit') {
-    try {
-        $res = $domains->fetchAll(['rowid' => $id, 'fk_user' => $user->id]);
-    } catch (PDOException|Exception $e) {
-        $error = $e->getMessage();
-    }
-    print $messageblock;
-    print $twig->render(
-        'index/edit_table.html.twig',
-        [
-            'res'      => $res,
-            'langs'    => $langs,
-            'main_url' => PM_MAIN_URL_ROOT,
-            'theme'    => $theme,
-        ]
-    );
-} elseif ($action == 'search') {
-    try {
+} else {
+    if ($action == 'search') {
         $res = $domains->fetchAll(['fk_user' => $user->id, 'label' => $search_string]);
-    } catch (PDOException|Exception $e) {
-        $error = $e->getMessage();
+    } else {
+        $res = $domains->fetchAll(['fk_user' => $user->id]);
     }
-    print $messageblock;
     print $twig->render(
-        'index/table.html.twig',
+        'index.view.html.twig',
         [
+            'langs'     => $langs,
+            'theme'     => $theme,
+            'app_title' => PM_MAIN_APPLICATION_TITLE,
+            'main_url'  => PM_MAIN_URL_ROOT,
+            'css_array' => $css_array,
+            'js_array' => $js_array,
+            'user'      => $user,
+            'title'     => $title,
+            'error'   => $errors,
+            'message' => $messages,
             'res'      => $res,
-            'langs'    => $langs,
-            'main_url' => PM_MAIN_URL_ROOT,
-            'theme'    => $theme,
+            'count'    => $langs->trans('NumRecords', count($res)),
         ]
     );
 }
 
-print $twig->render(
-    'footer.html.twig',
-    [
-        'langs'    => $langs,
-        'theme'    => $theme,
-        'main_url' => PM_MAIN_URL_ROOT,
-    ]
-);
-
-if ($theme != 'default') {
-    $js_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/js/';
-
-    if (is_dir($js_path)) {
-        $js_array = [];
-        foreach (array_filter(glob($js_path . '*.js'), 'is_file') as $file) {
-            $js_array[] = str_replace($js_path, '', $file);
-        }
-    }
-}
-
-print $twig->render(
-    'javascripts.html.twig',
-    [
-        'theme'    => $theme,
-        'main_url' => PM_MAIN_URL_ROOT,
-        'js_array' => $js_array,
-    ]
-);
-
-print $twig->render('endpage.html.twig');
+$db->close();

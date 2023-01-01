@@ -28,23 +28,28 @@ declare(strict_types = 1);
 namespace PasswordManager;
 
 use Exception;
-use PDOException;
 
-include_once('../includes/main.inc.php');
+$error = '';
+
+try {
+    include_once('../includes/main.inc.php');
+} catch (Exception $e) {
+    $error = $e->getMessage();
+    pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
+    print 'File "includes/main.inc.php!"not found';
+    die();
+}
 
 // Check if the user is logged in, if not then redirect him to login page
 if (!isset($user->id) || $user->id < 1) {
-    echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/login.php";});</script>';
+    header('Location: '.PM_MAIN_URL_ROOT.'/login.php');
     exit;
 }
-
-$error = '';
-$message = '';
 
 /*
  * Initiate POST values
  */
-$action = GETPOST('action', 'alpha') ? GETPOST('action', 'alpha') : 'view';
+$action = GETPOST('action', 'alpha');
 $id = GETPOST('id', 'int');
 $search_string = GETPOST('search_string', 'az09');
 $fk_domain = GETPOST('fk_domain', 'int');
@@ -52,8 +57,6 @@ $type = GETPOST('type', 'int');
 $url = GETPOST('url', 'az09');
 $username = GETPOST('username', 'az09');
 $password = GETPOST('password', 'alpha');
-$error = GETPOST('error', 'alpha');
-$message = GETPOST('message', 'alpha');
 
 /*
  * Objects
@@ -66,7 +69,10 @@ $title = $langs->trans('Records');
 /*
  * Actions
  */
+//Action for logout
 pm_logout_block();
+
+//Action to create
 if ($action == 'create') {
     $records->fk_domain = (int)$fk_domain;
     $records->fk_user = $user->id;
@@ -95,12 +101,12 @@ if ($action == 'create') {
     $result = $records->create();
     if ($result > 0) {
         $action = 'view';
-        //header('Location:' . htmlspecialchars($_SERVER['PHP_SELF']));
     } else {
         print $result;
     }
 }
-if ($action == 'confirm_edit') {
+//Action to edit
+if ($action == 'edit') {
     $records->id = (int)$id;
     if ($fk_domain) {
         $records->fk_domain = (int)$fk_domain;
@@ -130,17 +136,17 @@ if ($action == 'confirm_edit') {
     $result = $records->update();
     if ($result > 0) {
         $action = 'view';
-        //header('Location:' . htmlspecialchars($_SERVER['PHP_SELF']));
+        header('Location: '.PM_MAIN_URL_ROOT.'/records.php');
     } else {
         print $result;
     }
 }
+//Action to delete
 if ($action == 'delete') {
     $records->id = (int)$id;
     $result = $records->delete();
     if ($result > 0) {
         $action = 'view';
-        //header('Location:' . htmlspecialchars($_SERVER['PHP_SELF']));
     } else {
         print $result;
     }
@@ -149,190 +155,77 @@ if ($action == 'delete') {
 /*
  * View
  */
-print $twig->render(
-    'nav_menu.html.twig',
-    [
-        'langs'     => $langs,
-        'theme'     => $theme,
-        'app_title' => PM_MAIN_APPLICATION_TITLE,
-        'main_url'  => PM_MAIN_URL_ROOT,
-        'user'      => $user,
-        'title'     => $title,
-    ]
-);
-
-$messageblock = $twig->render(
-    'messageblock.html.twig',
-    [
-        'error'   => $error,
-        'message' => $message,
-    ]
-);
-
-if ($action == 'view') {
-    if ($fk_domain) {
-        try {
-            $res = $records->fetchAll(['fk_user' => $user->id, 'fk_domain' => $fk_domain]);
-        } catch (Exception $e) {
-            $error = $e->getMessage();
-        }
+if ($action == 'add_record') {
+    $res = $domains->fetchAll(['fk_user' => $user->id]);
+    print $twig->render(
+        'records.add.html.twig',
+        [
+            'langs'     => $langs,
+            'theme'     => $theme,
+            'app_title' => PM_MAIN_APPLICATION_TITLE,
+            'main_url'  => PM_MAIN_URL_ROOT,
+            'css_array' => $css_array,
+            'js_array'  => $js_array,
+            'user'      => $user,
+            'title'     => $title,
+            'error'     => $errors,
+            'message'   => $messages,
+            'res'       => $res,
+        ]
+    );
+} elseif ($action == 'edit_record') {
+    $res1 = $domains->fetchAll(['fk_user' => $user->id]);
+    $res2 = $records->fetch($id);
+    print $twig->render(
+        'records.edit.html.twig',
+        [
+            'langs'     => $langs,
+            'theme'     => $theme,
+            'app_title' => PM_MAIN_APPLICATION_TITLE,
+            'main_url'  => PM_MAIN_URL_ROOT,
+            'css_array' => $css_array,
+            'js_array'  => $js_array,
+            'user'      => $user,
+            'title'     => $title,
+            'error'     => $errors,
+            'message'   => $messages,
+            'res1'     => $res1,
+            'res2'     => $res2,
+        ]
+    );
+} else {
+    if ($action == 'search') {
+        $res = $records->fetchAll(
+            [
+                'fk_user'    => $user->id,
+                'dbase_name' => $search_string,
+                'ftp_server' => $search_string,
+                'url'        => $search_string,
+            ],
+            'OR'
+        );
+    } elseif ($action == 'view' && $fk_domain) {
+        $res = $records->fetchAll(['fk_user' => $user->id, 'fk_domain' => $fk_domain]);
     } else {
-        try {
-            $res = $records->fetchAll(['fk_user' => 1]);
-        } catch (Exception $e) {
-            $error = $e->getMessage();
-        }
-    }
-
-    print $messageblock;
-    print $twig->render(
-        'records/view.table.head.html.twig',
-        [
-            'res'      => $res,
-            'langs'    => $langs,
-            'main_url' => PM_MAIN_URL_ROOT,
-            'theme'    => $theme,
-            'count'    => $langs->trans('NumRecords', count($res)),
-            'domains'  => $domains,
-        ]
-    );
-
-    $i = 0;
-    foreach ($res as $result) {
-        require_once(PM_MAIN_APP_ROOT . '/docs/secret.key');
-        $password = openssl_decrypt($result['pass_crypted'], $ciphering, $decryption_key, $options, $decryption_iv);
-        print $twig->render(
-            'records/view.table.content.html.twig',
-            [
-                'result'   => $result,
-                'langs'    => $langs,
-                'main_url' => PM_MAIN_URL_ROOT,
-                'theme'    => $theme,
-                'domains'  => $domains,
-                'password' => $password,
-                'i'        => $i,
-            ]
-        );
-        $i += 2;
-    }
-
-    print $twig->render(
-        'records/view.table.footer.html.twig',
-        [
-            'res'      => $res,
-            'langs'    => $langs,
-            'main_url' => PM_MAIN_URL_ROOT,
-            'theme'    => $theme,
-            'domains'  => $domains,
-        ]
-    );
-} elseif ($action == 'add_record') {
-    try {
-        $res = $domains->fetchAll(['fk_user' => $user->id]);
-    } catch (Exception $e) {
-        $error = $e->getMessage();
+        $res = $records->fetchAll(['fk_user' => $user->id]);
     }
     print $twig->render(
-        'records/add_table.html.twig',
+        'records.view.html.twig',
         [
-            'res'      => $res,
-            'langs'    => $langs,
-            'main_url' => PM_MAIN_URL_ROOT,
-            'theme'    => $theme,
-        ]
-    );
-} elseif ($action == 'edit') {
-    try {
-        $res1 = $domains->fetchAll(['fk_user' => $user->id]);
-        $res2 = $records->fetch($id);
-    } catch (PDOException|Exception $e) {
-        $error = $e->getMessage();
-    }
-    print $messageblock;
-    print $twig->render(
-        'records/edit_table.html.twig',
-        [
-            'res1'      => $res1,
-            'res2'      => $res2,
-            'langs'    => $langs,
-            'main_url' => PM_MAIN_URL_ROOT,
-            'theme'    => $theme,
-        ]
-    );
-} elseif ($action == 'search') {
-    print $twig->render(
-        'records/view.table.head.html.twig',
-        [
-            'res'      => $res,
-            'langs'    => $langs,
-            'main_url' => PM_MAIN_URL_ROOT,
-            'theme'    => $theme,
-            'count'    => $langs->trans('NumRecords', count($res)),
-            'domains'  => $domains,
-        ]
-    );
-
-    try {
-        $res = $records->fetchAll(['fk_user' => 1, 'dbase_name' => $search_string, 'ftp_server' => $search_string, 'url' => $search_string], 'OR');
-    } catch (Exception $e) {
-        $error = $e->getMessage();
-    }
-
-    print $messageblock;
-
-    foreach ($res as $result) {
-        require_once(PM_MAIN_APP_ROOT . '/docs/secret.key');
-        $password = openssl_decrypt($result['pass_crypted'], $ciphering, $decryption_key, $options, $decryption_iv);
-        print $twig->render(
-            'records/view.table.content.html.twig',
-            [
-                'result'   => $result,
-                'langs'    => $langs,
-                'main_url' => PM_MAIN_URL_ROOT,
-                'theme'    => $theme,
-                'domains'  => $domains,
-                'password' => $password,
-            ]
-        );
-    }
-
-    print $twig->render(
-        'records/view.table.footer.html.twig',
-        [
-            'res'      => $res,
-            'langs'    => $langs,
-            'main_url' => PM_MAIN_URL_ROOT,
-            'theme'    => $theme,
-            'domains'  => $domains,
+            'langs'     => $langs,
+            'theme'     => $theme,
+            'app_title' => PM_MAIN_APPLICATION_TITLE,
+            'main_url'  => PM_MAIN_URL_ROOT,
+            'css_array' => $css_array,
+            'js_array'  => $js_array,
+            'user'      => $user,
+            'title'     => $title,
+            'error'     => $errors,
+            'message'   => $messages,
+            'count'     => $langs->trans('NumRecords', count($res)),
+            'res'       => $res,
         ]
     );
 }
 
-print $twig->render(
-    'footer.html.twig',
-    [
-        'langs' => $langs,
-        'theme' => $theme,
-    ]
-);
-
-if ($theme != 'default') {
-    $js_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/js/';
-
-    if (is_dir($js_path)) {
-        $js_array = [];
-        foreach (array_filter(glob($js_path . '*.js'), 'is_file') as $file) {
-            $js_array[] = str_replace($js_path, '', $file);
-        }
-    }
-}
-print $twig->render(
-    'javascripts.html.twig',
-    [
-        'theme'    => $theme,
-        'main_url' => PM_MAIN_URL_ROOT,
-        'js_array' => $js_array,
-    ]
-);
-
-print $twig->render('endpage.html.twig');
+$db->close();

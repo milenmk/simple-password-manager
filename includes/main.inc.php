@@ -29,13 +29,18 @@ namespace PasswordManager;
 
 use Exception;
 use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
+use Twig\TwigFunction;
 
-include_once('../vendor/autoload.php');
+try {
+    include_once('../vendor/autoload.php');
+} catch (Exception $e) {
+    $error = $e->getMessage();
+    pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
+    print 'File "vendor/autoload.php!"not found';
+    die();
+}
 
 $config = new Config();
 
@@ -54,9 +59,18 @@ define('PM_MAIN_DB_PREFIX', $config->dbprefix);
 //Initiate translations
 $langs = new Translator('');
 
-include_once('../core/lib/functions.lib.php');
+//Load functions
+try {
+    include_once('../core/lib/functions.lib.php');
+} catch (Exception $e) {
+    $error = $e->getMessage();
+    pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
+    print 'File "core/lib/functions.lib.php" not found!';
+    die();
+}
 
-$db = getPassManDbInstance($config->host, $config->dbuser, $config->dbpass, $config->dbname, $config->port);
+//Load the database handler
+$db = new PassManDb($config->host, $config->dbuser, $config->dbpass, $config->dbname, $config->port);
 
 unset($config->dbpass);
 
@@ -70,8 +84,12 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     try {
         $res = $user->fetch($_SESSION['id']);
         $user->id = (int)$res['id'];
-        $user->first_name = $res['first_name'];
-        $user->last_name = $res['last_name'];
+        if ($res['first_name']) {
+            $user->first_name = $res['first_name'];
+        }
+        if ($res['last_name']) {
+            $user->last_name = $res['last_name'];
+        }
         $user->username = $res['username'];
         $user->theme = $res['theme'];
         $user->language = $res['language'];
@@ -81,24 +99,20 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     }
 }
 
+//Define language and theme
 if (isset($user->id) && $user->id > 0) {
     $theme = $user->theme;
-    $language = $user->language;
+    $langs->setDefaultLang($user->language);
 } else {
     $theme = 'default';
+    $langs->setDefaultLang('auto');
 }
 
 //Load language
-if ($language) {
-    $langs->setDefaultLang($language);
-} else {
-    $langs->setDefaultLang('auto');
-}
-try {
-    $langs->loadLangs(['main']);
-} catch (Exception $e) {
-    print $e->getMessage();
-}
+$langs->loadLangs(['main', 'errors']);
+
+$messages = $_SESSION['PM_MESSAGE'] ? $langs->trans(''.$_SESSION['PM_MESSAGE']) : '';
+$errors = $_SESSION['PM_ERROR'] ? $langs->trans(''.$_SESSION['PM_ERROR']) : '';
 
 //Define css and .js files array for loading for themes different from default
 if ($theme != 'default') {
@@ -112,7 +126,20 @@ if ($theme != 'default') {
     }
 }
 
-//load twig
+if ($theme != 'default') {
+    $js_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/js/';
+
+    if (is_dir($js_path)) {
+        $js_array = [];
+        foreach (array_filter(glob($js_path . '*.js'), 'is_file') as $file) {
+            $js_array[] = str_replace($js_path, '', $file);
+        }
+    }
+}
+
+/*
+ * Load Twig environment
+ */
 $loader = new FilesystemLoader(PM_MAIN_DOCUMENT_ROOT . '/templates/' . $theme);
 $twig = new Environment(
     $loader,
@@ -122,13 +149,26 @@ $twig = new Environment(
 );
 $twig->addExtension(new DebugExtension());
 
-print $twig->render(
-    'header.html.twig',
-    [
-        'langs'     => $langs,
-        'theme'     => $theme,
-        'app_title' => PM_MAIN_APPLICATION_TITLE,
-        'main_url'  => PM_MAIN_URL_ROOT,
-        'css_array' => $css_array,
-    ]
+$open_ssl = new TwigFunction(
+    'openssl',
+    function ($password) {
+
+        try {
+            require(PM_MAIN_APP_ROOT . '/docs/secret.key');
+        } catch (Exception $e) {
+            $error = $e->getMessage();
+            print 'Cannot load file "docs/secret.key"!';
+            die();
+        }
+        return openssl_decrypt($password, $ciphering, $decryption_key, $options, $decryption_iv);
+    }
 );
+$twig->addFunction($open_ssl);
+
+$unset = new TwigFunction(
+    'unset',
+    function ($var) {
+        unset($_SESSION[$var]);
+    }
+);
+$twig->addFunction($unset);

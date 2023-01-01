@@ -27,18 +27,24 @@ declare(strict_types = 1);
 
 namespace PasswordManager;
 
-include_once('../includes/main.inc.php');
+use Exception;
+
+$error = '';
+
+try {
+    include_once('../includes/main.inc.php');
+} catch (Exception $e) {
+    $error = $e->getMessage();
+    pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
+    print 'File "includes/main.inc.php!"not found';
+    die();
+}
 
 // Check if the user is logged in, if not then redirect him to login page
 if (!isset($user->id) || $user->id < 1) {
-    echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/login.php";});</script>';
+    header('Location: ' . PM_MAIN_URL_ROOT . '/login.php');
     exit;
 }
-
-$error = '';
-$message = '';
-
-$langs->loadLangs(['errors']);
 
 /*
  * Initiate POST values
@@ -54,20 +60,7 @@ $confirm_password = GETPOST('confirm_password', 'az09');
 $user_theme = GETPOST('user_theme', 'alpha');
 $user_language = GETPOST('user_language', 'alpha');
 
-/*
- * Objects
- */
-$user = new User($db);
-
 $title = $langs->trans('Profile');
-
-$res = $user->fetch($_SESSION['id']);
-$user->id = (int)$res['id'];
-$user->first_name = $res['first_name'];
-$user->last_name = $res['last_name'];
-$user->username = $res['username'];
-$user->theme = $res['theme'];
-$user->language = $res['language'];
 
 /*
  * Actions
@@ -79,46 +72,50 @@ if ($action == 'update_user') {
     $user->theme = $user_theme;
     $user->language = $user_language;
 
-    $result = $user->update($new_password);
-    if ($result > 0) {
-        $action = 'view';
-        header('Location: profile.php');
+    $result = $user->update('');
+
+    if ($result < 1) {
+        $_SESSION['PM_ERROR'] = 'ProfileUpdatedError';
+        $error++;
     } else {
-        $error = $user->error;
-        $action = 'view';
+        $_SESSION['PM_MESSAGE'] = 'ProfileUpdated';
+        header('Location: profile.php');
     }
 }
 if ($action == 'change_password') {
     // Check if input fields are is empty
     if (empty(trim($old_password))) {
-        $error = $langs->trans('PasswordEmpty');
+        //$_SESSION['PM_ERROR'] = 'PasswordEmpty';
+        $errors = $langs->trans('PasswordEmpty');
+        $error++;
+    } elseif (empty(trim($new_password))) {
+        //$_SESSION['PM_ERROR'] = 'PasswordNewEmpty';
+        $errors = $langs->trans('PasswordNewEmpty');
+        $error++;
+    } elseif (empty(trim($confirm_password))) {
+        //$_SESSION['PM_ERROR'] = 'PasswordNewConfirmEmpty';
+        $errors = $langs->trans('PasswordNewConfirmEmpty');
+        $error++;
+    } elseif ($new_password != $confirm_password) {
+        //$_SESSION['PM_ERROR'] = 'PasswordsDidNotMatch';
+        $errors = $langs->trans('PasswordsDidNotMatch');
+        $error++;
     } else {
         $old_password = trim($old_password);
-    }
-    if (empty(trim($new_password))) {
-        $error = $langs->trans('PasswordNewEmpty');
-    } else {
         $new_password = trim($new_password);
-    }
-    if (empty(trim($confirm_password))) {
-        $error = $langs->trans('PasswordNewConfirmEmpty');
-    } else {
-        $confirm_password = trim($confirm_password);
-    }
-    if ($new_password != $confirm_password) {
-        $error = $langs->trans('PasswordsDidNotMatch');
     }
 
     if (!$error) {
-        $result = $user->fetch($user->id, '', '', '', '', '', '', '', $old_password);
-        if (!empty($result) && $result > 0) {
-            $res = $user->update($new_password);
-
+        $result = $user->fetch($user->id);
+        if (password_verify($old_password, $result['password'])) {
+            $res = $user->update($new_password, 1);
             if ($res > 0) {
-                $message = $langs->trans('PassUpdateSuccess');
+                $messages = $langs->trans('PassUpdateSuccess');
             } else {
-                $error = $user->error;
+                $errors = $langs->trans('PassUpdateError');
             }
+        } else {
+            $errors = $langs->trans('WrongPassword');
         }
     }
     $action = 'edit_password';
@@ -127,28 +124,24 @@ if ($action == 'change_password') {
 /*
  * View
  */
-print $twig->render(
-    'nav_menu.html.twig',
-    [
-        'langs'     => $langs,
-        'theme'     => $theme,
-        'app_title' => PM_MAIN_APPLICATION_TITLE,
-        'main_url'  => PM_MAIN_URL_ROOT,
-        'user'      => $user,
-        'title'     => $title,
-    ]
-);
-
-$message = $twig->render(
-    'messageblock.html.twig',
-    [
-        'error'   => $error,
-        'message' => $message,
-    ]
-);
-
-if ($action == 'view' || empty($action)) {
-    print $message;
+if ($action == 'edit_password') {
+    print $twig->render(
+        'user.edit_password.html.twig',
+        [
+            'langs'     => $langs,
+            'theme'     => $theme,
+            'app_title' => PM_MAIN_APPLICATION_TITLE,
+            'main_url'  => PM_MAIN_URL_ROOT,
+            'css_array' => $css_array,
+            'js_array'  => $js_array,
+            'user'      => $user,
+            'title'     => $title,
+            'error'     => $errors,
+            'message'   => $messages,
+        ]
+    );
+} else {
+    //Action is 'view' or empty
 
     $theme_array = [];
     $theme_folders = array_filter(glob(PM_MAIN_APP_ROOT . '/public/themes/*'), 'is_dir');
@@ -165,53 +158,22 @@ if ($action == 'view' || empty($action)) {
     }
 
     print $twig->render(
-        'user/profile.html.twig',
+        'user.profile.html.twig',
         [
-            'langs'    => $langs,
-            'main_url' => PM_MAIN_URL_ROOT,
-            'theme'    => $theme,
-            'user'     => $user,
-            'theme_folders'  => $theme_array,
+            'langs'         => $langs,
+            'theme'         => $theme,
+            'app_title'     => PM_MAIN_APPLICATION_TITLE,
+            'main_url'      => PM_MAIN_URL_ROOT,
+            'css_array'     => $css_array,
+            'js_array'      => $js_array,
+            'user'          => $user,
+            'title'         => $title,
+            'error'         => $errors,
+            'message'       => $messages,
+            'theme_folders' => $theme_array,
             'lang_folders'  => $lang_array,
         ]
     );
-} elseif ($action == 'edit_password') {
-    print $message;
-    print $twig->render(
-        'user/edit_password.html.twig',
-        [
-            'langs'    => $langs,
-            'main_url' => PM_MAIN_URL_ROOT,
-            'theme'    => $theme,
-        ]
-    );
 }
 
-print $twig->render(
-    'footer.html.twig',
-    [
-        'langs' => $langs,
-        'theme' => $theme,
-    ]
-);
-
-if ($theme != 'default') {
-    $js_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/js/';
-
-    if (is_dir($js_path)) {
-        $js_array = [];
-        foreach (array_filter(glob($js_path . '*.js'), 'is_file') as $file) {
-            $js_array[] = str_replace($js_path, '', $file);
-        }
-    }
-}
-print $twig->render(
-    'javascripts.html.twig',
-    [
-        'theme'    => $theme,
-        'main_url' => PM_MAIN_URL_ROOT,
-        'js_array' => $js_array,
-    ]
-);
-
-print $twig->render('endpage.html.twig');
+$db->close();

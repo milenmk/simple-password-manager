@@ -407,9 +407,13 @@ class PassManDb
     ) {
 
         $sql = 'Select t.rowid as id,';
-        foreach ($array_of_fields as $key) {
-            $sql .= ' t.' . $key . ', ';
+
+        if (is_iterable($array_of_fields)) {
+            foreach ($array_of_fields as $key) {
+                $sql .= ' t.' . $key . ', ';
+            }
         }
+
         if ($hasParent) {
             foreach ($parentClassFields as $key) {
                 $sql .= ' p.' . $key . ', ';

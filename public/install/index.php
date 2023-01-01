@@ -43,10 +43,10 @@ session_start();
         print '<link rel="shortcut icon" type="image/x-icon" href="' . $favicon . '"/>' . "\n";
 
         $themepathcss = '../themes/default/css';
-        $themeuricss = htmlspecialchars($_SERVER['REQUEST_SCHEME']) . '://' . htmlspecialchars($_SERVER['HTTP_HOST']) . htmlspecialchars($_SERVER['CONTEXT_PREFIX']) . '/themes/default/css';
+        $themeuricss = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['CONTEXT_PREFIX'] . '/themes/default/css';
         foreach (glob($themepathcss . '/*.css') as $css) {
             $file = str_replace($themepathcss, $themeuricss, $css);
-            print '<link type="text/css" rel="stylesheet" href="' . htmlspecialchars($file) . '">' . "\n";
+            print '<link type="text/css" rel="stylesheet" href="' . $file . '">' . "\n";
         }
 
         print '<script src="../themes/default/js/validation.js"></script>' . "\n";
@@ -170,7 +170,7 @@ if ($action == 'check_connection' && (!$error || !$lockerror)) {
                     <div class="col-sm-9">
                         <label for="mainUrlRoot"></label>
                         <input type="text" name="main_url_root" class="form-control" id="mainUrlRoot"
-                                                                value="<?= htmlspecialchars($_SERVER['REQUEST_SCHEME']) . '://' . htmlspecialchars($_SERVER['HTTP_HOST']) . htmlspecialchars($_SERVER['CONTEXT_PREFIX']) ?>" required>
+                                                                value="<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['CONTEXT_PREFIX'] ?>" required>
                     </div>
                 </div>
                 <div class="mb-3 row">

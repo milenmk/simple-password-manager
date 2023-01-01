@@ -124,6 +124,7 @@ function pm_export($content)
 
     $logfile = PM_MAIN_DOCUMENT_ROOT . '/pm-log.log';
 
+    /*
     //Unlock file for writing
     if (isset($_SERVER['WINDIR'])) {
         // Host OS is Windows
@@ -133,6 +134,7 @@ function pm_export($content)
         // Host OS is *nix
         chmod($logfile, 0755);
     }
+    */
 
     $filefd = fopen($logfile, 'a+');
 
@@ -155,7 +157,7 @@ function pm_export($content)
         $message = strftime('%Y-%m-%d %H:%M:%S', time()) . ' ' . sprintf('%-7s', $log_levels[$content['level']]) . ' ' . sprintf('%-15s', $content['ip']) . ' ' . $content['message'];
         fwrite($filefd, $message . "\n");
         fclose($filefd);
-
+        /*
         //Lock file as read only
         if (isset($_SERVER['WINDIR'])) {
             // Host OS is Windows
@@ -165,6 +167,7 @@ function pm_export($content)
             // Host OS is *nix
             chmod($logfile, 0444);
         }
+        */
     }
 }
 
@@ -438,33 +441,11 @@ function pm_logout_block()
     global $action;
 
     if ($action == 'logout') {
-        $_SESSION = [];
+        session_unset();
 
         // Destroy the session.
         session_destroy();
 
-        // Redirect to login page
-        //header('location: ' . PM_MAIN_URL_ROOT . '/login.php');
-        echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/login.php";});</script>';
-        exit;
+        header('Location: '.PM_MAIN_URL_ROOT);
     }
-}
-
-/**
- * Return a DoliDB instance (database handler).
- *
- * @param string $host Address of database server
- * @param string $user Authorized username
- * @param string $pass Password
- * @param string $name Name of database
- * @param int    $port Port of database server
- *
- * @return PassManDb passManDb instance
- * @throws Exception
- */
-
-function getPassManDbInstance($host, $user, $pass, $name, $port)
-{
-
-    return new PassManDb($host, $user, $pass, $name, $port);
 }

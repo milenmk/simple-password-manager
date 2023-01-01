@@ -28,6 +28,7 @@ declare(strict_types = 1);
 namespace PasswordManager;
 
 use Exception;
+use PDO;
 use PDOException;
 
 /**
@@ -36,10 +37,6 @@ use PDOException;
 class User
 {
 
-    /**
-     * @var PassManDb Database handler
-     */
-    private PassManDb $db;
     /**
      * @var int User ID
      */
@@ -57,10 +54,6 @@ class User
      */
     public string $username;
     /**
-     * @var string User password
-     */
-    private string $password;
-    /**
      * @var int Number of affected rows
      */
     public int $num;
@@ -76,16 +69,26 @@ class User
      * @var string Error
      */
     public string $error;
-
+    /**
+     * @var string Message
+     */
+    public string $message;
     /**
      * @var array Array of fields to fetch from database
      */
     public array $array_of_fields = ['first_name', 'last_name', 'username', 'password', 'created_at', 'theme', 'language'];
-
     /**
      * @var string Name of table without prefix where object is stored.
      */
     public string $table_element = 'users';
+    /**
+     * @var PassManDb Database handler
+     */
+    private PassManDb $db;
+    /**
+     * @var string User password
+     */
+    private string $password;
 
     /**
      *    Constructor of the class
@@ -139,22 +142,23 @@ class User
     /**
      * Update record in database
      *
-     * @param string $password New password
-     *
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function update($password = '')
+    public function update($password, $update_password = '')
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
-        $this->password = password_hash($password, PASSWORD_DEFAULT);
-
         $array_to_update = [];
-        foreach ($this->array_of_fields as $field) {
-            if (isset($this->$field) && $this->$field != 0 || !empty($this->$field)) {
-                $array_to_update[$field] = $this->$field;
+        if (!empty($update_password) && !empty($password)) {
+            $this->password = password_hash($password, PASSWORD_DEFAULT);
+            $array_to_update = ['password' =>$this->password];
+        } else {
+            foreach ($this->array_of_fields as $field) {
+                if (isset($this->$field) && $this->$field != 0 || !empty($this->$field)) {
+                    $array_to_update[$field] = $this->$field;
+                }
             }
         }
 
@@ -202,8 +206,15 @@ class User
      * @return int
      * @throws PDOException|Exception
      */
-    public function fetchAll($filter = '', $filter_mode = 'AND', $sortfield = '', $sortorder = '', $group = '', $limit = 0, $offset = 0)
-    {
+    public function fetchAll(
+        $filter = '',
+        $filter_mode = 'AND',
+        $sortfield = '',
+        $sortorder = '',
+        $group = '',
+        $limit = 0,
+        $offset = 0
+    ) {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
@@ -227,6 +238,45 @@ class User
     }
 
     /**
+     * Check for login or register
+     * On login: return hashed password
+     * On registration: return <0 if username do not exist and return record id if it does
+     *
+     * @param string $username
+     *
+     * @return int|mixed
+     */
+    public function check($username, $return_password = 0)
+    {
+
+        $sql = 'SELECT rowid as id';
+
+        if (!empty($return_password)) {
+            $sql .= ', password';
+        }
+
+        $sql .= ' FROM ' . PM_MAIN_DB_PREFIX . $this->table_element . ' WHERE username = :username';
+
+        $query = $this->db->db->prepare($sql);
+
+        $query->bindValue(':username', $username);
+
+        if (!$this->db->db->inTransaction()) {
+            $this->db->db->beginTransaction();
+        }
+
+        $query->execute();
+
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            return $result;
+        } else {
+            return -1;
+        }
+    }
+
+    /**
      *
      * Fetch single row from database
      *
@@ -242,23 +292,34 @@ class User
      * @return int|array
      * @throws PDOException|Exception
      */
-    public function fetch($id = '', $filter = '', $filter_mode = 'AND', $sortfield = '', $sortorder = '', $group = '', $limit = 0, $offset = 0, $password = '')
-    {
+    public function fetch(
+        $id,
+        $filter = '',
+        $filter_mode = 'AND',
+        $sortfield = '',
+        $sortorder = '',
+        $group = '',
+        $limit = 0,
+        $offset = 0
+    ) {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
-        $result = $this->db->fetch($id, $this->array_of_fields, $this->table_element, $filter, $filter_mode, $sortfield, $sortorder, $group, $limit, $offset);
+        $result = $this->db->fetch(
+            $id,
+            $this->array_of_fields,
+            $this->table_element,
+            $filter,
+            $filter_mode,
+            $sortfield,
+            $sortorder,
+            $group,
+            $limit,
+            $offset
+        );
 
         if ($result > 0) {
-            if ($password) {
-                if (password_verify($password, $result['password'])) {
-                    return $result;
-                } else {
-                    return -2;
-                }
-            } else {
-                return $result;
-            }
+            return $result;
         } else {
             return -1;
         }

@@ -9,21 +9,21 @@
                 <input type="hidden" name="action" value="update_user"/>
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example3">{{ langs.trans('FirstName') }}
-                        <input name="first_name" type="text" id="form3Example3" class="form-control form-control-lg" value="{{ user.first_name }}"/>
+                        <input name="first_name" type="text" id="form3Example3" class="form-control form-control-lg" placeholder="{{ user.first_name }}"/>
                     </label>
                 </div>
 
                 <!-- Last name input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example3">{{ langs.trans('LastName') }}
-                        <input name="last_name" type="text" id="form3Example3" class="form-control form-control-lg" value="{{ user.last_name }}"/>
+                        <input name="last_name" type="text" id="form3Example3" class="form-control form-control-lg" placeholder="{{ user.last_name }}"/>
                     </label>
                 </div>
 
                 <!-- Email input -->
                 <div class="form-outline mb-3">
                     <label class="form-label" for="form3Example3">{{ langs.trans('EmailAddress') }}
-                        <input name="email" type="email" id="form3Example3" class="form-control form-control-lg" value="{{ user.username }}"/>
+                        <input name="email" type="email" id="form3Example3" class="form-control form-control-lg" placeholder="{{ user.username }}"/>
                     </label>
                 </div>
 

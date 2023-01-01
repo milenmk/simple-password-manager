@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <form method="get">
-        <input type="hidden" name="action" value="confirm_edit"/>
+    <form method="post">
+        <input type="hidden" name="action" value="edit"/>
         <input type="hidden" name="id" value="{{ res2.id }}"/>
         <table class="table table-success table-striped">
             <thead>
