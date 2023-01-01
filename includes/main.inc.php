@@ -116,7 +116,7 @@ $errors = $_SESSION['PM_ERROR'] ? $langs->trans(''.$_SESSION['PM_ERROR']) : '';
 
 //Define css and .js files array for loading for themes different from default
 if ($theme != 'default') {
-    $css_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/css/';
+    $css_path = '../public/themes/' . $theme . '/css/';
 
     if (is_dir($css_path)) {
         $css_array = [];
@@ -127,7 +127,7 @@ if ($theme != 'default') {
 }
 
 if ($theme != 'default') {
-    $js_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/js/';
+    $js_path = '../public/themes/' . $theme . '/js/';
 
     if (is_dir($js_path)) {
         $js_array = [];
@@ -140,7 +140,7 @@ if ($theme != 'default') {
 /*
  * Load Twig environment
  */
-$loader = new FilesystemLoader(PM_MAIN_DOCUMENT_ROOT . '/templates/' . $theme);
+$loader = new FilesystemLoader('../docs/templates/' . $theme);
 $twig = new Environment(
     $loader,
     [
@@ -154,7 +154,7 @@ $open_ssl = new TwigFunction(
     function ($password) {
 
         try {
-            require(PM_MAIN_APP_ROOT . '/docs/secret.key');
+            require('../docs/secret.key');
         } catch (Exception $e) {
             $error = $e->getMessage();
             print 'Cannot load file "docs/secret.key"!';
