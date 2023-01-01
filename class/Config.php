@@ -3,12 +3,12 @@
  *
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
- *  File name: config.php
- *  Last Modified: 31.12.22 г., 1:11 ч.
+ *  File name: Config.php
+ *  Last Modified: 1.01.23 г., 13:33 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
- * @version       2.1.0
+ * @version       2.1.1
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+

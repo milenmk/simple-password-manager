@@ -4,12 +4,12 @@
  *
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
- *  File name: records.php
- *  Last Modified: 31.12.22 г., 13:08 ч.
+ *  File name: Records.php
+ *  Last Modified: 2.01.23 г., 0:25 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
- * @version       2.1.0
+ * @version       2.1.1
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+
