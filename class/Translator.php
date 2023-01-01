@@ -4,7 +4,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: Translator.php
- *  Last Modified: 1.01.23 г., 12:58 ч.
+ *  Last Modified: 2.01.23 г., 1:27 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
@@ -41,10 +41,10 @@ class Translator
     public string $origlang;
     public string $shortlang;
 
-    public array $tab_translate  = [];       // Array of all translations key=>value
+    public array  $tab_translate  = [];       // Array of all translations key=>value
     public string $charset_output = 'UTF-8';  // Array to store result after loading each language file
     public string $error;
-    private array  $tab_loaded = [];
+    private array $tab_loaded     = [];
 
     /**
      * @param string $dir Force directory other than /langs subdirectory.
@@ -194,8 +194,11 @@ class Translator
         }
 
         if (empty($langofdir)) {
-            pm_syslog('Error: ' . get_class($this) . '::load was called for domain=' . $domain . ' 
-			but language was not set yet with langs->setDefaultLang(). Nothing will be loaded.', PM_LOG_WARNING);
+            pm_syslog(
+                'Error: ' . get_class($this) . '::load was called for domain=' . $domain . ' 
+			but language was not set yet with langs->setDefaultLang(). Nothing will be loaded.',
+                PM_LOG_WARNING
+            );
 
             return -1;
         }
@@ -287,12 +290,16 @@ class Translator
             $str = $this->tab_translate[$key];
 
             $str = str_replace(
-                ['"', '<b>', '</b>', '<u>', '</u>', '<i', '</i>',
-                 '<strong>', '</strong>', '<a ', '</a>', '<br>',
-                 '<span', '</span>', '< ', '>'],
-                ['__quot__', '__tagb__', '__tagbend__', '__tagu__', '__taguend__',
-                 '__tagi__', '__tagiend__', '__tagb__', '__tagbend__', '__taga__', '__tagaend__',
-                 '__tagbr__', '__tagspan__', '__tagspanend__', '__ltspace__', '__gt__'],
+                [
+                    '"', '<b>', '</b>', '<u>', '</u>', '<i', '</i>',
+                    '<strong>', '</strong>', '<a ', '</a>', '<br>',
+                    '<span', '</span>', '< ', '>',
+                ],
+                [
+                    '__quot__', '__tagb__', '__tagbend__', '__tagu__', '__taguend__',
+                    '__tagi__', '__tagiend__', '__tagb__', '__tagbend__', '__taga__', '__tagaend__',
+                    '__tagbr__', '__tagspan__', '__tagspanend__', '__ltspace__', '__gt__',
+                ],
                 $str
             );
 
@@ -303,11 +310,15 @@ class Translator
             $str = htmlentities($str, ENT_COMPAT, $this->charset_output); // Do not convert simple quotes in translation
 
             return str_replace(
-                ['__quot__', '__tagb__', '__tagbend__', '__tagu__', '__taguend__',
-                 '__tagi__', '__tagiend__', '__taga__', '__tagaend__', '__tagbr__',
-                 '__tagspan__', '__tagspanend__', '__ltspace__', '__gt__'],
-                ['"', '<b>', '</b>', '<u>', '</u>', '<i', '</i>',
-                 '<a ', '</a>', '<br>', '<span', '</span>', '< ', '>'],
+                [
+                    '__quot__', '__tagb__', '__tagbend__', '__tagu__', '__taguend__',
+                    '__tagi__', '__tagiend__', '__taga__', '__tagaend__', '__tagbr__',
+                    '__tagspan__', '__tagspanend__', '__ltspace__', '__gt__',
+                ],
+                [
+                    '"', '<b>', '</b>', '<u>', '</u>', '<i', '</i>',
+                    '<a ', '</a>', '<br>', '<span', '</span>', '< ', '>',
+                ],
                 $str
             );
         } else {

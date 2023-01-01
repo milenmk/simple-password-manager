@@ -4,7 +4,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: index.php
- *  Last Modified: 2.01.23 г., 1:22 ч.
+ *  Last Modified: 2.01.23 г., 1:27 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
@@ -42,7 +42,7 @@ try {
 
 // Check if the user is logged in, if not then redirect him to login page
 if (!isset($user->id) || $user->id < 1) {
-    header('Location: '.PM_MAIN_URL_ROOT.'/login.php');
+    header('Location: ' . PM_MAIN_URL_ROOT . '/login.php');
     exit;
 }
 
@@ -112,11 +112,11 @@ if ($action == 'add_domain') {
             'app_title' => PM_MAIN_APPLICATION_TITLE,
             'main_url'  => PM_MAIN_URL_ROOT,
             'css_array' => $css_array,
-            'js_array' => $js_array,
+            'js_array'  => $js_array,
             'user'      => $user,
             'title'     => $title,
-            'error'   => $errors,
-            'message' => $messages,
+            'error'     => $errors,
+            'message'   => $messages,
         ]
     );
 } elseif ($action == 'edit_domain') {
@@ -129,13 +129,13 @@ if ($action == 'add_domain') {
             'app_title' => PM_MAIN_APPLICATION_TITLE,
             'main_url'  => PM_MAIN_URL_ROOT,
             'css_array' => $css_array,
-            'js_array' => $js_array,
+            'js_array'  => $js_array,
             'user'      => $user,
             'title'     => $title,
-            'error'   => $errors,
-            'message' => $messages,
-            'res'      => $res,
-            'count'    => $langs->trans('NumRecords', count($res)),
+            'error'     => $errors,
+            'message'   => $messages,
+            'res'       => $res,
+            'count'     => $langs->trans('NumRecords', count($res)),
         ]
     );
 } else {
@@ -152,13 +152,13 @@ if ($action == 'add_domain') {
             'app_title' => PM_MAIN_APPLICATION_TITLE,
             'main_url'  => PM_MAIN_URL_ROOT,
             'css_array' => $css_array,
-            'js_array' => $js_array,
+            'js_array'  => $js_array,
             'user'      => $user,
             'title'     => $title,
-            'error'   => $errors,
-            'message' => $messages,
-            'res'      => $res,
-            'count'    => $langs->trans('NumRecords', count($res)),
+            'error'     => $errors,
+            'message'   => $messages,
+            'res'       => $res,
+            'count'     => $langs->trans('NumRecords', count($res)),
         ]
     );
 }

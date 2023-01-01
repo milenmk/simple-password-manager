@@ -4,7 +4,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: index.php
- *  Last Modified: 1.01.23 г., 21:06 ч.
+ *  Last Modified: 2.01.23 г., 1:27 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
@@ -54,82 +54,84 @@ session_start();
         print '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>' . "\n";
         ?>
 
-<?php
-print "</head>\n";
+        <?php
+        print "</head>\n";
 
-$error = '';
-$lockerror = '';
-$lockfile = '../../docs/install.lock';
-if (file_exists($lockfile)) {
-    $lockerror = 'Install pages have been disabled for security (by the existence of a lock file <strong>install.lock</strong> in the docs directory).<br>';
-    $lockerror .= 'If you always reach this page, you must remove install.lock file manually.<br>';
-    $error++;
-}
-
-$action = $_POST['action'] ? : 'view';
-$session_error = $_SESSION['error'];
-
-//Actions
-if ($action == 'check_connection' && (!$error || !$lockerror)) {
-    $db_prefix = $_POST['db_prefix'];
-
-    if (strlen($db_prefix) > 5) {
-        $error = 'Table prefix cannot be more than 5 characters';
-    }
-
-    if (!$error) {
-        $main_url_root = $_POST['main_url_root'];
-        $main_document_root = $_POST['main_document_root'];
-        $server = $_POST['db_host'];
-        $port = $_POST['db_port'];
-        $db = $_POST['db_name'];
-        $username = $_POST['db_user'];
-        $password = $_POST['db_pass'];
-        $charset = $_POST['db_character_set'];
-        $collation = $_POST['db_collation'];
-        $create_db = $_POST['create_database'];
-        $root_user = $_POST['root_db_user'];
-        $root_password = $_POST['root_db_pass'];
-        $application_title = $_POST['application_title'];
-
-        $_SESSION['main_url_root'] = $main_url_root;
-        $_SESSION['main_document_root'] = $main_document_root;
-        $_SESSION['db_host'] = $server;
-        $_SESSION['db_port'] = $port;
-        $_SESSION['db_prefix'] = $db_prefix;
-        $_SESSION['db_name'] = $db;
-        $_SESSION['db_user'] = $username;
-        $_SESSION['db_pass'] = $password;
-        $_SESSION['db_character_set'] = $charset;
-        $_SESSION['db_collation'] = $collation;
-        $_SESSION['create_database'] = $create_db;
-        $_SESSION['root_db_user'] = $root_user;
-        $_SESSION['root_db_pass'] = $root_password;
-        $_SESSION['application_title'] = $application_title;
-        try {
-            $conn = new PDO("mysql:host=$server;dbname=$db;port=$port", $username, $password);
-            $conn->exec('set names ' . $charset);
-        } catch (PDOException $e) {
-            $error = 'Connection failed: ' . $e->getMessage();
-            $action = 'view';
+        $error = '';
+        $lockerror = '';
+        $lockfile = '../../docs/install.lock';
+        if (file_exists($lockfile)) {
+            $lockerror = 'Install pages have been disabled for security (by the existence of a lock file <strong>install.lock</strong> in the docs directory).<br>';
+            $lockerror .= 'If you always reach this page, you must remove install.lock file manually.<br>';
+            $error++;
         }
-        if ($error) {
-            $error = '';
-            try {
-                $conn = new PDO("mysql:host=$server;port=$port", $root_user, $root_password);
-                $conn->exec('set names ' . $charset);
-            } catch (PDOException $e) {
-                $error = 'Connection failed: ' . $e->getMessage();
-                $action = 'view';
+
+        $action = $_POST['action'] ? : 'view';
+        $session_error = $_SESSION['error'];
+
+        //Actions
+        if ($action == 'check_connection' && (!$error || !$lockerror)) {
+            $db_prefix = $_POST['db_prefix'];
+
+            if (strlen($db_prefix) > 5) {
+                $error = 'Table prefix cannot be more than 5 characters';
+            }
+
+            if (!$error) {
+                $main_url_root = $_POST['main_url_root'];
+                $main_document_root = $_POST['main_document_root'];
+                $server = $_POST['db_host'];
+                $port = $_POST['db_port'];
+                $db = $_POST['db_name'];
+                $username = $_POST['db_user'];
+                $password = $_POST['db_pass'];
+                $charset = $_POST['db_character_set'];
+                $collation = $_POST['db_collation'];
+                $create_db = $_POST['create_database'];
+                $root_user = $_POST['root_db_user'];
+                $root_password = $_POST['root_db_pass'];
+                $application_title = $_POST['application_title'];
+
+                $_SESSION['main_url_root'] = $main_url_root;
+                $_SESSION['main_document_root'] = $main_document_root;
+                $_SESSION['db_host'] = $server;
+                $_SESSION['db_port'] = $port;
+                $_SESSION['db_prefix'] = $db_prefix;
+                $_SESSION['db_name'] = $db;
+                $_SESSION['db_user'] = $username;
+                $_SESSION['db_pass'] = $password;
+                $_SESSION['db_character_set'] = $charset;
+                $_SESSION['db_collation'] = $collation;
+                $_SESSION['create_database'] = $create_db;
+                $_SESSION['root_db_user'] = $root_user;
+                $_SESSION['root_db_pass'] = $root_password;
+                $_SESSION['application_title'] = $application_title;
+                try {
+                    $conn = new PDO("mysql:host=$server;dbname=$db;port=$port", $username, $password);
+                    $conn->exec('set names ' . $charset);
+                }
+                catch (PDOException $e) {
+                    $error = 'Connection failed: ' . $e->getMessage();
+                    $action = 'view';
+                }
+                if ($error) {
+                    $error = '';
+                    try {
+                        $conn = new PDO("mysql:host=$server;port=$port", $root_user, $root_password);
+                        $conn->exec('set names ' . $charset);
+                    }
+                    catch (PDOException $e) {
+                        $error = 'Connection failed: ' . $e->getMessage();
+                        $action = 'view';
+                    }
+                }
+                if (!$error) {
+                    header('Location: step1.php');
+                }
             }
         }
-        if (!$error) {
-            header('Location: step1.php');
-        }
-    }
-}
 
-?>
+        ?>
     <body class="d-flex vh-100 flex-column">
     <div class="flex-grow-1">
         <nav class="navbar navbar-expand bg-body-tertiary">
@@ -170,7 +172,7 @@ if ($action == 'check_connection' && (!$error || !$lockerror)) {
                     <div class="col-sm-9">
                         <label for="mainUrlRoot"></label>
                         <input type="text" name="main_url_root" class="form-control" id="mainUrlRoot"
-                                                                value="<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['CONTEXT_PREFIX'] ?>" required>
+                               value="<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['CONTEXT_PREFIX'] ?>" required>
                     </div>
                 </div>
                 <div class="mb-3 row">

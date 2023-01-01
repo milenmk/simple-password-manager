@@ -94,6 +94,7 @@ class Config
         } catch (Exception $e) {
             $error = $e->getMessage();
             pm_syslog('Cannot load config file with error ' . $error, LOG_ERR);
+
             return 'Config file not found!';
         }
 

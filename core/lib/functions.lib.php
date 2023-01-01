@@ -446,6 +446,6 @@ function pm_logout_block()
         // Destroy the session.
         session_destroy();
 
-        header('Location: '.PM_MAIN_URL_ROOT);
+        header('Location: ' . PM_MAIN_URL_ROOT);
     }
 }

@@ -4,7 +4,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: records.php
- *  Last Modified: 2.01.23 г., 1:10 ч.
+ *  Last Modified: 2.01.23 г., 1:27 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
@@ -42,7 +42,7 @@ try {
 
 // Check if the user is logged in, if not then redirect him to login page
 if (!isset($user->id) || $user->id < 1) {
-    header('Location: '.PM_MAIN_URL_ROOT.'/login.php');
+    header('Location: ' . PM_MAIN_URL_ROOT . '/login.php');
     exit;
 }
 
@@ -111,7 +111,7 @@ if ($action == 'edit') {
     }
     $result = $records->update();
     if ($result > 0) {
-        header('Location: '.PM_MAIN_URL_ROOT.'/records.php');
+        header('Location: ' . PM_MAIN_URL_ROOT . '/records.php');
     }
 }
 //Action to delete
@@ -160,8 +160,8 @@ if ($action == 'add_record') {
             'title'     => $title,
             'error'     => $errors,
             'message'   => $messages,
-            'res1'     => $res1,
-            'res2'     => $res2,
+            'res1'      => $res1,
+            'res2'      => $res2,
         ]
     );
 } else {

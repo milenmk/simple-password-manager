@@ -154,7 +154,7 @@ class User
         $array_to_update = [];
         if (!empty($update_password) && !empty($password)) {
             $this->password = password_hash($password, PASSWORD_DEFAULT);
-            $array_to_update = ['password' =>$this->password];
+            $array_to_update = ['password' => $this->password];
         } else {
             foreach ($this->array_of_fields as $field) {
                 if (isset($this->$field) && $this->$field != 0 || !empty($this->$field)) {

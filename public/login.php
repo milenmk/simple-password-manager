@@ -4,7 +4,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: login.php
- *  Last Modified: 1.01.23 г., 21:52 ч.
+ *  Last Modified: 2.01.23 г., 1:27 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0

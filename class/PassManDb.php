@@ -4,7 +4,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: PassManDb.php
- *  Last Modified: 2.01.23 г., 0:07 ч.
+ *  Last Modified: 2.01.23 г., 1:27 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
@@ -261,7 +261,6 @@ class PassManDb
         if (!$this->db->inTransaction()) {
             $this->db->beginTransaction();
         }
-
 
         try {
             $result = $query->execute();

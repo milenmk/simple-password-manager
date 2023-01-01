@@ -4,7 +4,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: main.inc.php
- *  Last Modified: 2.01.23 г., 1:17 ч.
+ *  Last Modified: 2.01.23 г., 1:27 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
@@ -111,8 +111,8 @@ if (isset($user->id) && $user->id > 0) {
 //Load language
 $langs->loadLangs(['main', 'errors']);
 
-$messages = $_SESSION['PM_MESSAGE'] ? $langs->trans(''.$_SESSION['PM_MESSAGE']) : '';
-$errors = $_SESSION['PM_ERROR'] ? $langs->trans(''.$_SESSION['PM_ERROR']) : '';
+$messages = $_SESSION['PM_MESSAGE'] ? $langs->trans('' . $_SESSION['PM_MESSAGE']) : '';
+$errors = $_SESSION['PM_ERROR'] ? $langs->trans('' . $_SESSION['PM_ERROR']) : '';
 
 //Define css and .js files array for loading for themes different from default
 if ($theme != 'default') {
@@ -160,6 +160,7 @@ $open_ssl = new TwigFunction(
             print 'Cannot load file "docs/secret.key"!';
             die();
         }
+
         return openssl_decrypt($password, $ciphering, $decryption_key, $options, $decryption_iv);
     }
 );
@@ -168,6 +169,7 @@ $twig->addFunction($open_ssl);
 $unset = new TwigFunction(
     'unset',
     function ($var) {
+
         unset($_SESSION[$var]);
     }
 );
