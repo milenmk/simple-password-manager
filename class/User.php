@@ -140,7 +140,8 @@ class User
     }
 
     /**
-     * Update record in database
+     * @param string $password        New password
+     * @param string $update_password If 1, we update password ONLY, else update everything BUT the password
      *
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception

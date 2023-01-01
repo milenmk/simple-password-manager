@@ -70,7 +70,7 @@ pm_logout_block();
 //Action to create
 if ($action == 'create') {
     $domains->label = $label;
-    $domains->fk_user = 1;
+    $domains->fk_user = $user->id;
     $result = $domains->create();
     if ($result > 0) {
         $action = 'view';

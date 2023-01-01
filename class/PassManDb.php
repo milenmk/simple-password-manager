@@ -154,6 +154,7 @@ class PassManDb
                 $this->database_selected = true;
                 $this->database_name = $name;
                 $this->ok = true;
+                $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } else {
                 $this->database_selected = false;
                 $this->database_name = '';
@@ -214,6 +215,8 @@ class PassManDb
         try {
             $this->db = new PDO("mysql:host=$host;dbname=$name;port=$port;charset=$charset;collation=$collation", $login, $passwd);
 
+            $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
             return $this->db;
         } catch (PDOException $e) {
             $this->error = 'Connection failed: ' . $e->getMessage();
@@ -259,20 +262,31 @@ class PassManDb
             $this->db->beginTransaction();
         }
 
+
         try {
-            $query->execute();
-            pm_syslog(get_class($this) . ':: record with id=' . $this->db->lastInsertId() . ' inserted into ' . $table_element, PM_LOG_INFO);
+            $result = $query->execute();
 
-            $this->db->commit();
+            if ($result) {
+                pm_syslog(get_class($this) . ':: record with id=' . $this->db->lastInsertId() . ' inserted into ' . $table_element, PM_LOG_INFO);
 
-            return 1;
+                $this->db->commit();
+
+                return 1;
+            } else {
+                $this->db->rollBack();
+
+                pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
+
+                return -1;
+            }
         } catch (PDOException $e) {
             $this->db->rollBack();
+
             $this->error = $e->getMessage();
 
             pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
 
-            return -2;
+            return $this->error;
         }
     }
 
@@ -324,7 +338,7 @@ class PassManDb
 
             pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
 
-            return -2;
+            return $this->error;
         }
     }
 
@@ -365,7 +379,7 @@ class PassManDb
 
             pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
 
-            return -2;
+            return $this->error;
         }
     }
 
@@ -497,7 +511,7 @@ class PassManDb
             $this->error = $e->getMessage();
             pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
 
-            return -2;
+            return $this->error;
         }
     }
 
@@ -624,7 +638,7 @@ class PassManDb
             $this->error = $e->getMessage();
             pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
 
-            return -2;
+            return $this->error;
         }
     }
 

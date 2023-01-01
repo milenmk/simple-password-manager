@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <form method="get">
-        <input type="hidden" name="action" value="confirm_edit"/>
+    <form method="post">
+        <input type="hidden" name="action" value="edit"/>
         <input type="hidden" name="id" value="{{ res2.id }}"/>
         <table class="table table-success table-striped">
             <thead>
@@ -34,25 +34,27 @@
                     <td>
                         <label>
                             <select name="type">
-                                <option value="1">DATABASE</option>
-                                <option value="2">WEBSITE</option>
-                                <option value="3">FTP_SERVER</option>
+                                {% if res2.type == 1 %}
+                                    <option value="1" selected>{{ langs.trans('Database') }}</option>
+                                    <option value="2">{{ langs.trans('Website') }}</option>
+                                    <option value="3">{{ langs.trans('FTP') }}</option>
+                                {% elseif res2.type == 2 %}
+                                    <option value="1">{{ langs.trans('Database') }}</option>
+                                    <option value="2" selected>{{ langs.trans('Website') }}</option>
+                                    <option value="3">{{ langs.trans('FTP') }}</option>
+                                {% elseif res2.type == 3 %}
+                                    <option value="1">{{ langs.trans('Database') }}</option>
+                                    <option value="2">{{ langs.trans('Website') }}</option>
+                                    <option value="3" selected>{{ langs.trans('FTP') }}</option>
+                                {% endif %}
                             </select>
                         </label>
                     </td>
-                    {% if res2.is_db > 0 %}
-                        <td><label>
-                                <input type="text" name="url" value="{{ res2.dbase_name }}"/>
-                            </label></td>
-                    {% elseif res2.is_site > 0 %}
-                        <td><label>
-                                <input type="text" name="url" value="{{ res2.url }}"/>
-                            </label></td>
-                    {% elseif res2.is_ftp > 0 %}
-                        <td><label>
-                                <input type="text" name="url" value="{{ res2.ftp_server }}"/>
-                            </label></td>
-                    {% endif %}
+                    <td>
+                        <label>
+                            <input type="text" name="url" value="{{ res2.url }}"/>
+                        </label>
+                    </td>
                     <td>
                         <label>
                             <input type="text" name="username" value="{{ res2.username }}"/>
@@ -60,7 +62,8 @@
                     </td>
                     <td>
                         <label>
-                            <input type="password" name="password" value="{{ res2.password }}"/>
+                            {% set password = openssl(res2.pass_crypted) %}
+                            <input type="password" name="password" value="{{ password }}"/>
                         </label>
                     </td>
                     <td>

@@ -47,25 +47,9 @@ class Records
      */
     public int $fk_domain;
     /**
-     * @var bool
+     * @var int
      */
-    public bool $is_db;
-    /**
-     * @var bool
-     */
-    public bool $is_site;
-    /**
-     * @var bool
-     */
-    public bool $is_ftp;
-    /**
-     * @var string
-     */
-    public string $dbase_name;
-    /**
-     * @var string
-     */
-    public string $ftp_server;
+    public int $type;
     /**
      * @var string
      */
@@ -74,10 +58,6 @@ class Records
      * @var string
      */
     public string $username;
-    /**
-     * @var string
-     */
-    public string $password;
     /**
      * @var string
      */
@@ -93,7 +73,7 @@ class Records
     /**
      * @var array Array of fields to fetch from database
      */
-    public array $array_of_fields = ['fk_domain', 'is_db', 'is_site', 'is_ftp', 'dbase_name', 'ftp_server', 'url', 'username', 'pass_crypted', 'fk_user'];
+    public array $array_of_fields = ['fk_domain', 'type', 'url', 'username', 'pass_crypted', 'fk_user'];
 
     /**
      * @var string Does the object has Parent class to call values from
