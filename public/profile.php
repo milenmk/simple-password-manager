@@ -31,8 +31,8 @@ include_once('../includes/main.inc.php');
 
 // Check if the user is logged in, if not then redirect him to login page
 if (!isset($user->id) || $user->id < 1) {
-	echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/login.php";});</script>';
-	exit;
+    echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/login.php";});</script>';
+    exit;
 }
 
 $error = '';
@@ -73,148 +73,145 @@ $user->language = $res['language'];
  * Actions
  */
 if ($action == 'update_user') {
+    $user->first_name = $first_name;
+    $user->last_name = $last_name;
+    $user->username = $username;
+    $user->theme = $user_theme;
+    $user->language = $user_language;
 
-	$user->first_name = $first_name;
-	$user->last_name = $last_name;
-	$user->username = $username;
-	$user->theme = $user_theme;
-	$user->language = $user_language;
-
-	$result = $user->update($new_password);
-	if ($result > 0) {
-		$action = 'view';
-		header('Location: profile.php');
-	} else {
-		$error = $user->error;
-		$action = 'view';
-	}
+    $result = $user->update($new_password);
+    if ($result > 0) {
+        $action = 'view';
+        header('Location: profile.php');
+    } else {
+        $error = $user->error;
+        $action = 'view';
+    }
 }
 if ($action == 'change_password') {
+    // Check if input fields are is empty
+    if (empty(trim($old_password))) {
+        $error = $langs->trans('PasswordEmpty');
+    } else {
+        $old_password = trim($old_password);
+    }
+    if (empty(trim($new_password))) {
+        $error = $langs->trans('PasswordNewEmpty');
+    } else {
+        $new_password = trim($new_password);
+    }
+    if (empty(trim($confirm_password))) {
+        $error = $langs->trans('PasswordNewConfirmEmpty');
+    } else {
+        $confirm_password = trim($confirm_password);
+    }
+    if ($new_password != $confirm_password) {
+        $error = $langs->trans('PasswordsDidNotMatch');
+    }
 
-	// Check if input fields are is empty
-	if (empty(trim($old_password))) {
-		$error = $langs->trans('PasswordEmpty');
-	} else {
-		$old_password = trim($old_password);
-	}
-	if (empty(trim($new_password))) {
-		$error = $langs->trans('PasswordNewEmpty');
-	} else {
-		$new_password = trim($new_password);
-	}
-	if (empty(trim($confirm_password))) {
-		$error = $langs->trans('PasswordNewConfirmEmpty');
-	} else {
-		$confirm_password = trim($confirm_password);
-	}
-	if ($new_password != $confirm_password) {
-		$error = $langs->trans('PasswordsDidNotMatch');
-	}
+    if (!$error) {
+        $result = $user->fetch($user->id, '', '', '', '', '', '', '', $old_password);
+        if (!empty($result) && $result > 0) {
+            $res = $user->update($new_password);
 
-	if (!$error) {
-		$result = $user->fetch($user->id, '', '', '', '', '', '', '', $old_password);
-		if (!empty($result) && $result > 0) {
-			$res = $user->update($new_password);
-
-			if ($res > 0) {
-				$message = $langs->trans('PassUpdateSuccess');
-			} else {
-				$error = $user->error;
-			}
-		}
-	}
-	$action = 'edit_password';
+            if ($res > 0) {
+                $message = $langs->trans('PassUpdateSuccess');
+            } else {
+                $error = $user->error;
+            }
+        }
+    }
+    $action = 'edit_password';
 }
 
 /*
  * View
  */
 print $twig->render(
-	'nav_menu.html.twig',
-	[
-		'langs'     => $langs,
-		'theme'     => $theme,
-		'app_title' => PM_MAIN_APPLICATION_TITLE,
-		'main_url'  => PM_MAIN_URL_ROOT,
-		'user'      => $user,
-		'title'     => $title,
-	]
+    'nav_menu.html.twig',
+    [
+        'langs'     => $langs,
+        'theme'     => $theme,
+        'app_title' => PM_MAIN_APPLICATION_TITLE,
+        'main_url'  => PM_MAIN_URL_ROOT,
+        'user'      => $user,
+        'title'     => $title,
+    ]
 );
 
 $message = $twig->render(
-	'messageblock.html.twig',
-	[
-		'error'   => $error,
-		'message' => $message,
-	]
+    'messageblock.html.twig',
+    [
+        'error'   => $error,
+        'message' => $message,
+    ]
 );
 
 if ($action == 'view' || empty($action)) {
+    print $message;
 
-	print $message;
+    $theme_array = [];
+    $theme_folders = array_filter(glob(PM_MAIN_APP_ROOT . '/public/themes/*'), 'is_dir');
+    foreach ($theme_folders as $folder) {
+        $folder = substr(strrchr($folder, '/'), 1);
+        $theme_array[] = $folder;
+    }
 
-	$theme_array = [];
-	$theme_folders = array_filter(glob(PM_MAIN_APP_ROOT . '/public/themes/*'), 'is_dir');
-	foreach ($theme_folders as $folder) {
-		$folder = substr(strrchr($folder, '/'), 1);
-		$theme_array[] = $folder;
-	}
+    $lang_array = [];
+    $lang_folders = array_filter(glob(PM_MAIN_APP_ROOT . '/langs/*'), 'is_dir');
+    foreach ($lang_folders as $folder) {
+        $folder = substr(strrchr($folder, '/'), 1);
+        $lang_array[] = $folder;
+    }
 
-	$lang_array = [];
-	$lang_folders = array_filter(glob(PM_MAIN_APP_ROOT . '/langs/*'), 'is_dir');
-	foreach ($lang_folders as $folder) {
-		$folder = substr(strrchr($folder, '/'), 1);
-		$lang_array[] = $folder;
-	}
-
-	print $twig->render(
-		'user/profile.html.twig',
-		[
-			'langs'    => $langs,
-			'main_url' => PM_MAIN_URL_ROOT,
-			'theme'    => $theme,
-			'user'     => $user,
-			'theme_folders'  => $theme_array,
-			'lang_folders'  => $lang_array,
-		]
-	);
+    print $twig->render(
+        'user/profile.html.twig',
+        [
+            'langs'    => $langs,
+            'main_url' => PM_MAIN_URL_ROOT,
+            'theme'    => $theme,
+            'user'     => $user,
+            'theme_folders'  => $theme_array,
+            'lang_folders'  => $lang_array,
+        ]
+    );
 } elseif ($action == 'edit_password') {
-	print $message;
-	print $twig->render(
-		'user/edit_password.html.twig',
-		[
-			'langs'    => $langs,
-			'main_url' => PM_MAIN_URL_ROOT,
-			'theme'    => $theme,
-		]
-	);
+    print $message;
+    print $twig->render(
+        'user/edit_password.html.twig',
+        [
+            'langs'    => $langs,
+            'main_url' => PM_MAIN_URL_ROOT,
+            'theme'    => $theme,
+        ]
+    );
 }
 
 print $twig->render(
-	'footer.html.twig',
-	[
-		'langs' => $langs,
-		'theme' => $theme,
-	]
+    'footer.html.twig',
+    [
+        'langs' => $langs,
+        'theme' => $theme,
+    ]
 );
 
 if ($theme != 'default') {
-	$js_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/js/';
+    $js_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/js/';
 
-	if (is_dir($js_path)) {
-		$js_array = [];
-		foreach (array_filter(glob($js_path . '*.js'), 'is_file') as $file) {
-			$js_array[] = str_replace($js_path, '', $file);
-		}
-	}
+    if (is_dir($js_path)) {
+        $js_array = [];
+        foreach (array_filter(glob($js_path . '*.js'), 'is_file') as $file) {
+            $js_array[] = str_replace($js_path, '', $file);
+        }
+    }
 }
 print $twig->render(
-	'javascripts.html.twig',
-	[
-		'theme'    => $theme,
-		'main_url' => PM_MAIN_URL_ROOT,
-		'js_array' => $js_array,
-	]
+    'javascripts.html.twig',
+    [
+        'theme'    => $theme,
+        'main_url' => PM_MAIN_URL_ROOT,
+        'js_array' => $js_array,
+    ]
 );
 
 print $twig->render('endpage.html.twig');

@@ -40,13 +40,12 @@ include_once('../vendor/autoload.php');
 $config = new config();
 
 if ($config < 1) {
-	try {
-		pm_syslog('ERROR: CANNOT CONNECT TO DATABASE SERVER', LOG_ERR);
-	}
-	catch (Exception $e) {
-		print $e->getMessage();
-		die();
-	}
+    try {
+        pm_syslog('ERROR: CANNOT CONNECT TO DATABASE SERVER', LOG_ERR);
+    } catch (Exception $e) {
+        print $e->getMessage();
+        die();
+    }
 }
 
 //Define some global constants from conf file
@@ -73,75 +72,72 @@ $user = new user($db);
 
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-	try {
-		$res = $user->fetch($_SESSION['id']);
-		$user->id = (int)$res['id'];
-		$user->first_name = $res['first_name'];
-		$user->last_name = $res['last_name'];
-		$user->username = $res['username'];
-		$user->theme = $res['theme'];
-		$user->language = $res['language'];
-	}
-	catch (Exception $e) {
-		$error = $e->getMessage();
-		pm_syslog('Error trying to fetch user with ID ' . $_SESSION['id'] . ' with error ' . $error, LOG_ERR);
-	}
+    try {
+        $res = $user->fetch($_SESSION['id']);
+        $user->id = (int)$res['id'];
+        $user->first_name = $res['first_name'];
+        $user->last_name = $res['last_name'];
+        $user->username = $res['username'];
+        $user->theme = $res['theme'];
+        $user->language = $res['language'];
+    } catch (Exception $e) {
+        $error = $e->getMessage();
+        pm_syslog('Error trying to fetch user with ID ' . $_SESSION['id'] . ' with error ' . $error, LOG_ERR);
+    }
 }
 
 if (isset($user->id) && $user->id > 0) {
-	$theme = $user->theme;
-	$language = $user->language;
+    $theme = $user->theme;
+    $language = $user->language;
 } else {
-	$theme = 'default';
+    $theme = 'default';
 }
 
 //Load language
 if ($language) {
-	$langs->setDefaultLang($language);
+    $langs->setDefaultLang($language);
 } else {
-	$langs->setDefaultLang('auto');
+    $langs->setDefaultLang('auto');
 }
 try {
-	$langs->loadLangs(['main']);
-}
-catch (Exception $e) {
-	print $e->getMessage();
+    $langs->loadLangs(['main']);
+} catch (Exception $e) {
+    print $e->getMessage();
 }
 
 //Define css and .js files array for loading for themes different from default
 if ($theme != 'default') {
-	$css_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/css/';
+    $css_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/css/';
 
-	if (is_dir($css_path)) {
-		$css_array = [];
-		foreach (array_filter(glob($css_path . '*.css'), 'is_file') as $file) {
-			$css_array[] = str_replace($css_path, '', $file);
-		}
-	}
+    if (is_dir($css_path)) {
+        $css_array = [];
+        foreach (array_filter(glob($css_path . '*.css'), 'is_file') as $file) {
+            $css_array[] = str_replace($css_path, '', $file);
+        }
+    }
 }
 
 //load twig
 $loader = new FilesystemLoader(PM_MAIN_DOCUMENT_ROOT . '/templates/' . $theme);
 $twig = new Environment(
-	$loader, [
-			   'debug' => true,
-		   ]
+    $loader,
+    [
+               'debug' => true,
+           ]
 );
 $twig->addExtension(new DebugExtension());
 
 try {
-	print $twig->render(
-		'header.html.twig',
-		[
-			'langs'     => $langs,
-			'theme'     => $theme,
-			'app_title' => PM_MAIN_APPLICATION_TITLE,
-			'main_url'  => PM_MAIN_URL_ROOT,
-			'css_array' => $css_array,
-		]
-	);
+    print $twig->render(
+        'header.html.twig',
+        [
+            'langs'     => $langs,
+            'theme'     => $theme,
+            'app_title' => PM_MAIN_APPLICATION_TITLE,
+            'main_url'  => PM_MAIN_URL_ROOT,
+            'css_array' => $css_array,
+        ]
+    );
+} catch (LoaderError|RuntimeError|SyntaxError $e) {
+    print $e->getMessage();
 }
-catch (LoaderError|RuntimeError|SyntaxError $e) {
-	print $e->getMessage();
-}
-

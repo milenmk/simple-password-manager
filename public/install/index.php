@@ -26,7 +26,7 @@ declare(strict_types = 1);
  */
 
 if (file_exists('../../conf/conf.php')) {
-	header('Location: ../index.php');
+    header('Location: ../index.php');
 }
 
 session_start();
@@ -38,21 +38,21 @@ session_start();
         <meta name="robots" content="noindex,nofollow">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="blacktiehost.com">
-		<?php
-		$favicon = '../themes/default/img/favicon.png';
-		print '<link rel="shortcut icon" type="image/x-icon" href="' . $favicon . '"/>' . "\n";
+        <?php
+        $favicon = '../themes/default/img/favicon.png';
+        print '<link rel="shortcut icon" type="image/x-icon" href="' . $favicon . '"/>' . "\n";
 
-		$themepathcss = '../themes/default/css';
-		$themeuricss = htmlspecialchars($_SERVER['REQUEST_SCHEME']) . '://' . htmlspecialchars($_SERVER['HTTP_HOST']) . htmlspecialchars($_SERVER['CONTEXT_PREFIX']) . '/themes/default/css';
-		foreach (glob($themepathcss . '/*.css') as $css) {
-			$file = str_replace($themepathcss, $themeuricss, $css);
-			print '<link type="text/css" rel="stylesheet" href="' . htmlspecialchars($file) . '">' . "\n";
-		}
+        $themepathcss = '../themes/default/css';
+        $themeuricss = htmlspecialchars($_SERVER['REQUEST_SCHEME']) . '://' . htmlspecialchars($_SERVER['HTTP_HOST']) . htmlspecialchars($_SERVER['CONTEXT_PREFIX']) . '/themes/default/css';
+        foreach (glob($themepathcss . '/*.css') as $css) {
+            $file = str_replace($themepathcss, $themeuricss, $css);
+            print '<link type="text/css" rel="stylesheet" href="' . htmlspecialchars($file) . '">' . "\n";
+        }
 
-print '<script src="../themes/default/js/validation.js"></script>' . "\n";
-print '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>' . "\n";
-print '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>' . "\n";
-?>
+        print '<script src="../themes/default/js/validation.js"></script>' . "\n";
+        print '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>' . "\n";
+        print '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>' . "\n";
+        ?>
 
 <?php
 print "</head>\n";
@@ -61,8 +61,8 @@ $error = '';
 $lockerror = '';
 $lockfile = '../../docs/install.lock';
 if (file_exists($lockfile)) {
-	$lockerror = 'Install pages have been disabled for security (by the existence of a lock file <strong>install.lock</strong> in the docs directory).<br>';
-	$lockerror .= 'If you always reach this page, you must remove install.lock file manually.<br>';
+    $lockerror = 'Install pages have been disabled for security (by the existence of a lock file <strong>install.lock</strong> in the docs directory).<br>';
+    $lockerror .= 'If you always reach this page, you must remove install.lock file manually.<br>';
     $error++;
 }
 
@@ -71,65 +71,62 @@ $session_error = $_SESSION['error'];
 
 //Actions
 if ($action == 'check_connection' && (!$error || !$lockerror)) {
+    $db_prefix = $_POST['db_prefix'];
 
-	$db_prefix = $_POST['db_prefix'];
+    if (strlen($db_prefix) > 5) {
+        $error = 'Table prefix cannot be more than 5 characters';
+    }
 
-	if (strlen($db_prefix) > 5) {
-		$error = 'Table prefix cannot be more than 5 characters';
-	}
+    if (!$error) {
+        $main_url_root = $_POST['main_url_root'];
+        $main_document_root = $_POST['main_document_root'];
+        $server = $_POST['db_host'];
+        $port = $_POST['db_port'];
+        $db = $_POST['db_name'];
+        $username = $_POST['db_user'];
+        $password = $_POST['db_pass'];
+        $charset = $_POST['db_character_set'];
+        $collation = $_POST['db_collation'];
+        $create_db = $_POST['create_database'];
+        $root_user = $_POST['root_db_user'];
+        $root_password = $_POST['root_db_pass'];
+        $application_title = $_POST['application_title'];
 
-	if (!$error) {
-		$main_url_root = $_POST['main_url_root'];
-		$main_document_root = $_POST['main_document_root'];
-		$server = $_POST['db_host'];
-		$port = $_POST['db_port'];
-		$db = $_POST['db_name'];
-		$username = $_POST['db_user'];
-		$password = $_POST['db_pass'];
-		$charset = $_POST['db_character_set'];
-		$collation = $_POST['db_collation'];
-		$create_db = $_POST['create_database'];
-		$root_user = $_POST['root_db_user'];
-		$root_password = $_POST['root_db_pass'];
-		$application_title = $_POST['application_title'];
-
-		$_SESSION['main_url_root'] = $main_url_root;
-		$_SESSION['main_document_root'] = $main_document_root;
-		$_SESSION['db_host'] = $server;
-		$_SESSION['db_port'] = $port;
-		$_SESSION['db_prefix'] = $db_prefix;
-		$_SESSION['db_name'] = $db;
-		$_SESSION['db_user'] = $username;
-		$_SESSION['db_pass'] = $password;
-		$_SESSION['db_character_set'] = $charset;
-		$_SESSION['db_collation'] = $collation;
-		$_SESSION['create_database'] = $create_db;
-		$_SESSION['root_db_user'] = $root_user;
-		$_SESSION['root_db_pass'] = $root_password;
-		$_SESSION['application_title'] = $application_title;
-		try {
-			$conn = new PDO("mysql:host=$server;dbname=$db;port=$port", $username, $password);
-			$conn->exec('set names ' . $charset);
-		}
-		catch (PDOException $e) {
-			$error = 'Connection failed: ' . $e->getMessage();
-			$action = 'view';
-		}
-		if ($error) {
-			$error = '';
-			try {
-				$conn = new PDO("mysql:host=$server;port=$port", $root_user, $root_password);
-				$conn->exec('set names ' . $charset);
-			}
-			catch (PDOException $e) {
-				$error = 'Connection failed: ' . $e->getMessage();
-				$action = 'view';
-			}
-		}
-		if (!$error) {
-			header('Location: step1.php');
-		}
-	}
+        $_SESSION['main_url_root'] = $main_url_root;
+        $_SESSION['main_document_root'] = $main_document_root;
+        $_SESSION['db_host'] = $server;
+        $_SESSION['db_port'] = $port;
+        $_SESSION['db_prefix'] = $db_prefix;
+        $_SESSION['db_name'] = $db;
+        $_SESSION['db_user'] = $username;
+        $_SESSION['db_pass'] = $password;
+        $_SESSION['db_character_set'] = $charset;
+        $_SESSION['db_collation'] = $collation;
+        $_SESSION['create_database'] = $create_db;
+        $_SESSION['root_db_user'] = $root_user;
+        $_SESSION['root_db_pass'] = $root_password;
+        $_SESSION['application_title'] = $application_title;
+        try {
+            $conn = new PDO("mysql:host=$server;dbname=$db;port=$port", $username, $password);
+            $conn->exec('set names ' . $charset);
+        } catch (PDOException $e) {
+            $error = 'Connection failed: ' . $e->getMessage();
+            $action = 'view';
+        }
+        if ($error) {
+            $error = '';
+            try {
+                $conn = new PDO("mysql:host=$server;port=$port", $root_user, $root_password);
+                $conn->exec('set names ' . $charset);
+            } catch (PDOException $e) {
+                $error = 'Connection failed: ' . $e->getMessage();
+                $action = 'view';
+            }
+        }
+        if (!$error) {
+            header('Location: step1.php');
+        }
+    }
 }
 
 ?>
@@ -141,31 +138,31 @@ if ($action == 'check_connection' && (!$error || !$lockerror)) {
             </div>
         </nav>
         <div class="container mt-5">
-			<?php
-			if ($error && !is_int($error) && !is_numeric($error)) {
-				print '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
-				print '<strong>' . $error . '</strong>';
-				print '<strong>' . $session_error . '</strong>';
-				print '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-				print '</div>';
-			}
+            <?php
+            if ($error && !is_int($error) && !is_numeric($error)) {
+                print '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
+                print '<strong>' . $error . '</strong>';
+                print '<strong>' . $session_error . '</strong>';
+                print '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                print '</div>';
+            }
             if ($lockerror) {
-				print '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
-				print '<strong>' . $lockerror . '</strong>';
-				print '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-				print '</div>';
-				print '</div>';
-				print '</div>';
-				print '<footer class="text-center text-lg-start bg-light text-muted mt-5">';
-				print '<div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">&copy; 2020 - 2022 All rights reserved.<a class="text-reset fw-bold" href="https://blacktiehost.com/">BlackTieHost.com</a>';
-				print '</div>';
-				print '</footer>';
-				print '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>';
-				print '</body>';
-				print '</html>';
+                print '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
+                print '<strong>' . $lockerror . '</strong>';
+                print '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                print '</div>';
+                print '</div>';
+                print '</div>';
+                print '<footer class="text-center text-lg-start bg-light text-muted mt-5">';
+                print '<div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">&copy; 2020 - 2022 All rights reserved.<a class="text-reset fw-bold" href="https://blacktiehost.com/">BlackTieHost.com</a>';
+                print '</div>';
+                print '</footer>';
+                print '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>';
+                print '</body>';
+                print '</html>';
                 exit();
             }
-			?>
+            ?>
             <form class="needs-validation mb-5" method="post">
                 <input type="hidden" name="action" value="check_connection"/>
                 <div class="mb-3 row">

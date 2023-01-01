@@ -36,205 +36,204 @@ use PDOException;
 class domains
 {
 
-	/**
-	 * @var int Object id
-	 */
-	public int $id;
-	/**
-	 * @var string Object label
-	 */
-	public string $label;
-	/**
-	 * @var bool has website record(s)?
-	 */
-	public bool $website;
-	/**
-	 * @var bool has FTP record(s)?
-	 */
-	public bool $ftp;
-	/**
-	 * @var bool has Database record(s)?
-	 */
-	public bool $data_base;
-	/**
-	 * @var int User who owns
-	 */
-	public int $fk_user;
-	/**
-	 * @var string Object error handler
-	 */
-	public string $error;
-	/**
-	 * @var int Number of affected rows
-	 */
-	public int $num;
+    /**
+     * @var int Object id
+     */
+    public int $id;
+    /**
+     * @var string Object label
+     */
+    public string $label;
+    /**
+     * @var bool has website record(s)?
+     */
+    public bool $website;
+    /**
+     * @var bool has FTP record(s)?
+     */
+    public bool $ftp;
+    /**
+     * @var bool has Database record(s)?
+     */
+    public bool $data_base;
+    /**
+     * @var int User who owns
+     */
+    public int $fk_user;
+    /**
+     * @var string Object error handler
+     */
+    public string $error;
+    /**
+     * @var int Number of affected rows
+     */
+    public int $num;
 
-	/**
-	 * @var string Name of table without prefix where object is stored.
-	 */
-	public string $table_element = 'domains';
+    /**
+     * @var string Name of table without prefix where object is stored.
+     */
+    public string $table_element = 'domains';
 
-	/**
-	 * @var string Name of the child table, without prefix, to delete child records.
-	 */
-	public string $child_table_element = 'records';
+    /**
+     * @var string Name of the child table, without prefix, to delete child records.
+     */
+    public string $child_table_element = 'records';
 
-	/**
-	 * @var array Array of fields to fetch from database
-	 */
-	public array $array_of_fields = ['label', 'website', 'ftp', 'data_base', 'fk_user'];
+    /**
+     * @var array Array of fields to fetch from database
+     */
+    public array $array_of_fields = ['label', 'website', 'ftp', 'data_base', 'fk_user'];
 
-	/**
-	 * @var passManDb Database handler
-	 */
-	private passManDb $db;
+    /**
+     * @var passManDb Database handler
+     */
+    private passManDb $db;
 
-	/**
-	 * @param passManDb $db
-	 */
-	public function __construct(passManDb $db)
-	{
+    /**
+     * @param passManDb $db
+     */
+    public function __construct(passManDb $db)
+    {
 
-		$this->db = $db;
-	}
+        $this->db = $db;
+    }
 
-	/**
-	 * Insert record in database
-	 *
-	 * @return int 1 if OK, <0 if KO
-	 * @throws PDOException|Exception
-	 */
-	public function create()
-	{
+    /**
+     * Insert record in database
+     *
+     * @return int 1 if OK, <0 if KO
+     * @throws PDOException|Exception
+     */
+    public function create()
+    {
 
-		pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
-		$array = [];
-		foreach ($this->array_of_fields as $val) {
-			if (!empty($this->$val)) {
-				$array[$val] = $this->$val;
-			}
-		}
+        $array = [];
+        foreach ($this->array_of_fields as $val) {
+            if (!empty($this->$val)) {
+                $array[$val] = $this->$val;
+            }
+        }
 
-		$result = $this->db->create($array, $this->table_element);
+        $result = $this->db->create($array, $this->table_element);
 
-		if ($result > 0) {
-			return 1;
-		} else {
-			return -1;
-		}
-	}
+        if ($result > 0) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
 
-	/**
-	 * Update record in database
-	 *
-	 * @param array $fields Array fo fields to update
-	 *
-	 * @return int 1 if OK, <0 if KO
-	 * @throws PDOException|Exception
-	 */
-	public function update($fields)
-	{
+    /**
+     * Update record in database
+     *
+     * @param array $fields Array fo fields to update
+     *
+     * @return int 1 if OK, <0 if KO
+     * @throws PDOException|Exception
+     */
+    public function update($fields)
+    {
 
-		pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
-		$array_to_update = [];
-		foreach ($fields as $field) {
-			$array_to_update[$field] = $this->$field;
-		}
+        $array_to_update = [];
+        foreach ($fields as $field) {
+            $array_to_update[$field] = $this->$field;
+        }
 
-		$result = $this->db->update($array_to_update, $this->table_element, $this->id);
+        $result = $this->db->update($array_to_update, $this->table_element, $this->id);
 
-		if ($result > 0) {
-			return 1;
-		} else {
-			return -1;
-		}
-	}
+        if ($result > 0) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
 
-	/**
-	 * Delete record from database
-	 *
-	 * @return int 1 if OK, <0 if KO
-	 * @throws PDOException|Exception
-	 */
-	public function delete()
-	{
+    /**
+     * Delete record from database
+     *
+     * @return int 1 if OK, <0 if KO
+     * @throws PDOException|Exception
+     */
+    public function delete()
+    {
 
-		pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
-		$res = $this->db->fetchAll('', $this->child_table_element, ['fk_domain' => $this->id], '');
+        $res = $this->db->fetchAll('', $this->child_table_element, ['fk_domain' => $this->id], '');
 
-		foreach($res as $child) {
-			$this->db->delete($this->child_table_element, $child['id']);
-		}
+        foreach ($res as $child) {
+            $this->db->delete($this->child_table_element, $child['id']);
+        }
 
-		$result = $this->db->delete($this->table_element, $this->id);
+        $result = $this->db->delete($this->table_element, $this->id);
 
-		if ($result > 0) {
-			return 1;
-		} else {
-			return -1;
-		}
-	}
+        if ($result > 0) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
 
-	/**
-	 * Fetch all records from database into array
-	 *
-	 * @param array  $filter          Array of filters. Example array:('field' => 'value'). If key is customsql,
-	 *                                it should be an array also like ('customsql' => array('field' = > 'value'))
-	 * @param string $filter_mode     Filter mode AND or OR. Default is AND
-	 * @param string $sortfield       Sort field
-	 * @param string $sortorder       Sort order
-	 * @param string $group           Group BY field name
-	 * @param int    $limit           Limit
-	 * @param int    $offset          Offset
-	 *
-	 * @return int
-	 * @throws PDOException|Exception
-	 */
-	public function fetchAll($filter = '', $filter_mode = 'AND', $sortfield = '', $sortorder = '', $group = '', $limit = 0, $offset = 0)
-	{
+    /**
+     * Fetch all records from database into array
+     *
+     * @param array  $filter          Array of filters. Example array:('field' => 'value'). If key is customsql,
+     *                                it should be an array also like ('customsql' => array('field' = > 'value'))
+     * @param string $filter_mode     Filter mode AND or OR. Default is AND
+     * @param string $sortfield       Sort field
+     * @param string $sortorder       Sort order
+     * @param string $group           Group BY field name
+     * @param int    $limit           Limit
+     * @param int    $offset          Offset
+     *
+     * @return int
+     * @throws PDOException|Exception
+     */
+    public function fetchAll($filter = '', $filter_mode = 'AND', $sortfield = '', $sortorder = '', $group = '', $limit = 0, $offset = 0)
+    {
 
-		pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
-		$result = $this->db->fetchAll($this->array_of_fields, $this->table_element, $filter, $filter_mode, $sortfield, $sortorder, $group, $limit, $offset);
+        $result = $this->db->fetchAll($this->array_of_fields, $this->table_element, $filter, $filter_mode, $sortfield, $sortorder, $group, $limit, $offset);
 
-		if ($result > 0) {
-			return $result;
-		} else {
-			return -1;
-		}
-	}
+        if ($result > 0) {
+            return $result;
+        } else {
+            return -1;
+        }
+    }
 
-	/**
-	 * Fetch single row from database
-	 *
-	 * @param int    $id              ID of the record to fetch
-	 * @param array  $filter          Array of filters. Example array:('field' => 'value'). If key is customsql,
-	 *                                it should be an array also like ('customsql' => array('field' = > 'value'))
-	 * @param string $filter_mode     Filter mode AND or OR. Default is AND
-	 * @param string $sortfield       Sort field
-	 * @param string $sortorder       Sort order
-	 * @param string $group           Group BY field name
-	 * @param int    $limit           Limit
-	 * @param int    $offset          Offset
-	 *
-	 * @return int
-	 * @throws PDOException|Exception
-	 */
-	public function fetch($id, $filter = '', $filter_mode = 'AND', $sortfield = '', $sortorder = '', $group = '', $limit = 0, $offset = 0)
-	{
+    /**
+     * Fetch single row from database
+     *
+     * @param int    $id              ID of the record to fetch
+     * @param array  $filter          Array of filters. Example array:('field' => 'value'). If key is customsql,
+     *                                it should be an array also like ('customsql' => array('field' = > 'value'))
+     * @param string $filter_mode     Filter mode AND or OR. Default is AND
+     * @param string $sortfield       Sort field
+     * @param string $sortorder       Sort order
+     * @param string $group           Group BY field name
+     * @param int    $limit           Limit
+     * @param int    $offset          Offset
+     *
+     * @return int
+     * @throws PDOException|Exception
+     */
+    public function fetch($id, $filter = '', $filter_mode = 'AND', $sortfield = '', $sortorder = '', $group = '', $limit = 0, $offset = 0)
+    {
 
-		pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
-		$result = $this->db->fetch($id, $this->array_of_fields, $this->table_element, $filter, $filter_mode, $sortfield, $sortorder, $group, $limit, $offset);
+        $result = $this->db->fetch($id, $this->array_of_fields, $this->table_element, $filter, $filter_mode, $sortfield, $sortorder, $group, $limit, $offset);
 
-		if ($result > 0) {
-			return $result;
-		} else {
-			return -1;
-		}
-	}
-
+        if ($result > 0) {
+            return $result;
+        } else {
+            return -1;
+        }
+    }
 }

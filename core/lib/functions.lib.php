@@ -30,15 +30,15 @@ namespace PasswordManager;
 use Exception;
 
 if (!function_exists('pm_syslog')) {
-	// For PHP versions without syslog (like running on Windows OS)
-	define('PM_LOG_EMERG', 0);
-	define('PM_LOG_ALERT', 1);
-	define('PM_LOG_CRIT', 2);
-	define('PM_LOG_ERR', 3);
-	define('PM_LOG_WARNING', 4);
-	define('PM_LOG_NOTICE', 5);
-	define('PM_LOG_INFO', 6);
-	define('PM_LOG_DEBUG', 7);
+    // For PHP versions without syslog (like running on Windows OS)
+    define('PM_LOG_EMERG', 0);
+    define('PM_LOG_ALERT', 1);
+    define('PM_LOG_CRIT', 2);
+    define('PM_LOG_ERR', 3);
+    define('PM_LOG_WARNING', 4);
+    define('PM_LOG_NOTICE', 5);
+    define('PM_LOG_INFO', 6);
+    define('PM_LOG_DEBUG', 7);
 }
 
 /**
@@ -56,61 +56,60 @@ if (!function_exists('pm_syslog')) {
 function pm_syslog($message, $level)
 {
 
-	global $user;
+    global $user;
 
-	if (empty($level)) {
-		$level = PM_LOG_DEBUG;
-	}
+    if (empty($level)) {
+        $level = PM_LOG_DEBUG;
+    }
 
-	if (!empty($message)) {
+    if (!empty($message)) {
+        // Test log level
+        $log_levels = [
+            PM_LOG_EMERG   => 'EMERG',
+            PM_LOG_ALERT   => 'ALERT',
+            PM_LOG_CRIT    => 'CRITICAL',
+            PM_LOG_ERR     => 'ERR',
+            PM_LOG_WARNING => 'WARN',
+            PM_LOG_NOTICE  => 'NOTICE',
+            PM_LOG_INFO    => 'INFO',
+            PM_LOG_DEBUG   => 'DEBUG',
+        ];
+        if (!array_key_exists($level, $log_levels)) {
+            throw new Exception('Incorrect log level');
+        }
 
-		// Test log level
-		$log_levels = [
-			PM_LOG_EMERG   => 'EMERG',
-			PM_LOG_ALERT   => 'ALERT',
-			PM_LOG_CRIT    => 'CRITICAL',
-			PM_LOG_ERR     => 'ERR',
-			PM_LOG_WARNING => 'WARN',
-			PM_LOG_NOTICE  => 'NOTICE',
-			PM_LOG_INFO    => 'INFO',
-			PM_LOG_DEBUG   => 'DEBUG',
-		];
-		if (!array_key_exists($level, $log_levels)) {
-			throw new Exception('Incorrect log level');
-		}
+        $data = [
+            'message' => $message,
+            'script'  => (isset($_SERVER['PHP_SELF']) ? basename($_SERVER['PHP_SELF'], '.php') : false),
+            'level'   => $level,
+            'user'    => ((is_object($user) && isset($user->id)) ? $user->username : false),
+            'ip'      => false,
+        ];
 
-		$data = [
-			'message' => $message,
-			'script'  => (isset($_SERVER['PHP_SELF']) ? basename($_SERVER['PHP_SELF'], '.php') : false),
-			'level'   => $level,
-			'user'    => ((is_object($user) && isset($user->id)) ? $user->username : false),
-			'ip'      => false,
-		];
+        $remoteip = getUserRemoteIP(); // Get ip when page run on a web server
+        if (!empty($remoteip)) {
+            $data['ip'] = $remoteip;
+            // This is when server run behind a reverse proxy
+            if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] != $remoteip) {
+                $data['ip'] = $_SERVER['HTTP_X_FORWARDED_FOR'] . ' -> ' . $data['ip'];
+            } elseif (!empty($_SERVER['HTTP_CLIENT_IP']) && $_SERVER['HTTP_CLIENT_IP'] != $remoteip) {
+                $data['ip'] = $_SERVER['HTTP_CLIENT_IP'] . ' -> ' . $data['ip'];
+            }
+        } elseif (!empty($_SERVER['SERVER_ADDR'])) {
+            // This is when PHP session is running inside a web server but not inside a client request (example: init code of apache)
+            $data['ip'] = $_SERVER['SERVER_ADDR'];
+        } elseif (!empty($_SERVER['COMPUTERNAME'])) {
+            // This is when PHP session is running outside a web server, like from Windows command line (Not always defined, but useful if OS defined it).
+            $data['ip'] = $_SERVER['COMPUTERNAME'] . (empty($_SERVER['USERNAME']) ? '' : '@' . $_SERVER['USERNAME']);
+        } elseif (!empty($_SERVER['LOGNAME'])) {
+            // This is when PHP session is running outside a web server, like from Linux command line (Not always defined, but useful if OS defined it).
+            $data['ip'] = '???@' . $_SERVER['LOGNAME'];
+        }
 
-		$remoteip = getUserRemoteIP(); // Get ip when page run on a web server
-		if (!empty($remoteip)) {
-			$data['ip'] = $remoteip;
-			// This is when server run behind a reverse proxy
-			if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] != $remoteip) {
-				$data['ip'] = $_SERVER['HTTP_X_FORWARDED_FOR'] . ' -> ' . $data['ip'];
-			} elseif (!empty($_SERVER['HTTP_CLIENT_IP']) && $_SERVER['HTTP_CLIENT_IP'] != $remoteip) {
-				$data['ip'] = $_SERVER['HTTP_CLIENT_IP'] . ' -> ' . $data['ip'];
-			}
-		} elseif (!empty($_SERVER['SERVER_ADDR'])) {
-			// This is when PHP session is running inside a web server but not inside a client request (example: init code of apache)
-			$data['ip'] = $_SERVER['SERVER_ADDR'];
-		} elseif (!empty($_SERVER['COMPUTERNAME'])) {
-			// This is when PHP session is running outside a web server, like from Windows command line (Not always defined, but useful if OS defined it).
-			$data['ip'] = $_SERVER['COMPUTERNAME'] . (empty($_SERVER['USERNAME']) ? '' : '@' . $_SERVER['USERNAME']);
-		} elseif (!empty($_SERVER['LOGNAME'])) {
-			// This is when PHP session is running outside a web server, like from Linux command line (Not always defined, but useful if OS defined it).
-			$data['ip'] = '???@' . $_SERVER['LOGNAME'];
-		}
+        pm_export($data);
 
-		pm_export($data);
-
-		unset($data);
-	}
+        unset($data);
+    }
 }
 
 /**
@@ -123,50 +122,50 @@ function pm_syslog($message, $level)
 function pm_export($content)
 {
 
-	$logfile = PM_MAIN_DOCUMENT_ROOT . '/pm-log.log';
+    $logfile = PM_MAIN_DOCUMENT_ROOT . '/pm-log.log';
 
-	//Unlock file for writing
-	if (isset($_SERVER['WINDIR'])) {
-		// Host OS is Windows
-		exec('attrib -R ' . escapeshellarg($logfile), $res);
-		$res = $res[0];
-	} else {
-		// Host OS is *nix
-		chmod($logfile, 0755);
-	}
+    //Unlock file for writing
+    if (isset($_SERVER['WINDIR'])) {
+        // Host OS is Windows
+        exec('attrib -R ' . escapeshellarg($logfile), $res);
+        $res = $res[0];
+    } else {
+        // Host OS is *nix
+        chmod($logfile, 0755);
+    }
 
-	$filefd = fopen($logfile, 'a+');
+    $filefd = fopen($logfile, 'a+');
 
-	if (!$filefd) {
-		// Do not break usage if log fails
-		//throw new Exception('Failed to open log file '.basename($logfile));
-		print 'Failed to open log file ' . basename($logfile);
-	} else {
-		$log_levels = [
-			PM_LOG_EMERG   => 'EMERG',
-			PM_LOG_ALERT   => 'ALERT',
-			PM_LOG_CRIT    => 'CRIT',
-			PM_LOG_ERR     => 'ERR',
-			PM_LOG_WARNING => 'WARNING',
-			PM_LOG_NOTICE  => 'NOTICE',
-			PM_LOG_INFO    => 'INFO',
-			PM_LOG_DEBUG   => 'DEBUG',
-		];
+    if (!$filefd) {
+        // Do not break usage if log fails
+        //throw new Exception('Failed to open log file '.basename($logfile));
+        print 'Failed to open log file ' . basename($logfile);
+    } else {
+        $log_levels = [
+            PM_LOG_EMERG   => 'EMERG',
+            PM_LOG_ALERT   => 'ALERT',
+            PM_LOG_CRIT    => 'CRIT',
+            PM_LOG_ERR     => 'ERR',
+            PM_LOG_WARNING => 'WARNING',
+            PM_LOG_NOTICE  => 'NOTICE',
+            PM_LOG_INFO    => 'INFO',
+            PM_LOG_DEBUG   => 'DEBUG',
+        ];
 
-		$message = strftime('%Y-%m-%d %H:%M:%S', time()) . ' ' . sprintf('%-7s', $log_levels[$content['level']]) . ' ' . sprintf('%-15s', $content['ip']) . ' ' . $content['message'];
-		fwrite($filefd, $message . "\n");
-		fclose($filefd);
+        $message = strftime('%Y-%m-%d %H:%M:%S', time()) . ' ' . sprintf('%-7s', $log_levels[$content['level']]) . ' ' . sprintf('%-15s', $content['ip']) . ' ' . $content['message'];
+        fwrite($filefd, $message . "\n");
+        fclose($filefd);
 
-		//Lock file as read only
-		if (isset($_SERVER['WINDIR'])) {
-			// Host OS is Windows
-			exec('attrib +R ' . escapeshellarg($logfile), $res);
-			$res = $res[0];
-		} else {
-			// Host OS is *nix
-			chmod($logfile, 0444);
-		}
-	}
+        //Lock file as read only
+        if (isset($_SERVER['WINDIR'])) {
+            // Host OS is Windows
+            exec('attrib +R ' . escapeshellarg($logfile), $res);
+            $res = $res[0];
+        } else {
+            // Host OS is *nix
+            chmod($logfile, 0444);
+        }
+    }
 }
 
 /**
@@ -180,21 +179,21 @@ function pm_export($content)
 function getUserRemoteIP()
 {
 
-	if (empty($_SERVER['HTTP_X_FORWARDED_FOR']) || preg_match('/[^0-9.:,\[\]]/', $_SERVER['HTTP_X_FORWARDED_FOR'])) {
-		if (empty($_SERVER['HTTP_CLIENT_IP']) || preg_match('/[^0-9.:,\[\]]/', $_SERVER['HTTP_CLIENT_IP'])) {
-			if (empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
-				$ip = (empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR']);
-			} else {
-				$ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
-			}
-		} else {
-			$ip = $_SERVER['HTTP_CLIENT_IP'];
-		}
-	} else {
-		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-	}
+    if (empty($_SERVER['HTTP_X_FORWARDED_FOR']) || preg_match('/[^0-9.:,\[\]]/', $_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        if (empty($_SERVER['HTTP_CLIENT_IP']) || preg_match('/[^0-9.:,\[\]]/', $_SERVER['HTTP_CLIENT_IP'])) {
+            if (empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+                $ip = (empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR']);
+            } else {
+                $ip = $_SERVER['HTTP_CF_CONNECTING_IP'];
+            }
+        } else {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        }
+    } else {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
 
-	return $ip;
+    return $ip;
 }
 
 /**
@@ -225,42 +224,42 @@ function getUserRemoteIP()
 function GETPOST($paramname, $check = 'alphanohtml', $method = 0, $filter = null, $options = null)
 {
 
-	if (empty($paramname)) {
-		return 'BadFirstParameterForGETPOST';
-	}
+    if (empty($paramname)) {
+        return 'BadFirstParameterForGETPOST';
+    }
 
-	if (empty($method)) {
-		$out = $_GET[$paramname] ?? ($_POST[$paramname] ?? '');
-	} elseif ($method == 1) {
-		$out = $_GET[$paramname] ?? '';
-	} elseif ($method == 2) {
-		$out = $_POST[$paramname] ?? '';
-	} elseif ($method == 3) {
-		$out = $_POST[$paramname] ?? ($_GET[$paramname] ?? '');
-	} else {
-		return 'BadThirdParameterForGETPOST';
-	}
+    if (empty($method)) {
+        $out = $_GET[$paramname] ?? ($_POST[$paramname] ?? '');
+    } elseif ($method == 1) {
+        $out = $_GET[$paramname] ?? '';
+    } elseif ($method == 2) {
+        $out = $_POST[$paramname] ?? '';
+    } elseif ($method == 3) {
+        $out = $_POST[$paramname] ?? ($_GET[$paramname] ?? '');
+    } else {
+        return 'BadThirdParameterForGETPOST';
+    }
 
-	// Check rule
-	if (preg_match('/^array/', $check)) {    // If 'array' or 'array:restricthtml' or 'array:aZ09'
-		if (!is_array($out) || empty($out)) {
-			$out = [];
-		} else {
-			$tmparray = explode(':', $check);
-			if (!empty($tmparray[1])) {
-				$tmpcheck = $tmparray[1];
-			} else {
-				$tmpcheck = 'alphanohtml';
-			}
-			foreach ($out as $outkey => $outval) {
-				$out[$outkey] = checkVal($outval, $tmpcheck, $filter, $options);
-			}
-		}
-	} else {
-		$out = checkVal($out, $check, $filter, $options);
-	}
+    // Check rule
+    if (preg_match('/^array/', $check)) {    // If 'array' or 'array:restricthtml' or 'array:aZ09'
+        if (!is_array($out) || empty($out)) {
+            $out = [];
+        } else {
+            $tmparray = explode(':', $check);
+            if (!empty($tmparray[1])) {
+                $tmpcheck = $tmparray[1];
+            } else {
+                $tmpcheck = 'alphanohtml';
+            }
+            foreach ($out as $outkey => $outval) {
+                $out[$outkey] = checkVal($outval, $tmpcheck, $filter, $options);
+            }
+        }
+    } else {
+        $out = checkVal($out, $check, $filter, $options);
+    }
 
-	return $out;
+    return $out;
 }
 
 /**
@@ -276,75 +275,74 @@ function GETPOST($paramname, $check = 'alphanohtml', $method = 0, $filter = null
 function checkVal($out = '', $check = 'alphanohtml', $filter = null, $options = null)
 {
 
-	// Check is done after replacement
-	switch ($check) {
-		case 'none':
-			break;
-		case 'int':    // Check param is a numeric value (integer but also float or hexadecimal)
-			if (!is_numeric($out)) {
-				$out = '';
-			}
-			break;
-		case 'intcomma':
-			if (preg_match('/[^0-9,-]+/i', $out)) {
-				$out = '';
-			}
-			break;
-		case 'san_alpha':
-			$out = filter_var($out, FILTER_SANITIZE_STRING);
-			break;
-		case 'email':
-			$out = filter_var($out, FILTER_SANITIZE_EMAIL);
-			break;
-		case 'aZ':
-			if (!is_array($out)) {
-				$out = trim($out);
-				if (preg_match('/[^a-z]+/i', $out)) {
-					$out = '';
-				}
-			}
-			break;
-		case 'aZ09':
-			if (!is_array($out)) {
-				$out = trim($out);
-				if (preg_match('/[^a-z0-9_\-.]+/i', $out)) {
-					$out = '';
-				}
-			}
-			break;
-		case 'aZ09comma':        // great to sanitize sortfield or sortorder params that can be t.abc,t.def_gh
-			if (!is_array($out)) {
-				$out = trim($out);
-				if (preg_match('/[^a-z0-9_\-.,]+/i', $out)) {
-					$out = '';
-				}
-			}
-			break;
-		case 'nohtml':        // No html
-			$out = string_nohtmltag($out, 0);
-			break;
-		case 'alpha':        // No html and no ../ and "
-		case 'alphanohtml':    // Recommended for most scalar parameters and search parameters
-			if (!is_array($out)) {
-				$out = trim($out);
-				do {
-					$oldstringtoclean = $out;
-					// Remove html tags
-					$out = string_nohtmltag($out, 0);
-					$out = str_ireplace(['&#38', '&#0000038', '&#x26', '&quot', '&#34', '&#0000034', '&#x22', '"', '&#47', '&#0000047', '&#92', '&#0000092', '&#x2F', '../', '..\\'], '', $out);
-				}
-				while ($oldstringtoclean != $out);
-			}
-			break;
-		case 'custom':
-			if (empty($filter)) {
-				return 'BadFourthParameterForGETPOST';
-			}
-			$out = filter_var($out, $filter, $options);
-			break;
-	}
+    // Check is done after replacement
+    switch ($check) {
+        case 'none':
+            break;
+        case 'int':    // Check param is a numeric value (integer but also float or hexadecimal)
+            if (!is_numeric($out)) {
+                $out = '';
+            }
+            break;
+        case 'intcomma':
+            if (preg_match('/[^0-9,-]+/i', $out)) {
+                $out = '';
+            }
+            break;
+        case 'san_alpha':
+            $out = filter_var($out, FILTER_SANITIZE_STRING);
+            break;
+        case 'email':
+            $out = filter_var($out, FILTER_SANITIZE_EMAIL);
+            break;
+        case 'aZ':
+            if (!is_array($out)) {
+                $out = trim($out);
+                if (preg_match('/[^a-z]+/i', $out)) {
+                    $out = '';
+                }
+            }
+            break;
+        case 'aZ09':
+            if (!is_array($out)) {
+                $out = trim($out);
+                if (preg_match('/[^a-z0-9_\-.]+/i', $out)) {
+                    $out = '';
+                }
+            }
+            break;
+        case 'aZ09comma':        // great to sanitize sortfield or sortorder params that can be t.abc,t.def_gh
+            if (!is_array($out)) {
+                $out = trim($out);
+                if (preg_match('/[^a-z0-9_\-.,]+/i', $out)) {
+                    $out = '';
+                }
+            }
+            break;
+        case 'nohtml':        // No html
+            $out = string_nohtmltag($out, 0);
+            break;
+        case 'alpha':        // No html and no ../ and "
+        case 'alphanohtml':    // Recommended for most scalar parameters and search parameters
+            if (!is_array($out)) {
+                $out = trim($out);
+                do {
+                    $oldstringtoclean = $out;
+                    // Remove html tags
+                    $out = string_nohtmltag($out, 0);
+                    $out = str_ireplace(['&#38', '&#0000038', '&#x26', '&quot', '&#34', '&#0000034', '&#x22', '"', '&#47', '&#0000047', '&#92', '&#0000092', '&#x2F', '../', '..\\'], '', $out);
+                } while ($oldstringtoclean != $out);
+            }
+            break;
+        case 'custom':
+            if (empty($filter)) {
+                return 'BadFourthParameterForGETPOST';
+            }
+            $out = filter_var($out, $filter, $options);
+            break;
+    }
 
-	return $out;
+    return $out;
 }
 
 /**
@@ -367,40 +365,40 @@ function checkVal($out = '', $check = 'alphanohtml', $filter = null, $options = 
 function string_nohtmltag($stringtoclean, $removelinefeed = 1, $strip_tags = 0, $removedoublespaces = 1)
 {
 
-	if ($removelinefeed == 2) {
-		$stringtoclean = preg_replace('/<br[^>]*>([\n\r])+/im', '<br>', $stringtoclean);
-	}
-	$temp = preg_replace('/<br[^>]*>/i', "\n", $stringtoclean);
+    if ($removelinefeed == 2) {
+        $stringtoclean = preg_replace('/<br[^>]*>([\n\r])+/im', '<br>', $stringtoclean);
+    }
+    $temp = preg_replace('/<br[^>]*>/i', "\n", $stringtoclean);
 
-	$temp = str_replace('< ', '__ltspace__', $temp);
+    $temp = str_replace('< ', '__ltspace__', $temp);
 
-	if ($strip_tags) {
-		$temp = strip_tags($temp);
-	} else {
-		$temp = str_replace('<>', '', $temp);      // No reason to have this into a text, except if value is to try bypass the next html cleaning
-		$pattern = '/<[^<>]+>/';
-		// Example of $temp: <a href="/myurl" title="<u>A title</u>">0000-021</a>
-		$temp = preg_replace($pattern, '', $temp); // pass 1 - $temp after pass 1: <a href="/myurl" title="A title">0000-021
-		$temp = preg_replace($pattern, '', $temp); // pass 2 - $temp after pass 2: 0000-021
-		// Remove '<' into remainging, so remove non closing html tags like '<abc' or '<<abc'. Note: '<123abc' is not a html tag (can be kept), but '<abc123' is (must be removed).
-		$temp = preg_replace('/<+([a-z]+)/i', '\1', $temp);
-	}
+    if ($strip_tags) {
+        $temp = strip_tags($temp);
+    } else {
+        $temp = str_replace('<>', '', $temp);      // No reason to have this into a text, except if value is to try bypass the next html cleaning
+        $pattern = '/<[^<>]+>/';
+        // Example of $temp: <a href="/myurl" title="<u>A title</u>">0000-021</a>
+        $temp = preg_replace($pattern, '', $temp); // pass 1 - $temp after pass 1: <a href="/myurl" title="A title">0000-021
+        $temp = preg_replace($pattern, '', $temp); // pass 2 - $temp after pass 2: 0000-021
+        // Remove '<' into remainging, so remove non closing html tags like '<abc' or '<<abc'. Note: '<123abc' is not a html tag (can be kept), but '<abc123' is (must be removed).
+        $temp = preg_replace('/<+([a-z]+)/i', '\1', $temp);
+    }
 
-	// Remove also carriage returns
-	if ($removelinefeed == 1) {
-		$temp = str_replace(["\r\n", "\r", "\n"], ' ', $temp);
-	}
+    // Remove also carriage returns
+    if ($removelinefeed == 1) {
+        $temp = str_replace(["\r\n", "\r", "\n"], ' ', $temp);
+    }
 
-	// And double quotes
-	if ($removedoublespaces) {
-		while (strpos($temp, '  ')) {
-			$temp = str_replace('  ', ' ', $temp);
-		}
-	}
+    // And double quotes
+    if ($removedoublespaces) {
+        while (strpos($temp, '  ')) {
+            $temp = str_replace('  ', ' ', $temp);
+        }
+    }
 
-	$temp = str_replace('__ltspace__', '< ', $temp);
+    $temp = str_replace('__ltspace__', '< ', $temp);
 
-	return trim($temp);
+    return trim($temp);
 }
 
 /**
@@ -414,19 +412,19 @@ function string_nohtmltag($stringtoclean, $removelinefeed = 1, $strip_tags = 0, 
 function get_osencode($str)
 {
 
-	$tmp = ini_get('unicode.filesystem_encoding');
-	if (empty($tmp) && !empty($_SERVER['WINDIR'])) {
-		$tmp = 'iso-8859-1';
-	}
-	if (empty($tmp)) {
-		$tmp = 'utf-8';
-	}
+    $tmp = ini_get('unicode.filesystem_encoding');
+    if (empty($tmp) && !empty($_SERVER['WINDIR'])) {
+        $tmp = 'iso-8859-1';
+    }
+    if (empty($tmp)) {
+        $tmp = 'utf-8';
+    }
 
-	if ($tmp == 'iso-8859-1') {
-		return utf8_decode($str);
-	}
+    if ($tmp == 'iso-8859-1') {
+        return utf8_decode($str);
+    }
 
-	return $str;
+    return $str;
 }
 
 /**
@@ -437,19 +435,19 @@ function get_osencode($str)
 function pm_logout_block()
 {
 
-	global $action;
+    global $action;
 
-	if ($action == 'logout') {
-		$_SESSION = [];
+    if ($action == 'logout') {
+        $_SESSION = [];
 
-		// Destroy the session.
-		session_destroy();
+        // Destroy the session.
+        session_destroy();
 
-		// Redirect to login page
-		//header('location: ' . PM_MAIN_URL_ROOT . '/login.php');
-		echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/login.php";});</script>';
-		exit;
-	}
+        // Redirect to login page
+        //header('location: ' . PM_MAIN_URL_ROOT . '/login.php');
+        echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/login.php";});</script>';
+        exit;
+    }
 }
 
 /**
@@ -468,5 +466,5 @@ function pm_logout_block()
 function getPassManDbInstance($host, $user, $pass, $name, $port)
 {
 
-	return new passManDb($host, $user, $pass, $name, $port);
+    return new passManDb($host, $user, $pass, $name, $port);
 }

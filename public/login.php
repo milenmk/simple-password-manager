@@ -36,8 +36,8 @@ $langs->loadLangs(['errors']);
 
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if (isset($user->id) && $user->id > 0) {
-	header('location: ' . PM_MAIN_URL_ROOT);
-	exit;
+    header('location: ' . PM_MAIN_URL_ROOT);
+    exit;
 }
 
 /*
@@ -59,89 +59,88 @@ $user = new user($db);
  * Actions
  */
 if ($action == 'login_user') {
+    // Check if username is empty
+    if (empty(trim($username))) {
+        $error = $langs->trans('PleaseEnterUsername');
+    } else {
+        $username = trim($username);
+    }
 
-	// Check if username is empty
-	if (empty(trim($username))) {
-		$error = $langs->trans('PleaseEnterUsername');
-	} else {
-		$username = trim($username);
-	}
+    // Check if password is empty
+    if (empty(trim($password))) {
+        $error = $langs->trans('PleaseEnterPassword');
+    } else {
+        $password = trim($password);
+    }
 
-	// Check if password is empty
-	if (empty(trim($password))) {
-		$error = $langs->trans('PleaseEnterPassword');
-	} else {
-		$password = trim($password);
-	}
+    if (empty($error)) {
+        $result = $user->fetch('', ['username' => $username], '', '', '', '', '', '', $password);
 
-	if (empty($error)) {
-		$result = $user->fetch('', ['username' => $username], '', '', '', '', '', '', $password);
+        if ($result > 0) {
+            // Password is correct, so start a new session
+            $user->id = (int)$result;
+            session_start();
 
-		if ($result > 0) {
-			// Password is correct, so start a new session
-			$user->id = (int)$result;
-			session_start();
+            // Store data in session variables
+            $_SESSION['loggedin'] = true;
+            $_SESSION['id'] = $user->id;
+            $_SESSION['username'] = $username;
 
-			// Store data in session variables
-			$_SESSION['loggedin'] = true;
-			$_SESSION['id'] = $user->id;
-			$_SESSION['username'] = $username;
-
-			// Redirect user to welcome page
-			echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '";});</script>';
-		} else {
-			// Username doesn't exist, display a generic error message
-			$error = $langs->trans('InvalidNameOrPassword');
-		}
-	}
+            // Redirect user to welcome page
+            echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '";});</script>';
+        } else {
+            // Username doesn't exist, display a generic error message
+            $error = $langs->trans('InvalidNameOrPassword');
+        }
+    }
 }
 
 /*
  * View
  */
 print $twig->render(
-	'messageblock.html.twig',
-	[
-		'error'   => $error,
-		'message' => $message,
-	]
+    'messageblock.html.twig',
+    [
+        'error'   => $error,
+        'message' => $message,
+    ]
 );
 
 print $twig->render(
-	'user/login.html.twig',
-	[
-		'langs'    => $langs,
-		'main_url' => PM_MAIN_URL_ROOT,
-		'theme'    => $theme,
-	]
+    'user/login.html.twig',
+    [
+        'langs'    => $langs,
+        'main_url' => PM_MAIN_URL_ROOT,
+        'theme'    => $theme,
+    ]
 );
 
 print $twig->render(
-	'footer.html.twig',
-	[
-		'langs' => $langs,
-		'theme' => $theme,
-	]
+    'footer.html.twig',
+    [
+        'langs' => $langs,
+        'theme' => $theme,
+    ]
 );
 
 if ($theme != 'default') {
-	$js_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/js/';
+    $js_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/js/';
 
-	if (is_dir($js_path)) {
-		$js_array = [];
-		foreach (array_filter(glob($js_path . '*.js'), 'is_file') as $file) {
-			$js_array[] = str_replace($js_path, '', $file);
-		}
-	}
+    if (is_dir($js_path)) {
+        $js_array = [];
+        foreach (array_filter(glob($js_path . '*.js'), 'is_file') as $file) {
+            $js_array[] = str_replace($js_path, '', $file);
+        }
+    }
 }
 
 print $twig->render(
-	'javascripts.html.twig',
-	[
-		'theme'    => $theme,
-		'main_url' => PM_MAIN_URL_ROOT,
-		'js_array' => $js_array,
-	]
+    'javascripts.html.twig',
+    [
+        'theme'    => $theme,
+        'main_url' => PM_MAIN_URL_ROOT,
+        'js_array' => $js_array,
+    ]
 );
 
 print $twig->render('endpage.html.twig');
