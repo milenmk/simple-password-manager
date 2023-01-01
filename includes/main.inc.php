@@ -37,15 +37,11 @@ use Twig\Loader\FilesystemLoader;
 
 include_once('../vendor/autoload.php');
 
-$config = new config();
+$config = new Config();
 
 if ($config < 1) {
-    try {
-        pm_syslog('ERROR: CANNOT CONNECT TO DATABASE SERVER', LOG_ERR);
-    } catch (Exception $e) {
-        print $e->getMessage();
-        die();
-    }
+    pm_syslog('ERROR: CANNOT CONNECT TO DATABASE SERVER', LOG_ERR);
+    die();
 }
 
 //Define some global constants from conf file
@@ -56,7 +52,7 @@ define('PM_MAIN_APPLICATION_TITLE', $config->main_application_title);
 define('PM_MAIN_DB_PREFIX', $config->dbprefix);
 
 //Initiate translations
-$langs = new translator('');
+$langs = new Translator('');
 
 include_once('../core/lib/functions.lib.php');
 
@@ -68,8 +64,7 @@ unset($config->dbpass);
 session_start();
 
 //Initiate user and fetch ID if logged in
-$user = new user($db);
-
+$user = new User($db);
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     try {
@@ -122,22 +117,18 @@ $loader = new FilesystemLoader(PM_MAIN_DOCUMENT_ROOT . '/templates/' . $theme);
 $twig = new Environment(
     $loader,
     [
-               'debug' => true,
-           ]
+        'debug' => true,
+    ]
 );
 $twig->addExtension(new DebugExtension());
 
-try {
-    print $twig->render(
-        'header.html.twig',
-        [
-            'langs'     => $langs,
-            'theme'     => $theme,
-            'app_title' => PM_MAIN_APPLICATION_TITLE,
-            'main_url'  => PM_MAIN_URL_ROOT,
-            'css_array' => $css_array,
-        ]
-    );
-} catch (LoaderError|RuntimeError|SyntaxError $e) {
-    print $e->getMessage();
-}
+print $twig->render(
+    'header.html.twig',
+    [
+        'langs'     => $langs,
+        'theme'     => $theme,
+        'app_title' => PM_MAIN_APPLICATION_TITLE,
+        'main_url'  => PM_MAIN_URL_ROOT,
+        'css_array' => $css_array,
+    ]
+);

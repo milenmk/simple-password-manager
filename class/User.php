@@ -1,11 +1,10 @@
 <?php
-
 /**
  *
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
- *  File name: records.php
- *  Last Modified: 31.12.22 г., 13:08 ч.
+ *  File name: user.php
+ *  Last Modified: 31.12.22 г., 11:59 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
@@ -19,9 +18,9 @@
  */
 
 /**
- * \file        class/records.php
+ * \file        class/user.php
  * \ingroup     Password Manager
- * \brief       This file is a CRUD file for records class (Create/Read/Update/Delete)
+ * \brief       This file is a CRUD file for User class (Create/Read/Update/Delete)
  */
 
 declare(strict_types = 1);
@@ -32,92 +31,68 @@ use Exception;
 use PDOException;
 
 /**
- * Class for records
+ * Class for user
  */
-class records
+class User
 {
 
     /**
-     * @var int Object id
+     * @var PassManDb Database handler
+     */
+    private PassManDb $db;
+    /**
+     * @var int User ID
      */
     public int $id;
-
     /**
-     * @var int Parent ID
+     * @var string User first name
      */
-    public int $fk_domain;
+    public string $first_name;
     /**
-     * @var bool
+     * @var string User last name
      */
-    public bool $is_db;
+    public string $last_name;
     /**
-     * @var bool
-     */
-    public bool $is_site;
-    /**
-     * @var bool
-     */
-    public bool $is_ftp;
-    /**
-     * @var string
-     */
-    public string $dbase_name;
-    /**
-     * @var string
-     */
-    public string $ftp_server;
-    /**
-     * @var string
-     */
-    public string $url;
-    /**
-     * @var string
+     * @var string user username, defaults to email address
      */
     public string $username;
     /**
-     * @var string
+     * @var string User password
      */
-    public string $password;
+    private string $password;
     /**
-     * @var string
+     * @var int Number of affected rows
      */
-    public string $pass_crypted;
+    public int $num;
     /**
-     * @var int
+     * @var string User theme
      */
-    public int $fk_user;
+    public string $theme;
     /**
-     * @var string Name of table without prefix where object is stored.
+     * @var string user language
      */
-    public string $table_element = 'records';
+    public string $language;
+    /**
+     * @var string Error
+     */
+    public string $error;
+
     /**
      * @var array Array of fields to fetch from database
      */
-    public array $array_of_fields = ['fk_domain', 'is_db', 'is_site', 'is_ftp', 'dbase_name', 'ftp_server', 'url', 'username', 'pass_crypted', 'fk_user'];
+    public array $array_of_fields = ['first_name', 'last_name', 'username', 'password', 'created_at', 'theme', 'language'];
 
     /**
-     * @var string Does the object has Parent class to call values from
+     * @var string Name of table without prefix where object is stored.
      */
-    public string $hasParentClass = 'yes';
-    /**
-     * @var string Name of the parent class table
-     */
-    public string $parentClass = 'domains';
+    public string $table_element = 'users';
 
     /**
-     * @var string[] Fields of the parent class to fetch
+     *    Constructor of the class
+     *
+     * @param PassManDb $db Database handler
      */
-    public array $parentClassFields = ['label'];
-
-    /**
-     * @var passManDb Database handler
-     */
-    private passManDb $db;
-
-    /**
-     * @param passManDb $db
-     */
-    public function __construct(passManDb $db)
+    public function __construct($db)
     {
 
         $this->db = $db;
@@ -126,13 +101,24 @@ class records
     /**
      * Insert record in database
      *
-     * @return int 1 if OK, <0 if KO
+     * @param string $password Hashed password
+     *
+     * @return int
      * @throws PDOException|Exception
      */
-    public function create()
+    public function create($password)
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+
+        $this->password = $password;
+
+        if (empty($this->language)) {
+            $this->language = 'en_US';
+        }
+        if (empty($this->theme)) {
+            $this->theme = 'default';
+        }
 
         $array = [];
         foreach ($this->array_of_fields as $val) {
@@ -153,13 +139,17 @@ class records
     /**
      * Update record in database
      *
+     * @param string $password New password
+     *
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function update()
+    public function update($password = '')
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
 
         $array_to_update = [];
         foreach ($this->array_of_fields as $field) {
@@ -181,7 +171,7 @@ class records
      * Delete record from database
      *
      * @return int 1 if OK, <0 if KO
-     * @throws Exception
+     * @throws PDOException|Exception
      */
     public function delete()
     {
@@ -226,11 +216,7 @@ class records
             $sortorder,
             $group,
             $limit,
-            $offset,
-            $this->hasParentClass,
-            $this->parentClass,
-            $this->parentClassFields,
-            'fk_domain'
+            $offset
         );
 
         if ($result > 0) {
@@ -253,33 +239,26 @@ class records
      * @param int    $limit           Limit
      * @param int    $offset          Offset
      *
-     * @return int
+     * @return int|array
      * @throws PDOException|Exception
      */
-    public function fetch($id, $filter = '', $filter_mode = 'AND', $sortfield = '', $sortorder = '', $group = '', $limit = 0, $offset = 0)
+    public function fetch($id = '', $filter = '', $filter_mode = 'AND', $sortfield = '', $sortorder = '', $group = '', $limit = 0, $offset = 0, $password = '')
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
-        $result = $this->db->fetch(
-            $id,
-            $this->array_of_fields,
-            $this->table_element,
-            $filter,
-            $filter_mode,
-            $sortfield,
-            $sortorder,
-            $group,
-            $limit,
-            $offset,
-            $this->hasParentClass,
-            $this->parentClass,
-            $this->parentClassFields,
-            'fk_domain'
-        );
+        $result = $this->db->fetch($id, $this->array_of_fields, $this->table_element, $filter, $filter_mode, $sortfield, $sortorder, $group, $limit, $offset);
 
         if ($result > 0) {
-            return $result;
+            if ($password) {
+                if (password_verify($password, $result['password'])) {
+                    return $result;
+                } else {
+                    return -2;
+                }
+            } else {
+                return $result;
+            }
         } else {
             return -1;
         }

@@ -18,9 +18,9 @@
  */
 
 /**
- * \file        class/passManDb.php
+ * \file        class/PassManDb.php
  * \ingroup     Password Manager
- * \brief       This file is a CRUD file for config class (Create/Read/Update/Delete)
+ * \brief       This file is a CRUD file for PassManDb class (Create/Read/Update/Delete)
  */
 
 declare(strict_types = 1);
@@ -32,9 +32,9 @@ use PDO;
 use PDOException;
 
 /**
- * Class for config
+ * Class for database handling
  */
-class passManDb
+class PassManDb
 {
 
     /**
@@ -104,7 +104,7 @@ class passManDb
      * @param string $name Name of database
      * @param int    $port Port of database server
      *
-     * @throws Exception
+     * @throws PDOException|Exception
      */
     public function __construct($host = '', $user = '', $pass = '', $name = '', $port = 0)
     {
@@ -179,8 +179,6 @@ class passManDb
      */
     public function connect($host, $login, $passwd, $name, $port = 0)
     {
-
-        //pm_syslog(get_class($this) . ":: connect host=$host, port=$port, login=$login, passwd=--hidden--, name=$name", PM_LOG_DEBUG);
 
         try {
             $this->db = new PDO("mysql:host=$host;dbname=$name;port=$port", $login, $passwd);
@@ -390,7 +388,7 @@ class passManDb
      * @param string $childClassField      Child class field that matches parent ID
      *
      * @return array|int
-     * @throws Exception
+     * @throws PDOException|Exception
      */
     public function fetchAll(
         $array_of_fields,
@@ -520,7 +518,7 @@ class passManDb
      * @param string $childClassField      Child class field that matches parent ID
      *
      * @return array|int
-     * @throws Exception
+     * @throws PDOException|Exception
      */
     public function fetch(
         $id = '',

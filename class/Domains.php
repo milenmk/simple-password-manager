@@ -18,9 +18,9 @@
  */
 
 /**
- * \file        class/domains.php
+ * \file        class/Domains.php
  * \ingroup     Password Manager
- * \brief       This file is a CRUD file for domains class (Create/Read/Update/Delete)
+ * \brief       This file is a CRUD file for Domains class (Create/Read/Update/Delete)
  */
 
 declare(strict_types = 1);
@@ -33,7 +33,7 @@ use PDOException;
 /**
  * Class for domains
  */
-class domains
+class Domains
 {
 
     /**
@@ -85,14 +85,14 @@ class domains
     public array $array_of_fields = ['label', 'website', 'ftp', 'data_base', 'fk_user'];
 
     /**
-     * @var passManDb Database handler
+     * @var PassManDb Database handler
      */
-    private passManDb $db;
+    private PassManDb $db;
 
     /**
-     * @param passManDb $db
+     * @param PassManDb $db
      */
-    public function __construct(passManDb $db)
+    public function __construct(PassManDb $db)
     {
 
         $this->db = $db;

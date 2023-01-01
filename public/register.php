@@ -43,7 +43,7 @@ if (isset($user->id) && $user->id > 0) {
 /*
  * Objects
  */
-$user = new user($db);
+$user = new User($db);
 
 /*
  * Initiate POST values
@@ -104,7 +104,7 @@ if ($action == 'create_user') {
         if ($result['id'] > 0) {
             $error = $langs->trans('UserNameTaken');
         } elseif (($result['id'] < 0 || empty($result['id'])) && empty($error)) {
-            $usertmp = new user($db);
+            $usertmp = new User($db);
             $usertmp->first_name = $first_name;
             $usertmp->last_name = $last_name;
             $usertmp->username = $username;

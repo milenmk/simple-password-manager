@@ -459,12 +459,12 @@ function pm_logout_block()
  * @param string $name Name of database
  * @param int    $port Port of database server
  *
- * @return passManDb passManDb instance
+ * @return PassManDb passManDb instance
  * @throws Exception
  */
 
 function getPassManDbInstance($host, $user, $pass, $name, $port)
 {
 
-    return new passManDb($host, $user, $pass, $name, $port);
+    return new PassManDb($host, $user, $pass, $name, $port);
 }

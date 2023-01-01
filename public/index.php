@@ -54,7 +54,7 @@ $message = GETPOST('message', 'alpha');
 /*
  * Objects
  */
-$domains = new domains($db);
+$domains = new Domains($db);
 
 $title = $langs->trans('Domains');
 

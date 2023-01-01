@@ -58,8 +58,8 @@ $message = GETPOST('message', 'alpha');
 /*
  * Objects
  */
-$records = new records($db);
-$domains = new domains($db);
+$records = new Records($db);
+$domains = new Domains($db);
 
 $title = $langs->trans('Records');
 

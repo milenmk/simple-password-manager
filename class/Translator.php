@@ -32,7 +32,7 @@ use Exception;
 /**
  * Class for translator
  */
-class translator
+class Translator
 {
 
     public string $dir;
@@ -80,6 +80,7 @@ class translator
      * @param string $srclang Language to use. If '' or 'auto', we use browser lang.
      *
      * @return    void
+     * @throws Exception
      */
     public function setDefaultLang($srclang = 'en_US')
     {
@@ -277,6 +278,7 @@ class translator
      * @param string $param4 param4 string
      *
      * @return string            Translated string (encoded into HTML entities and UTF8)
+     * @throws Exception
      */
     public function trans($key, $param1 = '', $param2 = '', $param3 = '', $param4 = '')
     {

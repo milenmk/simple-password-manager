@@ -57,7 +57,7 @@ $user_language = GETPOST('user_language', 'alpha');
 /*
  * Objects
  */
-$user = new user($db);
+$user = new User($db);
 
 $title = $langs->trans('Profile');
 

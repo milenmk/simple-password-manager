@@ -53,7 +53,7 @@ $password = GETPOST('password', 'az09');
 /*
  * Objects
  */
-$user = new user($db);
+$user = new User($db);
 
 /*
  * Actions
