@@ -45,17 +45,17 @@ class Domains
      */
     public string $label;
     /**
-     * @var bool has website record(s)?
+     * @var int has website record(s)?
      */
-    public bool $website;
+    public int $website;
     /**
-     * @var bool has FTP record(s)?
+     * @var int has FTP record(s)?
      */
-    public bool $ftp;
+    public int $ftp;
     /**
-     * @var bool has Database record(s)?
+     * @var int has Database record(s)?
      */
-    public bool $data_base;
+    public int $data_base;
     /**
      * @var int User who owns
      */
