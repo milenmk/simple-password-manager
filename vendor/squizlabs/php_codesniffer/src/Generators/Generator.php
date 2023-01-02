@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: Generator.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * The base class for all PHP_CodeSniffer documentation generators.
  *
@@ -31,8 +12,6 @@
 
 namespace PHP_CodeSniffer\Generators;
 
-use DOMDocument;
-use DOMNode;
 use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\Autoload;
 
@@ -42,7 +21,7 @@ abstract class Generator
     /**
      * The ruleset used for the run.
      *
-     * @var Ruleset
+     * @var \PHP_CodeSniffer\Ruleset
      */
     public $ruleset = null;
 
@@ -57,7 +36,7 @@ abstract class Generator
     /**
      * Constructs a doc generator.
      *
-     * @param Ruleset $ruleset The ruleset used for the run.
+     * @param \PHP_CodeSniffer\Ruleset $ruleset The ruleset used for the run.
      *
      * @see generate()
      */
@@ -85,13 +64,13 @@ abstract class Generator
     /**
      * Retrieves the title of the sniff from the DOMNode supplied.
      *
-     * @param DOMNode $doc The DOMNode object for the sniff.
+     * @param \DOMNode $doc The DOMNode object for the sniff.
      *                      It represents the "documentation" tag in the XML
      *                      standard file.
      *
      * @return string
      */
-    protected function getTitle(DOMNode $doc)
+    protected function getTitle(\DOMNode $doc)
     {
         return $doc->getAttribute('title');
 
@@ -111,7 +90,7 @@ abstract class Generator
     public function generate()
     {
         foreach ($this->docFiles as $file) {
-            $doc = new DOMDocument();
+            $doc = new \DOMDocument();
             $doc->load($file);
             $documentation = $doc->getElementsByTagName('documentation')->item(0);
             $this->processSniff($documentation);
@@ -125,14 +104,14 @@ abstract class Generator
      *
      * Doc generators must implement this function to produce output.
      *
-     * @param DOMNode $doc The DOMNode object for the sniff.
+     * @param \DOMNode $doc The DOMNode object for the sniff.
      *                      It represents the "documentation" tag in the XML
      *                      standard file.
      *
      * @return void
      * @see    generate()
      */
-    abstract protected function processSniff(DOMNode $doc);
+    abstract protected function processSniff(\DOMNode $doc);
 
 
 }//end class

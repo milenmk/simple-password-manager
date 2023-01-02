@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: IsReferenceTest.php
- *  Last Modified: 3.01.23 г., 0:06 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests for the \PHP_CodeSniffer\Files\File:isReference method.
  *
@@ -33,6 +14,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class IsReferenceTest extends AbstractMethodUnitTest
 {
 
+
     /**
      * Test correctly identifying whether a "bitwise and" token is a reference or not.
      *
@@ -45,22 +27,22 @@ class IsReferenceTest extends AbstractMethodUnitTest
      */
     public function testIsReference($identifier, $expected)
     {
-
         $bitwiseAnd = $this->getTargetToken($identifier, T_BITWISE_AND);
-        $result = self::$phpcsFile->isReference($bitwiseAnd);
+        $result     = self::$phpcsFile->isReference($bitwiseAnd);
         $this->assertSame($expected, $result);
+
     }//end testIsReference()
+
 
     /**
      * Data provider for the IsReference test.
      *
-     * @return array
      * @see testIsReference()
      *
+     * @return array
      */
     public function dataIsReference()
     {
-
         return [
             [
                 '/* testBitwiseAndA */',
@@ -259,6 +241,8 @@ class IsReferenceTest extends AbstractMethodUnitTest
                 true,
             ],
         ];
+
     }//end dataIsReference()
+
 
 }//end class

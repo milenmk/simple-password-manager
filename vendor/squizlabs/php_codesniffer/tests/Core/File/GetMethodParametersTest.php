@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: GetMethodParametersTest.php
- *  Last Modified: 3.01.23 г., 0:06 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests for the \PHP_CodeSniffer\Files\File:getMethodParameters method.
  *
@@ -33,6 +14,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class GetMethodParametersTest extends AbstractMethodUnitTest
 {
 
+
     /**
      * Verify pass-by-reference parsing.
      *
@@ -40,8 +22,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPassByReference()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var',
             'content'           => '&$var',
@@ -52,25 +33,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
     }//end testPassByReference()
 
-    /**
-     * Test helper.
-     *
-     * @param string $commentString The comment which preceeds the test.
-     * @param array  $expected      The expected function output.
-     *
-     * @return void
-     */
-    private function getMethodParametersTestHelper($commentString, $expected)
-    {
-
-        $function = $this->getTargetToken($commentString, [T_FUNCTION, T_CLOSURE, T_FN]);
-        $found = self::$phpcsFile->getMethodParameters($function);
-
-        $this->assertArraySubset($expected, $found, true);
-    }//end testArrayHint()
 
     /**
      * Verify array hint parsing.
@@ -79,8 +45,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testArrayHint()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var',
             'content'           => 'array $var',
@@ -91,8 +56,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testTypeHint()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testArrayHint()
+
 
     /**
      * Verify type hint parsing.
@@ -101,8 +68,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testTypeHint()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var1',
             'content'           => 'foo $var1',
@@ -123,8 +89,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testSelfTypeHint()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testTypeHint()
+
 
     /**
      * Verify self type hint parsing.
@@ -133,8 +101,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testSelfTypeHint()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var',
             'content'           => 'self $var',
@@ -145,8 +112,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testNullableTypeHint()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testSelfTypeHint()
+
 
     /**
      * Verify nullable type hint parsing.
@@ -155,8 +124,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testNullableTypeHint()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var1',
             'content'           => '?int $var1',
@@ -177,8 +145,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => true,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testVariable()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testNullableTypeHint()
+
 
     /**
      * Verify variable.
@@ -187,8 +157,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testVariable()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var',
             'content'           => '$var',
@@ -199,8 +168,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testSingleDefaultValue()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testVariable()
+
 
     /**
      * Verify default value parsing with a single function param.
@@ -209,8 +180,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testSingleDefaultValue()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var1',
             'content'           => '$var1=self::CONSTANT',
@@ -222,8 +192,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testDefaultValues()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testSingleDefaultValue()
+
 
     /**
      * Verify default value parsing.
@@ -232,8 +204,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testDefaultValues()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var1',
             'content'           => '$var1=1',
@@ -255,8 +226,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testBitwiseAndConstantExpressionDefaultValue()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testDefaultValues()
+
 
     /**
      * Verify "bitwise and" in default value !== pass-by-reference.
@@ -265,8 +238,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testBitwiseAndConstantExpressionDefaultValue()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$a',
             'content'           => '$a = 10 & 20',
@@ -278,8 +250,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testArrowFunction()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testBitwiseAndConstantExpressionDefaultValue()
+
 
     /**
      * Verify that arrow functions are supported.
@@ -288,8 +262,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testArrowFunction()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$a',
             'content'           => 'int $a',
@@ -310,8 +283,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8MixedTypeHint()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testArrowFunction()
+
 
     /**
      * Verify recognition of PHP8 mixed type declaration.
@@ -320,8 +295,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8MixedTypeHint()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var1',
             'content'           => 'mixed &...$var1',
@@ -332,8 +306,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8MixedTypeHintNullable()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8MixedTypeHint()
+
 
     /**
      * Verify recognition of PHP8 mixed type declaration with nullability.
@@ -342,8 +318,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8MixedTypeHintNullable()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var1',
             'content'           => '?Mixed $var1',
@@ -354,8 +329,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => true,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testNamespaceOperatorTypeHint()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8MixedTypeHintNullable()
+
 
     /**
      * Verify recognition of type declarations using the namespace operator.
@@ -364,8 +341,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testNamespaceOperatorTypeHint()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var1',
             'content'           => '?namespace\Name $var1',
@@ -376,8 +352,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => true,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8UnionTypesSimple()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testNamespaceOperatorTypeHint()
+
 
     /**
      * Verify recognition of PHP8 union type declaration.
@@ -386,8 +364,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesSimple()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$number',
             'content'           => 'int|float $number',
@@ -407,8 +384,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8UnionTypesWithSpreadOperatorAndReference()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8UnionTypesSimple()
+
 
     /**
      * Verify recognition of PHP8 union type declaration when the variable has either a spread operator or a reference.
@@ -417,8 +396,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesWithSpreadOperatorAndReference()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$paramA',
             'content'           => 'float|null &$paramA',
@@ -438,8 +416,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8UnionTypesSimpleWithBitwiseOrInDefault()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8UnionTypesWithSpreadOperatorAndReference()
+
 
     /**
      * Verify recognition of PHP8 union type declaration with a bitwise or in the default value.
@@ -448,8 +428,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesSimpleWithBitwiseOrInDefault()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var',
             'content'           => 'int|float $var = CONSTANT_A | CONSTANT_B',
@@ -461,8 +440,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8UnionTypesTwoClasses()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8UnionTypesSimpleWithBitwiseOrInDefault()
+
 
     /**
      * Verify recognition of PHP8 union type declaration with two classes.
@@ -471,8 +452,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesTwoClasses()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var',
             'content'           => 'MyClassA|\Package\MyClassB $var',
@@ -483,8 +463,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8UnionTypesAllBaseTypes()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8UnionTypesTwoClasses()
+
 
     /**
      * Verify recognition of PHP8 union type declaration with all base types.
@@ -493,8 +475,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesAllBaseTypes()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var',
             'content'           => 'array|bool|callable|int|float|null|object|string $var',
@@ -505,8 +486,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8UnionTypesAllPseudoTypes()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8UnionTypesAllBaseTypes()
+
 
     /**
      * Verify recognition of PHP8 union type declaration with all pseudo types.
@@ -515,8 +498,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesAllPseudoTypes()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var',
             'content'           => 'false|mixed|self|parent|iterable|Resource $var',
@@ -527,8 +509,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8UnionTypesNullable()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8UnionTypesAllPseudoTypes()
+
 
     /**
      * Verify recognition of PHP8 union type declaration with (illegal) nullability.
@@ -537,8 +521,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesNullable()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$number',
             'content'           => '?int|float $number',
@@ -549,8 +532,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => true,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8PseudoTypeNull()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8UnionTypesNullable()
+
 
     /**
      * Verify recognition of PHP8 type declaration with (illegal) single type null.
@@ -559,8 +544,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeNull()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var',
             'content'           => 'null $var = null',
@@ -572,8 +556,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8PseudoTypeFalse()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8PseudoTypeNull()
+
 
     /**
      * Verify recognition of PHP8 type declaration with (illegal) single type false.
@@ -582,8 +568,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeFalse()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var',
             'content'           => 'false $var = false',
@@ -595,8 +580,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8PseudoTypeFalseAndBool()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8PseudoTypeFalse()
+
 
     /**
      * Verify recognition of PHP8 type declaration with (illegal) type false combined with type bool.
@@ -605,8 +592,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeFalseAndBool()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var',
             'content'           => 'bool|false $var = false',
@@ -618,8 +604,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8ObjectAndClass()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8PseudoTypeFalseAndBool()
+
 
     /**
      * Verify recognition of PHP8 type declaration with (illegal) type object combined with a class name.
@@ -628,8 +616,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8ObjectAndClass()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var',
             'content'           => 'object|ClassName $var',
@@ -640,8 +627,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8PseudoTypeIterableAndArray()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8ObjectAndClass()
+
 
     /**
      * Verify recognition of PHP8 type declaration with (illegal) type iterable combined with array/Traversable.
@@ -650,8 +639,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeIterableAndArray()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var',
             'content'           => 'iterable|array|Traversable $var',
@@ -662,8 +650,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8DuplicateTypeInUnionWhitespaceAndComment()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8PseudoTypeIterableAndArray()
+
 
     /**
      * Verify recognition of PHP8 type declaration with (illegal) duplicate types.
@@ -672,8 +662,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8DuplicateTypeInUnionWhitespaceAndComment()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var',
             'content'           => 'int | string /*comment*/ | INT $var',
@@ -684,8 +673,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8ConstructorPropertyPromotionNoTypes()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8DuplicateTypeInUnionWhitespaceAndComment()
+
 
     /**
      * Verify recognition of PHP8 constructor property promotion without type declaration, with defaults.
@@ -694,8 +685,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8ConstructorPropertyPromotionNoTypes()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'                => '$x',
             'content'             => 'public $x = 0.0',
@@ -733,8 +723,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'property_readonly'   => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8ConstructorPropertyPromotionWithTypes()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8ConstructorPropertyPromotionNoTypes()
+
 
     /**
      * Verify recognition of PHP8 constructor property promotion with type declarations.
@@ -743,8 +735,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8ConstructorPropertyPromotionWithTypes()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'                => '$x',
             'content'             => 'protected float|int $x',
@@ -780,8 +771,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'property_readonly'   => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8ConstructorPropertyPromotionAndNormalParam()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8ConstructorPropertyPromotionWithTypes()
+
 
     /**
      * Verify recognition of PHP8 constructor with both property promotion as well as normal parameters.
@@ -790,8 +783,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8ConstructorPropertyPromotionAndNormalParam()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'                => '$promotedProp',
             'content'             => 'public int $promotedProp',
@@ -813,8 +805,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => true,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP81ConstructorPropertyPromotionWithReadOnly()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8ConstructorPropertyPromotionAndNormalParam()
+
 
     /**
      * Verify recognition of PHP8 constructor with property promotion using PHP 8.1 readonly keyword.
@@ -823,8 +817,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP81ConstructorPropertyPromotionWithReadOnly()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'                => '$promotedProp',
             'content'             => 'public readonly ?int $promotedProp',
@@ -848,8 +841,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'property_readonly'   => true,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8ConstructorPropertyPromotionGlobalFunction()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP81ConstructorPropertyPromotionWithReadOnly()
+
 
     /**
      * Verify behaviour when a non-constructor function uses PHP 8 property promotion syntax.
@@ -858,8 +853,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8ConstructorPropertyPromotionGlobalFunction()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'                => '$x',
             'content'             => 'private $x',
@@ -871,8 +865,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'property_visibility' => 'private',
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8ConstructorPropertyPromotionAbstractMethod()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8ConstructorPropertyPromotionGlobalFunction()
+
 
     /**
      * Verify behaviour when an abstract constructor uses PHP 8 property promotion syntax.
@@ -881,8 +877,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8ConstructorPropertyPromotionAbstractMethod()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'                => '$y',
             'content'             => 'public callable $y',
@@ -904,8 +899,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'property_visibility' => 'private',
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testCommentsInParameter()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8ConstructorPropertyPromotionAbstractMethod()
+
 
     /**
      * Verify and document behaviour when there are comments within a parameter declaration.
@@ -914,8 +911,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testCommentsInParameter()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$param',
             'content'           => '// Leading comment.
@@ -927,8 +923,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => true,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testParameterAttributesInFunctionDeclaration()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testCommentsInParameter()
+
 
     /**
      * Verify behaviour when parameters have attributes attached.
@@ -937,8 +935,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testParameterAttributesInFunctionDeclaration()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'                => '$constructorPropPromTypedParamSingleAttribute',
             'content'             => '#[\MyExample\MyAttribute] private string $constructorPropPromTypedParamSingleAttribute',
@@ -989,8 +986,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8IntersectionTypes()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testParameterAttributesInFunctionDeclaration()
+
 
     /**
      * Verify recognition of PHP8.1 intersection type declaration.
@@ -999,8 +998,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP8IntersectionTypes()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$obj1',
             'content'           => 'Foo&Bar $obj1',
@@ -1020,8 +1018,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP81IntersectionTypesWithSpreadOperatorAndReference()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8IntersectionTypes()
+
 
     /**
      * Verify recognition of PHP8 intersection type declaration when the variable has either a spread operator or a reference.
@@ -1030,8 +1030,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP81IntersectionTypesWithSpreadOperatorAndReference()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$paramA',
             'content'           => 'Boo&Bar &$paramA',
@@ -1051,8 +1050,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP81MoreIntersectionTypes()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP81IntersectionTypesWithSpreadOperatorAndReference()
+
 
     /**
      * Verify recognition of PHP8.1 intersection type declaration with more types.
@@ -1061,8 +1062,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP81MoreIntersectionTypes()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$var',
             'content'           => 'MyClassA&\Package\MyClassB&\Package\MyClassC $var',
@@ -1073,8 +1073,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP81IllegalIntersectionTypes()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP81MoreIntersectionTypes()
+
 
     /**
      * Verify recognition of PHP8.1 intersection type declaration with illegal simple types.
@@ -1083,8 +1085,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP81IllegalIntersectionTypes()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$numeric_string',
             'content'           => 'string&int $numeric_string',
@@ -1095,8 +1096,10 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => false,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP81NullableIntersectionTypes()
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP81IllegalIntersectionTypes()
+
 
     /**
      * Verify recognition of PHP8.1 intersection type declaration with (illegal) nullability.
@@ -1105,8 +1108,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
      */
     public function testPHP81NullableIntersectionTypes()
     {
-
-        $expected = [];
+        $expected    = [];
         $expected[0] = [
             'name'              => '$object',
             'content'           => '?Foo&Bar $object',
@@ -1117,7 +1119,27 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
             'nullable_type'     => true,
         ];
 
-        $this->getMethodParametersTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
+        $this->getMethodParametersTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP81NullableIntersectionTypes()
+
+
+    /**
+     * Test helper.
+     *
+     * @param string $commentString The comment which preceeds the test.
+     * @param array  $expected      The expected function output.
+     *
+     * @return void
+     */
+    private function getMethodParametersTestHelper($commentString, $expected)
+    {
+        $function = $this->getTargetToken($commentString, [T_FUNCTION, T_CLOSURE, T_FN]);
+        $found    = self::$phpcsFile->getMethodParameters($function);
+
+        $this->assertArraySubset($expected, $found, true);
+
     }//end getMethodParametersTestHelper()
+
 
 }//end class

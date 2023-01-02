@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: FileCommentSniff.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Parses and verifies the doc comments for files.
  *
@@ -103,8 +84,8 @@ class FileCommentSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile                        The file being scanned.
-     * @param int  $stackPtr                         The position of the current token
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *
      * @return int
@@ -231,10 +212,10 @@ class FileCommentSniff implements Sniff
     /**
      * Processes each required or optional tag.
      *
-     * @param File $phpcsFile                           The file being scanned.
-     * @param int  $stackPtr                            The position of the current token
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile    The file being scanned.
+     * @param int                         $stackPtr     The position of the current token
      *                                                  in the stack passed in $tokens.
-     * @param int  $commentStart                        Position in the stack where the comment started.
+     * @param int                         $commentStart Position in the stack where the comment started.
      *
      * @return void
      */
@@ -330,8 +311,8 @@ class FileCommentSniff implements Sniff
     /**
      * Process the category tag.
      *
-     * @param File  $phpcsFile The file being scanned.
-     * @param array $tags      The tokens for these tags.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param array                       $tags      The tokens for these tags.
      *
      * @return void
      */
@@ -372,8 +353,8 @@ class FileCommentSniff implements Sniff
     /**
      * Process the package tag.
      *
-     * @param File  $phpcsFile The file being scanned.
-     * @param array $tags      The tokens for these tags.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param array                       $tags      The tokens for these tags.
      *
      * @return void
      */
@@ -425,8 +406,8 @@ class FileCommentSniff implements Sniff
     /**
      * Process the subpackage tag.
      *
-     * @param File  $phpcsFile The file being scanned.
-     * @param array $tags      The tokens for these tags.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param array                       $tags      The tokens for these tags.
      *
      * @return void
      */
@@ -469,8 +450,8 @@ class FileCommentSniff implements Sniff
     /**
      * Process the author tag(s) that this header comment has.
      *
-     * @param File  $phpcsFile The file being scanned.
-     * @param array $tags      The tokens for these tags.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param array                       $tags      The tokens for these tags.
      *
      * @return void
      */
@@ -499,8 +480,8 @@ class FileCommentSniff implements Sniff
     /**
      * Process the copyright tags.
      *
-     * @param File  $phpcsFile The file being scanned.
-     * @param array $tags      The tokens for these tags.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param array                       $tags      The tokens for these tags.
      *
      * @return void
      */
@@ -540,8 +521,8 @@ class FileCommentSniff implements Sniff
     /**
      * Process the license tag.
      *
-     * @param File  $phpcsFile The file being scanned.
-     * @param array $tags      The tokens for these tags.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param array                       $tags      The tokens for these tags.
      *
      * @return void
      */
@@ -569,8 +550,8 @@ class FileCommentSniff implements Sniff
     /**
      * Process the version tag.
      *
-     * @param File  $phpcsFile The file being scanned.
-     * @param array $tags      The tokens for these tags.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param array                       $tags      The tokens for these tags.
      *
      * @return void
      */

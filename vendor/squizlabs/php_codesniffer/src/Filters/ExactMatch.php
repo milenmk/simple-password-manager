@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: ExactMatch.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * An abstract filter class for checking files and folders against exact matches.
  *
@@ -31,7 +12,6 @@
 namespace PHP_CodeSniffer\Filters;
 
 use PHP_CodeSniffer\Util;
-use RecursiveIterator;
 
 abstract class ExactMatch extends Filter
 {
@@ -97,7 +77,7 @@ abstract class ExactMatch extends Filter
      * Ensures that the blacklist and whitelist are preserved so they don't have
      * to be generated each time.
      *
-     * @return RecursiveIterator
+     * @return \RecursiveIterator
      */
     public function getChildren()
     {

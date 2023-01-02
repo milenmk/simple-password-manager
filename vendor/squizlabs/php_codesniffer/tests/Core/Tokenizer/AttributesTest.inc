@@ -1,25 +1,5 @@
 <?php
 
-use Foo\FullyQualifiedName;
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: AttributesTest.inc
- *  Last Modified: 3.01.23 г., 0:06 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /* testAttribute */
 #[Attribute]
 class CustomAttribute {}
@@ -81,7 +61,7 @@ function single_attribute_on_parameter_test(#[ParamAttribute] int $param) {}
 function multiple_attributes_on_parameter_test(#[ParamAttribute, AttributeWithParams(/* another comment */ 'foo')] int $param) {}
 
 /* testFqcnAttribute */
-#[Boo\QualifiedName, FullyQualifiedName('foo')]
+#[Boo\QualifiedName, \Foo\FullyQualifiedName('foo')]
 function fqcn_attrebute_test() {}
 
 /* testNestedAttributes */

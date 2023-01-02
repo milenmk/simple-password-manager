@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: PropertyDeclarationUnitTest.inc
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 class MyClass
 {
     public $var = null;
@@ -25,9 +6,9 @@ class MyClass
     private $var = null;
     $var = null;
 
-    public        $var = null;
-    static public $var = null;
-    public        $var = null; // Parse error.
+    var $var = null;
+    static $var = null;
+    public var $var = null; // Parse error.
 
     public $_var = null;
     protected $_var = null;
@@ -45,8 +26,7 @@ class MyClass
 
 class foo
 {
-
-    public const bar = <<<BAZ
+    const bar = <<<BAZ
 qux
 BAZ;
 }
@@ -55,10 +35,11 @@ class ABC {
     public static $propA;
     protected static $propB;
     private static $propC;
-    public static  $propD;
-    protected static
-                   $propE;
-    private static    /*comment*/$propF;
+    static public $propD;
+    static
+        protected
+            $propE;
+    static private    /*comment*/   $propF;
 }
 
 class MyClass
@@ -66,7 +47,7 @@ class MyClass
     public string $var = null;
     protected ?Folder\ClassName $var = null;
 
-    public int $var = null;
+    var int $var = null;
     static int $var = null;
 
     private int $_var = null;

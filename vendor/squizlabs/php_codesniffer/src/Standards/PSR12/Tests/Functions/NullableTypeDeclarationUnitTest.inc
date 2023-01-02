@@ -1,26 +1,5 @@
 <?php
 
-use MyNameSpace\MyArray;
-use MyNameSpace\MyObject;
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: NullableTypeDeclarationUnitTest.inc
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 class MyClass {
     public function validNullableTypeHinting(
         ?array $array = null,
@@ -30,9 +9,9 @@ class MyClass {
     }
 
     public function validWithFQN(
-        ?MyArray  $array = null,
-        ?MyObject $object
-    ): ?MyObject
+        ?\MyNameSpace\MyArray $array = null,
+        ?\MyNameSpace\MyObject $object
+    ): ?\MyNameSpace\MyObject
     {
     }
 
@@ -48,9 +27,9 @@ class MyClass {
     }
 
     public function invalidWithFQNTooMuchWhitespace(
-        ? MyArray $array = null,
-        ? MyObject
-    ):? MyObject
+        ? \MyNameSpace\MyArray $array = null,
+        ? \MyNameSpace\MyObject
+    ):? \MyNameSpace\MyObject
     {
     }
 }
@@ -99,7 +78,7 @@ class testInstanceOf() {
         $foo = $value instanceof static ? '(' . $value . ')' : $value;
         $bar = $value instanceof static ? function_call($value) : $value;
         $baz = $value instanceof static ? array($value) : $value;
-        $bal = $value instanceof static ? className::$property : $value;
+        $bal = $value instanceof static ? \className::$property : $value;
         $bal = $value instanceof static ? CONSTANT_NAME : $value;
     }
 }

@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: BackfillExplicitOctalNotationTest.php
- *  Last Modified: 3.01.23 г., 0:06 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests the tokenization of explicit octal notation to PHP < 8.1.
  *
@@ -32,6 +13,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class BackfillExplicitOctalNotationTest extends AbstractMethodUnitTest
 {
+
 
     /**
      * Test that explicitly-defined octal values are tokenized as a single number and not as a number and a string.
@@ -48,27 +30,27 @@ class BackfillExplicitOctalNotationTest extends AbstractMethodUnitTest
      */
     public function testExplicitOctalNotation($marker, $value, $nextToken, $nextContent)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $number = $this->getTargetToken($marker, [T_LNUMBER]);
 
         $this->assertSame($value, $tokens[$number]['content'], 'Content of integer token does not match expectation');
 
-        $this->assertSame($nextToken, $tokens[($number + 1)]['code'], 'Next token is not the expected type, but ' . $tokens[($number + 1)]['type']);
+        $this->assertSame($nextToken, $tokens[($number + 1)]['code'], 'Next token is not the expected type, but '.$tokens[($number + 1)]['type']);
         $this->assertSame($nextContent, $tokens[($number + 1)]['content'], 'Next token did not have the expected contents');
+
     }//end testExplicitOctalNotation()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testExplicitOctalNotation()
      *
+     * @return array
      */
     public function dataExplicitOctalNotation()
     {
-
         return [
             [
                 'marker'      => '/* testExplicitOctal */',
@@ -125,6 +107,8 @@ class BackfillExplicitOctalNotationTest extends AbstractMethodUnitTest
                 'nextContent' => '_82',
             ],
         ];
+
     }//end dataExplicitOctalNotation()
+
 
 }//end class

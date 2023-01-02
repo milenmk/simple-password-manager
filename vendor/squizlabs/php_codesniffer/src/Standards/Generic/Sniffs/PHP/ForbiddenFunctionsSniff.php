@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: ForbiddenFunctionsSniff.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Discourages the use of alias functions.
  *
@@ -60,14 +41,14 @@ class ForbiddenFunctionsSniff implements Sniff
     /**
      * If true, forbidden functions will be considered regular expressions.
      *
-     * @var bool
+     * @var boolean
      */
     protected $patternMatch = false;
 
     /**
      * If true, an error will be thrown; otherwise a warning.
      *
-     * @var bool
+     * @var boolean
      */
     public $error = true;
 
@@ -128,8 +109,8 @@ class ForbiddenFunctionsSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile                        The file being scanned.
-     * @param int  $stackPtr                         The position of the current token in
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param int                         $stackPtr  The position of the current token in
      *                                               the stack passed in $tokens.
      *
      * @return void
@@ -215,11 +196,11 @@ class ForbiddenFunctionsSniff implements Sniff
     /**
      * Generates the error or warning for this sniff.
      *
-     * @param File   $phpcsFile                      The file being scanned.
-     * @param int    $stackPtr                       The position of the forbidden function
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param int                         $stackPtr  The position of the forbidden function
      *                                               in the token array.
-     * @param string $function                       The name of the forbidden function.
-     * @param string $pattern                        The pattern used for the match.
+     * @param string                      $function  The name of the forbidden function.
+     * @param string                      $pattern   The pattern used for the match.
      *
      * @return void
      */

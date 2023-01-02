@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: ScopeIndentSniff.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Checks that control structures are defined and indented correctly.
  *
@@ -49,7 +30,7 @@ class ScopeIndentSniff implements Sniff
     /**
      * The number of spaces code should be indented.
      *
-     * @var int
+     * @var integer
      */
     public $indent = 4;
 
@@ -59,7 +40,7 @@ class ScopeIndentSniff implements Sniff
      * If TRUE, indent needs to be exactly $indent spaces. If FALSE,
      * indent needs to be at least $indent spaces (but can be more).
      *
-     * @var bool
+     * @var boolean
      */
     public $exact = false;
 
@@ -70,14 +51,14 @@ class ScopeIndentSniff implements Sniff
      * The size of each tab is important, so it should be specified
      * using the --tab-width CLI argument.
      *
-     * @var bool
+     * @var boolean
      */
     public $tabIndent = false;
 
     /**
      * The --tab-width CLI value that is being used.
      *
-     * @var int
+     * @var integer
      */
     private $tabWidth = null;
 
@@ -113,7 +94,7 @@ class ScopeIndentSniff implements Sniff
     /**
      * Show debug output for this sniff.
      *
-     * @var bool
+     * @var boolean
      */
     private $debug = false;
 
@@ -137,8 +118,8 @@ class ScopeIndentSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile                        All the tokens found in the document.
-     * @param int  $stackPtr                         The position of the current token
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile All the tokens found in the document.
+     * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *
      * @return int
@@ -1510,11 +1491,11 @@ class ScopeIndentSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile                        All the tokens found in the document.
-     * @param int  $stackPtr                         The position of the current token
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile All the tokens found in the document.
+     * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
-     * @param int  $length                           The length of the new indent.
-     * @param int  $change                           The difference in length between
+     * @param int                         $length    The length of the new indent.
+     * @param int                         $change    The difference in length between
      *                                               the old and new indent.
      *
      * @return bool

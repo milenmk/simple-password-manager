@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: UndoNamespacedNameSingleTokenTest.php
- *  Last Modified: 3.01.23 г., 0:07 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests the tokenization of identifier names.
  *
@@ -43,6 +24,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class UndoNamespacedNameSingleTokenTest extends AbstractMethodUnitTest
 {
 
+
     /**
      * Test that identifier names are tokenized the same across PHP versions, based on the PHP 5/7 tokenization.
      *
@@ -56,8 +38,7 @@ class UndoNamespacedNameSingleTokenTest extends AbstractMethodUnitTest
      */
     public function testIdentifierTokenization($testMarker, $expectedTokens)
     {
-
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens     = self::$phpcsFile->getTokens();
         $identifier = $this->getTargetToken($testMarker, constant($expectedTokens[0]['type']));
 
         foreach ($expectedTokens as $key => $tokenInfo) {
@@ -67,18 +48,19 @@ class UndoNamespacedNameSingleTokenTest extends AbstractMethodUnitTest
 
             ++$identifier;
         }
+
     }//end testIdentifierTokenization()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testIdentifierTokenization()
      *
+     * @return array
      */
     public function dataIdentifierTokenization()
     {
-
         return [
             [
                 '/* testNamespaceDeclaration */',
@@ -1306,6 +1288,8 @@ class UndoNamespacedNameSingleTokenTest extends AbstractMethodUnitTest
                 ],
             ],
         ];
+
     }//end dataIdentifierTokenization()
+
 
 }//end class

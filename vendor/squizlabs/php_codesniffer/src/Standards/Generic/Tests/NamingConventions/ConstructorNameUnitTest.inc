@@ -1,36 +1,13 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: ConstructorNameUnitTest.inc
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 class TestClass extends MyClass
 {
 
-    public function TestClass()
-    {
-
+    function TestClass() {
         parent::MyClass();
         parent::__construct();
     }
 
-    public function __construct()
-    {
-
+    function __construct() {
         parent::MYCLASS();
         parent::__construct();
     }
@@ -40,16 +17,12 @@ class TestClass extends MyClass
 class MyClass
 {
 
-    public function MyClass()
-    {
-
+    function MyClass() {
         parent::YourClass();
         parent::__construct();
     }
 
-    public function __construct()
-    {
-
+    function __construct() {
         parent::YourClass();
         parent::__construct();
     }
@@ -58,10 +31,7 @@ class MyClass
 
 class MyOtherClass extends \MyNamespace\SomeClass
 {
-
-    public function __construct()
-    {
-
+    function __construct() {
         something::MyNamespace();
     }
 
@@ -74,23 +44,21 @@ abstract class MyAbstractClass extends \MyNamespace\SomeClass
 
 class OldClass
 {
-
-    public function OldClass() {}
-
-}
-
-foo(new class extends MyClass {
-
-    public function TestClass()
+    function OldClass()
     {
 
+    }
+}
+
+foo(new class extends MyClass
+{
+
+    function TestClass() {
         parent::MyClass();
         parent::__construct();
     }
 
-    public function __construct()
-    {
-
+    function __construct() {
         parent::MyClass();
         parent::__construct();
     }
@@ -99,11 +67,9 @@ foo(new class extends MyClass {
 
 class OlderClass
 {
+    function OlderClass() {}
 
-    public function OlderClass() {}
-
-    public function __CONSTRUCT() {}
-
+    function __CONSTRUCT() {}
 }
 
 

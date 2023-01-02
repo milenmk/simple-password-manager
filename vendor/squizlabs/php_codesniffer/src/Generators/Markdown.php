@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: Markdown.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * A doc generator that outputs documentation in Markdown format.
  *
@@ -28,8 +9,6 @@
 
 namespace PHP_CodeSniffer\Generators;
 
-use DOMDocument;
-use DOMNode;
 use PHP_CodeSniffer\Config;
 
 class Markdown extends Generator
@@ -48,7 +27,7 @@ class Markdown extends Generator
         $this->printHeader();
 
         foreach ($this->docFiles as $file) {
-            $doc = new DOMDocument();
+            $doc = new \DOMDocument();
             $doc->load($file);
             $documentation = $doc->getElementsByTagName('documentation')->item(0);
             $this->processSniff($documentation);
@@ -96,13 +75,13 @@ class Markdown extends Generator
     /**
      * Process the documentation for a single sniff.
      *
-     * @param DOMNode $doc The DOMNode object for the sniff.
+     * @param \DOMNode $doc The DOMNode object for the sniff.
      *                      It represents the "documentation" tag in the XML
      *                      standard file.
      *
      * @return void
      */
-    protected function processSniff(DOMNode $doc)
+    protected function processSniff(\DOMNode $doc)
     {
         $title = $this->getTitle($doc);
         echo PHP_EOL."## $title".PHP_EOL;
@@ -121,11 +100,11 @@ class Markdown extends Generator
     /**
      * Print a text block found in a standard.
      *
-     * @param DOMNode $node The DOMNode object for the text block.
+     * @param \DOMNode $node The DOMNode object for the text block.
      *
      * @return void
      */
-    protected function printTextBlock(DOMNode $node)
+    protected function printTextBlock(\DOMNode $node)
     {
         $content = trim($node->nodeValue);
         $content = htmlspecialchars($content);
@@ -141,11 +120,11 @@ class Markdown extends Generator
     /**
      * Print a code comparison block found in a standard.
      *
-     * @param DOMNode $node The DOMNode object for the code comparison block.
+     * @param \DOMNode $node The DOMNode object for the code comparison block.
      *
      * @return void
      */
-    protected function printCodeComparisonBlock(DOMNode $node)
+    protected function printCodeComparisonBlock(\DOMNode $node)
     {
         $codeBlocks = $node->getElementsByTagName('code');
 

@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: DisallowLongArraySyntaxUnitTest.1.inc
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 $var = array();
 $var = [1,2,3];
 $var = array(1,2,3);
@@ -35,11 +16,11 @@ function foo(array $array) {}
 
 $a = function (array $array) use ($foo): array {};
 
-abstract function foo(): array
+abstract function foo(): array;
 
-abstract function foo(): Foo\Bar
+abstract function foo(): Foo\Bar;
 
-abstract function foo(): \Foo\Bar
+abstract function foo(): \Foo\Bar;
 
 array_map(
     static fn (array $value): array => array_filter($value),

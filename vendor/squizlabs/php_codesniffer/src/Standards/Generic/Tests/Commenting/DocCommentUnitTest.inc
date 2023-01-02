@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: DocCommentUnitTest.inc
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Short description.
  *
@@ -139,16 +120,16 @@
 /**
  * Returns true if the specified string is in the camel caps format.
  *
- * @param bool $classFormat    If true, check to see if the string is in the
+ * @param boolean $classFormat If true, check to see if the string is in the
  *                             class format. Class format strings must start
  *                             with a capital letter and contain no
  *                             underscores.
- * @param bool $strict         If true, the string must not have two capital
+ * @param boolean $strict      If true, the string must not have two capital
  *                             letters next to each other. If false, a
  *                             relaxed camel caps policy is used to allow
  *                             for acronyms.
  *
- * @return bool
+ * @return boolean
  */
 
 /**
@@ -195,15 +176,15 @@
 
 /**
  * I'm a function short-description
- * @return bool
+ * @return boolean
  */
 
 /**
  * this is a test
  * @author test
- * @param bool $foo blah
- * @return bool
- * @param bool $bar Blah.
+ * @param boolean $foo blah
+ * @return boolean
+ * @param boolean $bar Blah.
  */
 
 /**

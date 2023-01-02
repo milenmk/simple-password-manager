@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: AbstractArraySniffTest.php
- *  Last Modified: 3.01.23 г., 0:07 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests for the \PHP_CodeSniffer\Sniffs\AbstractArraySniff.
  *
@@ -43,6 +24,7 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
      */
     protected static $sniff;
 
+
     /**
      * Initialize & tokenize \PHP_CodeSniffer\Files\File with code from the test case file.
      *
@@ -53,10 +35,11 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
      */
     public static function setUpBeforeClass()
     {
-
         self::$sniff = new AbstractArraySniffTestable();
         parent::setUpBeforeClass();
+
     }//end setUpBeforeClass()
+
 
     /**
      * Test an array of simple values only.
@@ -65,7 +48,6 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
      */
     public function testSimpleValues()
     {
-
         $token = $this->getTargetToken('/* testSimpleValues */', T_OPEN_SHORT_ARRAY);
         self::$sniff->process(self::$phpcsFile, $token);
 
@@ -76,7 +58,9 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
         ];
 
         $this->assertSame($expected, self::$sniff->indicies);
+
     }//end testSimpleValues()
+
 
     /**
      * Test an array of simple keys and values.
@@ -85,7 +69,6 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
      */
     public function testSimpleKeyValues()
     {
-
         $token = $this->getTargetToken('/* testSimpleKeyValues */', T_OPEN_SHORT_ARRAY);
         self::$sniff->process(self::$phpcsFile, $token);
 
@@ -111,7 +94,9 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
         ];
 
         $this->assertSame($expected, self::$sniff->indicies);
+
     }//end testSimpleKeyValues()
+
 
     /**
      * Test an array of simple keys and values.
@@ -120,7 +105,6 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
      */
     public function testMissingKeys()
     {
-
         $token = $this->getTargetToken('/* testMissingKeys */', T_OPEN_SHORT_ARRAY);
         self::$sniff->process(self::$phpcsFile, $token);
 
@@ -143,7 +127,9 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
         ];
 
         $this->assertSame($expected, self::$sniff->indicies);
+
     }//end testMissingKeys()
+
 
     /**
      * Test an array with keys that span multiple tokens.
@@ -152,7 +138,6 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
      */
     public function testMultiTokenKeys()
     {
-
         $token = $this->getTargetToken('/* testMultiTokenKeys */', T_ARRAY);
         self::$sniff->process(self::$phpcsFile, $token);
 
@@ -172,7 +157,9 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
         ];
 
         $this->assertSame($expected, self::$sniff->indicies);
+
     }//end testMultiTokenKeys()
+
 
     /**
      * Test an array of simple keys and values.
@@ -181,7 +168,6 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
      */
     public function testMissingKeysCoalesceTernary()
     {
-
         $token = $this->getTargetToken('/* testMissingKeysCoalesceTernary */', T_OPEN_SHORT_ARRAY);
         self::$sniff->process(self::$phpcsFile, $token);
 
@@ -201,7 +187,9 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
         ];
 
         $this->assertSame($expected, self::$sniff->indicies);
+
     }//end testMissingKeysCoalesceTernary()
+
 
     /**
      * Test an array of ternary values.
@@ -210,7 +198,6 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
      */
     public function testTernaryValues()
     {
-
         $token = $this->getTargetToken('/* testTernaryValues */', T_OPEN_SHORT_ARRAY);
         self::$sniff->process(self::$phpcsFile, $token);
 
@@ -236,7 +223,9 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
         ];
 
         $this->assertSame($expected, self::$sniff->indicies);
+
     }//end testTernaryValues()
+
 
     /**
      * Test an array of heredocs.
@@ -245,7 +234,6 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
      */
     public function testHeredocValues()
     {
-
         $token = $this->getTargetToken('/* testHeredocValues */', T_ARRAY);
         self::$sniff->process(self::$phpcsFile, $token);
 
@@ -259,7 +247,9 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
         ];
 
         $this->assertSame($expected, self::$sniff->indicies);
+
     }//end testHeredocValues()
+
 
     /**
      * Test an array of with an arrow function as a value.
@@ -268,7 +258,6 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
      */
     public function testArrowFunctionValue()
     {
-
         $token = $this->getTargetToken('/* testArrowFunctionValue */', T_ARRAY);
         self::$sniff->process(self::$phpcsFile, $token);
 
@@ -294,6 +283,8 @@ class AbstractArraySniffTest extends AbstractMethodUnitTest
         ];
 
         $this->assertSame($expected, self::$sniff->indicies);
+
     }//end testArrowFunctionValue()
+
 
 }//end class

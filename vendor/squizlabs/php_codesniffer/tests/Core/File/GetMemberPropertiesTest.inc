@@ -1,32 +1,12 @@
 <?php
 
-use const Package\MyClassB;
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: GetMemberPropertiesTest.inc
- *  Last Modified: 3.01.23 г., 0:06 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 class TestMemberProperties
 {
     /* testVar */
-    public $varA = true;
+    var $varA = true;
 
     /* testVarType */
-    public ?int $varA = true;
+    var ?int $varA = true;
 
     /* testPublic */
     public $varB = true;
@@ -47,22 +27,22 @@ class TestMemberProperties
     private array $varD = true;
 
     /* testStatic */
-    static public $varE = true;
+    static $varE = true;
 
     /* testStaticType */
     static ?string $varE = true;
 
     /* testStaticVar */
-    public $varF = true;
+    static var $varF = true;
 
     /* testVarStatic */
-    public static $varG = true;
+    var static $varG = true;
 
     /* testPublicStatic */
     public static $varH = true;
 
     /* testProtectedStatic */
-    protected static $varI = true;
+    static protected $varI = true;
 
     /* testPrivateStatic */
     private static $varJ = true;
@@ -75,7 +55,7 @@ class TestMemberProperties
      * Comment here.
      *
      * @phpcs:ignore Standard.Category.Sniff -- because
-     * @var bool
+     * @var boolean
      */
     public static $varH = true;
 
@@ -84,16 +64,16 @@ class TestMemberProperties
      * Comment here.
      *
      * @phpcs:ignore Standard.Category.Sniff -- because
-     * @var bool
+     * @var boolean
      */
-    protected static $varI = true;
+    static protected $varI = true;
 
     /* testPrivateStaticWithDocblock */
     /**
      * Comment here.
      *
      * @phpcs:ignore Standard.Category.Sniff -- because
-     * @var bool
+     * @var boolean
      */
     private static $varJ = true;
 
@@ -134,7 +114,7 @@ class TestMemberProperties
             'b' => 'b'
         ],
         /* testGroupPrivate 7 */
-        $varU = __DIR__ . '/base';
+        $varU = __DIR__ . "/base";
 
 
     /* testMethodParam */
@@ -219,7 +199,7 @@ $anon = class() {
     public int|float $unionTypeSimple;
 
     /* testPHP8UnionTypesTwoClasses */
-    private MyClassA | MyClassB $unionTypesTwoClasses;
+    private MyClassA|\Package\MyClassB $unionTypesTwoClasses;
 
     /* testPHP8UnionTypesAllBaseTypes */
     protected array|bool|int|float|NULL|object|string $unionTypesAllBaseTypes;
@@ -274,7 +254,7 @@ $anon = class() {
 
     /* testPHP81OnlyReadonlyWithUnionType */
     readonly string|int $onlyReadonly;
-}
+};
 
 $anon = class {
     /* testPHP8PropertySingleAttribute */
@@ -290,7 +270,7 @@ $anon = class {
         PropertyWithAttribute(/* comment */ 'baz')
     ]
     private mixed $baz;
-}
+};
 
 enum Suit
 {
@@ -321,4 +301,4 @@ $anon = class() {
     /* testPHP81NulltableIntersectionType */
     // Intentional fatal error - nullability is not allowed with intersection type, but that's not the concern of the method.
     public ?Foo&Bar $nullableIntersectionType;
-}
+};

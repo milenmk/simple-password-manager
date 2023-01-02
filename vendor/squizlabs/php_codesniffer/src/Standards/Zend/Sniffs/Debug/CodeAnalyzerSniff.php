@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: CodeAnalyzerSniff.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Runs the Zend Code Analyzer (from Zend Studio) on the file.
  *
@@ -54,12 +35,12 @@ class CodeAnalyzerSniff implements Sniff
     /**
      * Processes the tokens that this sniff is interested in.
      *
-     * @param File $phpcsFile                        The file where the token was found.
-     * @param int  $stackPtr                         The position in the stack where
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
+     * @param int                         $stackPtr  The position in the stack where
      *                                               the token was found.
      *
      * @return int
-     * @throws RuntimeException If ZendCodeAnalyzer could not be run.
+     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If ZendCodeAnalyzer could not be run.
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -99,7 +80,7 @@ class CodeAnalyzerSniff implements Sniff
                 // > Zend Code Analyzer 1.2.2
                 // > Analyzing <filename>...
                 // So skip these...
-                $res = preg_match('/^.+\(line ([0-9]+)\):(.+)$/', $finding, $regs);
+                $res = preg_match("/^.+\(line ([0-9]+)\):(.+)$/", $finding, $regs);
                 if (empty($regs) === true || $res === false) {
                     continue;
                 }

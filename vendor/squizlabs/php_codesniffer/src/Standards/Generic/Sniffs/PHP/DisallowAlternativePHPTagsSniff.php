@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: DisallowAlternativePHPTagsSniff.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Verifies that no alternative PHP tags are used.
  *
@@ -40,14 +21,14 @@ class DisallowAlternativePHPTagsSniff implements Sniff
     /**
      * Whether ASP tags are enabled or not.
      *
-     * @var bool
+     * @var boolean
      */
     private $aspTags = false;
 
     /**
      * The current PHP version.
      *
-     * @var int
+     * @var integer
      */
     private $phpVersion = null;
 
@@ -82,8 +63,8 @@ class DisallowAlternativePHPTagsSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile                        The file being scanned.
-     * @param int  $stackPtr                         The position of the current token
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *
      * @return void
@@ -213,11 +194,11 @@ class DisallowAlternativePHPTagsSniff implements Sniff
     /**
      * Try and find a matching PHP closing tag.
      *
-     * @param File   $phpcsFile                      The file being scanned.
-     * @param array  $tokens                         The token stack.
-     * @param int    $stackPtr                       The position of the current token
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param array                       $tokens    The token stack.
+     * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
-     * @param string $content                        The expected content of the closing tag to match the opener.
+     * @param string                      $content   The expected content of the closing tag to match the opener.
      *
      * @return int|false Pointer to the position in the stack for the closing tag or false if not found.
      */
@@ -237,11 +218,11 @@ class DisallowAlternativePHPTagsSniff implements Sniff
     /**
      * Add a changeset to replace the alternative PHP tags.
      *
-     * @param File  $phpcsFile       The file being scanned.
-     * @param array $tokens          The token stack.
-     * @param int   $openTagPointer  Stack pointer to the PHP open tag.
-     * @param int   $closeTagPointer Stack pointer to the PHP close tag.
-     * @param bool  $echo            Whether to add 'echo' or not.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile       The file being scanned.
+     * @param array                       $tokens          The token stack.
+     * @param int                         $openTagPointer  Stack pointer to the PHP open tag.
+     * @param int                         $closeTagPointer Stack pointer to the PHP close tag.
+     * @param bool                        $echo            Whether to add 'echo' or not.
      *
      * @return void
      */

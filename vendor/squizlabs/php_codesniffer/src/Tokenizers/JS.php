@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: JS.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tokenizes JS code.
  *
@@ -270,12 +251,12 @@ class JS extends Tokenizer
      *
      * Pre-checks the content to see if it looks minified.
      *
-     * @param string $content The content to tokenize,
-     * @param Config $config  The config data for the run.
-     * @param string $eolChar The EOL char used in the content.
+     * @param string                  $content The content to tokenize,
+     * @param \PHP_CodeSniffer\Config $config  The config data for the run.
+     * @param string                  $eolChar The EOL char used in the content.
      *
      * @return void
-     * @throws TokenizerException If the file appears to be minified.
+     * @throws \PHP_CodeSniffer\Exceptions\TokenizerException If the file appears to be minified.
      */
     public function __construct($content, Config $config, $eolChar='\n')
     {

@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: MultiLineFunctionDeclarationSniff.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Ensure single and multi-line function declarations are defined correctly.
  *
@@ -28,7 +9,6 @@
 
 namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\Functions;
 
-use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Standards\PEAR\Sniffs\Functions\FunctionDeclarationSniff as PEARFunctionDeclarationSniff;
 use PHP_CodeSniffer\Util\Tokens;
 
@@ -49,7 +29,7 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
     /**
      * Determine if this is a multi-line function declaration.
      *
-     * @param File $phpcsFile   The file being scanned.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
      * @param int                         $stackPtr    The position of the current token
      *                                                 in the stack passed in $tokens.
      * @param int                         $openBracket The position of the opening bracket
@@ -118,7 +98,7 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
      *
      * Just uses the Generic BSD-Allman brace sniff.
      *
-     * @param File $phpcsFile The file being scanned.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      * @param array                       $tokens    The stack of tokens that make up
@@ -164,7 +144,7 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
     /**
      * Processes multi-line declarations.
      *
-     * @param File $phpcsFile The file being scanned.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      * @param array                       $tokens    The stack of tokens that make up
@@ -198,7 +178,7 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
     /**
      * Processes the contents of a single set of brackets.
      *
-     * @param File $phpcsFile   The file being scanned.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
      * @param int                         $openBracket The position of the open bracket
      *                                                 in the stack passed in $tokens.
      * @param array                       $tokens      The stack of tokens that make up

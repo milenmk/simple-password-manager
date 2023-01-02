@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: Text.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * A doc generator that outputs text-based documentation.
  *
@@ -30,8 +11,6 @@
 
 namespace PHP_CodeSniffer\Generators;
 
-use DOMNode;
-
 class Text extends Generator
 {
 
@@ -39,13 +18,13 @@ class Text extends Generator
     /**
      * Process the documentation for a single sniff.
      *
-     * @param DOMNode $doc The DOMNode object for the sniff.
+     * @param \DOMNode $doc The DOMNode object for the sniff.
      *                      It represents the "documentation" tag in the XML
      *                      standard file.
      *
      * @return void
      */
-    public function processSniff(DOMNode $doc)
+    public function processSniff(\DOMNode $doc)
     {
         $this->printTitle($doc);
 
@@ -63,13 +42,13 @@ class Text extends Generator
     /**
      * Prints the title area for a single sniff.
      *
-     * @param DOMNode $doc The DOMNode object for the sniff.
+     * @param \DOMNode $doc The DOMNode object for the sniff.
      *                      It represents the "documentation" tag in the XML
      *                      standard file.
      *
      * @return void
      */
-    protected function printTitle(DOMNode $doc)
+    protected function printTitle(\DOMNode $doc)
     {
         $title    = $this->getTitle($doc);
         $standard = $this->ruleset->name;
@@ -86,11 +65,11 @@ class Text extends Generator
     /**
      * Print a text block found in a standard.
      *
-     * @param DOMNode $node The DOMNode object for the text block.
+     * @param \DOMNode $node The DOMNode object for the text block.
      *
      * @return void
      */
-    protected function printTextBlock(DOMNode $node)
+    protected function printTextBlock(\DOMNode $node)
     {
         $text = trim($node->nodeValue);
         $text = str_replace('<em>', '*', $text);
@@ -140,11 +119,11 @@ class Text extends Generator
     /**
      * Print a code comparison block found in a standard.
      *
-     * @param DOMNode $node The DOMNode object for the code comparison block.
+     * @param \DOMNode $node The DOMNode object for the code comparison block.
      *
      * @return void
      */
-    protected function printCodeComparisonBlock(DOMNode $node)
+    protected function printCodeComparisonBlock(\DOMNode $node)
     {
         $codeBlocks = $node->getElementsByTagName('code');
         $first      = trim($codeBlocks->item(0)->nodeValue);

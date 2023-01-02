@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: TypeIntersectionTest.php
- *  Last Modified: 3.01.23 г., 0:06 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests the conversion of bitwise and tokens to type intersection tokens.
  *
@@ -34,6 +15,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class TypeIntersectionTest extends AbstractMethodUnitTest
 {
 
+
     /**
      * Test that non-intersection type bitwise and tokens are still tokenized as bitwise and.
      *
@@ -46,24 +28,24 @@ class TypeIntersectionTest extends AbstractMethodUnitTest
      */
     public function testBitwiseAnd($testMarker)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $opener = $this->getTargetToken($testMarker, [T_BITWISE_AND, T_TYPE_INTERSECTION]);
         $this->assertSame(T_BITWISE_AND, $tokens[$opener]['code']);
         $this->assertSame('T_BITWISE_AND', $tokens[$opener]['type']);
+
     }//end testBitwiseAnd()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testBitwiseAnd()
      *
+     * @return array
      */
     public function dataBitwiseAnd()
     {
-
         return [
             ['/* testBitwiseAnd1 */'],
             ['/* testBitwiseAnd2 */'],
@@ -83,7 +65,9 @@ class TypeIntersectionTest extends AbstractMethodUnitTest
             ['/* testBitwiseAnd6 */'],
             ['/* testLiveCoding */'],
         ];
+
     }//end dataBitwiseAnd()
+
 
     /**
      * Test that bitwise and tokens when used as part of a intersection type are tokenized as `T_TYPE_INTERSECTION`.
@@ -97,24 +81,24 @@ class TypeIntersectionTest extends AbstractMethodUnitTest
      */
     public function testTypeIntersection($testMarker)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $opener = $this->getTargetToken($testMarker, [T_BITWISE_AND, T_TYPE_INTERSECTION]);
         $this->assertSame(T_TYPE_INTERSECTION, $tokens[$opener]['code']);
         $this->assertSame('T_TYPE_INTERSECTION', $tokens[$opener]['type']);
+
     }//end testTypeIntersection()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testTypeIntersection()
      *
+     * @return array
      */
     public function dataTypeIntersection()
     {
-
         return [
             ['/* testTypeIntersectionPropertySimple */'],
             ['/* testTypeIntersectionPropertyReverseModifierOrder */'],
@@ -147,6 +131,8 @@ class TypeIntersectionTest extends AbstractMethodUnitTest
             ['/* testTypeIntersectionNonArrowFunctionDeclaration */'],
             ['/* testTypeIntersectionWithInvalidTypes */'],
         ];
+
     }//end dataTypeIntersection()
+
 
 }//end class

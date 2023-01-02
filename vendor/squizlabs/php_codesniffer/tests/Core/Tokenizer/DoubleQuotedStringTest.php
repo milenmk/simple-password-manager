@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: DoubleQuotedStringTest.php
- *  Last Modified: 3.01.23 г., 0:06 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests that embedded variables and expressions in double quoted strings are tokenized
  * as one double quoted string token.
@@ -34,6 +15,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class DoubleQuotedStringTest extends AbstractMethodUnitTest
 {
 
+
     /**
      * Test that double quoted strings contain the complete string.
      *
@@ -47,23 +29,23 @@ class DoubleQuotedStringTest extends AbstractMethodUnitTest
      */
     public function testDoubleQuotedString($testMarker, $expectedContent)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $target = $this->getTargetToken($testMarker, T_DOUBLE_QUOTED_STRING);
         $this->assertSame($expectedContent, $tokens[$target]['content']);
+
     }//end testDoubleQuotedString()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testDoubleQuotedString()
      *
+     * @return array
      */
     public function dataDoubleQuotedString()
     {
-
         return [
             [
                 'testMarker'      => '/* testSimple1 */',
@@ -147,6 +129,8 @@ class DoubleQuotedStringTest extends AbstractMethodUnitTest
 ',
             ],
         ];
+
     }//end dataDoubleQuotedString()
+
 
 }//end class

@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: Runner.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Responsible for running PHPCS and PHPCBF.
  *
@@ -31,7 +12,6 @@
 
 namespace PHP_CodeSniffer;
 
-use Exception;
 use PHP_CodeSniffer\Exceptions\DeepExitException;
 use PHP_CodeSniffer\Exceptions\RuntimeException;
 use PHP_CodeSniffer\Files\DummyFile;
@@ -47,21 +27,21 @@ class Runner
     /**
      * The config data for the run.
      *
-     * @var Config
+     * @var \PHP_CodeSniffer\Config
      */
     public $config = null;
 
     /**
      * The ruleset used for the run.
      *
-     * @var Ruleset
+     * @var \PHP_CodeSniffer\Ruleset
      */
     public $ruleset = null;
 
     /**
      * The reporter used for generating reports after the run.
      *
-     * @var Reporter
+     * @var \PHP_CodeSniffer\Reporter
      */
     public $reporter = null;
 
@@ -253,7 +233,7 @@ class Runner
      * Exits if the minimum requirements of PHP_CodeSniffer are not met.
      *
      * @return void
-     * @throws DeepExitException If the requirements are not met.
+     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException If the requirements are not met.
      */
     public function checkRequirements()
     {
@@ -301,7 +281,7 @@ class Runner
      * Init the rulesets and other high-level settings.
      *
      * @return void
-     * @throws DeepExitException If a referenced standard is not installed.
+     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException If a referenced standard is not installed.
      */
     public function init()
     {
@@ -363,8 +343,8 @@ class Runner
      * Performs the run.
      *
      * @return int The number of errors and warnings found.
-     * @throws DeepExitException
-     * @throws RuntimeException
+     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
      */
     private function run()
     {
@@ -612,7 +592,7 @@ class Runner
      * @param int    $line    The line number the error was raised at.
      *
      * @return void
-     * @throws RuntimeException
+     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
      */
     public function handleErrors($code, $message, $file, $line)
     {
@@ -629,10 +609,10 @@ class Runner
     /**
      * Processes a single file, including checking and fixing.
      *
-     * @param File $file The file to be processed.
+     * @param \PHP_CodeSniffer\Files\File $file The file to be processed.
      *
      * @return void
-     * @throws DeepExitException
+     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
      */
     public function processFile($file)
     {
@@ -666,7 +646,7 @@ class Runner
                     echo " ($errors errors, $warnings warnings)".PHP_EOL;
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $error = 'An error occurred during processing; checking has been aborted. The error message was: '.$e->getMessage();
             $file->addErrorOnLine($error, 1, 'Internal.Exception');
         }//end try
@@ -796,9 +776,9 @@ class Runner
     /**
      * Print progress information for a single processed file.
      *
-     * @param File $file                                The file that was processed.
-     * @param int  $numFiles                            The total number of files to process.
-     * @param int  $numProcessed                        The number of files that have been processed,
+     * @param \PHP_CodeSniffer\Files\File $file         The file that was processed.
+     * @param int                         $numFiles     The total number of files to process.
+     * @param int                         $numProcessed The number of files that have been processed,
      *                                                  including this one.
      *
      * @return void

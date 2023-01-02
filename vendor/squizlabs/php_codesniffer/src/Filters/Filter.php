@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: Filter.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * A base filter class for filtering out files and folders during a run.
  *
@@ -28,16 +9,12 @@
 
 namespace PHP_CodeSniffer\Filters;
 
-use FilesystemIterator;
 use PHP_CodeSniffer\Util;
 use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\Config;
-use RecursiveDirectoryIterator;
-use RecursiveFilterIterator;
-use RecursiveIterator;
 use ReturnTypeWillChange;
 
-class Filter extends RecursiveFilterIterator
+class Filter extends \RecursiveFilterIterator
 {
 
     /**
@@ -50,14 +27,14 @@ class Filter extends RecursiveFilterIterator
     /**
      * The config data for the run.
      *
-     * @var Config
+     * @var \PHP_CodeSniffer\Config
      */
     protected $config = null;
 
     /**
      * The ruleset used for the run.
      *
-     * @var Ruleset
+     * @var \PHP_CodeSniffer\Ruleset
      */
     protected $ruleset = null;
 
@@ -88,10 +65,10 @@ class Filter extends RecursiveFilterIterator
     /**
      * Constructs a filter.
      *
-     * @param RecursiveIterator $iterator The iterator we are using to get file paths.
-     * @param string            $basedir  The top-level path we are filtering.
-     * @param Config            $config   The config data for the run.
-     * @param Ruleset           $ruleset  The ruleset used for the run.
+     * @param \RecursiveIterator       $iterator The iterator we are using to get file paths.
+     * @param string                   $basedir  The top-level path we are filtering.
+     * @param \PHP_CodeSniffer\Config  $config   The config data for the run.
+     * @param \PHP_CodeSniffer\Ruleset $ruleset  The ruleset used for the run.
      *
      * @return void
      */
@@ -153,14 +130,14 @@ class Filter extends RecursiveFilterIterator
      * Ensures that the ignore patterns are preserved so they don't have
      * to be generated each time.
      *
-     * @return RecursiveIterator
+     * @return \RecursiveIterator
      */
     #[ReturnTypeWillChange]
     public function getChildren()
     {
         $filterClass = get_called_class();
         $children    = new $filterClass(
-            new RecursiveDirectoryIterator($this->current(), (RecursiveDirectoryIterator::SKIP_DOTS | FilesystemIterator::FOLLOW_SYMLINKS)),
+            new \RecursiveDirectoryIterator($this->current(), (\RecursiveDirectoryIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS)),
             $this->basedir,
             $this->config,
             $this->ruleset

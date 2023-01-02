@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: PropertyDeclarationSniff.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Verifies that properties are declared correctly.
  *
@@ -28,7 +9,6 @@
 
 namespace PHP_CodeSniffer\Standards\PSR2\Sniffs\Classes;
 
-use Exception;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
 use PHP_CodeSniffer\Util\Tokens;
@@ -40,8 +20,8 @@ class PropertyDeclarationSniff extends AbstractVariableSniff
     /**
      * Processes the function tokens within the class.
      *
-     * @param File $phpcsFile The file where this token was found.
-     * @param int  $stackPtr  The position where the token was found.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param int                         $stackPtr  The position where the token was found.
      *
      * @return void
      */
@@ -86,7 +66,7 @@ class PropertyDeclarationSniff extends AbstractVariableSniff
             if (empty($propertyInfo) === true) {
                 return;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Turns out not to be a property after all.
             return;
         }
@@ -171,8 +151,8 @@ class PropertyDeclarationSniff extends AbstractVariableSniff
     /**
      * Processes normal variables.
      *
-     * @param File $phpcsFile The file where this token was found.
-     * @param int  $stackPtr  The position where the token was found.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param int                         $stackPtr  The position where the token was found.
      *
      * @return void
      */
@@ -188,8 +168,8 @@ class PropertyDeclarationSniff extends AbstractVariableSniff
     /**
      * Processes variables in double quoted strings.
      *
-     * @param File $phpcsFile The file where this token was found.
-     * @param int  $stackPtr  The position where the token was found.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param int                         $stackPtr  The position where the token was found.
      *
      * @return void
      */

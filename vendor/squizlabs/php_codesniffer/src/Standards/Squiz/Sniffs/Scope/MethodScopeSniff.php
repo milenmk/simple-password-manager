@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: MethodScopeSniff.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Verifies that class methods have scope modifiers.
  *
@@ -49,9 +30,9 @@ class MethodScopeSniff extends AbstractScopeSniff
     /**
      * Processes the function tokens within the class.
      *
-     * @param File $phpcsFile The file where this token was found.
-     * @param int  $stackPtr  The position where the token was found.
-     * @param int  $currScope The current scope opener token.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param int                         $stackPtr  The position where the token was found.
+     * @param int                         $currScope The current scope opener token.
      *
      * @return void
      */
@@ -87,8 +68,8 @@ class MethodScopeSniff extends AbstractScopeSniff
      * Processes a token that is found within the scope that this test is
      * listening to.
      *
-     * @param File $phpcsFile                        The file where this token was found.
-     * @param int  $stackPtr                         The position in the stack where this
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param int                         $stackPtr  The position in the stack where this
      *                                               token was found.
      *
      * @return void

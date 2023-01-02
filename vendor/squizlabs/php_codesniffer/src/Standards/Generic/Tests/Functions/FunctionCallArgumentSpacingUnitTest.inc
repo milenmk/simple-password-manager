@@ -1,23 +1,5 @@
 <?php
 
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: FunctionCallArgumentSpacingUnitTest.inc
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 $result = myFunction();
 $result = myFunction($arg1, $arg2);
 $result = myFunction($arg1,$arg2);
@@ -36,9 +18,8 @@ $result = myFunction($arg1,
                      $arg4, 
                      $arg5);
 
-throw new Exception(
-    'This is some massive string for a message',
-    $cause);
+throw new Exception("This is some massive string for a message", 
+                         $cause);
 
 // Function definitions are ignored
 function myFunction($arg1,$arg2)
@@ -65,15 +46,10 @@ make_foo($string /*the string*/ , true /*test*/);
 make_foo($string/*the string*/ ,   /*test*/ true);
 make_foo($string /*the string*/, /*test*/ true);
 
-class MyClass
-{
-
-    public function myFunction()
-    {
-
-        blah($foo, "{{$config['host']}}", "{$config}", 'hi there{}{}{{{}{}{}}');
+class MyClass {
+    function myFunction() {
+        blah($foo, "{{$config['host']}}", "{$config}", "hi there{}{}{{{}{}{}}");
     }
-
 }
 
 // Function definition, not function call, so should be ignored
@@ -112,10 +88,10 @@ if (in_array($arg1, ['foo','bar'])) {}
 if (in_array($arg1, array('foo','bar'))) {}
 
 $b = foo(
-    '1',  // this is a comment
-    '2',  // this is a comment
-    '3',  // this is a comment
-    '4'
+    "1", // this is a comment
+    "2",  // this is a comment
+    "3",// this is a comment
+    "4"
 );
 
 var_dump(

@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: FindExtendedClassNameTest.php
- *  Last Modified: 3.01.23 г., 0:07 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests for the \PHP_CodeSniffer\Files\File:findExtendedClassName method.
  *
@@ -33,6 +14,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class FindExtendedClassNameTest extends AbstractMethodUnitTest
 {
 
+
     /**
      * Test retrieving the name of the class being extended by another class
      * (or interface).
@@ -46,22 +28,22 @@ class FindExtendedClassNameTest extends AbstractMethodUnitTest
      */
     public function testFindExtendedClassName($identifier, $expected)
     {
-
         $OOToken = $this->getTargetToken($identifier, [T_CLASS, T_ANON_CLASS, T_INTERFACE]);
-        $result = self::$phpcsFile->findExtendedClassName($OOToken);
+        $result  = self::$phpcsFile->findExtendedClassName($OOToken);
         $this->assertSame($expected, $result);
+
     }//end testFindExtendedClassName()
+
 
     /**
      * Data provider for the FindExtendedClassName test.
      *
-     * @return array
      * @see testFindExtendedClassName()
      *
+     * @return array
      */
     public function dataExtendedClass()
     {
-
         return [
             [
                 '/* testExtendedClass */',
@@ -104,6 +86,8 @@ class FindExtendedClassNameTest extends AbstractMethodUnitTest
                 'testFECNClass',
             ],
         ];
+
     }//end dataExtendedClass()
+
 
 }//end class

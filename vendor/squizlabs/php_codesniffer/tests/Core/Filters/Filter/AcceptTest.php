@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: AcceptTest.php
- *  Last Modified: 3.01.23 г., 0:07 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests for the \PHP_CodeSniffer\Filters\Filter::accept method.
  *
@@ -33,8 +14,6 @@ use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Filters\Filter;
 use PHP_CodeSniffer\Ruleset;
 use PHPUnit\Framework\TestCase;
-use RecursiveArrayIterator;
-use RecursiveIteratorIterator;
 
 class AcceptTest extends TestCase
 {
@@ -42,34 +21,17 @@ class AcceptTest extends TestCase
     /**
      * The Config object.
      *
-     * @var Config
+     * @var \PHP_CodeSniffer\Config
      */
     protected static $config;
 
     /**
      * The Ruleset object.
      *
-     * @var Ruleset
+     * @var \PHP_CodeSniffer\Ruleset
      */
     protected static $ruleset;
 
-    /**
-     * Initialize the config and ruleset objects based on the `AcceptTest.xml` ruleset file.
-     *
-     * @return void
-     */
-    public static function setUpBeforeClass()
-    {
-
-        if ($GLOBALS['PHP_CODESNIFFER_PEAR'] === true) {
-            // This test will be skipped.
-            return;
-        }
-
-        $standard = __DIR__ . '/' . basename(__FILE__, '.php') . '.xml';
-        self::$config = new Config(["--standard=$standard", '--ignore=*/somethingelse/*']);
-        self::$ruleset = new Ruleset(self::$config);
-    }//end setUp()
 
     /**
      * Initialize the test.
@@ -78,14 +40,34 @@ class AcceptTest extends TestCase
      */
     public function setUp()
     {
-
         if ($GLOBALS['PHP_CODESNIFFER_PEAR'] === true) {
             // PEAR installs test and sniff files into different locations
             // so these tests will not pass as they directly reference files
             // by relative location.
             $this->markTestSkipped('Test cannot run from a PEAR install');
         }
+
+    }//end setUp()
+
+
+    /**
+     * Initialize the config and ruleset objects based on the `AcceptTest.xml` ruleset file.
+     *
+     * @return void
+     */
+    public static function setUpBeforeClass()
+    {
+        if ($GLOBALS['PHP_CODESNIFFER_PEAR'] === true) {
+            // This test will be skipped.
+            return;
+        }
+
+        $standard      = __DIR__.'/'.basename(__FILE__, '.php').'.xml';
+        self::$config  = new Config(["--standard=$standard", "--ignore=*/somethingelse/*"]);
+        self::$ruleset = new Ruleset(self::$config);
+
     }//end setUpBeforeClass()
+
 
     /**
      * Test filtering a file list for excluded paths.
@@ -99,29 +81,29 @@ class AcceptTest extends TestCase
      */
     public function testExcludePatterns($inputPaths, $expectedOutput)
     {
-
-        $fakeDI = new RecursiveArrayIterator($inputPaths);
-        $filter = new Filter($fakeDI, '/', self::$config, self::$ruleset);
-        $iterator = new RecursiveIteratorIterator($filter);
-        $files = [];
+        $fakeDI   = new \RecursiveArrayIterator($inputPaths);
+        $filter   = new Filter($fakeDI, '/', self::$config, self::$ruleset);
+        $iterator = new \RecursiveIteratorIterator($filter);
+        $files    = [];
 
         foreach ($iterator as $file) {
             $files[] = $file;
         }
 
         $this->assertEquals($expectedOutput, $files);
+
     }//end testExcludePatterns()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testExcludePatterns
      *
+     * @return array
      */
     public function dataExcludePatterns()
     {
-
         $testCases = [
             // Test top-level exclude patterns.
             [
@@ -165,6 +147,8 @@ class AcceptTest extends TestCase
         }
 
         return $testCases;
+
     }//end dataExcludePatterns()
+
 
 }//end class

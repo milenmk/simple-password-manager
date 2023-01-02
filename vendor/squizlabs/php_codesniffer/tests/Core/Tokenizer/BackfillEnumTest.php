@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: BackfillEnumTest.php
- *  Last Modified: 3.01.23 г., 0:06 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests the support of PHP 8.1 "enum" keyword.
  *
@@ -32,6 +13,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class BackfillEnumTest extends AbstractMethodUnitTest
 {
+
 
     /**
      * Test that the "enum" keyword is tokenized as such.
@@ -48,7 +30,6 @@ class BackfillEnumTest extends AbstractMethodUnitTest
      */
     public function testEnums($testMarker, $testContent, $openerOffset, $closerOffset)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $enum = $this->getTargetToken($testMarker, [T_ENUM, T_STRING], $testContent);
@@ -83,18 +64,19 @@ class BackfillEnumTest extends AbstractMethodUnitTest
         $this->assertSame($enum, $tokens[$scopeCloser]['scope_condition']);
         $this->assertSame($scopeOpener, $tokens[$scopeCloser]['scope_opener']);
         $this->assertSame($scopeCloser, $tokens[$scopeCloser]['scope_closer']);
+
     }//end testEnums()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testEnums()
      *
+     * @return array
      */
     public function dataEnums()
     {
-
         return [
             [
                 '/* testPureEnum */',
@@ -139,7 +121,9 @@ class BackfillEnumTest extends AbstractMethodUnitTest
                 14,
             ],
         ];
+
     }//end dataEnums()
+
 
     /**
      * Test that "enum" when not used as the keyword is still tokenized as `T_STRING`.
@@ -154,24 +138,24 @@ class BackfillEnumTest extends AbstractMethodUnitTest
      */
     public function testNotEnums($testMarker, $testContent)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $target = $this->getTargetToken($testMarker, [T_ENUM, T_STRING], $testContent);
         $this->assertSame(T_STRING, $tokens[$target]['code']);
         $this->assertSame('T_STRING', $tokens[$target]['type']);
+
     }//end testNotEnums()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testNotEnums()
      *
+     * @return array
      */
     public function dataNotEnums()
     {
-
         return [
             [
                 '/* testEnumAsClassNameAfterEnumKeyword */',
@@ -238,6 +222,8 @@ class BackfillEnumTest extends AbstractMethodUnitTest
                 'enum',
             ],
         ];
+
     }//end dataNotEnums()
+
 
 }//end class

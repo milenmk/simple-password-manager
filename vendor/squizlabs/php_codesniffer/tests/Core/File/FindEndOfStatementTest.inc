@@ -1,23 +1,5 @@
 <?php
 
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: FindEndOfStatementTest.inc
- *  Last Modified: 3.01.23 г., 0:06 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /* testSimpleAssignment */
 $a = false;
 
@@ -26,7 +8,7 @@ while(true) {}
 $a = 1;
 
 /* testClosureAssignment */
-$a = function($b=false;){}
+$a = function($b=false;){};
 
 /* testHeredocFunctionArg */
 myFunction(<<<END
@@ -41,9 +23,9 @@ switch ($a) {
 }
 
 /* testStatementAsArrayValue */
-$a = [new Datetime()];
-$a = array(new Datetime());
-$a = new Datetime();
+$a = [new Datetime];
+$a = array(new Datetime);
+$a = new Datetime;
 
 /* testUseGroup */
 use Vendor\Package\{ClassA as A, ClassB, ClassC as C};
@@ -52,7 +34,7 @@ $a = [
     /* testArrowFunctionArrayValue */
     'a' => fn() => return 1,
     'b' => fn() => return 1,
-]
+];
 
 /* testStaticArrowFunction */
 static fn ($a) => $a;

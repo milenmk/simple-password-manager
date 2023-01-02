@@ -1,23 +1,5 @@
 <?php
 
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: DisallowYodaConditionsUnitTest.inc
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 $value = '';
 // Check booleans
 if ($value === true) {}
@@ -142,8 +124,8 @@ if([$key => $val] == $value){}
 
 $config['checkAuthIn'] !== $event->getName();
 
-if ($var === 'ab' || 'cd') {}
-if ('ab' || 'cd' === $var) {}
+if ($var === "ab" || 'cd') {}
+if ("ab" || 'cd' === $var) {}
 if (2 > $value || 3 < $var) {}
 if ($value == true && (/* comment */ 2 > test())) {}
 if ((int) 5 > $var) {}

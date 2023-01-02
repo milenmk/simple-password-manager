@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: Junit.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * JUnit report for PHP_CodeSniffer.
  *
@@ -31,7 +12,6 @@ namespace PHP_CodeSniffer\Reports;
 
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Files\File;
-use XMLWriter;
 
 class Junit implements Report
 {
@@ -53,7 +33,7 @@ class Junit implements Report
      */
     public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
     {
-        $out = new XMLWriter();
+        $out = new \XMLWriter;
         $out->openMemory();
         $out->setIndent(true);
 

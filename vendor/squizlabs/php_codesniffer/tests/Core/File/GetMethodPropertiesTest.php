@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: GetMethodPropertiesTest.php
- *  Last Modified: 3.01.23 г., 0:06 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests for the \PHP_CodeSniffer\Files\File:getMethodProperties method.
  *
@@ -33,6 +14,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class GetMethodPropertiesTest extends AbstractMethodUnitTest
 {
 
+
     /**
      * Test a basic function.
      *
@@ -40,7 +22,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testBasicFunction()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -52,25 +33,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
     }//end testBasicFunction()
 
-    /**
-     * Test helper.
-     *
-     * @param string $commentString The comment which preceeds the test.
-     * @param array  $expected      The expected function output.
-     *
-     * @return void
-     */
-    private function getMethodPropertiesTestHelper($commentString, $expected)
-    {
-
-        $function = $this->getTargetToken($commentString, [T_FUNCTION, T_CLOSURE, T_FN]);
-        $found = self::$phpcsFile->getMethodProperties($function);
-
-        $this->assertArraySubset($expected, $found, true);
-    }//end testReturnFunction()
 
     /**
      * Test a function with a return type.
@@ -79,7 +45,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testReturnFunction()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -91,8 +56,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testNestedClosure()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testReturnFunction()
+
 
     /**
      * Test a closure used as a function argument.
@@ -101,7 +68,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testNestedClosure()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -113,8 +79,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testBasicMethod()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testNestedClosure()
+
 
     /**
      * Test a basic method.
@@ -123,7 +91,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testBasicMethod()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -135,8 +102,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPrivateStaticMethod()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testBasicMethod()
+
 
     /**
      * Test a private static method.
@@ -145,7 +114,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPrivateStaticMethod()
     {
-
         $expected = [
             'scope'                => 'private',
             'scope_specified'      => true,
@@ -157,8 +125,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testFinalMethod()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPrivateStaticMethod()
+
 
     /**
      * Test a basic final method.
@@ -167,7 +137,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testFinalMethod()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => true,
@@ -179,8 +148,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testProtectedReturnMethod()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testFinalMethod()
+
 
     /**
      * Test a protected method with a return type.
@@ -189,7 +160,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testProtectedReturnMethod()
     {
-
         $expected = [
             'scope'                => 'protected',
             'scope_specified'      => true,
@@ -201,8 +171,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPublicReturnMethod()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testProtectedReturnMethod()
+
 
     /**
      * Test a public method with a return type.
@@ -211,7 +183,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPublicReturnMethod()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => true,
@@ -223,8 +194,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testNullableReturnMethod()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPublicReturnMethod()
+
 
     /**
      * Test a public method with a nullable return type.
@@ -233,7 +206,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testNullableReturnMethod()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => true,
@@ -245,8 +217,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testMessyNullableReturnMethod()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testNullableReturnMethod()
+
 
     /**
      * Test a public method with a nullable return type.
@@ -255,7 +229,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testMessyNullableReturnMethod()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => true,
@@ -267,8 +240,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testReturnNamespace()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testMessyNullableReturnMethod()
+
 
     /**
      * Test a method with a namespaced return type.
@@ -277,7 +252,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testReturnNamespace()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -289,8 +263,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testReturnMultilineNamespace()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testReturnNamespace()
+
 
     /**
      * Test a method with a messy namespaces return type.
@@ -299,7 +275,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testReturnMultilineNamespace()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -311,8 +286,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testAbstractMethod()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testReturnMultilineNamespace()
+
 
     /**
      * Test a basic abstract method.
@@ -321,7 +298,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testAbstractMethod()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -333,8 +309,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => false,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testAbstractReturnMethod()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testAbstractMethod()
+
 
     /**
      * Test an abstract method with a return type.
@@ -343,7 +321,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testAbstractReturnMethod()
     {
-
         $expected = [
             'scope'                => 'protected',
             'scope_specified'      => true,
@@ -355,8 +332,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => false,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testInterfaceMethod()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testAbstractReturnMethod()
+
 
     /**
      * Test a basic interface method.
@@ -365,7 +344,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testInterfaceMethod()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -377,8 +355,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => false,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testArrowFunction()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testInterfaceMethod()
+
 
     /**
      * Test a static arrow function.
@@ -387,7 +367,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testArrowFunction()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -399,8 +378,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testReturnTypeStatic()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testArrowFunction()
+
 
     /**
      * Test a function with return type "static".
@@ -409,7 +390,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testReturnTypeStatic()
     {
-
         $expected = [
             'scope'                => 'private',
             'scope_specified'      => true,
@@ -421,8 +401,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8MixedTypeHint()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testReturnTypeStatic()
+
 
     /**
      * Test a function with return type "mixed".
@@ -431,7 +413,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8MixedTypeHint()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -443,8 +424,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8MixedTypeHintNullable()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8MixedTypeHint()
+
 
     /**
      * Test a function with return type "mixed" and nullability.
@@ -453,7 +436,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8MixedTypeHintNullable()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -465,8 +447,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testNamespaceOperatorTypeHint()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8MixedTypeHintNullable()
+
 
     /**
      * Test a function with return type using the namespace operator.
@@ -475,7 +459,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testNamespaceOperatorTypeHint()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -487,8 +470,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8UnionTypesSimple()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testNamespaceOperatorTypeHint()
+
 
     /**
      * Verify recognition of PHP8 union type declaration.
@@ -497,7 +482,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesSimple()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -509,8 +493,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8UnionTypesTwoClasses()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8UnionTypesSimple()
+
 
     /**
      * Verify recognition of PHP8 union type declaration with two classes.
@@ -519,7 +505,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesTwoClasses()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -531,8 +516,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8UnionTypesAllBaseTypes()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8UnionTypesTwoClasses()
+
 
     /**
      * Verify recognition of PHP8 union type declaration with all base types.
@@ -541,7 +528,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesAllBaseTypes()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -553,8 +539,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8UnionTypesAllPseudoTypes()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8UnionTypesAllBaseTypes()
+
 
     /**
      * Verify recognition of PHP8 union type declaration with all pseudo types.
@@ -563,7 +551,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesAllPseudoTypes()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -575,8 +562,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8UnionTypesNullable()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8UnionTypesAllPseudoTypes()
+
 
     /**
      * Verify recognition of PHP8 union type declaration with (illegal) nullability.
@@ -585,7 +574,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8UnionTypesNullable()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -597,8 +585,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8PseudoTypeNull()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8UnionTypesNullable()
+
 
     /**
      * Verify recognition of PHP8 type declaration with (illegal) single type null.
@@ -607,7 +597,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeNull()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -619,8 +608,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8PseudoTypeFalse()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8PseudoTypeNull()
+
 
     /**
      * Verify recognition of PHP8 type declaration with (illegal) single type false.
@@ -629,7 +620,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeFalse()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -641,8 +631,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8PseudoTypeFalseAndBool()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8PseudoTypeFalse()
+
 
     /**
      * Verify recognition of PHP8 type declaration with (illegal) type false combined with type bool.
@@ -651,7 +643,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeFalseAndBool()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -663,8 +654,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8ObjectAndClass()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8PseudoTypeFalseAndBool()
+
 
     /**
      * Verify recognition of PHP8 type declaration with (illegal) type object combined with a class name.
@@ -673,7 +666,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8ObjectAndClass()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -685,8 +677,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8PseudoTypeIterableAndArray()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8ObjectAndClass()
+
 
     /**
      * Verify recognition of PHP8 type declaration with (illegal) type iterable combined with array/Traversable.
@@ -695,7 +689,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8PseudoTypeIterableAndArray()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => true,
@@ -707,8 +700,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => false,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8DuplicateTypeInUnionWhitespaceAndComment()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8PseudoTypeIterableAndArray()
+
 
     /**
      * Verify recognition of PHP8 type declaration with (illegal) duplicate types.
@@ -717,7 +712,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP8DuplicateTypeInUnionWhitespaceAndComment()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -729,8 +723,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP81NeverType()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8DuplicateTypeInUnionWhitespaceAndComment()
+
 
     /**
      * Verify recognition of PHP8.1 type "never".
@@ -739,7 +735,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP81NeverType()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -751,8 +746,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP81NullableNeverType()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP81NeverType()
+
 
     /**
      * Verify recognition of PHP8.1 type "never"  with (illegal) nullability.
@@ -761,7 +758,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP81NullableNeverType()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -773,18 +769,19 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP8IntersectionTypes()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP81NullableNeverType()
+
 
     /**
-     * /**
+    /**
      * Verify recognition of PHP8.1 intersection type declaration.
      *
      * @return void
      */
     public function testPHP8IntersectionTypes()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -796,8 +793,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP81MoreIntersectionTypes()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP8IntersectionTypes()
+
 
     /**
      * Verify recognition of PHP8.1 intersection type declaration with more types.
@@ -806,7 +805,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP81MoreIntersectionTypes()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -818,8 +816,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP81IntersectionArrowFunction()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP81MoreIntersectionTypes()
+
 
     /**
      * Verify recognition of PHP8.1 intersection type declaration in arrow function.
@@ -828,7 +828,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP81IntersectionArrowFunction()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -840,8 +839,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP81IllegalIntersectionTypes()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP81IntersectionArrowFunction()
+
 
     /**
      * Verify recognition of PHP8.1 intersection type declaration with illegal simple types.
@@ -850,7 +851,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP81IllegalIntersectionTypes()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -862,8 +862,10 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
-    }//end testPHP81NullableIntersectionTypes()
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP81IllegalIntersectionTypes()
+
 
     /**
      * Verify recognition of PHP8.1 intersection type declaration with (illegal) nullability.
@@ -872,7 +874,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
      */
     public function testPHP81NullableIntersectionTypes()
     {
-
         $expected = [
             'scope'                => 'public',
             'scope_specified'      => false,
@@ -884,7 +885,27 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
             'has_body'             => true,
         ];
 
-        $this->getMethodPropertiesTestHelper('/* ' . __FUNCTION__ . ' */', $expected);
+        $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
+
+    }//end testPHP81NullableIntersectionTypes()
+
+
+    /**
+     * Test helper.
+     *
+     * @param string $commentString The comment which preceeds the test.
+     * @param array  $expected      The expected function output.
+     *
+     * @return void
+     */
+    private function getMethodPropertiesTestHelper($commentString, $expected)
+    {
+        $function = $this->getTargetToken($commentString, [T_FUNCTION, T_CLOSURE, T_FN]);
+        $found    = self::$phpcsFile->getMethodProperties($function);
+
+        $this->assertArraySubset($expected, $found, true);
+
     }//end getMethodPropertiesTestHelper()
+
 
 }//end class

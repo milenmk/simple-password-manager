@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: FunctionDeclarationUnitTest.inc
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 function someFunctionWithAVeryLongName($firstParameter='something',
    $secondParameter='booooo', $third=null, $fourthParameter=false,
      $fifthParameter=123.12, $sixthParam=true
@@ -51,13 +32,13 @@ abstract class MyClass
     ) {
     }
 
-    abstract protected function processTokenWithinScope(
+    protected abstract function processTokenWithinScope(
         PHP_CodeSniffer_File $phpcsFile,
         $stackPtr,
         $currScope
     );
 
-    abstract protected function processToken(
+    protected abstract function processToken(
         PHP_CodeSniffer_File $phpcsFile,
         $stackPtr,
         $currScope);
@@ -195,7 +176,7 @@ blah
 }
 
 $b = function &() {
-    echo 'hello';
+    echo "hello";
 };
 
 function foo(
@@ -263,27 +244,25 @@ function foo ()
 {}
 
 abstract class Foo {
-
-public function bar ()
+    function bar ()
     {
     }
 
-public abstract function baz () ;
+    abstract function baz () ;
 
-public abstract function qux () : void ;
+    abstract function qux () : void ;
 }
 
 interface Foo {
+    function bar () ;
 
-public function bar () ;
-
-public function baz (
+    function baz (
         $longArgument,
         $longerArgument,
         $muchLongerArgument
     ) ;
 
-public function qux (
+    function qux (
         $longArgument,
         $longerArgument,
         $muchLongerArgument
@@ -291,53 +270,48 @@ public function qux (
 }
 
 trait Foo {
-
-public function bar ()
+    function bar ()
     {
     }
 
-public abstract function baz ()
+    abstract function baz ()
     ;
 }
 
 if(true) {
-    abstract class Foo
-    {
+    abstract class Foo {
+        function bar ()
+        {
+        }
 
-        public function bar() {}
+        abstract function baz () ;
 
-        public abstract function baz();
-
-        public abstract function qux(): void;
-
+        abstract function qux () : void ;
     }
 
-    interface Foo
-    {
+    interface Foo {
+        function bar () ;
 
-        public function bar();
-
-        public function baz(
+        function baz (
             $longArgument,
             $longerArgument,
             $muchLongerArgument
-        );
+        ) ;
 
-        public function qux(
+        function qux (
             $longArgument,
             $longerArgument,
             $muchLongerArgument
-        ): void;
-
+        ) : void ;
     }
 
-    trait Foo
-    {
+    trait Foo {
+        function bar ()
+        {
+        }
 
-        public function bar() {}
-
-        public abstract function baz();
-
+        abstract function baz ()
+        ;
     }
 }
 

@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: GotoLabelTest.php
- *  Last Modified: 3.01.23 г., 0:06 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests the tokenization of goto declarations and statements.
  *
@@ -33,6 +14,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class GotoLabelTest extends AbstractMethodUnitTest
 {
 
+
     /**
      * Verify that the label in a goto statement is tokenized as T_STRING.
      *
@@ -46,25 +28,25 @@ class GotoLabelTest extends AbstractMethodUnitTest
      */
     public function testGotoStatement($testMarker, $testContent)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $label = $this->getTargetToken($testMarker, T_STRING);
 
         $this->assertInternalType('int', $label);
         $this->assertSame($testContent, $tokens[$label]['content']);
+
     }//end testGotoStatement()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testGotoStatement()
      *
+     * @return array
      */
     public function dataGotoStatement()
     {
-
         return [
             [
                 '/* testGotoStatement */',
@@ -75,7 +57,9 @@ class GotoLabelTest extends AbstractMethodUnitTest
                 'end',
             ],
         ];
+
     }//end dataGotoStatement()
+
 
     /**
      * Verify that the label in a goto declaration is tokenized as T_GOTO_LABEL.
@@ -90,25 +74,25 @@ class GotoLabelTest extends AbstractMethodUnitTest
      */
     public function testGotoDeclaration($testMarker, $testContent)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $label = $this->getTargetToken($testMarker, T_GOTO_LABEL);
 
         $this->assertInternalType('int', $label);
         $this->assertSame($testContent, $tokens[$label]['content']);
+
     }//end testGotoDeclaration()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testGotoDeclaration()
      *
+     * @return array
      */
     public function dataGotoDeclaration()
     {
-
         return [
             [
                 '/* testGotoDeclaration */',
@@ -119,7 +103,9 @@ class GotoLabelTest extends AbstractMethodUnitTest
                 'end:',
             ],
         ];
+
     }//end dataGotoDeclaration()
+
 
     /**
      * Verify that the constant used in a switch - case statement is not confused with a goto label.
@@ -134,24 +120,24 @@ class GotoLabelTest extends AbstractMethodUnitTest
      */
     public function testNotAGotoDeclaration($testMarker, $testContent)
     {
-
         $tokens = self::$phpcsFile->getTokens();
         $target = $this->getTargetToken($testMarker, [T_GOTO_LABEL, T_STRING], $testContent);
 
         $this->assertSame(T_STRING, $tokens[$target]['code']);
         $this->assertSame('T_STRING', $tokens[$target]['type']);
+
     }//end testNotAGotoDeclaration()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testNotAGotoDeclaration()
      *
+     * @return array
      */
     public function dataNotAGotoDeclaration()
     {
-
         return [
             [
                 '/* testNotGotoDeclarationGlobalConstant */',
@@ -182,6 +168,8 @@ class GotoLabelTest extends AbstractMethodUnitTest
                 'Suit',
             ],
         ];
+
     }//end dataNotAGotoDeclaration()
+
 
 }//end class

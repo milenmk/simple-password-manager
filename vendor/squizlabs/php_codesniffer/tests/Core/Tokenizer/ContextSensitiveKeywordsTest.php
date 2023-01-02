@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: ContextSensitiveKeywordsTest.php
- *  Last Modified: 3.01.23 г., 0:06 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests the conversion of context sensitive keywords to T_STRING.
  *
@@ -34,6 +15,7 @@ use PHP_CodeSniffer\Util\Tokens;
 class ContextSensitiveKeywordsTest extends AbstractMethodUnitTest
 {
 
+
     /**
      * Test that context sensitive keyword is tokenized as string when it should be string.
      *
@@ -46,25 +28,25 @@ class ContextSensitiveKeywordsTest extends AbstractMethodUnitTest
      */
     public function testStrings($testMarker)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $token = $this->getTargetToken($testMarker, (Tokens::$contextSensitiveKeywords + [T_STRING]));
 
         $this->assertSame(T_STRING, $tokens[$token]['code']);
         $this->assertSame('T_STRING', $tokens[$token]['type']);
+
     }//end testStrings()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testStrings()
      *
+     * @return array
      */
     public function dataStrings()
     {
-
         return [
             ['/* testAbstract */'],
             ['/* testArray */'],
@@ -147,7 +129,9 @@ class ContextSensitiveKeywordsTest extends AbstractMethodUnitTest
             ['/* testKeywordAfterFunctionShouldBeString */'],
             ['/* testKeywordAfterFunctionByRefShouldBeString */'],
         ];
+
     }//end dataStrings()
+
 
     /**
      * Test that context sensitive keyword is tokenized as keyword when it should be keyword.
@@ -162,25 +146,25 @@ class ContextSensitiveKeywordsTest extends AbstractMethodUnitTest
      */
     public function testKeywords($testMarker, $expectedTokenType)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $token = $this->getTargetToken($testMarker, (Tokens::$contextSensitiveKeywords + [T_ANON_CLASS, T_MATCH_DEFAULT, T_PARENT, T_SELF, T_STRING]));
 
         $this->assertSame(constant($expectedTokenType), $tokens[$token]['code']);
         $this->assertSame($expectedTokenType, $tokens[$token]['type']);
+
     }//end testKeywords()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testKeywords()
      *
+     * @return array
      */
     public function dataKeywords()
     {
-
         return [
             [
                 '/* testNamespaceIsKeyword */',
@@ -518,6 +502,8 @@ class ContextSensitiveKeywordsTest extends AbstractMethodUnitTest
                 'T_NAMESPACE',
             ],
         ];
+
     }//end dataKeywords()
+
 
 }//end class

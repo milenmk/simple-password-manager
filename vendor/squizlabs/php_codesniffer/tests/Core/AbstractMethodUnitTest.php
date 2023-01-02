@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: AbstractMethodUnitTest.php
- *  Last Modified: 3.01.23 г., 0:07 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Base class to use when testing utility methods.
  *
@@ -29,9 +10,8 @@
 namespace PHP_CodeSniffer\Tests\Core;
 
 use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Files\DummyFile;
-use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Ruleset;
+use PHP_CodeSniffer\Files\DummyFile;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractMethodUnitTest extends TestCase
@@ -50,9 +30,10 @@ abstract class AbstractMethodUnitTest extends TestCase
     /**
      * The \PHP_CodeSniffer\Files\File object containing the parsed contents of the test case file.
      *
-     * @var File
+     * @var \PHP_CodeSniffer\Files\File
      */
     protected static $phpcsFile;
+
 
     /**
      * Initialize & tokenize \PHP_CodeSniffer\Files\File with code from the test case file.
@@ -64,24 +45,25 @@ abstract class AbstractMethodUnitTest extends TestCase
      */
     public static function setUpBeforeClass()
     {
-
-        $config = new Config();
+        $config            = new Config();
         $config->standards = ['PSR1'];
 
         $ruleset = new Ruleset($config);
 
         // Default to a file with the same name as the test class. Extension is property based.
-        $relativeCN = str_replace(__NAMESPACE__, '', get_called_class());
-        $relativePath = str_replace('\\', DIRECTORY_SEPARATOR, $relativeCN);
-        $pathToTestFile = realpath(__DIR__) . $relativePath . '.' . static::$fileExtension;
+        $relativeCN     = str_replace(__NAMESPACE__, '', get_called_class());
+        $relativePath   = str_replace('\\', DIRECTORY_SEPARATOR, $relativeCN);
+        $pathToTestFile = realpath(__DIR__).$relativePath.'.'.static::$fileExtension;
 
         // Make sure the file gets parsed correctly based on the file type.
-        $contents = 'phpcs_input_file: ' . $pathToTestFile . PHP_EOL;
+        $contents  = 'phpcs_input_file: '.$pathToTestFile.PHP_EOL;
         $contents .= file_get_contents($pathToTestFile);
 
         self::$phpcsFile = new DummyFile($contents, $ruleset, $config);
         self::$phpcsFile->process();
+
     }//end setUpBeforeClass()
+
 
     /**
      * Clean up after finished test.
@@ -90,9 +72,10 @@ abstract class AbstractMethodUnitTest extends TestCase
      */
     public static function tearDownAfterClass()
     {
-
         self::$phpcsFile = null;
+
     }//end tearDownAfterClass()
+
 
     /**
      * Get the token pointer for a target token based on a specific comment found on the line before.
@@ -106,10 +89,9 @@ abstract class AbstractMethodUnitTest extends TestCase
      *
      * @return int
      */
-    public function getTargetToken($commentString, $tokenType, $tokenContent = null)
+    public function getTargetToken($commentString, $tokenType, $tokenContent=null)
     {
-
-        $start = (self::$phpcsFile->numTokens - 1);
+        $start   = (self::$phpcsFile->numTokens - 1);
         $comment = self::$phpcsFile->findPrevious(
             T_COMMENT,
             $start,
@@ -119,7 +101,7 @@ abstract class AbstractMethodUnitTest extends TestCase
         );
 
         $tokens = self::$phpcsFile->getTokens();
-        $end = ($start + 1);
+        $end    = ($start + 1);
 
         // Limit the token finding to between this and the next delimiter comment.
         for ($i = ($comment + 1); $i < $end; $i++) {
@@ -142,15 +124,17 @@ abstract class AbstractMethodUnitTest extends TestCase
         );
 
         if ($target === false) {
-            $msg = 'Failed to find test target token for comment string: ' . $commentString;
+            $msg = 'Failed to find test target token for comment string: '.$commentString;
             if ($tokenContent !== null) {
-                $msg .= ' With token content: ' . $tokenContent;
+                $msg .= ' With token content: '.$tokenContent;
             }
 
             $this->assertFalse(true, $msg);
         }
 
         return $target;
+
     }//end getTargetToken()
+
 
 }//end class

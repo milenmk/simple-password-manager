@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: Reporter.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Manages reporting of errors and warnings.
  *
@@ -40,42 +21,42 @@ class Reporter
     /**
      * The config data for the run.
      *
-     * @var Config
+     * @var \PHP_CodeSniffer\Config
      */
     public $config = null;
 
     /**
      * Total number of files that contain errors or warnings.
      *
-     * @var int
+     * @var integer
      */
     public $totalFiles = 0;
 
     /**
      * Total number of errors found during the run.
      *
-     * @var int
+     * @var integer
      */
     public $totalErrors = 0;
 
     /**
      * Total number of warnings found during the run.
      *
-     * @var int
+     * @var integer
      */
     public $totalWarnings = 0;
 
     /**
      * Total number of errors/warnings that can be fixed.
      *
-     * @var int
+     * @var integer
      */
     public $totalFixable = 0;
 
     /**
      * Total number of errors/warnings that were fixed.
      *
-     * @var int
+     * @var integer
      */
     public $totalFixed = 0;
 
@@ -108,11 +89,11 @@ class Reporter
      * output file (or a temp file if none is specified) initialised by
      * clearing the current contents.
      *
-     * @param Config $config The config data for the run.
+     * @param \PHP_CodeSniffer\Config $config The config data for the run.
      *
      * @return void
-     * @throws DeepExitException If a custom report class could not be found.
-     * @throws RuntimeException  If a report class is incorrectly set up.
+     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException If a custom report class could not be found.
+     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException  If a report class is incorrectly set up.
      */
     public function __construct(Config $config)
     {
@@ -282,7 +263,7 @@ class Reporter
      * assigned to each report. This content may be an intermediate report format
      * and not reflect the final report output.
      *
-     * @param File $phpcsFile The file that has been processed.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file that has been processed.
      *
      * @return void
      */
@@ -346,7 +327,7 @@ class Reporter
     /**
      * Generate summary information to be used during report generation.
      *
-     * @param File $phpcsFile The file that has been processed.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file that has been processed.
      *
      * @return array
      */

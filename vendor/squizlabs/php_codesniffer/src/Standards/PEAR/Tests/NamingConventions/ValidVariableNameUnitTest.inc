@@ -1,29 +1,10 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: ValidVariableNameUnitTest.inc
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 class MyClass
 {
-    public $varName  = 'hello';
-    public $var_name = 'hello';
-    public $varname  = 'hello';
-    public $_varName = 'hello';
+    var $varName  = 'hello';
+    var $var_name = 'hello';
+    var $varname  = 'hello';
+    var $_varName = 'hello';
 
     public $varName  = 'hello';
     public $var_name = 'hello';
@@ -43,19 +24,14 @@ class MyClass
 
 class MyClass
 {
-
-    public function func1()
+  function func1()
+  {
+    function func2()
     {
-
-        function func2()
-        {
-
-            return $a;
-        }
-
-        return $data;
+     return $a;
     }
-
+    return $data;
+  }
 }
 
 class MyClass
@@ -67,57 +43,45 @@ class MyClass
 if (true) {
     class MyClass
     {
-        public $varName  = 'hello';
-        public $var_name = 'hello';
+        var $varName  = 'hello';
+        var $var_name = 'hello';
     }
 }
 
-class MyClass
-{
-
-    public function myFunction($cc, $cv)
-    {
-
+class MyClass {
+    function myFunction($cc, $cv) {
         $req = "delete from blah
                 where not (POP_{$cc}_A =
 '{$this->def["POP_{$cc}_A"]}'
                          and POP_{$cc}_B =
 '{$this->def["POP_{$cc}_B"]}')";
     }
-
 }
 
-class mpgResponse
-{
-
-    public $term_id;
-    public $currentTag;
-
-    public function characterHandler($parser, $data)
-    {
-
-        switch ($this->currentTag) {
-            case 'term_id':
-            {
-                $this->term_id = $data;
-                break;
-            }
-        }
-    }//end characterHandler
-
+class mpgResponse{
+   var $term_id;
+   var $currentTag;
+   function characterHandler($parser,$data){
+       switch($this->currentTag)
+       {
+           case "term_id": {
+               $this->term_id=$data;
+               break;
+           }
+       }
+   }//end characterHandler
 }//end class mpgResponse
 
 class foo
 {
-
-    public const bar = <<<BAZ
+    const bar = <<<BAZ
 qux
 BAZ;
 }
 
 class foo
 {
-    public $c = <<<C
+    var $c = <<<C
 ccc
 C;
 }

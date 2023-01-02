@@ -1,42 +1,25 @@
 <?php
 
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: EmptyPHPStatementUnitTest.inc
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /*
  * Test empty statement: two consecutive semi-colons without executable code between them.
  */
 function_call(); // OK.
 
 // The below examples are all bad.
-function_call();
+function_call();;
 
 function_call();
+;
 
 function_call();
-/* some comment */
+/* some comment */;
 
 function_call();
-/* some comment */
+/* some comment */     ;
 
 ?>
-<input name="<?php something_else(); ?>" />
-<input name="<?php something_else(); ?>" />
+<input name="<?php ; something_else(); ?>" />
+<input name="<?php something_else(); ; ?>" />
 
 /*
  * Test empty statement: no code between PHP open and close tag.
@@ -57,9 +40,9 @@ function_call();
  * Test detecting & fixing a combination of the two above checks.
  */
 -->
-<?php ?>
+<?php ; ?>
 
-<input name="<?php ?>" /> <!-- Bad. -->
+<input name="<?php ; ?>" /> <!-- Bad. -->
 
 <!-- Tests with short open echo tag. -->
 <input name="<?= 'some text' ?>" /> <!-- OK. -->
@@ -71,13 +54,13 @@ function_call();
 for ( $i = 0; ; $i++ ) {}
 
 // Test for useless semi-colons
-for ( $i = 0; ; $i++ ) {}
+for ( $i = 0; ; $i++ ) {};
 
-if (true) {}
+if (true) {};
 
-while (true) {}
+while (true) {};
 
-class ABC {}
+class ABC {}   ;  ;
 
 switch ( $a ) {
     case 1:
@@ -85,8 +68,8 @@ switch ( $a ) {
     case 2:
         break;
     default:
-        break;
-}
+        break;  ;
+};
 
 // Do not break closures and anonymous classes and curlies without scope owners.
 $a = function () {};
@@ -94,6 +77,7 @@ $b = new class {};
 echo $a{0};
 
 if ($foo) {
+;
 }
 
 // Do not remove semicolon after match

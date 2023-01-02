@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: DefaultKeywordTest.php
- *  Last Modified: 3.01.23 г., 0:07 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests the retokenization of the `default` keyword to T_MATCH_DEFAULT for PHP 8.0 match structures
  * and makes sure that the tokenization of switch `T_DEFAULT` structures is not aversely affected.
@@ -34,6 +15,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class DefaultKeywordTest extends AbstractMethodUnitTest
 {
 
+
     /**
      * Test the retokenization of the `default` keyword for match structure to `T_MATCH_DEFAULT`.
      *
@@ -49,38 +31,38 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testMatchDefault($testMarker, $testContent = 'default')
+    public function testMatchDefault($testMarker, $testContent='default')
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
-        $token = $this->getTargetToken($testMarker, [T_MATCH_DEFAULT, T_DEFAULT, T_STRING], $testContent);
+        $token      = $this->getTargetToken($testMarker, [T_MATCH_DEFAULT, T_DEFAULT, T_STRING], $testContent);
         $tokenArray = $tokens[$token];
 
-        $this->assertSame(T_MATCH_DEFAULT, $tokenArray['code'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_MATCH_DEFAULT (code)');
-        $this->assertSame('T_MATCH_DEFAULT', $tokenArray['type'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_MATCH_DEFAULT (type)');
+        $this->assertSame(T_MATCH_DEFAULT, $tokenArray['code'], 'Token tokenized as '.$tokenArray['type'].', not T_MATCH_DEFAULT (code)');
+        $this->assertSame('T_MATCH_DEFAULT', $tokenArray['type'], 'Token tokenized as '.$tokenArray['type'].', not T_MATCH_DEFAULT (type)');
 
         $this->assertArrayNotHasKey('scope_condition', $tokenArray, 'Scope condition is set');
         $this->assertArrayNotHasKey('scope_opener', $tokenArray, 'Scope opener is set');
         $this->assertArrayNotHasKey('scope_closer', $tokenArray, 'Scope closer is set');
+
     }//end testMatchDefault()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testMatchDefault()
      *
+     * @return array
      */
     public function dataMatchDefault()
     {
-
         return [
-            'simple_match_default'            => ['/* testSimpleMatchDefault */'],
-            'match_default_in_switch_case_1'  => ['/* testMatchDefaultNestedInSwitchCase1 */'],
-            'match_default_in_switch_case_2'  => ['/* testMatchDefaultNestedInSwitchCase2 */'],
-            'match_default_in_switch_default' => ['/* testMatchDefaultNestedInSwitchDefault */'],
-            'match_default_containing_switch' => ['/* testMatchDefault */'],
+            'simple_match_default'                                    => ['/* testSimpleMatchDefault */'],
+            'match_default_in_switch_case_1'                          => ['/* testMatchDefaultNestedInSwitchCase1 */'],
+            'match_default_in_switch_case_2'                          => ['/* testMatchDefaultNestedInSwitchCase2 */'],
+            'match_default_in_switch_default'                         => ['/* testMatchDefaultNestedInSwitchDefault */'],
+            'match_default_containing_switch'                         => ['/* testMatchDefault */'],
 
             'match_default_with_nested_long_array_and_default_key'    => [
                 '/* testMatchDefaultWithNestedLongArrayWithClassConstantKey */',
@@ -107,7 +89,9 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
                 'DEFAULT',
             ],
         ];
+
     }//end dataMatchDefault()
+
 
     /**
      * Verify that the retokenization of `T_DEFAULT` tokens in match constructs, doesn't negatively
@@ -127,18 +111,17 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testSwitchDefault($testMarker, $openerOffset, $closerOffset, $conditionStop = null, $testContent = 'default')
+    public function testSwitchDefault($testMarker, $openerOffset, $closerOffset, $conditionStop=null, $testContent='default')
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
-        $token = $this->getTargetToken($testMarker, [T_MATCH_DEFAULT, T_DEFAULT, T_STRING], $testContent);
+        $token      = $this->getTargetToken($testMarker, [T_MATCH_DEFAULT, T_DEFAULT, T_STRING], $testContent);
         $tokenArray = $tokens[$token];
         $expectedScopeOpener = ($token + $openerOffset);
         $expectedScopeCloser = ($token + $closerOffset);
 
-        $this->assertSame(T_DEFAULT, $tokenArray['code'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_DEFAULT (code)');
-        $this->assertSame('T_DEFAULT', $tokenArray['type'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_DEFAULT (type)');
+        $this->assertSame(T_DEFAULT, $tokenArray['code'], 'Token tokenized as '.$tokenArray['type'].', not T_DEFAULT (code)');
+        $this->assertSame('T_DEFAULT', $tokenArray['type'], 'Token tokenized as '.$tokenArray['type'].', not T_DEFAULT (type)');
 
         $this->assertArrayHasKey('scope_condition', $tokenArray, 'Scope condition is not set');
         $this->assertArrayHasKey('scope_opener', $tokenArray, 'Scope opener is not set');
@@ -177,18 +160,19 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
                 );
             }
         }
+
     }//end testSwitchDefault()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testSwitchDefault()
      *
+     * @return array
      */
     public function dataSwitchDefault()
     {
-
         return [
             'simple_switch_default'                  => [
                 '/* testSimpleSwitchDefault */',
@@ -221,7 +205,9 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
                 18,
             ],
         ];
+
     }//end dataSwitchDefault()
+
 
     /**
      * Verify that the retokenization of `T_DEFAULT` tokens in match constructs, doesn't negatively
@@ -236,39 +222,39 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testNotDefaultKeyword($testMarker, $testContent = 'DEFAULT')
+    public function testNotDefaultKeyword($testMarker, $testContent='DEFAULT')
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
-        $token = $this->getTargetToken($testMarker, [T_MATCH_DEFAULT, T_DEFAULT, T_STRING], $testContent);
+        $token      = $this->getTargetToken($testMarker, [T_MATCH_DEFAULT, T_DEFAULT, T_STRING], $testContent);
         $tokenArray = $tokens[$token];
 
-        $this->assertSame(T_STRING, $tokenArray['code'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_STRING (code)');
-        $this->assertSame('T_STRING', $tokenArray['type'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_STRING (type)');
+        $this->assertSame(T_STRING, $tokenArray['code'], 'Token tokenized as '.$tokenArray['type'].', not T_STRING (code)');
+        $this->assertSame('T_STRING', $tokenArray['type'], 'Token tokenized as '.$tokenArray['type'].', not T_STRING (type)');
 
         $this->assertArrayNotHasKey('scope_condition', $tokenArray, 'Scope condition is set');
         $this->assertArrayNotHasKey('scope_opener', $tokenArray, 'Scope opener is set');
         $this->assertArrayNotHasKey('scope_closer', $tokenArray, 'Scope closer is set');
+
     }//end testNotDefaultKeyword()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testNotDefaultKeyword()
      *
+     * @return array
      */
     public function dataNotDefaultKeyword()
     {
-
         return [
-            'class-constant-as-short-array-key'      => ['/* testClassConstantAsShortArrayKey */'],
-            'class-property-as-short-array-key'      => ['/* testClassPropertyAsShortArrayKey */'],
-            'namespaced-constant-as-short-array-key' => ['/* testNamespacedConstantAsShortArrayKey */'],
-            'fqn-global-constant-as-short-array-key' => ['/* testFQNGlobalConstantAsShortArrayKey */'],
-            'class-constant-as-long-array-key'       => ['/* testClassConstantAsLongArrayKey */'],
-            'class-constant-as-yield-key'            => ['/* testClassConstantAsYieldKey */'],
+            'class-constant-as-short-array-key'                   => ['/* testClassConstantAsShortArrayKey */'],
+            'class-property-as-short-array-key'                   => ['/* testClassPropertyAsShortArrayKey */'],
+            'namespaced-constant-as-short-array-key'              => ['/* testNamespacedConstantAsShortArrayKey */'],
+            'fqn-global-constant-as-short-array-key'              => ['/* testFQNGlobalConstantAsShortArrayKey */'],
+            'class-constant-as-long-array-key'                    => ['/* testClassConstantAsLongArrayKey */'],
+            'class-constant-as-yield-key'                         => ['/* testClassConstantAsYieldKey */'],
 
             'class-constant-as-long-array-key-nested-in-match'    => ['/* testClassConstantAsLongArrayKeyNestedInMatch */'],
             'class-constant-as-long-array-key-nested-in-match-2'  => ['/* testClassConstantAsLongArrayKeyNestedInMatchLevelDown */'],
@@ -277,18 +263,20 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
             'class-constant-as-long-array-key-with-nested-match'  => ['/* testClassConstantAsLongArrayKeyWithNestedMatch */'],
             'class-constant-as-short-array-key-with-nested-match' => ['/* testClassConstantAsShortArrayKeyWithNestedMatch */'],
 
-            'class-constant-in-switch-case'              => ['/* testClassConstantInSwitchCase */'],
-            'class-property-in-switch-case'              => ['/* testClassPropertyInSwitchCase */'],
-            'namespaced-constant-in-switch-case'         => ['/* testNamespacedConstantInSwitchCase */'],
-            'namespace-relative-constant-in-switch-case' => ['/* testNamespaceRelativeConstantInSwitchCase */'],
+            'class-constant-in-switch-case'                       => ['/* testClassConstantInSwitchCase */'],
+            'class-property-in-switch-case'                       => ['/* testClassPropertyInSwitchCase */'],
+            'namespaced-constant-in-switch-case'                  => ['/* testNamespacedConstantInSwitchCase */'],
+            'namespace-relative-constant-in-switch-case'          => ['/* testNamespaceRelativeConstantInSwitchCase */'],
 
-            'class-constant-declaration' => ['/* testClassConstant */'],
-            'class-method-declaration'   => [
+            'class-constant-declaration'                          => ['/* testClassConstant */'],
+            'class-method-declaration'                            => [
                 '/* testMethodDeclaration */',
                 'default',
             ],
         ];
+
     }//end dataNotDefaultKeyword()
+
 
     /**
      * Test a specific edge case where a scope opener would be incorrectly set.
@@ -299,15 +287,16 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
      */
     public function testIssue3326()
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
-        $token = $this->getTargetToken('/* testClassConstant */', [T_SEMICOLON]);
+        $token      = $this->getTargetToken('/* testClassConstant */', [T_SEMICOLON]);
         $tokenArray = $tokens[$token];
 
         $this->assertArrayNotHasKey('scope_condition', $tokenArray, 'Scope condition is set');
         $this->assertArrayNotHasKey('scope_opener', $tokenArray, 'Scope opener is set');
         $this->assertArrayNotHasKey('scope_closer', $tokenArray, 'Scope closer is set');
+
     }//end testIssue3326()
+
 
 }//end class

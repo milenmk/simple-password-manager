@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: AbstractArraySniff.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Processes single and multi-line arrays.
  *
@@ -53,8 +34,8 @@ abstract class AbstractArraySniff implements Sniff
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile                        The current file being checked.
-     * @param int  $stackPtr                         The position of the current token in
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The current file being checked.
+     * @param int                         $stackPtr  The position of the current token in
      *                                               the stack passed in $tokens.
      *
      * @return void
@@ -159,12 +140,12 @@ abstract class AbstractArraySniff implements Sniff
     /**
      * Processes a single-line array definition.
      *
-     * @param File  $phpcsFile                        The current file being checked.
-     * @param int   $stackPtr                         The position of the current token
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile  The current file being checked.
+     * @param int                         $stackPtr   The position of the current token
      *                                                in the stack passed in $tokens.
-     * @param int   $arrayStart                       The token that starts the array definition.
-     * @param int   $arrayEnd                         The token that ends the array definition.
-     * @param array $indices                          An array of token positions for the array keys,
+     * @param int                         $arrayStart The token that starts the array definition.
+     * @param int                         $arrayEnd   The token that ends the array definition.
+     * @param array                       $indices    An array of token positions for the array keys,
      *                                                double arrows, and values.
      *
      * @return void
@@ -175,12 +156,12 @@ abstract class AbstractArraySniff implements Sniff
     /**
      * Processes a multi-line array definition.
      *
-     * @param File  $phpcsFile                        The current file being checked.
-     * @param int   $stackPtr                         The position of the current token
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile  The current file being checked.
+     * @param int                         $stackPtr   The position of the current token
      *                                                in the stack passed in $tokens.
-     * @param int   $arrayStart                       The token that starts the array definition.
-     * @param int   $arrayEnd                         The token that ends the array definition.
-     * @param array $indices                          An array of token positions for the array keys,
+     * @param int                         $arrayStart The token that starts the array definition.
+     * @param int                         $arrayEnd   The token that ends the array definition.
+     * @param array                       $indices    An array of token positions for the array keys,
      *                                                double arrows, and values.
      *
      * @return void

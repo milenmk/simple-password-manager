@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: NullsafeObjectOperatorTest.php
- *  Last Modified: 3.01.23 г., 0:07 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests the backfill for the PHP >= 8.0 nullsafe object operator.
  *
@@ -45,6 +26,7 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
         T_INLINE_THEN,
     ];
 
+
     /**
      * Test that a normal object operator is still tokenized as such.
      *
@@ -54,13 +36,14 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
      */
     public function testObjectOperator()
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $operator = $this->getTargetToken('/* testObjectOperator */', $this->find);
         $this->assertSame(T_OBJECT_OPERATOR, $tokens[$operator]['code'], 'Failed asserting code is object operator');
         $this->assertSame('T_OBJECT_OPERATOR', $tokens[$operator]['type'], 'Failed asserting type is object operator');
+
     }//end testObjectOperator()
+
 
     /**
      * Test that a nullsafe object operator is tokenized as such.
@@ -74,29 +57,31 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
      */
     public function testNullsafeObjectOperator($testMarker)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $operator = $this->getTargetToken($testMarker, $this->find);
         $this->assertSame(T_NULLSAFE_OBJECT_OPERATOR, $tokens[$operator]['code'], 'Failed asserting code is nullsafe object operator');
         $this->assertSame('T_NULLSAFE_OBJECT_OPERATOR', $tokens[$operator]['type'], 'Failed asserting type is nullsafe object operator');
+
     }//end testNullsafeObjectOperator()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testNullsafeObjectOperator()
      *
+     * @return array
      */
     public function dataNullsafeObjectOperator()
     {
-
         return [
             ['/* testNullsafeObjectOperator */'],
             ['/* testNullsafeObjectOperatorWriteContext */'],
         ];
+
     }//end dataNullsafeObjectOperator()
+
 
     /**
      * Test that a question mark not followed by an object operator is tokenized as T_TERNARY_THEN.
@@ -110,9 +95,8 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testTernaryThen($testMarker, $testObjectOperator = false)
+    public function testTernaryThen($testMarker, $testObjectOperator=false)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $operator = $this->getTargetToken($testMarker, $this->find);
@@ -124,18 +108,19 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
             $this->assertSame(T_OBJECT_OPERATOR, $tokens[$next]['code'], 'Failed asserting code is object operator');
             $this->assertSame('T_OBJECT_OPERATOR', $tokens[$next]['type'], 'Failed asserting type is object operator');
         }
+
     }//end testTernaryThen()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testTernaryThen()
      *
+     * @return array
      */
     public function dataTernaryThen()
     {
-
         return [
             ['/* testTernaryThen */'],
             [
@@ -148,6 +133,8 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
             ],
             ['/* testLiveCoding */'],
         ];
+
     }//end dataTernaryThen()
+
 
 }//end class

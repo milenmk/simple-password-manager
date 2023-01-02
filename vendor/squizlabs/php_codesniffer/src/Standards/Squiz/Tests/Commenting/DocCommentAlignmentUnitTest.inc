@@ -1,37 +1,16 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: DocCommentAlignmentUnitTest.inc
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
 * Some info about the class here
  *
  */
 class MyClass
 {
-
     /**
      * Some info about the function here.
      *
-     * @return void
+     *@return void
      */
-    public function myFunction() {}
-
+    function myFunction() {}
 }
 
 /**
@@ -40,14 +19,12 @@ class MyClass
   */
 class MyClass
 {
-
     /**
-     *Some info about the function here.
-     *
-     * @return void
-     */
-    public function myFunction() {}
-
+      *Some info about the function here.
+      *
+      *  @return void
+      */
+    function myFunction() {}
 }
 
 /**
@@ -56,14 +33,12 @@ class MyClass
 */
 class MyClass
 {
-
     /**
      * Some info about the function here.
-     *
-     * @return void
+      *
+    * @return void
      */
-    public function myFunction() {}
-
+    function myFunction() {}
 }
 
 /** @var Database $mockedDatabase */
@@ -99,7 +74,7 @@ class MyClass2
     /**
        * Some info about the variable here.
      */
-    public $x;
+    var $x;
 }
 
 abstract class MyClass

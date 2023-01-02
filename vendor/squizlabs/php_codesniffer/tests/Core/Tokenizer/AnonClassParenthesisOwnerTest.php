@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: AnonClassParenthesisOwnerTest.php
- *  Last Modified: 3.01.23 г., 0:07 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests the adding of the "parenthesis" keys to an anonymous class token.
  *
@@ -33,6 +14,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class AnonClassParenthesisOwnerTest extends AbstractMethodUnitTest
 {
 
+
     /**
      * Test that anonymous class tokens without parenthesis do not get assigned a parenthesis owner.
      *
@@ -45,14 +27,15 @@ class AnonClassParenthesisOwnerTest extends AbstractMethodUnitTest
      */
     public function testAnonClassNoParentheses($testMarker)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $anonClass = $this->getTargetToken($testMarker, T_ANON_CLASS);
         $this->assertFalse(array_key_exists('parenthesis_owner', $tokens[$anonClass]));
         $this->assertFalse(array_key_exists('parenthesis_opener', $tokens[$anonClass]));
         $this->assertFalse(array_key_exists('parenthesis_closer', $tokens[$anonClass]));
+
     }//end testAnonClassNoParentheses()
+
 
     /**
      * Test that the next open/close parenthesis after an anonymous class without parenthesis
@@ -67,8 +50,7 @@ class AnonClassParenthesisOwnerTest extends AbstractMethodUnitTest
      */
     public function testAnonClassNoParenthesesNextOpenClose($testMarker)
     {
-
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens   = self::$phpcsFile->getTokens();
         $function = $this->getTargetToken($testMarker, T_FUNCTION);
 
         $opener = $this->getTargetToken($testMarker, T_OPEN_PARENTHESIS);
@@ -78,24 +60,27 @@ class AnonClassParenthesisOwnerTest extends AbstractMethodUnitTest
         $closer = $this->getTargetToken($testMarker, T_CLOSE_PARENTHESIS);
         $this->assertTrue(array_key_exists('parenthesis_owner', $tokens[$closer]));
         $this->assertSame($function, $tokens[$closer]['parenthesis_owner']);
+
     }//end testAnonClassNoParenthesesNextOpenClose()
+
 
     /**
      * Data provider.
      *
-     * @return array
+     * @see testAnonClassNoParentheses()
      * @see testAnonClassNoParenthesesNextOpenClose()
      *
-     * @see testAnonClassNoParentheses()
+     * @return array
      */
     public function dataAnonClassNoParentheses()
     {
-
         return [
             ['/* testNoParentheses */'],
             ['/* testNoParenthesesAndEmptyTokens */'],
         ];
+
     }//end dataAnonClassNoParentheses()
+
 
     /**
      * Test that anonymous class tokens with parenthesis get assigned a parenthesis owner,
@@ -110,11 +95,10 @@ class AnonClassParenthesisOwnerTest extends AbstractMethodUnitTest
      */
     public function testAnonClassWithParentheses($testMarker)
     {
-
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens    = self::$phpcsFile->getTokens();
         $anonClass = $this->getTargetToken($testMarker, T_ANON_CLASS);
-        $opener = $this->getTargetToken($testMarker, T_OPEN_PARENTHESIS);
-        $closer = $this->getTargetToken($testMarker, T_CLOSE_PARENTHESIS);
+        $opener    = $this->getTargetToken($testMarker, T_OPEN_PARENTHESIS);
+        $closer    = $this->getTargetToken($testMarker, T_CLOSE_PARENTHESIS);
 
         $this->assertTrue(array_key_exists('parenthesis_owner', $tokens[$anonClass]));
         $this->assertTrue(array_key_exists('parenthesis_opener', $tokens[$anonClass]));
@@ -136,22 +120,25 @@ class AnonClassParenthesisOwnerTest extends AbstractMethodUnitTest
         $this->assertSame($anonClass, $tokens[$closer]['parenthesis_owner']);
         $this->assertSame($opener, $tokens[$closer]['parenthesis_opener']);
         $this->assertSame($closer, $tokens[$closer]['parenthesis_closer']);
+
     }//end testAnonClassWithParentheses()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testAnonClassWithParentheses()
      *
+     * @return array
      */
     public function dataAnonClassWithParentheses()
     {
-
         return [
             ['/* testWithParentheses */'],
             ['/* testWithParenthesesAndEmptyTokens */'],
         ];
+
     }//end dataAnonClassWithParentheses()
+
 
 }//end class

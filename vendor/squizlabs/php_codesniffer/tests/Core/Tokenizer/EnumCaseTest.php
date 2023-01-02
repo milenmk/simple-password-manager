@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: EnumCaseTest.php
- *  Last Modified: 3.01.23 г., 0:06 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests converting enum "case" to T_ENUM_CASE.
  *
@@ -33,6 +14,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class EnumCaseTest extends AbstractMethodUnitTest
 {
 
+
     /**
      * Test that the enum "case" is converted to T_ENUM_CASE.
      *
@@ -46,7 +28,6 @@ class EnumCaseTest extends AbstractMethodUnitTest
      */
     public function testEnumCases($testMarker)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $enumCase = $this->getTargetToken($testMarker, [T_ENUM_CASE, T_CASE]);
@@ -57,18 +38,19 @@ class EnumCaseTest extends AbstractMethodUnitTest
         $this->assertArrayNotHasKey('scope_condition', $tokens[$enumCase], 'Scope condition is set');
         $this->assertArrayNotHasKey('scope_opener', $tokens[$enumCase], 'Scope opener is set');
         $this->assertArrayNotHasKey('scope_closer', $tokens[$enumCase], 'Scope closer is set');
+
     }//end testEnumCases()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testEnumCases()
      *
+     * @return array
      */
     public function dataEnumCases()
     {
-
         return [
             ['/* testPureEnumCase */'],
             ['/* testBackingIntegerEnumCase */'],
@@ -78,7 +60,9 @@ class EnumCaseTest extends AbstractMethodUnitTest
             ['/* testEnumCaseAfterSwitch */'],
             ['/* testEnumCaseAfterSwitchWithEndSwitch */'],
         ];
+
     }//end dataEnumCases()
+
 
     /**
      * Test that "case" that is not enum case is still tokenized as `T_CASE`.
@@ -93,7 +77,6 @@ class EnumCaseTest extends AbstractMethodUnitTest
      */
     public function testNotEnumCases($testMarker)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $case = $this->getTargetToken($testMarker, [T_ENUM_CASE, T_CASE]);
@@ -104,18 +87,19 @@ class EnumCaseTest extends AbstractMethodUnitTest
         $this->assertArrayHasKey('scope_condition', $tokens[$case], 'Scope condition is not set');
         $this->assertArrayHasKey('scope_opener', $tokens[$case], 'Scope opener is not set');
         $this->assertArrayHasKey('scope_closer', $tokens[$case], 'Scope closer is not set');
+
     }//end testNotEnumCases()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testNotEnumCases()
      *
+     * @return array
      */
     public function dataNotEnumCases()
     {
-
         return [
             ['/* testCaseWithSemicolonIsNotEnumCase */'],
             ['/* testCaseWithConstantIsNotEnumCase */'],
@@ -125,7 +109,9 @@ class EnumCaseTest extends AbstractMethodUnitTest
             ['/* testCaseInSwitchWhenCreatingEnumInSwitch1 */'],
             ['/* testCaseInSwitchWhenCreatingEnumInSwitch2 */'],
         ];
+
     }//end dataNotEnumCases()
+
 
     /**
      * Test that "case" that is not enum case is still tokenized as `T_CASE`.
@@ -139,31 +125,33 @@ class EnumCaseTest extends AbstractMethodUnitTest
      */
     public function testKeywordAsEnumCaseNameShouldBeString($testMarker)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $enumCaseName = $this->getTargetToken($testMarker, [T_STRING, T_INTERFACE, T_TRAIT, T_ENUM, T_FUNCTION, T_FALSE, T_DEFAULT, T_ARRAY]);
 
         $this->assertSame(T_STRING, $tokens[$enumCaseName]['code']);
         $this->assertSame('T_STRING', $tokens[$enumCaseName]['type']);
+
     }//end testKeywordAsEnumCaseNameShouldBeString()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testKeywordAsEnumCaseNameShouldBeString()
      *
+     * @return array
      */
     public function dataKeywordAsEnumCaseNameShouldBeString()
     {
-
         return [
             ['/* testKeywordAsEnumCaseNameShouldBeString1 */'],
             ['/* testKeywordAsEnumCaseNameShouldBeString2 */'],
             ['/* testKeywordAsEnumCaseNameShouldBeString3 */'],
             ['/* testKeywordAsEnumCaseNameShouldBeString4 */'],
         ];
+
     }//end dataKeywordAsEnumCaseNameShouldBeString()
+
 
 }//end class

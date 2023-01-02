@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: RuleInclusionAbsoluteLinuxTest.php
- *  Last Modified: 3.01.23 г., 0:07 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests for the \PHP_CodeSniffer\Ruleset class using a Linux-style absolute path to include a sniff.
  *
@@ -38,7 +19,7 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
     /**
      * The Ruleset object.
      *
-     * @var Ruleset
+     * @var \PHP_CodeSniffer\Ruleset
      */
     protected $ruleset;
 
@@ -56,6 +37,7 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
      */
     private $contents = '';
 
+
     /**
      * Initialize the config and ruleset objects.
      *
@@ -63,7 +45,6 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
      */
     public function setUp()
     {
-
         if ($GLOBALS['PHP_CODESNIFFER_PEAR'] === true) {
             // PEAR installs test and sniff files into different locations
             // so these tests will not pass as they directly reference files
@@ -71,11 +52,11 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
             $this->markTestSkipped('Test cannot run from a PEAR install');
         }
 
-        $this->standard = __DIR__ . '/' . basename(__FILE__, '.php') . '.xml';
-        $repoRootDir = dirname(dirname(dirname(__DIR__)));
+        $this->standard = __DIR__.'/'.basename(__FILE__, '.php').'.xml';
+        $repoRootDir    = dirname(dirname(dirname(__DIR__)));
 
         // On-the-fly adjust the ruleset test file to be able to test sniffs included with absolute paths.
-        $contents = file_get_contents($this->standard);
+        $contents       = file_get_contents($this->standard);
         $this->contents = $contents;
 
         $newPath = $repoRootDir;
@@ -90,9 +71,11 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
         }
 
         // Initialize the config and ruleset objects for the test.
-        $config = new Config(["--standard={$this->standard}"]);
+        $config        = new Config(["--standard={$this->standard}"]);
         $this->ruleset = new Ruleset($config);
+
     }//end setUp()
+
 
     /**
      * Reset ruleset file.
@@ -101,9 +84,10 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
      */
     public function tearDown()
     {
-
         file_put_contents($this->standard, $this->contents);
+
     }//end tearDown()
+
 
     /**
      * Test that sniffs registed with a Linux absolute path are correctly recognized and that
@@ -113,7 +97,6 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
      */
     public function testLinuxStylePathRuleInclusion()
     {
-
         // Test that the sniff is correctly registered.
         $this->assertObjectHasAttribute('sniffCodes', $this->ruleset);
         $this->assertCount(1, $this->ruleset->sniffCodes);
@@ -128,6 +111,8 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
             '10',
             $this->ruleset->sniffs['PHP_CodeSniffer\Standards\Generic\Sniffs\Formatting\SpaceAfterNotSniff']->spacing
         );
+
     }//end testLinuxStylePathRuleInclusion()
+
 
 }//end class

@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: VariableCommentUnitTest.inc
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 class VariableCommentUnitTest
 {
 
@@ -124,10 +105,10 @@ class VariableCommentUnitTest
     /**
      * T_VARIABLE check, var in string and in function.
      *
-     * @param int $var1 First variable.
-     * @param int $var2 Second variable.
+     * @param integer $var1 First variable.
+     * @param integer $var2 Second variable.
      *
-     * @return int
+     * @return integer
      */
     protected function checkVariable($var1, $var2)
     {
@@ -302,7 +283,7 @@ class VariableCommentUnitTest
 
 
     /**
-     * @var int
+     * @var integer
      */
      private $_varWithNoShortComment;
 
@@ -380,7 +361,7 @@ class Foo
      private ?Folder\ClassName $_incorrectCommentStyle = null;
 
 
-     public int $noComment = 1;
+     var int $noComment = 1;
  }
 
 class HasAttributes
@@ -390,7 +371,7 @@ class HasAttributes
      *
      * @var array
      */
-    #[ORM\Id]#[ORM\Column('integer')]
+    #[ORM\Id]#[ORM\Column("integer")]
     private $id;
 
     /**

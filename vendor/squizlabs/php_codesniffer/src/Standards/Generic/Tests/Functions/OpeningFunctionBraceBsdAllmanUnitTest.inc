@@ -1,23 +1,5 @@
 <?php
 
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: OpeningFunctionBraceBsdAllmanUnitTest.inc
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 // Brace should be on new line.
 function myFunction() {
 }
@@ -44,25 +26,34 @@ function myFunction()
 
 class myClass
 {
-
     // Brace should be on new line.
-    public function myFunction() {}
-
+    function myFunction() {
+    }
+    
     // Good.
-    public function myFunction() {}
+    function myFunction()
+    {
+    }
 
     // No aligned correctly.
-    public function myFunction() {}
-
+    function myFunction()
+{
+}
+    
     // Too many spaces.
-    public function myFunction() {}
-
+    function myFunction()   {
+    }
+    
     // Too many newlines.
-    public function myFunction() {}
+    function myFunction()
 
+    {
+    }
+    
     // Space before brace.
-    public function myFunction() {}
-
+    function myFunction()
+     {
+    }
 }
 
 
@@ -102,38 +93,45 @@ function myFunction($variable1, $variable2,
 
 class myClass
 {
-
     // Brace should be on new line.
-    public function myFunction($variable1, $variable2,
-                               $variable3, $variable4) {}
-
+    function myFunction($variable1, $variable2,
+    $variable3, $variable4) {
+    }
+    
     // Good.
-    public function myFunction($variable1, $variable2,
-                               $variable3, $variable4) {}
+    function myFunction($variable1, $variable2,
+    $variable3, $variable4)
+    {
+    }
 
     // No aligned correctly.
-    public function myFunction($variable1, $variable2,
-                               $variable3, $variable4) {}
-
+    function myFunction($variable1, $variable2,
+    $variable3, $variable4)
+{
+}
+    
     // Too many spaces.
-    public function myFunction($variable1, $variable2,
-                               $variable3, $variable4) {}
-
+    function myFunction($variable1, $variable2,
+    $variable3, $variable4)   {
+    }
+    
     // Too many newlines.
-    public function myFunction($variable1, $variable2,
-                               $variable3, $variable4) {}
+    function myFunction($variable1, $variable2,
+    $variable3, $variable4)
 
+    {
+    }
+    
     // Space before brace.
-    public function myFunction($variable1, $variable2,
-                               $variable3, $variable4) {}
-
+    function myFunction($variable1, $variable2,
+    $variable3, $variable4)
+     {
+    }
 }
 
 interface MyInterface
 {
-
-    public function myFunction();
-
+    function myFunction();
 }
 
 function myFunction(

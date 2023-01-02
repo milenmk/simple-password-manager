@@ -1,23 +1,5 @@
 <?php
 
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: MultipleStatementAlignmentUnitTest.inc
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 // Valid
 $var1    = 'var1';
 $var10   = 'var1';
@@ -101,18 +83,17 @@ $GLOBALS['_PEAR_ERRORSTACK_SINGLETON'] = array();
 
 class MyClass
 {
+    const MODE_DEBUG = 'debug';
+    const MODE_DEBUG2 = 'debug';
 
-    public const MODE_DEBUG = 'debug';
-    public const MODE_DEBUG2 = 'debug';
+    var $array[$test] = 'anything';
+    var $var          = 'anything';
 
-    public $array[$test] = 'anything';
-    public $var = 'anything';
-
-    public const MODE_DEBUG3 = 'debug';
+    const MODE_DEBUG3  = 'debug';
     public $array[$test]    = 'anything';
     private $vara             = 'anything';
     protected $array[($test + 1)] = 'anything';
-    public $array[($blah + (10 - $test))] = 'anything';
+    var $array[($blah + (10 - $test))] = 'anything';
 }
 
 function myFunction($var=true)
@@ -424,7 +405,7 @@ $foofoo   = new Foo([
 ]);
 
 $i = 0;
-echo 'TEST: ' . ($i += 1) . "\n";
+echo "TEST: ".($i += 1)."\n";
 
 // Valid
 $foo      = 'Hello';

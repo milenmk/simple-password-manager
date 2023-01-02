@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: IncludeOwnSystemSniff.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Ensures that a system does not include itself.
  *
@@ -50,8 +31,8 @@ class IncludeOwnSystemSniff implements Sniff
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
-     * @param File $phpcsFile                        The file being scanned.
-     * @param int  $stackPtr                         The position of the current token in
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param int                         $stackPtr  The position of the current token in
      *                                               the stack passed in $tokens.
      *
      * @return void
@@ -96,9 +77,9 @@ class IncludeOwnSystemSniff implements Sniff
     /**
      * Determines the included class name from given token.
      *
-     * @param File  $phpcsFile                       The file where this token was found.
-     * @param array $tokens                          The array of file tokens.
-     * @param int   $stackPtr                        The position in the tokens array of the
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param array                       $tokens    The array of file tokens.
+     * @param int                         $stackPtr  The position in the tokens array of the
      *                                               potentially included class.
      *
      * @return string

@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: Tokenizer.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * The base tokenizer class.
  *
@@ -28,7 +9,6 @@
 
 namespace PHP_CodeSniffer\Tokenizers;
 
-use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Exceptions\TokenizerException;
 use PHP_CodeSniffer\Util;
 
@@ -38,7 +18,7 @@ abstract class Tokenizer
     /**
      * The config data for the run.
      *
-     * @var Config
+     * @var \PHP_CodeSniffer\Config
      */
     protected $config = null;
 
@@ -59,7 +39,7 @@ abstract class Tokenizer
     /**
      * The number of tokens in the tokens array.
      *
-     * @var int
+     * @var integer
      */
     protected $numTokens = 0;
 
@@ -96,11 +76,11 @@ abstract class Tokenizer
      * Initialise and run the tokenizer.
      *
      * @param string                         $content The content to tokenize,
-     * @param Config | null $config  The config data for the run.
+     * @param \PHP_CodeSniffer\Config | null $config  The config data for the run.
      * @param string                         $eolChar The EOL char used in the content.
      *
      * @return void
-     * @throws TokenizerException If the file appears to be minified.
+     * @throws \PHP_CodeSniffer\Exceptions\TokenizerException If the file appears to be minified.
      */
     public function __construct($content, $config, $eolChar='\n')
     {
@@ -131,7 +111,7 @@ abstract class Tokenizer
      * @param string $content The content to tokenize.
      * @param string $eolChar The EOL char used in the content.
      *
-     * @return bool
+     * @return boolean
      */
     protected function isMinifiedContent($content, $eolChar='\n')
     {
@@ -946,7 +926,7 @@ abstract class Tokenizer
      * @param int $ignore   How many curly braces we are ignoring.
      *
      * @return int The position in the stack that closed the scope.
-     * @throws TokenizerException If the nesting level gets too deep.
+     * @throws \PHP_CodeSniffer\Exceptions\TokenizerException If the nesting level gets too deep.
      */
     private function recurseScopeMap($stackPtr, $depth=1, &$ignore=0)
     {
@@ -1082,7 +1062,7 @@ abstract class Tokenizer
                         // To be a closer, this token must have an opener.
                         if (PHP_CODESNIFFER_VERBOSITY > 1) {
                             echo str_repeat("\t", $depth);
-                            echo '* closer needs to be tested *' . PHP_EOL;
+                            echo "* closer needs to be tested *".PHP_EOL;
                         }
 
                         $i = self::recurseScopeMap($i, ($depth + 1), $ignore);
@@ -1091,7 +1071,7 @@ abstract class Tokenizer
                             $validCloser = false;
                             if (PHP_CODESNIFFER_VERBOSITY > 1) {
                                 echo str_repeat("\t", $depth);
-                                echo '* closer is not valid (no opener found) *' . PHP_EOL;
+                                echo "* closer is not valid (no opener found) *".PHP_EOL;
                             }
                         } else if ($this->tokens[$this->tokens[$scopeCloser]['scope_opener']]['code'] !== $this->tokens[$opener]['code']) {
                             $validCloser = false;
@@ -1103,7 +1083,7 @@ abstract class Tokenizer
                             }
                         } else if (PHP_CODESNIFFER_VERBOSITY > 1) {
                             echo str_repeat("\t", $depth);
-                            echo '* closer was valid *' . PHP_EOL;
+                            echo "* closer was valid *".PHP_EOL;
                         }
                     } else {
                         // The closer was not processed, so we need to
@@ -1224,13 +1204,13 @@ abstract class Tokenizer
                         || $this->tokens[$i]['code'] === T_ELSEIF)
                     ) {
                         if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                            echo 'continuing' . PHP_EOL;
+                            echo "continuing".PHP_EOL;
                         }
 
                         return ($i - 1);
                     } else {
                         if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                            echo 'backtracking' . PHP_EOL;
+                            echo "backtracking".PHP_EOL;
                         }
 
                         return $stackPtr;

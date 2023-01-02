@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: SelfMemberReferenceSniff.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests self member references.
  *
@@ -54,9 +35,9 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
     /**
      * Processes the function tokens within the class.
      *
-     * @param File $phpcsFile The file where this token was found.
-     * @param int  $stackPtr  The position where the token was found.
-     * @param int  $currScope The current scope opener token.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param int                         $stackPtr  The position where the token was found.
+     * @param int                         $currScope The current scope opener token.
      *
      * @return void
      */
@@ -186,8 +167,8 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
      * Processes a token that is found within the scope that this test is
      * listening to.
      *
-     * @param File $phpcsFile                        The file where this token was found.
-     * @param int  $stackPtr                         The position in the stack where this
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param int                         $stackPtr  The position in the stack where this
      *                                               token was found.
      *
      * @return void
@@ -232,8 +213,8 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
     /**
      * Returns the namespace declaration of a file.
      *
-     * @param File $phpcsFile                        The file where this token was found.
-     * @param int  $stackPtr                         The position where the search for the
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param int                         $stackPtr  The position where the search for the
      *                                               namespace declaration will start.
      *
      * @return string

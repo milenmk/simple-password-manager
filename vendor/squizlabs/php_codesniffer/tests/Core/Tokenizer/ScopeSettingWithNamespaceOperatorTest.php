@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: ScopeSettingWithNamespaceOperatorTest.php
- *  Last Modified: 3.01.23 г., 0:07 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Tests the adding of the "bracket_opener/closer" keys to use group tokens.
  *
@@ -33,6 +14,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class ScopeSettingWithNamespaceOperatorTest extends AbstractMethodUnitTest
 {
 
+
     /**
      * Test that the scope opener/closers are set correctly when the namespace keyword is encountered as an operator.
      *
@@ -46,9 +28,8 @@ class ScopeSettingWithNamespaceOperatorTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testScopeSetting($testMarker, $tokenTypes, $open = T_OPEN_CURLY_BRACKET, $close = T_CLOSE_CURLY_BRACKET)
+    public function testScopeSetting($testMarker, $tokenTypes, $open=T_OPEN_CURLY_BRACKET, $close=T_CLOSE_CURLY_BRACKET)
     {
-
         $tokens = self::$phpcsFile->getTokens();
 
         $target = $this->getTargetToken($testMarker, $tokenTypes);
@@ -69,18 +50,19 @@ class ScopeSettingWithNamespaceOperatorTest extends AbstractMethodUnitTest
         $this->assertArrayHasKey('scope_closer', $tokens[$closer], 'Scope closer missing for close curly');
         $this->assertSame($opener, $tokens[$closer]['scope_opener'], 'Scope opener not same for close curly');
         $this->assertSame($closer, $tokens[$closer]['scope_closer'], 'Scope closer not same for close curly');
+
     }//end testScopeSetting()
+
 
     /**
      * Data provider.
      *
-     * @return array
      * @see testScopeSetting()
      *
+     * @return array
      */
     public function dataScopeSetting()
     {
-
         return [
             [
                 '/* testClassExtends */',
@@ -109,6 +91,8 @@ class ScopeSettingWithNamespaceOperatorTest extends AbstractMethodUnitTest
                 [T_SEMICOLON],
             ],
         ];
+
     }//end dataScopeSetting()
+
 
 }//end class

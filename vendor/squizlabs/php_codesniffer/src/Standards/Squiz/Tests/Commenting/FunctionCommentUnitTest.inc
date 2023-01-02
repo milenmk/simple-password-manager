@@ -1,26 +1,4 @@
 <?php
-
-use first\ns\item;
-use OtherVendor\Package\SomeClass2;
-use second\ns;
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: FunctionCommentUnitTest.inc
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
 class PHP_CodeSniffer_File
 {
 
@@ -29,26 +7,29 @@ class PHP_CodeSniffer_File
      *
      * long desc here
      *
-     * @param bool   $stackPtr     The position in @ @unknown the stack of the token
+     * @param bool   $stackPtr   The position in @ @unknown the stack of the token
      *                             that opened the scope
-     * @param int    $detph        How many scope levels down we are.
-     * @param string $index        The index
-     *
+     * @param int    $detph    How many scope levels down we are.
+     * @param string    $index    The index
      * @return
      * @throws
      */
-    private function _functionCall($stackPtr, $depth = 1, $index)
+    private function _functionCall($stackPtr, $depth=1, $index)
     {
-
         return $stackPtr;
-    }                                       //end _functionCall()
+
+    }//end _functionCall()
 
     //
     // Sample function comment
     //
     //
     //
-    public function invalidCommentStyle() {}//end invalidCommentStyle()
+    public function invalidCommentStyle()
+    {
+
+    }//end invalidCommentStyle()
+
 
     /**
      *
@@ -63,20 +44,19 @@ class PHP_CodeSniffer_File
      */
     public function extraDescriptionNewlines()
     {
-
         return true;
     }//end extraDescriptionNewlines()
 
+
     /**
      * -A simple function comment.
-     *
      * @return void
      */
     public function missingNewlinesBeforeTags()
     {
-
         return;
     }//end missingNewlinesBeforeTags()
+
 
     /**
      * Access tag should not be treated as a long description.
@@ -84,73 +64,87 @@ class PHP_CodeSniffer_File
      * @access public
      * @return void
      */
-    public function accessTag() {}//end accessTag()
+    public function accessTag()
+    {
+
+    }//end accessTag()
 
     /**
      * Constructor.
      *
      * No return tag
      */
-    public function PHP_CodeSniffer_File()
+    function PHP_CodeSniffer_File()
     {
-
         return;
     }
+
 
     /**
      * Destructor.
      *
      * No return tag too
      */
-    public function _PHP_CodeSniffer_File()
+    function _PHP_CodeSniffer_File()
     {
-
         return;
     }
+
 
     /**
      * Destructor PHP5.
      */
-    public function __destruct()
+    function __destruct()
     {
-
         return;
     }
 
-    public function missingComment()
-    {
 
+    function missingComment()
+    {
         return;
     }
+
 
     /**
      * no return tag.
      *
      */
-    public function noReturn($one) {}//end noReturn()
+    public function noReturn($one)
+    {
+
+    }//end noReturn()
+
 
     /**
      * Param not immediate.
      *
-     * @param int $threeSpaces
-     * @param int $superfluous
+     * @return
+     * @param   int   $threeSpaces
+     * @param integer $superfluous
      * @param miss
      * @param
-     *
-     * @return
      */
-    public function missingDescription($threeSpaces) {}//end missingDescription()
+    public function missingDescription($threeSpaces)
+    {
+
+    }//end missingDescription()
+
 
     /**
      * Comments not capitalised.
      *
-     * @param int    $one   comment
-     * @param array  $two   -comment
-     * @param MyClas $three 0comment
+     * @param integer  $one    comment
+     * @param array    $two    -comment
+     * @param MyClas   $three  0comment
      *
      * @return void
      */
-    public function oneSpaceAfterLongestVar($one, $two, MyClass $three) {}//end oneSpaceAfterLongestVar()
+    public function oneSpaceAfterLongestVar($one, $two, MyClass $three)
+    {
+
+    }//end oneSpaceAfterLongestVar()
+
 
 }//end class
 
@@ -196,7 +190,7 @@ public function noReturnOutsideClass()
 /**
  * Missing param comment.
  *
- * @param int $one comment
+ * @param integer $one comment
  *
  * @see     wrong indent
  * @see
@@ -253,7 +247,7 @@ public function caseSensitive($a1, $a2, $a3, arRay $a4, $a5, $a6, myclas $a7)
  */
 public function typeHint(MyClass $a1, $a2, myclass $a3, $a4)
 {
-    return (3 => 'myclass obj')
+    return (3 => 'myclass obj');
 
 }//end typeHint()
 
@@ -322,13 +316,14 @@ function empty3()
 
 
 /**
- * @return bool
+ * @return boolean
  */
 public function missingShortDescriptionInFunctionComment()
 {
     return true;
 
 }//end missingShortDescriptionInFunctionComment()
+
 
 class Another_Class
 {
@@ -338,9 +333,8 @@ class Another_Class
      *
      * @return void
      */
-    public function __destruct()
+    function __destruct()
     {
-
         return;
     }
 
@@ -349,9 +343,8 @@ class Another_Class
      *
      * @return void
      */
-    public function __construct()
+    function __construct()
     {
-
         return;
     }
 
@@ -453,7 +446,7 @@ class MyClass() {
      *
      * @return string[]
      */
-    abstract final protected function myFunction()
+    abstract final protected function myFunction();
 }
 
 /**
@@ -513,11 +506,11 @@ function test(\other\ns\item $test)
 /**
  * Comment.
  *
- * @param item $test An argument.
+ * @param \first\ns\item $test An argument.
  *
  * @return mixed
  */
-function test(item $test = ns::CONSTANT)
+function test(\first\ns\item $test = \second\ns::CONSTANT)
 {
    return $test;
 
@@ -530,7 +523,7 @@ function test(item $test = ns::CONSTANT)
  *
  * @return mixed
  */
-function test(item $test = ns::CONSTANT)
+function test(\first\ns\item $test = \second\ns::CONSTANT)
 {
    return $test;
 
@@ -577,7 +570,7 @@ function test($test)
  * @param string $a2     Comment here.
  * @param string $a2,... Comment here.
  *
- * @return bool
+ * @return boolean
  */
 public function variableArgs($a1, $a2)
 {
@@ -640,12 +633,12 @@ public function foo(array &$tokens, $tokenizer, $eolChar)
  * Some description.
  *
  * @param \Vendor\Package\SomeClass       $someclass  Some class.
- * @param SomeClass2 $someclass2 Some class.
- * @param SomeClass2 $someclass3 Some class.
+ * @param \OtherVendor\Package\SomeClass2 $someclass2 Some class.
+ * @param \OtherVendor\Package\SomeClass2 $someclass3 Some class.
  *
  * @return void
  */
-public function foo(SomeClass $someclass, SomeClass2 $someclass2, SomeClass3 $someclass3)
+public function foo(SomeClass $someclass, \OtherVendor\Package\SomeClass2 $someclass2, SomeClass3 $someclass3)
 {
 }
 
@@ -680,7 +673,7 @@ function myFunction() {}
 /**
  * Yield test
  *
- * @return int
+ * @return integer
  */
 function yieldTest()
 {
@@ -726,10 +719,10 @@ public function callableCallback(callable $cb) {
 /**
  * PHP7 type hints.
  *
- * @param string $name1 Comment.
- * @param int    $name2 Comment.
- * @param float  $name3 Comment.
- * @param bool   $name4 Comment.
+ * @param string  $name1 Comment.
+ * @param integer $name2 Comment.
+ * @param float   $name3 Comment.
+ * @param boolean $name4 Comment.
  *
  * @return void
  */
@@ -762,7 +755,7 @@ public function myFunction(string $name1, string ...$name2) {
 /**
  * Return description function + correct type.
  *
- * @return int This is a description.
+ * @return integer This is a description.
  */
 public function myFunction() {
     return 5;
@@ -956,7 +949,7 @@ function returnVoidWithAnonymousClass()
 {
     new class {
         /**
-         * @return int
+         * @return integer
          */
         public function test()
         {
@@ -981,8 +974,8 @@ class TestReturnVoid
 /**
  * Comment here.
  *
- * @param int    $a This is A.
- * @param ?array $b This is B.
+ * @param integer $a This is A.
+ * @param ?array  $b This is B.
  *
  * @return void
  */
@@ -1001,7 +994,7 @@ public function foo(object $a, ?object $b) {}
 /**
  * Prepares given PHP class method for later code building.
  *
- * @param int $foo Comment.
+ * @param integer           $foo Comment.
  *  - Additional comment.
  *
  * @return void

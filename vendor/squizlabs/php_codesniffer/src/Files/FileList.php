@@ -1,23 +1,4 @@
 <?php
-
-/**
- *
- * Simple password manager written in PHP with Bootstrap and PDO database connections
- *
- *  File name: FileList.php
- *  Last Modified: 18.06.22 г., 10:21 ч.
- *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       2.2.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
- *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
- *
- */
-
 /**
  * Represents a list of files on the file system that are to be checked during the run.
  *
@@ -30,20 +11,14 @@
 
 namespace PHP_CodeSniffer\Files;
 
-use Countable;
-use FilesystemIterator;
-use Iterator;
 use PHP_CodeSniffer\Autoload;
 use PHP_CodeSniffer\Util;
 use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Exceptions\DeepExitException;
-use RecursiveArrayIterator;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 use ReturnTypeWillChange;
 
-class FileList implements Iterator, Countable
+class FileList implements \Iterator, \Countable
 {
 
     /**
@@ -56,21 +31,21 @@ class FileList implements Iterator, Countable
     /**
      * The number of files in the list.
      *
-     * @var int
+     * @var integer
      */
     private $numFiles = 0;
 
     /**
      * The config data for the run.
      *
-     * @var Config
+     * @var \PHP_CodeSniffer\Config
      */
     public $config = null;
 
     /**
      * The ruleset used for the run.
      *
-     * @var Ruleset
+     * @var \PHP_CodeSniffer\Ruleset
      */
     public $ruleset = null;
 
@@ -85,8 +60,8 @@ class FileList implements Iterator, Countable
     /**
      * Constructs a file list and loads in an array of file paths to process.
      *
-     * @param Config  $config  The config data for the run.
-     * @param Ruleset $ruleset The ruleset used for the run.
+     * @param \PHP_CodeSniffer\Config  $config  The config data for the run.
+     * @param \PHP_CodeSniffer\Ruleset $ruleset The ruleset used for the run.
      *
      * @return void
      */
@@ -105,9 +80,9 @@ class FileList implements Iterator, Countable
 
                 $filterClass = $this->getFilterClass();
 
-                $di       = new RecursiveDirectoryIterator($path, (RecursiveDirectoryIterator::SKIP_DOTS | FilesystemIterator::FOLLOW_SYMLINKS));
+                $di       = new \RecursiveDirectoryIterator($path, (\RecursiveDirectoryIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS));
                 $filter   = new $filterClass($di, $path, $config, $ruleset);
-                $iterator = new RecursiveIteratorIterator($filter);
+                $iterator = new \RecursiveIteratorIterator($filter);
 
                 foreach ($iterator as $file) {
                     $this->files[$file->getPathname()] = null;
@@ -129,8 +104,8 @@ class FileList implements Iterator, Countable
      * If a file object has already been created, it can be passed here.
      * If it is left NULL, it will be created when accessed.
      *
-     * @param string $path The path to the file being added.
-     * @param File   $file The file being added.
+     * @param string                      $path The path to the file being added.
+     * @param \PHP_CodeSniffer\Files\File $file The file being added.
      *
      * @return void
      */
@@ -146,9 +121,9 @@ class FileList implements Iterator, Countable
 
         $filterClass = $this->getFilterClass();
 
-        $di       = new RecursiveArrayIterator([$path]);
+        $di       = new \RecursiveArrayIterator([$path]);
         $filter   = new $filterClass($di, $path, $this->config, $this->ruleset);
-        $iterator = new RecursiveIteratorIterator($filter);
+        $iterator = new \RecursiveIteratorIterator($filter);
 
         foreach ($iterator as $path) {
             $this->files[$path] = $file;
@@ -162,7 +137,7 @@ class FileList implements Iterator, Countable
      * Get the class name of the filter being used for the run.
      *
      * @return string
-     * @throws DeepExitException If the specified filter could not be found.
+     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException If the specified filter could not be found.
      */
     private function getFilterClass()
     {
@@ -206,7 +181,7 @@ class FileList implements Iterator, Countable
     /**
      * Get the file that is currently being processed.
      *
-     * @return File
+     * @return \PHP_CodeSniffer\Files\File
      */
     #[ReturnTypeWillChange]
     public function current()
@@ -250,7 +225,7 @@ class FileList implements Iterator, Countable
     /**
      * Checks if current position is valid.
      *
-     * @return bool
+     * @return boolean
      */
     #[ReturnTypeWillChange]
     public function valid()
@@ -267,7 +242,7 @@ class FileList implements Iterator, Countable
     /**
      * Return the number of files in the list.
      *
-     * @return int
+     * @return integer
      */
     #[ReturnTypeWillChange]
     public function count()
