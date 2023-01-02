@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: UnusedFunctionParameterUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 function foo($a, $b) {
     return $a * 2;
 }
@@ -20,14 +38,20 @@ function foobar($a, &$b) {
     return (preg_match('/foo/', $a, $b) !== 0);
 }
 
-class Foo implements Bar {
-    function barfoo($a, $b) {
+class Foo implements Bar
+{
+
+    public function barfoo($a, $b)
+    {
         // Empty body means interface method in many cases.
     }
 
-    function fooBar($a, $b) {
+    public function fooBar($a, $b)
+    {
+
         return;
     }
+
 }
 
 function foo($bar)

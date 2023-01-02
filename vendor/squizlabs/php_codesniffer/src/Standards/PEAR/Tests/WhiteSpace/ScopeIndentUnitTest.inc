@@ -1,39 +1,62 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: ScopeIndentUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 class Test
 {
-    function __construct()
+
+    public function __construct()
     {
-       $this->hello(); // error here
+
+        $this->hello(); // error here
     }
 
-   function hello() // error here
+    public function hello() // error here
     { // no error here as brackets can be put anywhere in the pear standard
         echo 'hello';
     }
 
-    function hello2()
+    public function hello2()
     {
-       if (TRUE) { // error here
+
+        if (true) {       // error here
             echo 'hello'; // no error here as its more than 4 spaces.
         } else {
-        echo 'bye'; // error here
+            echo 'bye'; // error here
         }
 
-        while (TRUE) {
-           echo 'hello'; // error here
-         }
+        while (true) {
+            echo 'hello'; // error here
+        }
 
-       do { // error here
-         echo 'hello'; // error here
-       } while (TRUE);
-   }
+        do {              // error here
+            echo 'hello'; // error here
+        }
+        while (true);
+    }
 
-    function hello3()
+    public function hello3()
     {
+
         switch ($hello) {
-        case 'hello':
-            break;
+            case 'hello':
+                break;
         }
     }
 
@@ -53,15 +76,17 @@ if ($form->validate()) {
 
 class Test2
 {
-    function __construct()
+
+    public function __construct()
     {
-    //    $this->open(); // error here
+        //    $this->open(); // error here
     }
 
     public function open()
     {
+
         // Some inline stuff that shouldn't error
-        if (TRUE) echo 'hello';
+        if (true) echo 'hello';
         foreach ($tokens as $token) echo $token;
     }
 
@@ -73,26 +98,27 @@ class Test2
      */
     public function close()
     {
+
         // All ok.
-        if (TRUE) {
-            if (TRUE) {
-            } else if (FALSE) {
+        if (true) {
+            if (true) {
+            } elseif (false) {
                 foreach ($tokens as $token) {
                     switch ($token) {
-                    case '1':
-                    case '2':
-                        if (true) {
-                            if (false) {
+                        case '1':
+                        case '2':
+                            if (true) {
                                 if (false) {
                                     if (false) {
-                                        echo 'hello';
+                                        if (false) {
+                                            echo 'hello';
+                                        }
                                     }
                                 }
                             }
-                        }
-                    break;
-                    case '5':
-                        break;
+                            break;
+                        case '5':
+                            break;
                     }
                     do {
                         while (true) {
@@ -102,7 +128,8 @@ class Test2
                                 }
                             }
                         }
-                    } while (true);
+                    }
+                    while (true);
                 }
             }
         }
@@ -123,7 +150,7 @@ class Test2
    */
 
     /**
-   */
+     */
 
     /*
       This comment has a newline in it.
@@ -132,19 +159,21 @@ class Test2
 
     public function read()
     {
+
         echo 'hello';
 
         // no errors below.
-        $array = array(
-                  'this',
-                  'that' => array(
-                             'hello',
-                             'hello again' => array(
-                                               'hello',
-                                              ),
-                            ),
-                 );
+        $array = [
+            'this',
+            'that' => [
+                'hello',
+                'hello again' => [
+                    'hello',
+                ],
+            ],
+        ];
     }
+
 }
 
 abstract class Test3
@@ -156,7 +185,7 @@ abstract class Test3
             if (is_array($token)) {
                 echo 'here';
             } else {
-                $ts[] = array("token" => $token, "value" => '');
+                $ts[] = array('token' => $token, 'value' => '');
 
                 $last = count($ts) - 1;
 
@@ -289,16 +318,16 @@ case 1:
 }
 
 switch ($name) {
-case "1":
-case "2":
-case "3":
+case '1':
+case '2':
+case '3':
     return true;
 }
 
 switch ($name) {
-case "1":
-case "2":
-case "3":
+case '1':
+case '2':
+case '3':
 default :
     return true;
 }

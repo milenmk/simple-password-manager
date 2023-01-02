@@ -1,5 +1,24 @@
 <?php test(
 );
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: FunctionCallSignatureUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 test();
 test($arg, $arg2);
 isset ();
@@ -21,8 +40,8 @@ $something = get($arg1, $arg2)   ;
 class TestClass extends MyClass
 {
 
-    const const1 = 'hello';
-    const CONST2 = 'hello';
+    public const const1 = 'hello';
+    public const CONST2 = 'hello';
 
     public function test () { }
 }
@@ -450,11 +469,11 @@ class C
     {
         $a = [];
         $t =
-            "SELECT * FROM t
-WHERE f IN(" . implode(
-                ",",
+            'SELECT * FROM t
+WHERE f IN(' . implode(
+                ',',
                 $a
-            ) . ")";
+            ) . ')';
     }
 }
 

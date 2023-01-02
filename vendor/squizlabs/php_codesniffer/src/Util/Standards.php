@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: Standards.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Functions for helping process standards.
  *
@@ -9,6 +28,7 @@
 
 namespace PHP_CodeSniffer\Util;
 
+use DirectoryIterator;
 use PHP_CodeSniffer\Config;
 
 class Standards
@@ -65,10 +85,10 @@ class Standards
      * use getInstalledStandardPaths() instead as it performs less work to
      * retrieve coding standard names.
      *
-     * @param boolean $includeGeneric If true, the special "Generic"
+     * @param bool   $includeGeneric  If true, the special "Generic"
      *                                coding standard will be included
      *                                if installed.
-     * @param string  $standardsDir   A specific directory to look for standards
+     * @param string $standardsDir    A specific directory to look for standards
      *                                in. If not specified, PHP_CodeSniffer will
      *                                look in its default locations.
      *
@@ -99,7 +119,7 @@ class Standards
                 continue;
             }
 
-            $di = new \DirectoryIterator($standardsDir);
+            $di = new DirectoryIterator($standardsDir);
             foreach ($di as $file) {
                 if ($file->isDir() === true && $file->isDot() === false) {
                     $filename = $file->getFilename();
@@ -154,10 +174,10 @@ class Standards
      * CodeSniffer/Standards directory. Valid coding standards
      * include a Sniffs subdirectory.
      *
-     * @param boolean $includeGeneric If true, the special "Generic"
+     * @param bool   $includeGeneric  If true, the special "Generic"
      *                                coding standard will be included
      *                                if installed.
-     * @param string  $standardsDir   A specific directory to look for standards
+     * @param string $standardsDir    A specific directory to look for standards
      *                                in. If not specified, PHP_CodeSniffer will
      *                                look in its default locations.
      *
@@ -190,7 +210,7 @@ class Standards
                 continue;
             }
 
-            $di = new \DirectoryIterator($standardsDir);
+            $di = new DirectoryIterator($standardsDir);
             $standardsInDir = [];
             foreach ($di as $file) {
                 if ($file->isDir() === true && $file->isDot() === false) {
@@ -227,7 +247,7 @@ class Standards
      *
      * @param string $standard The name of the coding standard.
      *
-     * @return boolean
+     * @return bool
      * @see    getInstalledStandards()
      */
     public static function isInstalledStandard($standard)

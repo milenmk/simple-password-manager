@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: NonExecutableCodeUnitTest.1.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 switch ($var) {
     case '1':
         return;
@@ -60,7 +79,7 @@ switch ($lowerVarType) {
 
 while ($line=fgets($fp,2*1024*1024))
 {
-    if (!preg_match("/^<([a-z0-9_]+)/",$line,$matches))
+    if (!preg_match('/^<([a-z0-9_]+)/', $line, $matches))
     continue;
     print $line;
 }
@@ -135,8 +154,12 @@ switch ($var) {
 
 defined('FOO') or die('error');
 defined('FOO') || die('error');
-interface myInterface {
-    function myFunc();
+
+interface myInterface
+{
+
+    public function myFunc();
+
 }
 echo 'hello';
 
@@ -197,7 +220,7 @@ function test(){
     else
         return 1;
 
-    echo "oi";
+    echo 'oi';
     return 1;
 }
 

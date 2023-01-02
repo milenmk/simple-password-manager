@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: MethodDeclarationSniff.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Checks that the method declaration is correct.
  *
@@ -30,9 +49,9 @@ class MethodDeclarationSniff extends AbstractScopeSniff
     /**
      * Processes the function tokens within the class.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
-     * @param int                         $stackPtr  The position where the token was found.
-     * @param int                         $currScope The current scope opener token.
+     * @param File $phpcsFile The file where this token was found.
+     * @param int  $stackPtr  The position where the token was found.
+     * @param int  $currScope The current scope opener token.
      *
      * @return void
      */
@@ -147,8 +166,8 @@ class MethodDeclarationSniff extends AbstractScopeSniff
      * Processes a token that is found within the scope that this test is
      * listening to.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
-     * @param int                         $stackPtr  The position in the stack where this
+     * @param File $phpcsFile                        The file where this token was found.
+     * @param int  $stackPtr                         The position in the stack where this
      *                                               token was found.
      *
      * @return void

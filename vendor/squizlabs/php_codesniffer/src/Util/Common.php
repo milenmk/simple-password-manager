@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: Common.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Basic util functions.
  *
@@ -8,6 +27,8 @@
  */
 
 namespace PHP_CodeSniffer\Util;
+
+use Phar;
 
 class Common
 {
@@ -56,7 +77,7 @@ class Common
      *
      * @param string $path The path to the file.
      *
-     * @return boolean
+     * @return bool
      */
     public static function isReadable($path)
     {
@@ -112,7 +133,7 @@ class Common
             return $path;
         }
 
-        $phar  = \Phar::running(false);
+        $phar  = Phar::running(false);
         $extra = str_replace('phar://'.$phar, '', $path);
         $path  = realpath($phar);
         if ($path === false) {
@@ -183,7 +204,7 @@ class Common
     /**
      * Check if STDIN is a TTY.
      *
-     * @return boolean
+     * @return bool
      */
     public static function isStdinATTY()
     {
@@ -313,22 +334,22 @@ class Common
     /**
      * Returns true if the specified string is in the camel caps format.
      *
-     * @param string  $string      The string the verify.
-     * @param boolean $classFormat If true, check to see if the string is in the
+     * @param string $string       The string the verify.
+     * @param bool   $classFormat  If true, check to see if the string is in the
      *                             class format. Class format strings must start
      *                             with a capital letter and contain no
      *                             underscores.
-     * @param boolean $public      If true, the first character in the string
+     * @param bool   $public       If true, the first character in the string
      *                             must be an a-z character. If false, the
      *                             character must be an underscore. This
      *                             argument is only applicable if $classFormat
      *                             is false.
-     * @param boolean $strict      If true, the string must not have two capital
+     * @param bool   $strict       If true, the string must not have two capital
      *                             letters next to each other. If false, a
      *                             relaxed camel caps policy is used to allow
      *                             for acronyms.
      *
-     * @return boolean
+     * @return bool
      */
     public static function isCamelCaps(
         $string,
@@ -400,7 +421,7 @@ class Common
      *
      * @param string $string The string to verify.
      *
-     * @return boolean
+     * @return bool
      */
     public static function isUnderscoreName($string)
     {

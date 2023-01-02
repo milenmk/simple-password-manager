@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: Fixer.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * A helper class for fixing errors.
  *
@@ -25,21 +44,21 @@ class Fixer
      * doing extra processing to prepare for a fix when fixing is
      * not required.
      *
-     * @var boolean
+     * @var bool
      */
     public $enabled = false;
 
     /**
      * The number of times we have looped over a file.
      *
-     * @var integer
+     * @var int
      */
     public $loops = 0;
 
     /**
      * The file being fixed.
      *
-     * @var \PHP_CodeSniffer\Files\File
+     * @var File
      */
     private $currentFile = null;
 
@@ -87,21 +106,21 @@ class Fixer
     /**
      * Is there an open changeset.
      *
-     * @var boolean
+     * @var bool
      */
     private $inChangeset = false;
 
     /**
      * Is the current fixing loop in conflict?
      *
-     * @var boolean
+     * @var bool
      */
     private $inConflict = false;
 
     /**
      * The number of fixes that have been performed.
      *
-     * @var integer
+     * @var int
      */
     private $numFixes = 0;
 
@@ -109,7 +128,7 @@ class Fixer
     /**
      * Starts fixing a new file.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being fixed.
+     * @param File $phpcsFile The file being fixed.
      *
      * @return void
      */
@@ -135,7 +154,7 @@ class Fixer
     /**
      * Attempt to fix the file by processing it until no fixes are made.
      *
-     * @return boolean
+     * @return bool
      */
     public function fixFile()
     {
@@ -220,10 +239,10 @@ class Fixer
     /**
      * Generates a text diff of the original file and the new content.
      *
-     * @param string  $filePath Optional file path to diff the file against.
+     * @param string $filePath  Optional file path to diff the file against.
      *                          If not specified, the original version of the
      *                          file will be used.
-     * @param boolean $colors   Print coloured output or not.
+     * @param bool   $colors    Print coloured output or not.
      *
      * @return string
      */
@@ -381,7 +400,7 @@ class Fixer
     /**
      * Stop recording actions for a changeset, and apply logged changes.
      *
-     * @return boolean
+     * @return bool
      */
     public function endChangeset()
     {

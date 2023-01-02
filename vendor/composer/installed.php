@@ -3,7 +3,7 @@
         'name' => 'milenmk/simple-password-manager',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '507968450b7817cb8a0cd88bc53d6b9a641e0db4',
+        'reference' => '7ad2091478d4a75656b5233e91e0bd811d7f623c',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,9 +13,27 @@
         'milenmk/simple-password-manager' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '507968450b7817cb8a0cd88bc53d6b9a641e0db4',
+            'reference' => '7ad2091478d4a75656b5233e91e0bd811d7f623c',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'paragonie/random_compat' => array(
+            'pretty_version' => 'v9.99.100',
+            'version' => '9.99.100.0',
+            'reference' => '996434e5492cb4c3edcb9168db6fbb1359ef965a',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../paragonie/random_compat',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'paragonie/sodium_compat' => array(
+            'pretty_version' => 'v1.19.0',
+            'version' => '1.19.0.0',
+            'reference' => 'cb15e403ecbe6a6cc515f855c310eb6b1872a933',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../paragonie/sodium_compat',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -57,3 +75,23 @@
         ),
     ),
 );
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: installed.php
+ *  Last Modified: 2.01.23 г., 10:24 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
+

@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: MemberVarSpacingSniff.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Verifies that class members are spaced correctly.
  *
@@ -19,14 +38,14 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
     /**
      * The number of blank lines between member vars.
      *
-     * @var integer
+     * @var int
      */
     public $spacing = 1;
 
     /**
      * The number of blank lines before the first member var.
      *
-     * @var integer
+     * @var int
      */
     public $spacingBeforeFirst = 1;
 
@@ -34,8 +53,8 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
     /**
      * Processes the function tokens within the class.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
-     * @param int                         $stackPtr  The position where the token was found.
+     * @param File $phpcsFile The file where this token was found.
+     * @param int  $stackPtr  The position where the token was found.
      *
      * @return void|int Optionally returns a stack pointer. The sniff will not be
      *                  called again on the current file until the returned stack
@@ -220,8 +239,8 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
     /**
      * Processes normal variables.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
-     * @param int                         $stackPtr  The position where the token was found.
+     * @param File $phpcsFile The file where this token was found.
+     * @param int  $stackPtr  The position where the token was found.
      *
      * @return void
      */
@@ -237,8 +256,8 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
     /**
      * Processes variables in double quoted strings.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
-     * @param int                         $stackPtr  The position where the token was found.
+     * @param File $phpcsFile The file where this token was found.
+     * @param int  $stackPtr  The position where the token was found.
      *
      * @return void
      */

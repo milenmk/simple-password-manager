@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: FunctionCallSignatureSniff.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Ensures function calls are formatted correctly.
  *
@@ -29,28 +48,28 @@ class FunctionCallSignatureSniff implements Sniff
     /**
      * The number of spaces code should be indented.
      *
-     * @var integer
+     * @var int
      */
     public $indent = 4;
 
     /**
      * If TRUE, multiple arguments can be defined per line in a multi-line call.
      *
-     * @var boolean
+     * @var bool
      */
     public $allowMultipleArguments = true;
 
     /**
      * How many spaces should follow the opening bracket.
      *
-     * @var integer
+     * @var int
      */
     public $requiredSpacesAfterOpen = 0;
 
     /**
      * How many spaces should precede the closing bracket.
      *
-     * @var integer
+     * @var int
      */
     public $requiredSpacesBeforeClose = 0;
 
@@ -77,8 +96,8 @@ class FunctionCallSignatureSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current token
+     * @param File $phpcsFile                        The file being scanned.
+     * @param int  $stackPtr                         The position of the current token
      *                                               in the stack passed in $tokens.
      *
      * @return void
@@ -169,12 +188,12 @@ class FunctionCallSignatureSniff implements Sniff
     /**
      * Determine if this is a multi-line function call.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
-     * @param int                         $stackPtr    The position of the current token
+     * @param File  $phpcsFile                         The file being scanned.
+     * @param int   $stackPtr                          The position of the current token
      *                                                 in the stack passed in $tokens.
-     * @param int                         $openBracket The position of the opening bracket
+     * @param int   $openBracket                       The position of the opening bracket
      *                                                 in the stack passed in $tokens.
-     * @param array                       $tokens      The stack of tokens that make up
+     * @param array $tokens                            The stack of tokens that make up
      *                                                 the file.
      *
      * @return bool
@@ -194,12 +213,12 @@ class FunctionCallSignatureSniff implements Sniff
     /**
      * Processes single-line calls.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
-     * @param int                         $stackPtr    The position of the current token
+     * @param File  $phpcsFile                         The file being scanned.
+     * @param int   $stackPtr                          The position of the current token
      *                                                 in the stack passed in $tokens.
-     * @param int                         $openBracket The position of the opening bracket
+     * @param int   $openBracket                       The position of the opening bracket
      *                                                 in the stack passed in $tokens.
-     * @param array                       $tokens      The stack of tokens that make up
+     * @param array $tokens                            The stack of tokens that make up
      *                                                 the file.
      *
      * @return void
@@ -324,12 +343,12 @@ class FunctionCallSignatureSniff implements Sniff
     /**
      * Processes multi-line calls.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
-     * @param int                         $stackPtr    The position of the current token
+     * @param File  $phpcsFile                         The file being scanned.
+     * @param int   $stackPtr                          The position of the current token
      *                                                 in the stack passed in $tokens.
-     * @param int                         $openBracket The position of the opening bracket
+     * @param int   $openBracket                       The position of the opening bracket
      *                                                 in the stack passed in $tokens.
-     * @param array                       $tokens      The stack of tokens that make up
+     * @param array $tokens                            The stack of tokens that make up
      *                                                 the file.
      *
      * @return void

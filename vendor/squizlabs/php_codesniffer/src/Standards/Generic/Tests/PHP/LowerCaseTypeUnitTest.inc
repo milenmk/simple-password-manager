@@ -1,4 +1,25 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: LowerCaseTypeUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
+use Package\Other_Class;
+
 $foo = (int) $bar;
 $foo = (integer) $bar;
 $foo = (bool) $bar;
@@ -48,11 +69,11 @@ $var = (binary)$string;
 
 function unionParamTypesA (bool|array| /* nullability operator not allowed in union */ NULL $var) {}
 
-function unionParamTypesB (\Package\ClassName | Int | \Package\Other_Class | FALSE $var) {}
+function unionParamTypesB (\Package\ClassName | Int | Other_Class | FALSE $var) {}
 
 function unionReturnTypesA ($var): bool|array| /* nullability operator not allowed in union */ NULL {}
 
-function unionReturnTypesB ($var): \Package\ClassName | Int | \Package\Other_Class | FALSE {}
+function unionReturnTypesB ($var): \Package\ClassName | Int | Other_Class | FALSE {}
 
 class TypedProperties
 {
@@ -86,6 +107,6 @@ function (): NeVeR {
     exit;
 };
 
-function intersectionParamTypes (\Package\ClassName&\Package\Other_Class $var) {}
+function intersectionParamTypes (\Package\ClassName&Other_Class $var) {}
 
-function intersectionReturnTypes ($var): \Package\ClassName&\Package\Other_Class {}
+function intersectionReturnTypes ($var): \Package\ClassName&Other_Class {}

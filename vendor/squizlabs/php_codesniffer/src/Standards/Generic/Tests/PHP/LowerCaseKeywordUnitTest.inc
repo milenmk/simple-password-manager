@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: LowerCaseKeywordUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 // A few keywords. Obviously not valid syntax.
 class Something extends SomethingElse implements Whatever {}
 abstract public private protected function whatever() {}
@@ -14,7 +33,7 @@ ForEach ($var As $var) { Exit; }
 If ($a AND $b OR $c XOR $d) { Die; } ElseIf( $var ) { } Else {}
 GOTO a;
 $b = function (Array $a) {};
-const PRIVATE;
+const PRIVATE
 HttpStatus::CONTINUE;
 $c = Function ($f) {
     Yield $f;

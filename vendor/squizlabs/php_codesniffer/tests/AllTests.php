@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: AllTests.php
+ *  Last Modified: 3.01.23 г., 0:07 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * A test class for running all PHP_CodeSniffer unit tests.
  *
@@ -8,6 +27,8 @@
  */
 
 namespace PHP_CodeSniffer\Tests;
+
+use PHPUnit\Runner\Version;
 
 if ($GLOBALS['PHP_CODESNIFFER_PEAR'] === false) {
     include_once 'Core/AllTests.php';
@@ -23,7 +44,7 @@ if ($GLOBALS['PHP_CODESNIFFER_PEAR'] === false) {
 // two different suite objects.
 $phpunit7 = false;
 if (class_exists('\PHPUnit\Runner\Version') === true) {
-    $version = \PHPUnit\Runner\Version::id();
+    $version = Version::id();
     if ($version[0] === '7') {
         $phpunit7 = true;
     }
@@ -38,7 +59,6 @@ if ($phpunit7 === true) {
 class PHP_CodeSniffer_AllTests
 {
 
-
     /**
      * Add all PHP_CodeSniffer test suites into a single test suite.
      *
@@ -46,8 +66,9 @@ class PHP_CodeSniffer_AllTests
      */
     public static function suite()
     {
+
         $GLOBALS['PHP_CODESNIFFER_STANDARD_DIRS'] = [];
-        $GLOBALS['PHP_CODESNIFFER_TEST_DIRS']     = [];
+        $GLOBALS['PHP_CODESNIFFER_TEST_DIRS'] = [];
 
         // Use a special PHP_CodeSniffer test suite so that we can
         // unset our autoload function after the run.
@@ -57,8 +78,6 @@ class PHP_CodeSniffer_AllTests
         $suite->addTest(Standards\AllSniffs::suite());
 
         return $suite;
-
     }//end suite()
-
 
 }//end class

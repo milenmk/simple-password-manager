@@ -4,11 +4,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: index.php
- *  Last Modified: 2.01.23 г., 1:27 ч.
+ *  Last Modified: 2.01.23 г., 13:34 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
- * @version       2.1.1
+ * @version       2.2.0
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+
@@ -33,7 +33,8 @@ $error = '';
 
 try {
     include_once('../includes/main.inc.php');
-} catch (Exception $e) {
+}
+catch (Exception $e) {
     $error = $e->getMessage();
     pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
     print 'File "includes/main.inc.php!"not found';

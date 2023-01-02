@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: InstalledVersions.php
+ *  Last Modified: 29.12.22 г., 19:42 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * This file is part of Composer.
  *
@@ -14,6 +32,9 @@ namespace Composer;
 
 use Composer\Autoload\ClassLoader;
 use Composer\Semver\VersionParser;
+use OutOfBoundsException;
+use function call_user_func_array;
+use function count;
 
 /**
  * This class is copied in every Composer installed project and available to all
@@ -56,11 +77,11 @@ class InstalledVersions
             $packages[] = array_keys($installed['versions']);
         }
 
-        if (1 === \count($packages)) {
+        if (1 === count($packages)) {
             return $packages[0];
         }
 
-        return array_keys(array_flip(\call_user_func_array('array_merge', $packages)));
+        return array_keys(array_flip(call_user_func_array('array_merge', $packages)));
     }
 
     /**
@@ -158,7 +179,7 @@ class InstalledVersions
             return implode(' || ', $ranges);
         }
 
-        throw new \OutOfBoundsException('Package "' . $packageName . '" is not installed');
+        throw new OutOfBoundsException('Package "' . $packageName . '" is not installed');
     }
 
     /**
@@ -179,7 +200,7 @@ class InstalledVersions
             return $installed['versions'][$packageName]['version'];
         }
 
-        throw new \OutOfBoundsException('Package "' . $packageName . '" is not installed');
+        throw new OutOfBoundsException('Package "' . $packageName . '" is not installed');
     }
 
     /**
@@ -200,7 +221,7 @@ class InstalledVersions
             return $installed['versions'][$packageName]['pretty_version'];
         }
 
-        throw new \OutOfBoundsException('Package "' . $packageName . '" is not installed');
+        throw new OutOfBoundsException('Package "' . $packageName . '" is not installed');
     }
 
     /**
@@ -221,7 +242,7 @@ class InstalledVersions
             return $installed['versions'][$packageName]['reference'];
         }
 
-        throw new \OutOfBoundsException('Package "' . $packageName . '" is not installed');
+        throw new OutOfBoundsException('Package "' . $packageName . '" is not installed');
     }
 
     /**
@@ -238,7 +259,7 @@ class InstalledVersions
             return isset($installed['versions'][$packageName]['install_path']) ? $installed['versions'][$packageName]['install_path'] : null;
         }
 
-        throw new \OutOfBoundsException('Package "' . $packageName . '" is not installed');
+        throw new OutOfBoundsException('Package "' . $packageName . '" is not installed');
     }
 
     /**

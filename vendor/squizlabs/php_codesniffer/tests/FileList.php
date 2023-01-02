@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: FileList.php
+ *  Last Modified: 3.01.23 г., 0:07 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Class to retrieve a filtered file list.
  *
@@ -9,23 +28,26 @@
 
 namespace PHP_CodeSniffer\Tests;
 
+use DirectoryIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RegexIterator;
+
 class FileList
 {
 
+    /**
+     * Recursive directory iterator.
+     *
+     * @var DirectoryIterator
+     */
+    public $fileIterator;
     /**
      * The path to the project root directory.
      *
      * @var string
      */
     protected $rootPath;
-
-    /**
-     * Recursive directory iterator.
-     *
-     * @var \DirectoryIterator
-     */
-    public $fileIterator;
-
     /**
      * Base regex to use if no filter regex is provided.
      *
@@ -40,7 +62,6 @@ class FileList
      */
     private $baseRegex = '`^%s(?!\.git/)(?!(.*/)?\.+$)(?!.*\.(bak|orig)).*$`Dix';
 
-
     /**
      * Constructor.
      *
@@ -48,30 +69,29 @@ class FileList
      * @param string $rootPath  Path to the project root.
      * @param string $filter    PCRE regular expression to filter the file list with.
      */
-    public function __construct($directory, $rootPath='', $filter='')
+    public function __construct($directory, $rootPath = '', $filter = '')
     {
+
         $this->rootPath = $rootPath;
 
-        $directory = new \RecursiveDirectoryIterator(
+        $directory = new RecursiveDirectoryIterator(
             $directory,
-            \RecursiveDirectoryIterator::UNIX_PATHS
+            RecursiveDirectoryIterator::UNIX_PATHS
         );
-        $flattened = new \RecursiveIteratorIterator(
+        $flattened = new RecursiveIteratorIterator(
             $directory,
-            \RecursiveIteratorIterator::LEAVES_ONLY,
-            \RecursiveIteratorIterator::CATCH_GET_CHILD
+            RecursiveIteratorIterator::LEAVES_ONLY,
+            RecursiveIteratorIterator::CATCH_GET_CHILD
         );
 
         if ($filter === '') {
             $filter = sprintf($this->baseRegex, preg_quote($this->rootPath));
         }
 
-        $this->fileIterator = new \RegexIterator($flattened, $filter);
+        $this->fileIterator = new RegexIterator($flattened, $filter);
 
         return $this;
-
     }//end __construct()
-
 
     /**
      * Retrieve the filtered file list as an array.
@@ -80,6 +100,7 @@ class FileList
      */
     public function getList()
     {
+
         $fileList = [];
 
         foreach ($this->fileIterator as $file) {
@@ -87,8 +108,6 @@ class FileList
         }
 
         return $fileList;
-
     }//end getList()
-
 
 }//end class

@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: FunctionCommentUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 class PHP_CodeSniffer_File
 {
 
@@ -9,27 +28,24 @@ class PHP_CodeSniffer_File
      *
      * @param int $stackPtr   The position in @ @unknown the stack of the token
      *                        that opened the scope
-     * @param int $detph    How many scope levels down we are.
-     * @param int    $index    The index
+     * @param int $detph      How many scope levels down we are.
+     * @param int $index      The index
+     *
      * @return
      * @throws
      */
-    private function _functionCall($stackPtr, $depth=1, $index)
+    private function _functionCall($stackPtr, $depth = 1, $index)
     {
-        return $stackPtr;
 
-    }//end _functionCall()
+        return $stackPtr;
+    }                                       //end _functionCall()
 
     //
     // Sample function comment
     //
     //
     //
-    public function invalidCommentStyle()
-    {
-
-    }//end invalidCommentStyle()
-
+    public function invalidCommentStyle() {}//end invalidCommentStyle()
 
     /**
      *
@@ -42,21 +58,14 @@ class PHP_CodeSniffer_File
      *
      * @return void
      */
-    public function extraDescriptionNewlines()
-    {
-
-    }//end extraDescriptionNewlines()
-
+    public function extraDescriptionNewlines() {}//end extraDescriptionNewlines()
 
     /**
      * A simple function comment
+     *
      * @return void
      */
-    public function missingNewlinesBeforeTags()
-    {
-
-    }//end missingNewlinesBeforeTags()
-
+    public function missingNewlinesBeforeTags() {}//end missingNewlinesBeforeTags()
 
     /**
      * Access tag should not be treated as a long description
@@ -64,87 +73,73 @@ class PHP_CodeSniffer_File
      * @access public
      * @return void
      */
-    public function accessTag()
-    {
-
-    }//end accessTag()
+    public function accessTag() {}//end accessTag()
 
     /**
      * Constructor
      *
      * No return tag
      */
-    function PHP_CodeSniffer_File()
+    public function PHP_CodeSniffer_File()
     {
+
         return;
     }
-
 
     /**
      * Destructor
      *
      * No return tag too
      */
-    function _PHP_CodeSniffer_File()
+    public function _PHP_CodeSniffer_File()
     {
+
         return;
     }
-
 
     /**
      * Destructor PHP5
      */
-    function __destruct()
+    public function __destruct()
     {
+
         return;
     }
 
-
-    function missingComment()
+    public function missingComment()
     {
+
         return;
     }
-
 
     /**
      * no return tag
      *
      */
-    public function noReturn($one)
-    {
-
-    }//end noReturn()
-
+    public function noReturn($one) {}//end noReturn()
 
     /**
      * Param not immediate
      *
-     * @return
-     * @param   int   $threeSpaces
-     * @param int     $superfluous
+     * @param int $threeSpaces
+     * @param int $superfluous
      * @param missing
      * @param
+     *
+     * @return
      */
-    public function missingDescription($threeSpaces)
-    {
-
-    }//end missingDescription()
-
+    public function missingDescription($threeSpaces) {}//end missingDescription()
 
     /**
      * Param not immediate
      *
-     * @param int      $one   comment
-     * @param int      $two   comment
-     * @param string   $three comment
+     * @param int    $one   comment
+     * @param int    $two   comment
+     * @param string $three comment
      *
      * @return void
      */
-    public function oneSpaceAfterLongestVar($one, $two, $three)
-    {
-
-    }//end oneSpaceAfterLongestVar()
-
+    public function oneSpaceAfterLongestVar($one, $two, $three) {}//end oneSpaceAfterLongestVar()
 
 }//end class
 

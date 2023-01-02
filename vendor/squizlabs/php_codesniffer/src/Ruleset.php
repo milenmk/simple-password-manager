@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: Ruleset.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Stores the rules used to check and fix files.
  *
@@ -12,7 +31,12 @@
 namespace PHP_CodeSniffer;
 
 use PHP_CodeSniffer\Exceptions\RuntimeException;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use ReflectionClass;
+use SimpleXMLElement;
 
 class Ruleset
 {
@@ -67,7 +91,7 @@ class Ruleset
      * The key is the fully qualified name of the sniff class
      * and the value is the sniff object.
      *
-     * @var array<string, \PHP_CodeSniffer\Sniffs\Sniff>
+     * @var array<string, Sniff>
      */
     public $sniffs = [];
 
@@ -87,7 +111,7 @@ class Ruleset
      * The key is the token name being listened for and the value
      * is the sniff object.
      *
-     * @var array<int, \PHP_CodeSniffer\Sniffs\Sniff>
+     * @var array<int, Sniff>
      */
     public $tokenListeners = [];
 
@@ -111,7 +135,7 @@ class Ruleset
     /**
      * The config data for the run.
      *
-     * @var \PHP_CodeSniffer\Config
+     * @var Config
      */
     private $config = null;
 
@@ -119,10 +143,10 @@ class Ruleset
     /**
      * Initialise the ruleset that the run will use.
      *
-     * @param \PHP_CodeSniffer\Config $config The config data for the run.
+     * @param Config $config The config data for the run.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If no sniffs were registered.
+     * @throws RuntimeException If no sniffs were registered.
      */
     public function __construct(Config $config)
     {
@@ -305,7 +329,7 @@ class Ruleset
      *                            is only used for debug output.
      *
      * @return string[]
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException - If the ruleset path is invalid.
+     * @throws RuntimeException - If the ruleset path is invalid.
      *                                                      - If a specified autoload file could not be found.
      */
     public function processRuleset($rulesetPath, $depth=0)
@@ -617,8 +641,8 @@ class Ruleset
     {
         $sniffs = [];
 
-        $rdi = new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::FOLLOW_SYMLINKS);
-        $di  = new \RecursiveIteratorIterator($rdi, 0, \RecursiveIteratorIterator::CATCH_GET_CHILD);
+        $rdi = new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::FOLLOW_SYMLINKS);
+        $di  = new RecursiveIteratorIterator($rdi, 0, RecursiveIteratorIterator::CATCH_GET_CHILD);
 
         $dirLen = strlen($directory);
 
@@ -674,7 +698,7 @@ class Ruleset
      *                           is only used for debug output.
      *
      * @return array
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the reference is invalid.
+     * @throws RuntimeException If the reference is invalid.
      */
     private function expandRulesetReference($ref, $rulesetDir, $depth=0)
     {
@@ -850,13 +874,13 @@ class Ruleset
     /**
      * Processes a rule from a ruleset XML file, overriding built-in defaults.
      *
-     * @param \SimpleXMLElement $rule      The rule object from a ruleset XML file.
+     * @param SimpleXMLElement $rule      The rule object from a ruleset XML file.
      * @param string[]          $newSniffs An array of sniffs that got included by this rule.
      * @param int               $depth     How many nested processing steps we are in.
      *                                     This is only used for debug output.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If rule settings are invalid.
+     * @throws RuntimeException If rule settings are invalid.
      */
     private function processRule($rule, $newSniffs, $depth=0)
     {
@@ -1003,7 +1027,7 @@ class Ruleset
                             $value      = (string) $prop['value'];
                             $printValue = $value;
                             foreach (explode(',', $value) as $val) {
-                                list($k, $v) = explode('=>', $val.'=>');
+                                [$k, $v] = explode('=>', $val.'=>');
                                 if ($v !== '') {
                                     $values[trim($k)] = trim($v);
                                 } else {
@@ -1096,7 +1120,7 @@ class Ruleset
     /**
      * Determine if an element should be processed or ignored.
      *
-     * @param \SimpleXMLElement $element An object from a ruleset XML file.
+     * @param SimpleXMLElement $element An object from a ruleset XML file.
      *
      * @return bool
      */
@@ -1176,7 +1200,7 @@ class Ruleset
             }
 
             // Skip abstract classes.
-            $reflection = new \ReflectionClass($className);
+            $reflection = new ReflectionClass($className);
             if ($reflection->isAbstract() === true) {
                 continue;
             }
@@ -1197,7 +1221,7 @@ class Ruleset
      * Populates the array of PHP_CodeSniffer_Sniff objects for this file.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If sniff registration fails.
+     * @throws RuntimeException If sniff registration fails.
      */
     public function populateTokenListeners()
     {
@@ -1311,7 +1335,7 @@ class Ruleset
             $values = [];
             if ($value !== null) {
                 foreach (explode(',', $value) as $val) {
-                    list($k, $v) = explode('=>', $val.'=>');
+                    [$k, $v] = explode('=>', $val.'=>');
                     if ($v !== '') {
                         $values[trim($k)] = trim($v);
                     } else {

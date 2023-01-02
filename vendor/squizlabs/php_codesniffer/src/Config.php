@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: Config.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Stores the configuration used to run PHPCS and PHPCBF.
  *
@@ -12,6 +31,8 @@
 
 namespace PHP_CodeSniffer;
 
+use Exception;
+use Phar;
 use PHP_CodeSniffer\Exceptions\DeepExitException;
 use PHP_CodeSniffer\Exceptions\RuntimeException;
 use PHP_CodeSniffer\Util\Common;
@@ -80,14 +101,14 @@ class Config
      *
      * @var string
      */
-    const VERSION = '3.7.1';
+    public const VERSION = '3.7.1';
 
     /**
      * Package stability; either stable, beta or alpha.
      *
      * @var string
      */
-    const STABILITY = 'stable';
+    public const STABILITY = 'stable';
 
     /**
      * An array of settings that PHPCS and PHPCBF accept.
@@ -146,7 +167,7 @@ class Config
      * will be ignored and execution will continue. These values will be stored in
      * $this->unknown.
      *
-     * @var boolean
+     * @var bool
      */
     public $dieOnUnknownArg;
 
@@ -192,7 +213,7 @@ class Config
      * @param string $name The name of the property.
      *
      * @return mixed
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the setting name is invalid.
+     * @throws RuntimeException If the setting name is invalid.
      */
     public function __get($name)
     {
@@ -212,7 +233,7 @@ class Config
      * @param mixed  $value The value of the property.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the setting name is invalid.
+     * @throws RuntimeException If the setting name is invalid.
      */
     public function __set($name, $value)
     {
@@ -591,7 +612,7 @@ class Config
      * @param int    $pos The position of the argument on the command line.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     * @throws DeepExitException
      */
     public function processShortArgument($arg, $pos)
     {
@@ -696,7 +717,7 @@ class Config
      * @param int    $pos The position of the argument on the command line.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     * @throws DeepExitException
      */
     public function processLongArgument($arg, $pos)
     {
@@ -768,7 +789,7 @@ class Config
 
             try {
                 $this->setConfigData($key, $value);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 throw new DeepExitException($e->getMessage().PHP_EOL, 3);
             }
 
@@ -796,7 +817,7 @@ class Config
             } else {
                 try {
                     $this->setConfigData($key, null);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     throw new DeepExitException($e->getMessage().PHP_EOL, 3);
                 }
 
@@ -1102,7 +1123,7 @@ class Config
                     $slash = strpos($ext, '/');
                     if ($slash !== false) {
                         // They specified the tokenizer too.
-                        list($ext, $tokenizer) = explode('/', $ext);
+                        [$ext, $tokenizer] = explode('/', $ext);
                         $newExtensions[$ext]   = strtoupper($tokenizer);
                         continue;
                     }
@@ -1234,7 +1255,7 @@ class Config
      * @param int    $pos The position of the argument on the command line.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     * @throws DeepExitException
      */
     public function processUnknownArgument($arg, $pos)
     {
@@ -1260,7 +1281,7 @@ class Config
      * @param string $path The path to the file to add.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     * @throws DeepExitException
      */
     public function processFilePath($path)
     {
@@ -1508,7 +1529,7 @@ class Config
             return $data;
         }
 
-        if ($name === "php") {
+        if ($name === 'php') {
             // For php, we know the executable path. There's no need to look it up.
             return PHP_BINARY;
         }
@@ -1541,13 +1562,13 @@ class Config
      * @param string|null $value The value to set. If null, the config
      *                           entry is deleted, reverting it to the
      *                           default value.
-     * @param boolean     $temp  Set this config data temporarily for this
+     * @param bool        $temp  Set this config data temporarily for this
      *                           script run. This will not write the config
      *                           data to the config file.
      *
      * @return bool
-     * @see    getConfigData()
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException If the config file can not be written.
+     * @throws DeepExitException If the config file can not be written.
+     *@see    getConfigData()
      */
     public static function setConfigData($key, $value, $temp=false)
     {
@@ -1560,7 +1581,7 @@ class Config
         if ($temp === false) {
             $path = '';
             if (is_callable('\Phar::running') === true) {
-                $path = \Phar::running(false);
+                $path = Phar::running(false);
             }
 
             if ($path !== '') {
@@ -1627,8 +1648,8 @@ class Config
      * Get all config data.
      *
      * @return array<string, string>
-     * @see    getConfigData()
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException If the config file could not be read.
+     * @throws DeepExitException If the config file could not be read.
+     *@see    getConfigData()
      */
     public static function getAllConfigData()
     {
@@ -1638,7 +1659,7 @@ class Config
 
         $path = '';
         if (is_callable('\Phar::running') === true) {
-            $path = \Phar::running(false);
+            $path = Phar::running(false);
         }
 
         if ($path !== '') {

@@ -1,5 +1,27 @@
 <?php
 
+use MyExample\MyAttribute;
+use Package\MyClassB;
+use Package\MyClassC;
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: GetMethodParametersTest.inc
+ *  Last Modified: 3.01.23 г., 0:06 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /* testPassByReference */
 function passByReference(&$var) {}
 
@@ -18,13 +40,16 @@ function defaultValues($var1=1, $var2='value') {}
 /* testTypeHint */
 function typeHint(foo $var1, bar $var2) {}
 
-class MyClass {
+class MyClass
+{
+
     /* testSelfTypeHint */
-    function typeSelfHint(self $var) {}
+    public function typeSelfHint(self $var) {}
+
 }
 
 /* testNullableTypeHint */
-function nullableTypeHint(?int $var1, ?\bar $var2) {}
+function nullableTypeHint(?int $var1, ?bar $var2) {}
 
 /* testBitwiseAndConstantExpressionDefaultValue */
 function myFunction($a = 10 & 20) {}
@@ -52,7 +77,7 @@ function globalFunctionWithSpreadAndReference(float|null &$paramA, string|int ..
 $fn = fn(int|float $var = CONSTANT_A | CONSTANT_B) => $var;
 
 /* testPHP8UnionTypesTwoClasses */
-function unionTypesTwoClasses(MyClassA|\Package\MyClassB $var) {}
+function unionTypesTwoClasses(MyClassA|MyClassB $var) {}
 
 /* testPHP8UnionTypesAllBaseTypes */
 function unionTypesAllBaseTypes(array|bool|callable|int|float|null|object|string $var) {}
@@ -135,14 +160,14 @@ function commentsInParams(
 /* testParameterAttributesInFunctionDeclaration */
 class ParametersWithAttributes(
     public function __construct(
-        #[\MyExample\MyAttribute] private string $constructorPropPromTypedParamSingleAttribute,
+        #[MyAttribute] private string                $constructorPropPromTypedParamSingleAttribute,
         #[MyAttr([1, 2])]
         Type|false
-        $typedParamSingleAttribute,
+                                                     $typedParamSingleAttribute,
         #[MyAttribute(1234), MyAttribute(5678)] ?int $nullableTypedParamMultiAttribute,
-        #[WithoutArgument] #[SingleArgument(0)] $nonTypedParamTwoAttributes,
-        #[MyAttribute(array("key" => "value"))]
-        &...$otherParam,
+        #[WithoutArgument] #[SingleArgument(0)]      $nonTypedParamTwoAttributes,
+        #[MyAttribute(array('key' => 'value'))]
+                                                     &...$otherParam,
     ) {}
 }
 
@@ -153,7 +178,7 @@ function intersectionTypes(Foo&Bar $obj1, Boo&Bar $obj2) {}
 function globalFunctionWithSpreadAndReference(Boo&Bar &$paramA, Foo&Bar ...$paramB) {}
 
 /* testPHP81MoreIntersectionTypes */
-function moreIntersectionTypes(MyClassA&\Package\MyClassB&\Package\MyClassC $var) {}
+function moreIntersectionTypes(MyClassA&MyClassB&MyClassC $var) {}
 
 /* testPHP81IllegalIntersectionTypes */
 // Intentional fatal error - simple types are not allowed with intersection types, but that's not the concern of the method.

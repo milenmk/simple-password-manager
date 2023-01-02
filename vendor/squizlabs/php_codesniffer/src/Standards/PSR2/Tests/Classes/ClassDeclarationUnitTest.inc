@@ -1,38 +1,60 @@
 <?php
-class ClassName extends ParentClass implements \ArrayAccess,  \Countable
+
+use Foo\Bar\Object;
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: ClassDeclarationUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
+class ClassName extends ParentClass implements ArrayAccess, Countable
 {
     // constants, properties, methods
 }
 
-class ClassName extends ParentClass,AnotherParentClass implements \ArrayAccess,\Countable {
+class ClassName extends ParentClass,AnotherParentClass implements ArrayAccess,Countable {
     // constants, properties, methods
 }
 
 class ClassName
 extends ParentClass
-implements \ArrayAccess, \Countable
+implements ArrayAccess, Countable
 {
     // constants, properties, methods
     
 }
 
 class ClassName extends  ParentClass  implements
-   \ArrayAccess,
+    ArrayAccess,
         \Foo\Bar\Countable,
-    \Serializable {
+    Serializable
+{
     // constants, properties, methods
 
 }
 
-class ClassName extends ParentClass  implements \ArrayAccess,
-    \Countable,
-    \Serializable
+class ClassName extends ParentClass  implements ArrayAccess,
+    Countable,
+    Serializable
 {
     // constants, properties, methods
 }
 
 class ClassName extends ParentClass  implements
-    \ArrayAccess, \Countable, \Foo\Serializable
+    ArrayAccess, Countable, \Foo\Serializable
 {
     // constants, properties, methods
 }
@@ -40,28 +62,28 @@ class ClassName extends ParentClass  implements
 // Different indent
 if ($foo) {
     class ClassName extends ParentClass implements
-        \ArrayAccess,
-    \Countable,
-            \Serializable
+        ArrayAccess,
+        Countable,
+        Serializable
     {
         // constants, properties, methods
     }
 }
 
-class Foo extends \Foo\Bar\Object
+class Foo extends Object
 {
 }
 
 class ClassName extends ParentClass implements
     \Foo\Bar\Countable,
-    \Serializable
+    Serializable
 {
     // constants, properties, methods
 }
 
 class ClassName extends ParentClass implements
     \Foo\Bar\Countable ,
-    \Serializable
+    Serializable
 {
     // constants, properties, methods
 }
@@ -127,8 +149,8 @@ class Test
 
 class ClassName implements
 
-    \ArrayAccess,\Countable,
-\Serializable
+    ArrayAccess, Countable,
+    Serializable
 {
     // constants, properties, methods
 }

@@ -4,11 +4,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: PassManDb.php
- *  Last Modified: 2.01.23 г., 1:27 ч.
+ *  Last Modified: 3.01.23 г., 0:00 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
- * @version       2.1.1
+ * @version       2.2.0
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+
@@ -114,9 +114,13 @@ class PassManDb
         // Note that having "static" property for "$forcecharset" and "$forcecollate" will make error here in strict mode, so they are not static
         if (empty($config->db_character_set)) {
             $this->forcecharset = 'utf8';
+        } else {
+            $this->forcecharset = $config->db_character_set;
         }
         if (!empty($config->db_collation)) {
             $this->forcecollate = $config->db_collation;
+        } else {
+            $this->forcecollate = 'utf8_general_ci';
         }
 
         $this->database_user = !$user ? $config->dbuser : $user;
@@ -130,17 +134,30 @@ class PassManDb
             $this->connected = false;
             $this->ok = false;
             $this->error = $langs->trans('ErrorWrongHostParameter');
-            pm_syslog(get_class($this) . ': Connect error, wrong host parameters', PM_LOG_ERR);
+            if (PM_DISABLE_SYSLOG == 0) {
+                pm_syslog(get_class($this) . ': Connect error, wrong host parameters', PM_LOG_ERR);
+            }
+
+            return -1;
         }
 
         // Try server connection
         $this->db = $this->connect($this->database_host, $this->database_user, $this->database_password, '', $this->database_port);
 
-        if ($this->db->errorCode()) {
+        if ($this->error) {
             $this->connected = false;
             $this->ok = false;
-            $this->error = $this->db->errorCode();
-            pm_syslog(get_class($this) . ': Connect error: ' . $this->error, PM_LOG_ERR);
+            if (isset($this->db) && $this->db->errorCode()) {
+                $this->error = $this->db->errorInfo();
+            } elseif (isset($this->db) && $this->db->errorCode()) {
+                $this->error = $this->db->errorCode();
+            }
+
+            if (PM_DISABLE_SYSLOG == 0) {
+                pm_syslog(get_class($this) . ': Connect error: ' . $this->error, PM_LOG_ERR);
+            }
+
+            return -2;
         } else {
             $this->connected = true;
             $this->ok = true;
@@ -149,21 +166,31 @@ class PassManDb
         }
 
         // If server connection is ok, we try to connect to the database
-        if ($this->connected && $name) {
+        if ($name) {
             if ($this->selectDb($this->database_host, $this->database_user, $this->database_password, $name, $this->forcecharset, $this->forcecollate, $this->database_port)) {
                 $this->database_selected = true;
                 $this->database_name = $name;
                 $this->ok = true;
                 $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                return 2;
             } else {
                 $this->database_selected = false;
                 $this->database_name = '';
                 $this->ok = false;
-                $this->error = $this->db->errorCode();
-                $this->errors[] = $this->error;
-                $this->errors[] = $this->db->errorInfo();
-                pm_syslog(get_class($this) . ': Select_db error ' . $this->error, PM_LOG_ERR);
+                if (isset($this->db) && $this->db->errorCode()) {
+                    $this->error = $this->db->errorInfo();
+                } elseif (isset($this->db) && $this->db->errorCode()) {
+                    $this->error = $this->db->errorCode();
+                }
+                if (PM_DISABLE_SYSLOG == 0) {
+                    pm_syslog(get_class($this) . ': Select_db error ' . $this->error, PM_LOG_ERR);
+                }
+
+                return -3;
             }
+        } else {
+            return 1;
         }
     }
 
@@ -185,11 +212,12 @@ class PassManDb
             $this->db = new PDO("mysql:host=$host;dbname=$name;port=$port", $login, $passwd);
 
             return $this->db;
-        } catch (PDOException $e) {
+        }
+        catch (PDOException $e) {
             $this->error = 'Connection failed: ' . $e->getMessage();
-            pm_syslog('ERROR: ' . $this->error . ' for method ' . __METHOD__ . ' in class ' . get_class($this), PM_LOG_ERR);
-
-            return -1;
+            if (PM_DISABLE_SYSLOG == 0) {
+                pm_syslog('ERROR: ' . $this->error . ' for method ' . __METHOD__ . ' in class ' . get_class($this), PM_LOG_ERR);
+            }
         }
     }
 
@@ -210,7 +238,9 @@ class PassManDb
     public function selectDb($host, $login, $passwd, $name, $charset, $collation, $port = 0)
     {
 
-        pm_syslog(get_class($this) . '::select_db database=' . $name, PM_LOG_INFO);
+        if (PM_DISABLE_SYSLOG == 0) {
+            pm_syslog(get_class($this) . '::select_db database=' . $name, PM_LOG_INFO);
+        }
 
         try {
             $this->db = new PDO("mysql:host=$host;dbname=$name;port=$port;charset=$charset;collation=$collation", $login, $passwd);
@@ -218,9 +248,12 @@ class PassManDb
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             return $this->db;
-        } catch (PDOException $e) {
+        }
+        catch (PDOException $e) {
             $this->error = 'Connection failed: ' . $e->getMessage();
-            pm_syslog('ERROR: ' . $this->error . ' for method construct in class ' . get_class($this), PM_LOG_ERR);
+            if (PM_DISABLE_SYSLOG == 0) {
+                pm_syslog('ERROR: ' . $this->error . ' for method construct in class ' . get_class($this), PM_LOG_ERR);
+            }
 
             return -1;
         }
@@ -278,7 +311,8 @@ class PassManDb
 
                 return -1;
             }
-        } catch (PDOException $e) {
+        }
+        catch (PDOException $e) {
             $this->db->rollBack();
 
             $this->error = $e->getMessage();
@@ -331,7 +365,8 @@ class PassManDb
             $this->db->commit();
 
             return 1;
-        } catch (PDOException $e) {
+        }
+        catch (PDOException $e) {
             $this->db->rollBack();
             $this->error = $e->getMessage();
 
@@ -372,7 +407,8 @@ class PassManDb
             $this->db->commit();
 
             return 1;
-        } catch (PDOException $e) {
+        }
+        catch (PDOException $e) {
             $this->db->rollBack();
             $this->error = $e->getMessage();
 
@@ -417,7 +453,8 @@ class PassManDb
         $parentClassTable = '',
         $parentClassFields = '',
         $childClassField = ''
-    ) {
+    )
+    {
 
         $sql = 'Select t.rowid as id,';
 
@@ -504,7 +541,8 @@ class PassManDb
             $query->execute();
 
             return $query->fetchAll();
-        } catch (PDOException $e) {
+        }
+        catch (PDOException $e) {
             $this->db->rollBack();
 
             $this->error = $e->getMessage();
@@ -552,7 +590,8 @@ class PassManDb
         $parentClassTable = '',
         $parentClassFields = '',
         $childClassField = ''
-    ) {
+    )
+    {
 
         $sql = 'Select t.rowid as id,';
         foreach ($array_of_fields as $key) {
@@ -631,7 +670,8 @@ class PassManDb
             $query->execute();
 
             return $query->fetch();
-        } catch (PDOException $e) {
+        }
+        catch (PDOException $e) {
             $this->db->rollBack();
 
             $this->error = $e->getMessage();
@@ -665,4 +705,5 @@ class PassManDb
 
         return false;
     }
+
 }

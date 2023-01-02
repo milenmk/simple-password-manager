@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: ArbitraryParenthesesSpacingUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /*
  * Make sure the sniff does not act on structures it shouldn't act on.
  * All parentheses have extra spacing around it to test this properly.
@@ -78,7 +96,7 @@ $a = ( null !== $extra ); // Bad x 2.
 
 $sx = $vert ? ($w - 1) : 0;
 
-$this->is_overloaded = ( ( ini_get("mbstring.func_overload") & 2 ) != 0 ) && function_exists('mb_substr'); // Bad x 4.
+$this->is_overloaded = ((ini_get('mbstring.func_overload') & 2 ) != 0 ) && function_exists('mb_substr'); // Bad x 4.
 
 $image->flip( ($operation->axis & 1) != 0, ($operation->axis & 2) != 0 );
 
@@ -87,7 +105,7 @@ if ( $success && ('nothumb' == $target || 'all' == $target) ) {}
 $directory = ('/' == $file[ strlen($file)-1 ]);
 
 // phpcs:set Generic.WhiteSpace.ArbitraryParenthesesSpacing spacing 1
-if ((null !== $extra) && ($row->extra !== $extra)) {} // Bad x 4.
+if ((null !== $extra) && ($row->extra !== $extra)) {}                                                    // Bad x 4.
 
 if (( null !== $extra ) && ( $row->extra !== $extra )) {}
 
@@ -106,7 +124,7 @@ $a = ( null !== $extra );
 
 $sx = $vert ? ($w - 1) : 0; // Bad x 2.
 
-$this->is_overloaded = ((ini_get("mbstring.func_overload") & 2) != 0) && function_exists('mb_substr'); // Bad x 4.
+$this->is_overloaded = ((ini_get('mbstring.func_overload') & 2) != 0) && function_exists('mb_substr'); // Bad x 4.
 
 $image->flip( ($operation->axis & 1) != 0, ($operation->axis & 2) != 0 ); // Bad x 4.
 

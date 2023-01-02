@@ -1,20 +1,35 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: ScopeClosingBraceUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 use some\foo\{ClassA, ClassB, ClassC as C};
+
 class Test
 {
-    public function __construct()
-    {
-    }
 
-    function test1()
-    {
-     }
+    public function __construct() {}
 
-    function test2() {}
+    public function test1() {}
 
-    private function _test3()
-    {
-    }
+    public function test2() {}
+
+    private function _test3() {}
 
 }
 

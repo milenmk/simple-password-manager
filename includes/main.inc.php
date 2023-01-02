@@ -4,11 +4,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: main.inc.php
- *  Last Modified: 2.01.23 г., 1:27 ч.
+ *  Last Modified: 3.01.23 г., 0:07 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
- * @version       2.1.1
+ * @version       2.2.0
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+
@@ -35,18 +35,18 @@ use Twig\TwigFunction;
 
 try {
     include_once('../vendor/autoload.php');
-} catch (Exception $e) {
+}
+catch (Exception $e) {
     $error = $e->getMessage();
     pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
     print 'File "vendor/autoload.php!"not found';
     die();
 }
 
-$config = new Config();
-
-if ($config < 1) {
-    pm_syslog('ERROR: CANNOT CONNECT TO DATABASE SERVER', LOG_ERR);
-    die();
+if (file_exists('../conf/conf.php')) {
+    $config = new Config();
+} else {
+    header('Location: install/index.php');
 }
 
 //Define some global constants from conf file
@@ -55,6 +55,7 @@ define('PM_MAIN_APP_ROOT', $config->main_app_root);
 define('PM_MAIN_DOCUMENT_ROOT', PM_MAIN_APP_ROOT . '/docs');
 define('PM_MAIN_APPLICATION_TITLE', $config->main_application_title);
 define('PM_MAIN_DB_PREFIX', $config->dbprefix);
+define('PM_DISABLE_SYSLOG', 0);
 
 //Initiate translations
 $langs = new Translator('');
@@ -62,7 +63,8 @@ $langs = new Translator('');
 //Load functions
 try {
     include_once('../core/lib/functions.lib.php');
-} catch (Exception $e) {
+}
+catch (Exception $e) {
     $error = $e->getMessage();
     pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
     print 'File "core/lib/functions.lib.php" not found!';
@@ -93,7 +95,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         $user->username = $res['username'];
         $user->theme = $res['theme'];
         $user->language = $res['language'];
-    } catch (Exception $e) {
+    }
+    catch (Exception $e) {
         $error = $e->getMessage();
         pm_syslog('Error trying to fetch user with ID ' . $_SESSION['id'] . ' with error ' . $error, LOG_ERR);
     }
@@ -155,7 +158,8 @@ $open_ssl = new TwigFunction(
 
         try {
             require('../docs/secret.key');
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             $error = $e->getMessage();
             print 'Cannot load file "docs/secret.key"!';
             die();

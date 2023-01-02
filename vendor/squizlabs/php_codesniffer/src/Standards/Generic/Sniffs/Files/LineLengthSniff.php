@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: LineLengthSniff.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Checks the length of all lines in a file.
  *
@@ -23,7 +42,7 @@ class LineLengthSniff implements Sniff
     /**
      * The limit that the length of a line should not exceed.
      *
-     * @var integer
+     * @var int
      */
     public $lineLimit = 80;
 
@@ -32,7 +51,7 @@ class LineLengthSniff implements Sniff
      *
      * Set to zero (0) to disable.
      *
-     * @var integer
+     * @var int
      */
     public $absoluteLineLimit = 100;
 
@@ -42,7 +61,7 @@ class LineLengthSniff implements Sniff
      * This has the effect of also ignoring all lines
      * that only contain comments.
      *
-     * @var boolean
+     * @var bool
      */
     public $ignoreComments = false;
 
@@ -62,8 +81,8 @@ class LineLengthSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current token in
+     * @param File $phpcsFile                        The file being scanned.
+     * @param int  $stackPtr                         The position of the current token in
      *                                               the stack passed in $tokens.
      *
      * @return int
@@ -88,9 +107,9 @@ class LineLengthSniff implements Sniff
     /**
      * Checks if a line is too long.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param array                       $tokens    The token stack.
-     * @param int                         $stackPtr  The first token on the next line.
+     * @param File  $phpcsFile The file being scanned.
+     * @param array $tokens    The token stack.
+     * @param int   $stackPtr  The first token on the next line.
      *
      * @return void
      */

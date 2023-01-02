@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: FindImplementedInterfaceNamesTest.php
+ *  Last Modified: 3.01.23 г., 0:06 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Tests for the \PHP_CodeSniffer\Files\File:findImplementedInterfaceNames method.
  *
@@ -14,7 +33,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class FindImplementedInterfaceNamesTest extends AbstractMethodUnitTest
 {
 
-
     /**
      * Test retrieving the name(s) of the interfaces being implemented by a class.
      *
@@ -27,22 +45,22 @@ class FindImplementedInterfaceNamesTest extends AbstractMethodUnitTest
      */
     public function testFindImplementedInterfaceNames($identifier, $expected)
     {
+
         $OOToken = $this->getTargetToken($identifier, [T_CLASS, T_ANON_CLASS, T_INTERFACE, T_ENUM]);
-        $result  = self::$phpcsFile->findImplementedInterfaceNames($OOToken);
+        $result = self::$phpcsFile->findImplementedInterfaceNames($OOToken);
         $this->assertSame($expected, $result);
-
     }//end testFindImplementedInterfaceNames()
-
 
     /**
      * Data provider for the FindImplementedInterfaceNames test.
      *
+     * @return array
      * @see testFindImplementedInterfaceNames()
      *
-     * @return array
      */
     public function dataImplementedInterface()
     {
+
         return [
             [
                 '/* testImplementedClass */',
@@ -97,8 +115,6 @@ class FindImplementedInterfaceNamesTest extends AbstractMethodUnitTest
                 ],
             ],
         ];
-
     }//end dataImplementedInterface()
-
 
 }//end class

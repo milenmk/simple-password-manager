@@ -1,9 +1,31 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: IsReferenceTest.inc
+ *  Last Modified: 3.01.23 г., 0:06 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 namespace PHP_CodeSniffer\Tests\Core\File;
 
 /* testBitwiseAndA */
-error_reporting( E_NOTICE & E_STRICT );
+
+use MyClass;
+use SomeNS\SomeClass;
+
+error_reporting(E_NOTICE & E_STRICT );
 
 /* testBitwiseAndB */
 $a = [ $something & $somethingElse ];
@@ -18,7 +40,7 @@ $a = array $first, $something & $somethingElse );
 $a = [ 'a' => $first, 'b' => $something & $somethingElse ];
 
 /* testBitwiseAndF */
-$a = array( 'a' => $first, 'b' => $something & \MyClass::$somethingElse );
+$a = array( 'a' => $first, 'b' => $something & MyClass::$somethingElse );
 
 /* testBitwiseAndG */
 $a = $something & $somethingElse;
@@ -48,7 +70,7 @@ $closure = function ( $a, &$b ) {};
 function myFunction(array &$one) {}
 
 /* testFunctionPassByReferenceF */
-$closure = function (\MyClass &$one) {};
+$closure = function (MyClass &$one) {};
 
 /* testFunctionPassByReferenceG */
 $closure = function myFunc($param, &...$moreParams) {};
@@ -123,7 +145,7 @@ functionCall($something, &SomeClass::$somethingElse);
 functionCall(&\SomeClass::$somethingElse);
 
 /* testPassByReferenceI */
-functionCall($something, &\SomeNS\SomeClass::$somethingElse);
+functionCall($something, &SomeClass::$somethingElse);
 
 /* testPassByReferenceJ */
 functionCall($something, &namespace\SomeClass::$somethingElse);

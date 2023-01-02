@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: BackfillFnTokenTest.inc
+ *  Last Modified: 3.01.23 г., 0:06 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /* testStandard */
 $fn1 = fn($x) => $x + $y;
 
@@ -61,7 +79,7 @@ fn&($x) => $x;
 /* testArrayValue */
 $a = [
     'a' => fn() => return 1,
-];
+]
 
 /* testArrayValueNoTrailingComma */
 $a = [
@@ -72,7 +90,7 @@ $a = [
 $a = fn($x) => yield 'k' => $x;
 
 /* testNullableNamespace */
-$a = fn(?\DateTime $x) : ?\DateTime => $x;
+$a = fn(?DateTime $x) : ?DateTime => $x;
 
 /* testNamespaceOperatorInTypes */
 $fn = fn(namespace\Foo $a) : ?namespace\Foo => $a;

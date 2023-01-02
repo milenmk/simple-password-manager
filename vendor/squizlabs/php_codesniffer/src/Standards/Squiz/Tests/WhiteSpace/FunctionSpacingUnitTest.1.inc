@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: FunctionSpacingUnitTest.1.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
 * Comment
 */
@@ -38,87 +57,63 @@ function func3() {
 
 }//end func3()
 
-
-class MyClass
-{
-    function func1() {
-
-    }//end func1()
-
-
-    function func2() {
-
-    }//end func2()
-
-    function func3() {
-
-    }//end func3()
-}//end class
-
-
-interface MyInterface
-{
-    function func1();
-
-
-    function func2();
-
-    function func3();
-}//end interface
-
-
 class MyClass
 {
 
+    public function func1() {}//end func1()
 
-    function func1() {
+    public function func2() {}//end func2()
 
-    }//end func1()
-
-
-    function func2() {
-
-    }//end func2()
-
-
-
-    function func3() {
-
-    }//end func3()
-
+    public function func3() {}//end func3()
 
 }//end class
-
 
 interface MyInterface
 {
 
+    public function func1();
 
-    function func1();
+    public function func2();
 
-
-    function func2();
-
-
-
-    function func3();
-
+    public function func3();
 
 }//end interface
 
 class MyClass
 {
-    function func1() {
 
-    }//end func1()
+    public function func1() {}//end func1()
+
+    public function func2() {}//end func2()
+
+    public function func3() {}//end func3()
+
 }//end class
-
 
 interface MyInterface
 {
-    function func1();
+
+    public function func1();
+
+    public function func2();
+
+    public function func3();
+
 }//end interface
 
+class MyClass
+{
+
+    public function func1() {}//end func1()
+
+}//end class
+
+interface MyInterface
+{
+
+    public function func1();
+
+}//end interface
 
 class MyClass
 {
@@ -130,37 +125,28 @@ class MyClass
      */
     protected $tag = '';
 
+    /**
+     * Function comment.
+     *
+     * @return bool
+     */
+    public function func1() {}//end func1()
 
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
-    function func1() {
-
-    }//end func1()
+    public function func2() {}//end func2()
 
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
-    function func2() {
-
-    }//end func2()
-
-
-    /**
-     * Function comment.
-     *
-     * @return boolean
-     */
-    function func3() {
-
-    }//end func3()
+    public function func3() {}//end func3()
 
 }//end class
-
 
 interface MyInterface
 {
@@ -168,26 +154,23 @@ interface MyInterface
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
-    function func1();
-
-
+    public function func1();
 
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
-    function func2();
-
+    public function func2();
 
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
-    function func3();
+    public function func3();
 
 }//end interface
 
@@ -198,16 +181,12 @@ class MyClass
 
     protected $tag = '';
 
-
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
-    function func1() {
-
-    }//end func1()
-
+    public function func1() {}//end func1()
 
 }//end class
 
@@ -219,25 +198,23 @@ interface MyInterface
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
-    function func1();
-
+    public function func1();
 
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
-    function func2();
+    public function func2();
 
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
-    function func3();
-
+    public function func3();
 
 }//end interface
 
@@ -251,12 +228,9 @@ class MyClass
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
-    function func1() {
-
-    }//end func1()
-
+    public function func1() {}//end func1()
 
 }//end class
 
@@ -278,8 +252,9 @@ $callback = function ($bar) use ($foo)
 
 class MyClass
 {
-    function func1() {
-    }
+
+    public function func1() {}
+
 }
 
 
@@ -322,7 +297,7 @@ class MyClass
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
     private static function func1() {
 
@@ -331,7 +306,7 @@ class MyClass
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
     private static function func2() {
 
@@ -340,20 +315,30 @@ class MyClass
 
 }//end class
 
-class MyClass {
-    function a(){}
-    function b(){}
-    function c(){}
+class MyClass
+{
+
+    public function a() {}
+
+    public function b() {}
+
+    public function c() {}
+
 }
 
 // phpcs:set Squiz.WhiteSpace.FunctionSpacing spacing 1
 // phpcs:set Squiz.WhiteSpace.FunctionSpacing spacingBeforeFirst 1
 // phpcs:set Squiz.WhiteSpace.FunctionSpacing spacingAfterLast 1
 
-class MyClass {
-    function a(){}
-    function b(){}
-    function c(){}
+class MyClass
+{
+
+    public function a() {}
+
+    public function b() {}
+
+    public function c() {}
+
 }
 
 $util->setLogger(new class {
@@ -375,47 +360,47 @@ class MyClass
 
     protected $tag = '';
 
-
-
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
-    function func1() {}
+    public function func1() {}
 
 }//end class
 
 class MyClass
 {
 
-
-
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
-    function func1() {}
+    public function func1() {}
 
 }//end class
 
 class MyClass
 {
+
     // Unrelated comment.
+
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
-    function func1() {}
+    public function func1() {}
     // phpcs:disable Standard.Category.Sniff -- for reasons.
+
     /**
      * Function comment.
      *
-     * @return boolean
+     * @return bool
      */
-    function func2() {}
+    public function func2() {}
+
 }//end class
 
 // phpcs:set Squiz.WhiteSpace.FunctionSpacing spacing 2
@@ -454,10 +439,15 @@ $anon_class = new class() {
 // phpcs:set Squiz.WhiteSpace.FunctionSpacing spacingBeforeFirst 1
 // phpcs:set Squiz.WhiteSpace.FunctionSpacing spacingAfterLast 3
 
-class MyClass {
-    function a(){}
-    function b(){}
-    function c(){}
+class MyClass
+{
+
+    public function a() {}
+
+    public function b() {}
+
+    public function c() {}
+
 }
 
 $bar = function () {
@@ -499,76 +489,82 @@ interface OneBlankLineBeforeFirstFunctionClassInterface
 // phpcs:set Squiz.WhiteSpace.FunctionSpacing spacingBeforeFirst 0
 // phpcs:set Squiz.WhiteSpace.FunctionSpacing spacingAfterLast 0
 
-class MyClass {
+class MyClass
+{
 
     // phpcs:disable Stnd.Cat.Sniff -- For reasons.
 
     /**
      * Description.
      */
-    function a(){}
+    public function a() {}
 
     /**
      * Description.
      */
-    function b(){}
+    public function b() {}
 
     /**
      * Description.
      */
-    function c(){}
+    public function c() {}
 
     // phpcs:enable
 }
 
-class MyClass {
+class MyClass
+{
+
     // Some unrelated comment
-    /**
-     * Description.
-     */
-    function a(){}
 
     /**
      * Description.
      */
-    function b(){}
+    public function a() {}
 
     /**
      * Description.
      */
-    function c(){}
+    public function b() {}
+
+    /**
+     * Description.
+     */
+    public function c() {}
+
     // function d() {}
 }
 
-class ClassWithAttributes {
+class ClassWithAttributes
+{
 
-    #[Attribute1]
+    public #[Attribute1]
     #[Attribute2]
-    function a(){}
+    function a() {}
 
+    public #[Attribute3]
+    function b() {}
 
-    #[Attribute3]
-    function b(){}
-    #[Attribute4]
-    function c(){}
-
+    public #[Attribute4]
+    function c() {}
 
     /**
      * Description.
      */
-    #[Attribute5]
-    function d(){}
+    public #[Attribute5]
+    function d() {}
+
     /**
      * Description.
      */
-    #[Attribute6]
+    public #[Attribute6]
     #[Attribute7]
-    function e(){}
+    function e() {}
 
-
-    #[Attribute8]
+    public #[Attribute8]
     #[Attribute9]
-    function f(){}
+    function f() {}
+
 }
 
 // phpcs:set Squiz.WhiteSpace.FunctionSpacing spacing 2

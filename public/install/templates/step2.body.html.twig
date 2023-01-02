@@ -1,0 +1,48 @@
+{% extends 'install.header.html.twig' %}
+{% block body %}
+    {% set error = 0 %}
+    {% if installerror == 1 %}
+        {% set error = 1 %}
+        {{ langs.trans('InstallAccessError') }} <a href="install.php">{{ langs.trans('Install') }}</a>
+    {% endif %}
+    {% if lockerror == 1 %}
+        {% set error = 1 %}
+        <p></p>
+    {% endif %}
+    {% if ses_error and ses_error > 0 %}
+        <div class="container">
+            <div class="row">
+                <div class="col"></div>
+                <div class="col">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>{{ langs.trans(ses_error) }}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if db_error and db_error > 0 %}
+        <div class="container">
+            <div class="row">
+                <div class="col"></div>
+                <div class="col">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>{{ db_error }}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if error == 0 %}
+        <div class="container">
+            <i class="bi bi-exclamation-circle-fill" style="font-size: 1rem; color: #ff0000;"></i> {{ langs.trans('DoNotClose') }}
+            <br><br>
+            <div class="spinner-border text-success" role="status" style="width: 1rem; height: 1rem;">
+                <span class=" sr-only"></span>
+            </div>
+            {{ langs.trans('InstallingTables') }}
+        </div>
+    {% endif %}
+{% endblock %}

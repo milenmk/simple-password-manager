@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: RuleInclusionAbsoluteWindowsTest.php
+ *  Last Modified: 3.01.23 г., 0:07 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Tests for the \PHP_CodeSniffer\Ruleset class using a Windows-style absolute path to include a sniff.
  *
@@ -19,7 +38,7 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
     /**
      * The Ruleset object.
      *
-     * @var \PHP_CodeSniffer\Ruleset
+     * @var Ruleset
      */
     protected $ruleset;
 
@@ -37,7 +56,6 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
      */
     private $contents = '';
 
-
     /**
      * Initialize the config and ruleset objects.
      *
@@ -45,6 +63,7 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
      */
     public function setUp()
     {
+
         if (DIRECTORY_SEPARATOR === '/') {
             $this->markTestSkipped('Windows specific test');
         }
@@ -56,11 +75,11 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
             $this->markTestSkipped('Test cannot run from a PEAR install');
         }
 
-        $this->standard = __DIR__.'/'.basename(__FILE__, '.php').'.xml';
-        $repoRootDir    = dirname(dirname(dirname(__DIR__)));
+        $this->standard = __DIR__ . '/' . basename(__FILE__, '.php') . '.xml';
+        $repoRootDir = dirname(dirname(dirname(__DIR__)));
 
         // On-the-fly adjust the ruleset test file to be able to test sniffs included with absolute paths.
-        $contents       = file_get_contents($this->standard);
+        $contents = file_get_contents($this->standard);
         $this->contents = $contents;
 
         $adjusted = str_replace('%path_slash_back%', $repoRootDir, $contents);
@@ -70,11 +89,9 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
         }
 
         // Initialize the config and ruleset objects for the test.
-        $config        = new Config(["--standard={$this->standard}"]);
+        $config = new Config(["--standard={$this->standard}"]);
         $this->ruleset = new Ruleset($config);
-
     }//end setUp()
-
 
     /**
      * Reset ruleset file.
@@ -83,12 +100,11 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
      */
     public function tearDown()
     {
+
         if (DIRECTORY_SEPARATOR !== '/') {
             file_put_contents($this->standard, $this->contents);
         }
-
     }//end tearDown()
-
 
     /**
      * Test that sniffs registed with a Windows absolute path are correctly recognized and that
@@ -98,6 +114,7 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
      */
     public function testWindowsStylePathRuleInclusion()
     {
+
         // Test that the sniff is correctly registered.
         $this->assertObjectHasAttribute('sniffCodes', $this->ruleset);
         $this->assertCount(1, $this->ruleset->sniffCodes);
@@ -112,8 +129,6 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
             '10',
             $this->ruleset->sniffs['PHP_CodeSniffer\Standards\Generic\Sniffs\Formatting\SpaceAfterCastSniff']->spacing
         );
-
     }//end testWindowsStylePathRuleInclusion()
-
 
 }//end class

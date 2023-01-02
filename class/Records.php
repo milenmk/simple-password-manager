@@ -9,7 +9,7 @@
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
- * @version       2.1.1
+ * @version       2.2.0
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+

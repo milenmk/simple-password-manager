@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: InlineControlStructureUnitTest.1.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 if ($something) echo 'hello';
 
 if ($something) {
@@ -106,7 +124,7 @@ if ($test) {
     } else {
     }
 
-switch($response = \Bar::baz('bat', function ($foo) {
+switch($response = Bar::baz('bat', function ($foo) {
     return 'bar';
 })) {
     case 1:
@@ -119,9 +137,9 @@ switch($response = \Bar::baz('bat', function ($foo) {
 $stuff = [1,2,3];
 foreach($stuff as $num)
     if ($num %2 ) {
-        echo "even";
+        echo 'even';
     } else {
-        echo "odd";
+        echo 'odd';
     }
 
 $i = 0;
@@ -156,7 +174,7 @@ switch ($type) {
 }
 
 foreach ($sql as $s)
-        if (!$this->execute) echo "<pre>",$s.";\n</pre>";
+        if (!$this->execute) echo '<pre>', $s . ";\n</pre>";
         else {
             $ok = $this->connDest->Execute($s);
             if (!$ok)
@@ -168,7 +186,7 @@ if ($bar)
     if ($foo) echo 'hi'; // lol
 
 if ($level == 'district')
-    \DB::update(<<<EOD
+    DB::update(<<<EOD
 some
 text
 here
@@ -206,7 +224,7 @@ switch ($num) {
         if (1 > $num)
             return bar(
                 baz(
-                    "foobarbaz"
+                    'foobarbaz'
                 )
             );
         break;
@@ -259,8 +277,8 @@ function testMultiCatch()
 {
     if (true)
         try {
-        } catch (\LogicException $e) {
-        } catch (\Exception $e) {
+        } catch (LogicException $e) {
+        } catch (Exception $e) {
         }
 }
 
@@ -268,7 +286,7 @@ function testFinally()
 {
     if (true)
         try {
-        } catch (\LogicException $e) {
+        } catch (LogicException $e) {
         } finally {
         }
 }

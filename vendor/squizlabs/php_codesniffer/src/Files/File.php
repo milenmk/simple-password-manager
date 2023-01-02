@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: File.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Represents a piece of content being checked during the run.
  *
@@ -12,6 +31,8 @@ namespace PHP_CodeSniffer\Files;
 use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Fixer;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Tokenizers\Tokenizer;
 use PHP_CodeSniffer\Util;
 use PHP_CodeSniffer\Exceptions\RuntimeException;
 use PHP_CodeSniffer\Exceptions\TokenizerException;
@@ -36,21 +57,21 @@ class File
     /**
      * The config data for the run.
      *
-     * @var \PHP_CodeSniffer\Config
+     * @var Config
      */
     public $config = null;
 
     /**
      * The ruleset used for the run.
      *
-     * @var \PHP_CodeSniffer\Ruleset
+     * @var Ruleset
      */
     public $ruleset = null;
 
     /**
      * If TRUE, the entire file is being ignored.
      *
-     * @var boolean
+     * @var bool
      */
     public $ignored = false;
 
@@ -64,14 +85,14 @@ class File
     /**
      * The Fixer object to control fixing errors.
      *
-     * @var \PHP_CodeSniffer\Fixer
+     * @var Fixer
      */
     public $fixer = null;
 
     /**
      * The tokenizer being used for this file.
      *
-     * @var \PHP_CodeSniffer\Tokenizers\Tokenizer
+     * @var Tokenizer
      */
     public $tokenizer = null;
 
@@ -88,7 +109,7 @@ class File
      * If TRUE, the file was loaded from a local cache.
      * If FALSE, the file was tokenized and processed fully.
      *
-     * @var boolean
+     * @var bool
      */
     public $fromCache = false;
 
@@ -97,7 +118,7 @@ class File
      *
      * Stored here to save calling count() everywhere.
      *
-     * @var integer
+     * @var int
      */
     public $numTokens = 0;
 
@@ -145,35 +166,35 @@ class File
     /**
      * The total number of errors raised.
      *
-     * @var integer
+     * @var int
      */
     protected $errorCount = 0;
 
     /**
      * The total number of warnings raised.
      *
-     * @var integer
+     * @var int
      */
     protected $warningCount = 0;
 
     /**
      * The total number of errors and warnings that can be fixed.
      *
-     * @var integer
+     * @var int
      */
     protected $fixableCount = 0;
 
     /**
      * The total number of errors and warnings that were fixed.
      *
-     * @var integer
+     * @var int
      */
     protected $fixedCount = 0;
 
     /**
      * TRUE if errors are being replayed from the cache.
      *
-     * @var boolean
+     * @var bool
      */
     protected $replayingErrors = false;
 
@@ -194,7 +215,7 @@ class File
     /**
      * An array of sniffs listening to this file's processing.
      *
-     * @var \PHP_CodeSniffer\Sniffs\Sniff[]
+     * @var Sniff[]
      */
     protected $listeners = [];
 
@@ -225,9 +246,9 @@ class File
     /**
      * Constructs a file.
      *
-     * @param string                   $path    The absolute path to the file to process.
-     * @param \PHP_CodeSniffer\Ruleset $ruleset The ruleset used for the run.
-     * @param \PHP_CodeSniffer\Config  $config  The config data for the run.
+     * @param string  $path    The absolute path to the file to process.
+     * @param Ruleset $ruleset The ruleset used for the run.
+     * @param Config  $config  The config data for the run.
      *
      * @return void
      */
@@ -643,15 +664,15 @@ class File
     /**
      * Records an error against a specific token in the file.
      *
-     * @param string  $error    The error message.
-     * @param int     $stackPtr The stack position where the error occurred.
-     * @param string  $code     A violation code unique to the sniff message.
-     * @param array   $data     Replacements for the error message.
-     * @param int     $severity The severity level for this error. A value of 0
+     * @param string $error     The error message.
+     * @param int    $stackPtr  The stack position where the error occurred.
+     * @param string $code      A violation code unique to the sniff message.
+     * @param array  $data      Replacements for the error message.
+     * @param int    $severity  The severity level for this error. A value of 0
      *                          will be converted into the default severity level.
-     * @param boolean $fixable  Can the error be fixed by the sniff?
+     * @param bool   $fixable   Can the error be fixed by the sniff?
      *
-     * @return boolean
+     * @return bool
      */
     public function addError(
         $error,
@@ -677,15 +698,15 @@ class File
     /**
      * Records a warning against a specific token in the file.
      *
-     * @param string  $warning  The error message.
-     * @param int     $stackPtr The stack position where the error occurred.
-     * @param string  $code     A violation code unique to the sniff message.
-     * @param array   $data     Replacements for the warning message.
-     * @param int     $severity The severity level for this warning. A value of 0
+     * @param string $warning   The error message.
+     * @param int    $stackPtr  The stack position where the error occurred.
+     * @param string $code      A violation code unique to the sniff message.
+     * @param array  $data      Replacements for the warning message.
+     * @param int    $severity  The severity level for this warning. A value of 0
      *                          will be converted into the default severity level.
-     * @param boolean $fixable  Can the warning be fixed by the sniff?
+     * @param bool   $fixable   Can the warning be fixed by the sniff?
      *
-     * @return boolean
+     * @return bool
      */
     public function addWarning(
         $warning,
@@ -718,7 +739,7 @@ class File
      * @param int    $severity The severity level for this error. A value of 0
      *                         will be converted into the default severity level.
      *
-     * @return boolean
+     * @return bool
      */
     public function addErrorOnLine(
         $error,
@@ -742,7 +763,7 @@ class File
      * @param int    $severity The severity level for this warning. A value of 0 will
      *                         will be converted into the default severity level.
      *
-     * @return boolean
+     * @return bool
      */
     public function addWarningOnLine(
         $warning,
@@ -768,7 +789,7 @@ class File
      * @param int    $severity The severity level for this error. A value of 0
      *                         will be converted into the default severity level.
      *
-     * @return boolean
+     * @return bool
      */
     public function addFixableError(
         $error,
@@ -799,7 +820,7 @@ class File
      * @param int    $severity The severity level for this warning. A value of 0
      *                         will be converted into the default severity level.
      *
-     * @return boolean
+     * @return bool
      */
     public function addFixableWarning(
         $warning,
@@ -821,17 +842,17 @@ class File
     /**
      * Adds an error to the error stack.
      *
-     * @param boolean $error    Is this an error message?
-     * @param string  $message  The text of the message.
-     * @param int     $line     The line on which the message occurred.
-     * @param int     $column   The column at which the message occurred.
-     * @param string  $code     A violation code unique to the sniff message.
-     * @param array   $data     Replacements for the message.
-     * @param int     $severity The severity level for this message. A value of 0
+     * @param bool   $error     Is this an error message?
+     * @param string $message   The text of the message.
+     * @param int    $line      The line on which the message occurred.
+     * @param int    $column    The column at which the message occurred.
+     * @param string $code      A violation code unique to the sniff message.
+     * @param array  $data      Replacements for the message.
+     * @param int    $severity  The severity level for this message. A value of 0
      *                          will be converted into the default severity level.
-     * @param boolean $fixable  Can the problem be fixed by the sniff?
+     * @param bool   $fixable   Can the problem be fixed by the sniff?
      *
-     * @return boolean
+     * @return bool
      */
     protected function addMessage($error, $message, $line, $column, $code, $data, $severity, $fixable)
     {
@@ -1093,7 +1114,7 @@ class File
      * @param string $metric   The name of the metric being recorded.
      * @param string $value    The value of the metric being recorded.
      *
-     * @return boolean
+     * @return bool
      */
     public function recordMetric($stackPtr, $metric, $value)
     {
@@ -1230,7 +1251,7 @@ class File
      *
      * @return string|null The name of the class, interface, trait, or function;
      *                     or NULL if the function or class is anonymous.
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified token is not of type
+     * @throws RuntimeException If the specified token is not of type
      *                                                      T_FUNCTION, T_CLASS, T_ANON_CLASS,
      *                                                      T_CLOSURE, T_TRAIT, T_ENUM, or T_INTERFACE.
      */
@@ -1318,7 +1339,7 @@ class File
      *                      to acquire the parameters for.
      *
      * @return array
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified $stackPtr is not of
+     * @throws RuntimeException If the specified $stackPtr is not of
      *                                                      type T_FUNCTION, T_CLOSURE, T_USE,
      *                                                      or T_FN.
      */
@@ -1604,7 +1625,7 @@ class File
      *                      acquire the properties for.
      *
      * @return array
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified position is not a
+     * @throws RuntimeException If the specified position is not a
      *                                                      T_FUNCTION, T_CLOSURE, or T_FN token.
      */
     public function getMethodProperties($stackPtr)
@@ -1776,7 +1797,7 @@ class File
      *                      acquire the properties for.
      *
      * @return array
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified position is not a
+     * @throws RuntimeException If the specified position is not a
      *                                                      T_VARIABLE token, or if the position is not
      *                                                      a class member variable.
      */
@@ -1954,7 +1975,7 @@ class File
      *                      acquire the properties for.
      *
      * @return array
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified position is not a
+     * @throws RuntimeException If the specified position is not a
      *                                                      T_CLASS token.
      */
     public function getClassProperties($stackPtr)
@@ -2006,7 +2027,7 @@ class File
      *
      * @param int $stackPtr The position of the T_BITWISE_AND token.
      *
-     * @return boolean
+     * @return bool
      */
     public function isReference($stackPtr)
     {
@@ -2133,7 +2154,7 @@ class File
      *                          content should be used.
      *
      * @return string The token contents.
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified position does not exist.
+     * @throws RuntimeException If the specified position does not exist.
      */
     public function getTokensAsString($start, $length, $origContent=false)
     {
@@ -2647,7 +2668,7 @@ class File
      * @param int              $stackPtr The position of the token we are checking.
      * @param int|string|array $types    The type(s) of tokens to search for.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasCondition($stackPtr, $types)
     {

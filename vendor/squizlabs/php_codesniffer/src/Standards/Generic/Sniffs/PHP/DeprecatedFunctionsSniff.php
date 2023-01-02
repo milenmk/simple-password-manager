@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: DeprecatedFunctionsSniff.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Discourages the use of deprecated PHP functions.
  *
@@ -9,6 +28,9 @@
  */
 
 namespace PHP_CodeSniffer\Standards\Generic\Sniffs\PHP;
+
+use PHP_CodeSniffer\Files\File;
+use ReflectionFunction;
 
 class DeprecatedFunctionsSniff extends ForbiddenFunctionsSniff
 {
@@ -34,7 +56,7 @@ class DeprecatedFunctionsSniff extends ForbiddenFunctionsSniff
         $functions = get_defined_functions();
 
         foreach ($functions['internal'] as $functionName) {
-            $function = new \ReflectionFunction($functionName);
+            $function = new ReflectionFunction($functionName);
 
             if ($function->isDeprecated() === true) {
                 $this->forbiddenFunctions[$functionName] = null;
@@ -47,7 +69,7 @@ class DeprecatedFunctionsSniff extends ForbiddenFunctionsSniff
     /**
      * Generates the error or warning for this sniff.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the forbidden function
      *                                               in the token array.
      * @param string                      $function  The name of the forbidden function.

@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: AbstractScopeSniff.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Allows tests that extend this class to listen for tokens within a particular scope.
  *
@@ -49,7 +68,7 @@ abstract class AbstractScopeSniff implements Sniff
     /**
      * True if this test should fire on tokens outside of the scope.
      *
-     * @var boolean
+     * @var bool
      */
     private $listenOutside = false;
 
@@ -57,15 +76,15 @@ abstract class AbstractScopeSniff implements Sniff
     /**
      * Constructs a new AbstractScopeTest.
      *
-     * @param array   $scopeTokens   The type of scope the test wishes to listen to.
-     * @param array   $tokens        The tokens that the test wishes to listen to
+     * @param array $scopeTokens     The type of scope the test wishes to listen to.
+     * @param array $tokens          The tokens that the test wishes to listen to
      *                               within the scope.
-     * @param boolean $listenOutside If true this test will also alert the
+     * @param bool  $listenOutside   If true this test will also alert the
      *                               extending class when a token is found outside
      *                               the scope, by calling the
      *                               processTokenOutsideScope method.
      *
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified tokens arrays are empty
+     * @throws RuntimeException If the specified tokens arrays are empty
      *                                                      or invalid.
      */
     public function __construct(
@@ -117,8 +136,8 @@ abstract class AbstractScopeSniff implements Sniff
     /**
      * Processes the tokens that this test is listening for.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
-     * @param int                         $stackPtr  The position in the stack where this
+     * @param File $phpcsFile                        The file where this token was found.
+     * @param int  $stackPtr                         The position in the stack where this
      *                                               token was found.
      *
      * @return void|int Optionally returns a stack pointer. The sniff will not be
@@ -157,10 +176,10 @@ abstract class AbstractScopeSniff implements Sniff
      * Processes a token that is found within the scope that this test is
      * listening to.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
-     * @param int                         $stackPtr  The position in the stack where this
+     * @param File $phpcsFile                        The file where this token was found.
+     * @param int  $stackPtr                         The position in the stack where this
      *                                               token was found.
-     * @param int                         $currScope The position in the tokens array that
+     * @param int  $currScope                        The position in the tokens array that
      *                                               opened the scope that this test is
      *                                               listening for.
      *
@@ -176,8 +195,8 @@ abstract class AbstractScopeSniff implements Sniff
      * Processes a token that is found outside the scope that this test is
      * listening to.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
-     * @param int                         $stackPtr  The position in the stack where this
+     * @param File $phpcsFile                        The file where this token was found.
+     * @param int  $stackPtr                         The position in the stack where this
      *                                               token was found.
      *
      * @return void|int Optionally returns a stack pointer. The sniff will not be

@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: CyclomaticComplexityUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 function complexityOne() { }
 
 function complexityFive()
@@ -409,7 +427,7 @@ function complexityFiveWithMatch()
         'apr', 'jun', 'sep',  'nov'  => 30,
         'jan', 'mar', 'may', 'jul', 'aug',  'oct', 'dec'  => 31,
         'feb' => is_leap_year($year) ? 29 : 28,
-        default => throw new InvalidArgumentException("Invalid month"),
+        default => throw new InvalidArgumentException('Invalid month'),
     }
 }
 
@@ -429,7 +447,7 @@ function complexityFourteenWithMatch()
         'oct' => 31,
         'nov' => 30,
         'dec' => 31,
-        default => throw new InvalidArgumentException("Invalid month"),
+        default => throw new InvalidArgumentException('Invalid month'),
     };
 }
 

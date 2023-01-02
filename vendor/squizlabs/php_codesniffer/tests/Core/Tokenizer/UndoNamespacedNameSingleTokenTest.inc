@@ -1,77 +1,122 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: UndoNamespacedNameSingleTokenTest.inc
+ *  Last Modified: 3.01.23 г., 0:06 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
+use Fully
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: UndoNamespacedNameSingleTokenTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ * @link          https://blacktiehost.com
+ * @since         1.0.0
+ * @version       2.2.0
+ * @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ * @license       GPL-3.0+
+ * @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /* testNamespaceDeclaration */
+
 namespace Package;
 
 /* testNamespaceDeclarationWithLevels */
+
 namespace Vendor\SubLevel\Domain;
 
 /* testUseStatement */
+
 use ClassName;
-
-/* testUseStatementWithLevels */
+use Exception;
+use Fully\Qualified;
+use Name;
+use Sublevel\PartiallyClassName;
+use UnqualifiedClassName;
+use Vendor\Level\{AnotherDomain,
+    FQN,
+    Sub\YetAnotherDomain,
+    function function_grouped,
+    function SubLevelA\function_grouped_too,
+    const CONSTANT_GROUPED,
+    const SubLevelB\CONSTANT_GROUPED_TOO};
 use Vendor\Level\Domain;
-
-/* testFunctionUseStatement */
 use function function_name;
-
-/* testFunctionUseStatementWithLevels */
 use function Vendor\Level\function_in_ns;
-
-/* testConstantUseStatement */
 use const CONSTANT_NAME;
-
-/* testConstantUseStatementWithLevels */
 use const Vendor\Level\OTHER_CONSTANT;
 
+/* testUseStatementWithLevels */
+
+/* testFunctionUseStatement */
+
+/* testFunctionUseStatementWithLevels */
+
+/* testConstantUseStatement */
+
+/* testConstantUseStatementWithLevels */
+
 /* testMultiUseUnqualified */
-use UnqualifiedClassName,
-    /* testMultiUsePartiallyQualified */
-    Sublevel\PartiallyClassName;
 
 /* testGroupUseStatement */
-use Vendor\Level\{
-    AnotherDomain,
-    function function_grouped,
-    const CONSTANT_GROUPED,
-    Sub\YetAnotherDomain,
-    function SubLevelA\function_grouped_too,
-    const SubLevelB\CONSTANT_GROUPED_TOO,
-};
 
 /* testClassName */
+
 class MyClass
     /* testExtendedFQN */
-    extends \Vendor\Level\FQN
+    extends FQN
     /* testImplementsRelative */
     implements namespace\Name,
-        /* testImplementsFQN */
-        \Fully\Qualified,
-        /* testImplementsUnqualified */
-        Unqualified,
-        /* testImplementsPartiallyQualified */
-        Sub\Level\Name
+    /* testImplementsFQN */
+    Qualified,
+    /* testImplementsUnqualified */
+    Unqualified,
+    /* testImplementsPartiallyQualified */
+    Sub\Level\Name
 {
+
     /* testFunctionName */
     public function function_name(
         /* testTypeDeclarationRelative */
         ?namespace\Name|object $paramA,
 
         /* testTypeDeclarationFQN */
-        \Fully\Qualified\Name $paramB,
+        Qualified\Name         $paramB,
 
         /* testTypeDeclarationUnqualified */
-        Unqualified|false $paramC,
+        Unqualified|false      $paramC,
 
         /* testTypeDeclarationPartiallyQualified */
-        ?Sublevel\Name $paramD,
+        ?Sublevel\Name         $paramD,
 
-    /* testReturnTypeFQN */
-    ) : ?\Name {
+        /* testReturnTypeFQN */
+    ): ?Name
+    {
 
         try {
             /* testFunctionCallRelative */
-            echo NameSpace\function_name();
+            echo namespace\function_name();
 
             /* testFunctionCallFQN */
             echo \Vendor\Package\function_name();
@@ -81,18 +126,21 @@ class MyClass
 
             /* testFunctionPartiallyQualified */
             echo Level\function_name();
+            /* testCatchRelative */
+        }
+        catch (namespace\SubLevel\Exception $e) {
 
-        /* testCatchRelative */
-        } catch (namespace\SubLevel\Exception $e) {
+            /* testCatchFQN */
+        }
+        catch (Exception $e) {
 
-        /* testCatchFQN */
-        } catch (\Exception $e) {
+            /* testCatchUnqualified */
+        }
+        catch (Exception $e) {
 
-        /* testCatchUnqualified */
-        } catch (Exception $e) {
-
-        /* testCatchPartiallyQualified */
-        } catch (Level\Exception $e) {
+            /* testCatchPartiallyQualified */
+        }
+        catch (Level\Exception $e) {
         }
 
         /* testNewRelative */
@@ -102,46 +150,45 @@ class MyClass
         $obj = new \Vendor\ClassName();
 
         /* testNewUnqualified */
-        $obj = new ClassName;
+        $obj = new ClassName();
 
         /* testNewPartiallyQualified */
-        $obj = new Level\ClassName;
+        $obj = new Level\ClassName();
 
         /* testDoubleColonRelative */
         $value = namespace\ClassName::property;
 
         /* testDoubleColonFQN */
-        $value = \ClassName::static_function();
+        $value = ClassName::static_function();
 
         /* testDoubleColonUnqualified */
         $value = ClassName::CONSTANT_NAME;
 
         /* testDoubleColonPartiallyQualified */
         $value = Level\ClassName::CONSTANT_NAME['key'];
-        
+
         /* testInstanceOfRelative */
         $is = $obj instanceof namespace\ClassName;
 
         /* testInstanceOfFQN */
-        if ($obj instanceof \Full\ClassName) {}
+        if ($obj instanceof \Full\ClassName) {
+        }
 
         /* testInstanceOfUnqualified */
-        if ($a === $b && $obj instanceof ClassName && true) {}
+        if ($a === $b && $obj instanceof ClassName && true) {
+        }
 
         /* testInstanceOfPartiallyQualified */
         $is = $obj instanceof Partially\ClassName;
     }
+
 }
 
 /* testInvalidInPHP8Whitespace */
 namespace \ Sublevel
-          \ function_name();
+\ function_name();
 
 /* testInvalidInPHP8Comments */
-$value = \Fully
-    // phpcs:ignore Stnd.Cat.Sniff -- for reasons
-    \Qualified
-    /* comment */
-    \Name
+$value = Name
     // comment
     :: function_name();

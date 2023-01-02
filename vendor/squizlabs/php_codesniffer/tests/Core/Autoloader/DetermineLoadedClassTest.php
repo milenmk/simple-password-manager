@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: DetermineLoadedClassTest.php
+ *  Last Modified: 3.01.23 г., 0:07 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Tests for the \PHP_CodeSniffer\Util\Common::isCamelCaps method.
  *
@@ -9,11 +28,11 @@
 
 namespace PHP_CodeSniffer\Tests\Core\Autoloader;
 
+use PHP_CodeSniffer\Autoload;
 use PHPUnit\Framework\TestCase;
 
 class DetermineLoadedClassTest extends TestCase
 {
-
 
     /**
      * Load the test files.
@@ -22,10 +41,9 @@ class DetermineLoadedClassTest extends TestCase
      */
     public static function setUpBeforeClass()
     {
-        include __DIR__.'/TestFiles/Sub/C.inc';
 
+        include __DIR__ . '/TestFiles/Sub/C.inc';
     }//end setUpBeforeClass()
-
 
     /**
      * Test for when class list is ordered.
@@ -34,6 +52,7 @@ class DetermineLoadedClassTest extends TestCase
      */
     public function testOrdered()
     {
+
         $classesBeforeLoad = [
             'classes'    => [],
             'interfaces' => [],
@@ -51,11 +70,9 @@ class DetermineLoadedClassTest extends TestCase
             'traits'     => [],
         ];
 
-        $className = \PHP_CodeSniffer\Autoload::determineLoadedClass($classesBeforeLoad, $classesAfterLoad);
+        $className = Autoload::determineLoadedClass($classesBeforeLoad, $classesAfterLoad);
         $this->assertEquals('PHP_CodeSniffer\Tests\Core\Autoloader\Sub\C', $className);
-
     }//end testOrdered()
-
 
     /**
      * Test for when class list is out of order.
@@ -64,6 +81,7 @@ class DetermineLoadedClassTest extends TestCase
      */
     public function testUnordered()
     {
+
         $classesBeforeLoad = [
             'classes'    => [],
             'interfaces' => [],
@@ -81,7 +99,7 @@ class DetermineLoadedClassTest extends TestCase
             'traits'     => [],
         ];
 
-        $className = \PHP_CodeSniffer\Autoload::determineLoadedClass($classesBeforeLoad, $classesAfterLoad);
+        $className = Autoload::determineLoadedClass($classesBeforeLoad, $classesAfterLoad);
         $this->assertEquals('PHP_CodeSniffer\Tests\Core\Autoloader\Sub\C', $className);
 
         $classesAfterLoad = [
@@ -95,7 +113,7 @@ class DetermineLoadedClassTest extends TestCase
             'traits'     => [],
         ];
 
-        $className = \PHP_CodeSniffer\Autoload::determineLoadedClass($classesBeforeLoad, $classesAfterLoad);
+        $className = Autoload::determineLoadedClass($classesBeforeLoad, $classesAfterLoad);
         $this->assertEquals('PHP_CodeSniffer\Tests\Core\Autoloader\Sub\C', $className);
 
         $classesAfterLoad = [
@@ -109,10 +127,8 @@ class DetermineLoadedClassTest extends TestCase
             'traits'     => [],
         ];
 
-        $className = \PHP_CodeSniffer\Autoload::determineLoadedClass($classesBeforeLoad, $classesAfterLoad);
+        $className = Autoload::determineLoadedClass($classesBeforeLoad, $classesAfterLoad);
         $this->assertEquals('PHP_CodeSniffer\Tests\Core\Autoloader\Sub\C', $className);
-
     }//end testUnordered()
-
 
 }//end class

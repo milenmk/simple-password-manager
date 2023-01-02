@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: LongConditionClosingCommentSniff.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Ensures long conditions have a comment at the end.
  *
@@ -28,7 +47,7 @@ class LongConditionClosingCommentSniff implements Sniff
     /**
      * The openers that we are interested in.
      *
-     * @var integer[]
+     * @var int
      */
     private static $openers = [
         T_SWITCH,
@@ -45,7 +64,7 @@ class LongConditionClosingCommentSniff implements Sniff
      * The length that a code block must be before
      * requiring a closing comment.
      *
-     * @var integer
+     * @var int
      */
     public $lineLimit = 20;
 
@@ -74,8 +93,8 @@ class LongConditionClosingCommentSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current token in the
+     * @param File $phpcsFile                        The file being scanned.
+     * @param int  $stackPtr                         The position of the current token in the
      *                                               stack passed in $tokens.
      *
      * @return void

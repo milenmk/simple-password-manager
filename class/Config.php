@@ -4,11 +4,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: Config.php
- *  Last Modified: 1.01.23 г., 13:33 ч.
+ *  Last Modified: 2.01.23 г., 18:01 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
- * @version       2.1.1
+ * @version       2.2.0
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+
@@ -26,8 +26,6 @@
 declare(strict_types = 1);
 
 namespace PasswordManager;
-
-use Exception;
 
 /**
  * Class for config
@@ -89,30 +87,22 @@ class Config
     public function __construct()
     {
 
-        try {
-            include_once '../conf/conf.php';
-        } catch (Exception $e) {
-            $error = $e->getMessage();
-            pm_syslog('Cannot load config file with error ' . $error, LOG_ERR);
+        include_once '../conf/conf.php';
 
-            return 'Config file not found!';
-        }
+        //Define database variables from conf file
+        $this->host = $db_host;
+        $this->port = (int)$db_port;
+        $this->dbname = $db_name;
+        $this->dbprefix = $db_prefix;
+        $this->dbuser = $db_user;
+        $this->dbpass = $db_pass;
+        $this->db_character_set = $main_db_character_set;
+        $this->db_collation = $main_db_collation;
+        $this->main_url_root = $main_url_root;
+        $this->main_app_root = $main_app_root;
+        $this->main_application_title = $main_application_title;
 
-        if (!$error) {
-            //Define database variables from conf file
-            $this->host = $db_host;
-            $this->port = (int)$db_port;
-            $this->dbname = $db_name;
-            $this->dbprefix = $db_prefix;
-            $this->dbuser = $db_user;
-            $this->dbpass = $db_pass;
-            //$this->db_character_set = $main_db_character_set;
-            $this->db_collation = $main_db_collation;
-            $this->main_url_root = $main_url_root;
-            $this->main_app_root = $main_app_root;
-            $this->main_application_title = $main_application_title;
-
-            return $this;
-        }
+        return $this;
     }
+
 }

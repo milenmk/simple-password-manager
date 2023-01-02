@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: AbstractPatternSniff.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Processes pattern strings and checks that the code conforms to the pattern.
  *
@@ -20,7 +39,7 @@ abstract class AbstractPatternSniff implements Sniff
     /**
      * If true, comments will be ignored if they are found in the code.
      *
-     * @var boolean
+     * @var bool
      */
     public $ignoreComments = false;
 
@@ -58,7 +77,7 @@ abstract class AbstractPatternSniff implements Sniff
     /**
      * Constructs a AbstractPatternSniff.
      *
-     * @param boolean $ignoreComments If true, comments will be ignored.
+     * @param bool $ignoreComments If true, comments will be ignored.
      */
     public function __construct($ignoreComments=null)
     {
@@ -153,7 +172,7 @@ abstract class AbstractPatternSniff implements Sniff
      *
      * @return int The position in the pattern that this test should register
      *             as the listener.
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If we could not determine a token to listen for.
+     * @throws RuntimeException If we could not determine a token to listen for.
      */
     private function getListenerTokenPos($pattern)
     {
@@ -175,9 +194,9 @@ abstract class AbstractPatternSniff implements Sniff
     /**
      * Processes the test.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where the
+     * @param File $phpcsFile                        The PHP_CodeSniffer file where the
      *                                               token occurred.
-     * @param int                         $stackPtr  The position in the tokens stack
+     * @param int  $stackPtr                         The position in the tokens stack
      *                                               where the listening token type
      *                                               was found.
      *
@@ -241,13 +260,13 @@ abstract class AbstractPatternSniff implements Sniff
     /**
      * Processes the pattern and verifies the code at $stackPtr.
      *
-     * @param array                       $patternInfo Information about the pattern used
+     * @param array $patternInfo                       Information about the pattern used
      *                                                 for checking, which includes are
      *                                                 parsed token representation of the
      *                                                 pattern.
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The PHP_CodeSniffer file where the
+     * @param File  $phpcsFile                         The PHP_CodeSniffer file where the
      *                                                 token occurred.
-     * @param int                         $stackPtr    The position in the tokens stack where
+     * @param int   $stackPtr                          The position in the tokens stack where
      *                                                 the listening token type was found.
      *
      * @return array
@@ -742,9 +761,9 @@ abstract class AbstractPatternSniff implements Sniff
      /**
       * Processes any tokens registered with registerSupplementary().
       *
-      * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where to
+      * @param File $phpcsFile                        The PHP_CodeSniffer file where to
       *                                               process the skip.
-      * @param int                         $stackPtr  The position in the tokens stack to
+      * @param int  $stackPtr                         The position in the tokens stack to
       *                                               process.
       *
       * @return void

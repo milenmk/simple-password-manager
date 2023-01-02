@@ -1,7 +1,26 @@
 <?php
+
+use Foo\Bar\FooBarException;
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: FunctionCommentThrowTagUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
 class FunctionCommentThrowTagUnitTest
 {
-
 
     /**
      * Missing throw tag.
@@ -9,10 +28,9 @@ class FunctionCommentThrowTagUnitTest
      */
     public function missingThrowTag()
     {
+
         throw new PHP_Exception('Error');
-
     }//end missingThrowTag()
-
 
     /**
      * Tag and token number mismatch.
@@ -21,11 +39,10 @@ class FunctionCommentThrowTagUnitTest
      */
     public function oneMoreThrowsTagNeeded()
     {
+
         throw new PHP_Exception1('Error');
         throw new PHP_Exception2('Error');
-
     }//end oneMoreThrowsTagNeeded()
-
 
     /**
      * Tag and token number mismatch.
@@ -35,10 +52,9 @@ class FunctionCommentThrowTagUnitTest
      */
     public function oneLessThrowsTagNeeded()
     {
+
         throw new PHP_Exception1('Error');
-
     }//end oneLessThrowsTagNeeded()
-
 
     /**
      * Wrong exception type name.
@@ -47,10 +63,9 @@ class FunctionCommentThrowTagUnitTest
      */
     public function wrongExceptionName()
     {
+
         throw new PHP_Correct_Exception('Error');
-
     }//end wrongExceptionName()
-
 
     /**
      * Wrong exception type name.
@@ -61,12 +76,11 @@ class FunctionCommentThrowTagUnitTest
      */
     public function moreWrongExceptionName()
     {
+
         throw new PHP_Correct_Exception1('Error');
         throw new PHP_Correct_Exception2('Error');
         throw new PHP_Correct_Exception3('Error');
-
     }//end moreWrongExceptionName()
-
 
     /**
      * Wrong exception type name.
@@ -75,11 +89,10 @@ class FunctionCommentThrowTagUnitTest
      */
     public function sameExceptionName()
     {
-        throw new PHP_Correct_Exception('Error');
-        throw new PHP_Correct_Exception('Error');
 
+        throw new PHP_Correct_Exception('Error');
+        throw new PHP_Correct_Exception('Error');
     }//end sameExceptionName()
-
 
     /**
      * This is a valid chunk.
@@ -89,14 +102,13 @@ class FunctionCommentThrowTagUnitTest
      */
     public function thisShouldWorkOK()
     {
-        throw new PHP_Exception2('Error');
-        throw new PHP_Exception1('Error');
-        throw new PHP_Exception2('Error');
-        throw new PHP_Exception1('Error');
-        throw new PHP_Exception2('Error');
 
+        throw new PHP_Exception2('Error');
+        throw new PHP_Exception1('Error');
+        throw new PHP_Exception2('Error');
+        throw new PHP_Exception1('Error');
+        throw new PHP_Exception2('Error');
     }//end thisShouldWorkOK()
-
 
     /**
      * This is not OK, missing 2 @throws tag.
@@ -106,6 +118,7 @@ class FunctionCommentThrowTagUnitTest
      */
     public function notOK()
     {
+
         throw new PHP_Missing_Exception1('Error');
         throw new PHP_Exception2('Error');
         throw new PHP_Missing_Exception2('Error');
@@ -113,9 +126,7 @@ class FunctionCommentThrowTagUnitTest
         throw new PHP_Exception1('Error');
         throw new PHP_Exception2('Error');
         throw new PHP_Missing_Exception1('Error');
-
     }//end notOK()
-
 
     /**
      * Needs at least 1 throws tag, even though we
@@ -123,15 +134,15 @@ class FunctionCommentThrowTagUnitTest
      */
     public function notOKVariable()
     {
+
         try {
             // Do something.
-        } catch (PHP_Exception2 $e) {
+        }
+        catch (PHP_Exception2 $e) {
             logError();
             throw $e;
         }
-
     }//end notOKVariable()
-
 
     /**
      * Needs at least 1 throws tag, even though we
@@ -141,55 +152,53 @@ class FunctionCommentThrowTagUnitTest
      */
     public function okVariable()
     {
+
         throw new PHP_Exception1('Error');
 
         try {
             // Do something.
-        } catch (PHP_Exception1 $e) {
+        }
+        catch (PHP_Exception1 $e) {
             logError();
             throw $e;
         }
-
     }//end okVariable()
-
 
     /**
      * Needs 1 @throws tag.
      *
      * @throws Exception Unknown exception type.
      */
-    function okVariable()
+    public function okVariable()
     {
+
         throw $e;
-
     }//end okVariable()
-
 
     /**
      * Needs 1 @throws tag.
      *
      * @throws Exception Unknown exception type.
      */
-    function okFunction()
+    public function okFunction()
     {
+
         throw $this->callSomeFunction();
-
     }//end okFunction()
-
 
     /**
      * Comment inside function.
      *
      * @throws Exception
      */
-    function okFunction()
+    public function okFunction()
     {
+
         /**
          * @var FooClass
          */
         $foo = FooFactory::factory();
-        throw new Exception;
-
+        throw new Exception();
     }//end okFunction
 
     /**
@@ -200,15 +209,16 @@ class FunctionCommentThrowTagUnitTest
      */
     public function notOkVariableRethrown()
     {
+
         throw new PHP_Exception1('Error');
 
         try {
             // Do something.
-        } catch (PHP_Exception2 $e) {
+        }
+        catch (PHP_Exception2 $e) {
             logError();
             throw $e;
         }
-
     }//end notOkVariableRethrown()
 
     /**
@@ -219,15 +229,16 @@ class FunctionCommentThrowTagUnitTest
      */
     public function notOkVariableRethrown()
     {
+
         throw new PHP_Exception1('Error');
 
         try {
             // Do something.
-        } catch (PHP_Exception1 | PHP_Exception2 $e) {
+        }
+        catch (PHP_Exception1|PHP_Exception2 $e) {
             logError();
             throw $e;
         }
-
     }//end notOkVariableRethrown()
 
     /**
@@ -238,15 +249,16 @@ class FunctionCommentThrowTagUnitTest
      */
     public function okVariableRethrown()
     {
+
         throw new PHP_Exception1('Error');
 
         try {
             // Do something.
-        } catch (PHP_Exception2 $e) {
+        }
+        catch (PHP_Exception2 $e) {
             logError();
             throw $e;
         }
-
     }//end okVariableRethrown()
 
     /**
@@ -257,36 +269,38 @@ class FunctionCommentThrowTagUnitTest
      */
     public function okVariableMultiRethrown()
     {
+
         try {
             // Do something.
-        } catch (PHP_Exception1 | PHP_Exception2 $e) {
+        }
+        catch (PHP_Exception1|PHP_Exception2 $e) {
             logError();
             throw $e;
         }
-
     }//end okVariableMultiRethrown()
+
 }//end class
 
 class NamespacedException {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function foo() {
-        throw new \Exception();
+        throw new Exception();
     }
 
     /**
-     * @throws \Foo\Bar\FooBarException
+     * @throws FooBarException
      */
     public function fooBar2() {
-        throw new \Foo\Bar\FooBarException();
+        throw new FooBarException();
     }
     
     /**
      * @throws FooBarException
      */
     public function fooBar2() {
-        throw new \Foo\Bar\FooBarException();
+        throw new FooBarException();
     }
 }
 
@@ -306,7 +320,7 @@ class Foo {
      *
      * This info includes parameters, their valid values.
      *
-     * @param integer $projectid Id of the project.
+     * @param int $projectid Id of the project.
      *
      * @return array
      * @throws ChannelException If the project is invalid.
@@ -337,7 +351,7 @@ class Test
         parent::setUp();
 
         if ( !strlen($this->folderName) ) {
-            throw new \RuntimeException('The $this->folderName must be specified before proceeding.');
+            throw new RuntimeException('The $this->folderName must be specified before proceeding.');
         }
     }
 
@@ -354,7 +368,7 @@ class Test
     public function getStuff()
     {
         return function () {
-            throw new RuntimeException("bam!");
+            throw new RuntimeException('bam!');
         };
     }
 }
@@ -372,7 +386,7 @@ class A
         return new class {
             public function c()
             {
-                throw new \Exception();
+                throw new Exception();
             }
         }
     }
@@ -454,19 +468,23 @@ class SomeClass {
             case 5:
                 throw Exception2::b();
             default:
-                throw new Exception3;
+                throw new Exception3();
 
         }
     }
 }
 
 namespace Test\Admin {
+
+    use Different\NameSpaceName\ExceptionFromDifferentNamespace;
+    use ExceptionFromGlobalNamespace;
+
     class NameSpacedClass {
         /**
-         * @throws \ExceptionFromGlobalNamespace
+         * @throws ExceptionFromGlobalNamespace
          */
         public function ExceptionInGlobalNamespace() {
-            throw new \ExceptionFromGlobalNamespace();
+            throw new ExceptionFromGlobalNamespace();
         }
 
         /**
@@ -477,17 +495,17 @@ namespace Test\Admin {
         }
 
         /**
-         * @throws \Test\Admin\ExceptionFromSameNamespace
+         * @throws ExceptionFromSameNamespace
          */
         public function ExceptionInSameNamespaceToo() {
             throw new ExceptionFromSameNamespace();
         }
 
         /**
-         * @throws \Different\NameSpaceName\ExceptionFromDifferentNamespace
+         * @throws ExceptionFromDifferentNamespace
          */
         public function ExceptionInSameNamespaceToo() {
-            throw new \Different\NameSpaceName\ExceptionFromDifferentNamespace();
+            throw new ExceptionFromDifferentNamespace();
         }
     }
 }
@@ -502,7 +520,7 @@ namespace {
         }
 
         /**
-         * @throws \SomeGlobalException
+         * @throws SomeGlobalException
          */
         public function ThrowGlobalExceptionToo() {
             throw new SomeGlobalException();

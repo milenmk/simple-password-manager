@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: AbstractVariableSniff.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * A class to find T_VARIABLE tokens.
  *
@@ -65,10 +84,10 @@ abstract class AbstractVariableSniff extends AbstractScopeSniff
     /**
      * Processes the token in the specified PHP_CodeSniffer\Files\File.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
+     * @param File $phpcsFile                        The PHP_CodeSniffer file where this
      *                                               token was found.
-     * @param int                         $stackPtr  The position where the token was found.
-     * @param int                         $currScope The current scope opener token.
+     * @param int  $stackPtr                         The position where the token was found.
+     * @param int  $currScope                        The current scope opener token.
      *
      * @return void|int Optionally returns a stack pointer. The sniff will not be
      *                  called again on the current file until the returned stack
@@ -150,9 +169,9 @@ abstract class AbstractVariableSniff extends AbstractScopeSniff
     /**
      * Processes the token outside the scope in the file.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
+     * @param File $phpcsFile                        The PHP_CodeSniffer file where this
      *                                               token was found.
-     * @param int                         $stackPtr  The position where the token was found.
+     * @param int  $stackPtr                         The position where the token was found.
      *
      * @return void|int Optionally returns a stack pointer. The sniff will not be
      *                  called again on the current file until the returned stack
@@ -181,9 +200,9 @@ abstract class AbstractVariableSniff extends AbstractScopeSniff
     /**
      * Called to process class member vars.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
+     * @param File $phpcsFile                        The PHP_CodeSniffer file where this
      *                                               token was found.
-     * @param int                         $stackPtr  The position where the token was found.
+     * @param int  $stackPtr                         The position where the token was found.
      *
      * @return void|int Optionally returns a stack pointer. The sniff will not be
      *                  called again on the current file until the returned stack
@@ -196,9 +215,9 @@ abstract class AbstractVariableSniff extends AbstractScopeSniff
     /**
      * Called to process normal member vars.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
+     * @param File $phpcsFile                        The PHP_CodeSniffer file where this
      *                                               token was found.
-     * @param int                         $stackPtr  The position where the token was found.
+     * @param int  $stackPtr                         The position where the token was found.
      *
      * @return void|int Optionally returns a stack pointer. The sniff will not be
      *                  called again on the current file until the returned stack
@@ -214,9 +233,9 @@ abstract class AbstractVariableSniff extends AbstractScopeSniff
      * Note that there may be more than one variable in the string, which will
      * result only in one call for the string or one call per line for heredocs.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
+     * @param File $phpcsFile                        The PHP_CodeSniffer file where this
      *                                               token was found.
-     * @param int                         $stackPtr  The position where the double quoted
+     * @param int  $stackPtr                         The position where the double quoted
      *                                               string was found.
      *
      * @return void|int Optionally returns a stack pointer. The sniff will not be

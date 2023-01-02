@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: FunctionDeclarationArgumentSpacingSniff.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Checks that arguments in function declarations are spaced correctly.
  *
@@ -19,21 +38,21 @@ class FunctionDeclarationArgumentSpacingSniff implements Sniff
     /**
      * How many spaces should surround the equals signs.
      *
-     * @var integer
+     * @var int
      */
     public $equalsSpacing = 0;
 
     /**
      * How many spaces should follow the opening bracket.
      *
-     * @var integer
+     * @var int
      */
     public $requiredSpacesAfterOpen = 0;
 
     /**
      * How many spaces should precede the closing bracket.
      *
-     * @var integer
+     * @var int
      */
     public $requiredSpacesBeforeClose = 0;
 
@@ -57,8 +76,8 @@ class FunctionDeclarationArgumentSpacingSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current token
+     * @param File $phpcsFile                        The file being scanned.
+     * @param int  $stackPtr                         The position of the current token
      *                                               in the stack.
      *
      * @return void
@@ -95,8 +114,8 @@ class FunctionDeclarationArgumentSpacingSniff implements Sniff
     /**
      * Processes the contents of a single set of brackets.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
-     * @param int                         $openBracket The position of the open bracket
+     * @param File $phpcsFile                          The file being scanned.
+     * @param int  $openBracket                        The position of the open bracket
      *                                                 in the stack.
      *
      * @return void

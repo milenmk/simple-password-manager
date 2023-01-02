@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: Cache.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Function for caching between runs.
  *
@@ -9,9 +28,13 @@
 
 namespace PHP_CodeSniffer\Util;
 
+use FilesystemIterator;
 use PHP_CodeSniffer\Autoload;
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Ruleset;
+use RecursiveCallbackFilterIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 class Cache
 {
@@ -34,8 +57,8 @@ class Cache
     /**
      * Loads existing cache data for the run, if any.
      *
-     * @param \PHP_CodeSniffer\Ruleset $ruleset The ruleset used for the run.
-     * @param \PHP_CodeSniffer\Config  $config  The config data for the run.
+     * @param Ruleset $ruleset The ruleset used for the run.
+     * @param Config  $config  The config data for the run.
      *
      * @return void
      */
@@ -95,11 +118,11 @@ class Cache
         // hash. This ensures that core PHPCS changes will also invalidate the cache.
         // Note that we ignore sniffs here, and any files that don't affect
         // the outcome of the run.
-        $di     = new \RecursiveDirectoryIterator(
+        $di     = new RecursiveDirectoryIterator(
             $installDir,
-            (\FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS)
+            (FilesystemIterator::KEY_AS_PATHNAME | FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS)
         );
-        $filter = new \RecursiveCallbackFilterIterator(
+        $filter = new RecursiveCallbackFilterIterator(
             $di,
             function ($file, $key, $iterator) {
                 // Skip non-php files.
@@ -126,7 +149,7 @@ class Cache
             }
         );
 
-        $iterator = new \RecursiveIteratorIterator($filter);
+        $iterator = new RecursiveIteratorIterator($filter);
         foreach ($iterator as $file) {
             if (PHP_CODESNIFFER_VERBOSITY > 1) {
                 echo "\t\t=> core file: $file".PHP_EOL;

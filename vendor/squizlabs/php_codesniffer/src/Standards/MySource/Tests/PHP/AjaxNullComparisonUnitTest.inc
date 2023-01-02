@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: AjaxNullComparisonUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 public static function foo() {
 }
 
@@ -8,19 +26,19 @@ public static function foo() {
  *
  * Returns the new issue id.
  *
- * @param string  $title             Title of the new issue.
- * @param string  $description       The description of the issue.
- * @param string  $reporter          Asset id of the reporter.
- * @param integer $projectid         Id of the project that the issue belongs to.
- * @param array   $tags              Array of tags.
- * @param string  $status            The status of the issue.
- * @param string  $assignedTo        The asset id of the user that the issue is
+ * @param string $title              Title of the new issue.
+ * @param string $description        The description of the issue.
+ * @param string $reporter           Asset id of the reporter.
+ * @param int    $projectid          Id of the project that the issue belongs to.
+ * @param array  $tags               Array of tags.
+ * @param string $status             The status of the issue.
+ * @param string $assignedTo         The asset id of the user that the issue is
  *                                   assigned to.
- * @param string  $reportedDate      If set then this date will be used instead of the
+ * @param string $reportedDate       If set then this date will be used instead of the
  *                                   current date and time.
- * @param integer $reportedMilestone Reported milestone.
+ * @param int    $reportedMilestone  Reported milestone.
  *
- * @return integer
+ * @return int
  * @throws ChannelException If there is an error.
  *
  * @api            write
@@ -145,19 +163,19 @@ public static function addIssue(
  *
  * Returns the new issue id.
  *
- * @param string  $title             Title of the new issue.
- * @param string  $description       The description of the issue.
- * @param string  $reporter          Asset id of the reporter.
- * @param integer $projectid         Id of the project that the issue belongs to.
- * @param array   $tags              Array of tags.
- * @param string  $status            The status of the issue.
- * @param string  $assignedTo        The asset id of the user that the issue is
+ * @param string $title              Title of the new issue.
+ * @param string $description        The description of the issue.
+ * @param string $reporter           Asset id of the reporter.
+ * @param int    $projectid          Id of the project that the issue belongs to.
+ * @param array  $tags               Array of tags.
+ * @param string $status             The status of the issue.
+ * @param string $assignedTo         The asset id of the user that the issue is
  *                                   assigned to.
- * @param string  $reportedDate      If set then this date will be used instead of the
+ * @param string $reportedDate       If set then this date will be used instead of the
  *                                   current date and time.
- * @param integer $reportedMilestone Reported milestone.
+ * @param int    $reportedMilestone  Reported milestone.
  *
- * @return integer
+ * @return int
  * @throws ChannelException If there is an error.
  *
  */

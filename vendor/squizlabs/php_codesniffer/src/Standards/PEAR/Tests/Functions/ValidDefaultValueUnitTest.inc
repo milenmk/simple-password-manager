@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: ValidDefaultValueUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 // No args.
 function myFunction()
 {
@@ -42,45 +60,31 @@ function myFunction(array $arg2=array(), array $arg1)
 
 class myClass
 {
+
     // No args.
-    function myFunction()
-    {
-    }
+    public function myFunction() {}
 
     // No default args.
-    function myFunction($arg1)
-    {
-    }
+    public function myFunction($arg1) {}
 
     // Valid
-    function myFunction($arg1, $arg2='hello')
-    {
-    }
+    public function myFunction($arg1, $arg2 = 'hello') {}
 
     // Valid with lots of args
-    function myFunction($arg1, $arg2, $arg3, $arg4='hello', $arg5=array(), $arg6='hello')
-    {
-    }
+    public function myFunction($arg1, $arg2, $arg3, $arg4 = 'hello', $arg5 = [], $arg6 = 'hello') {}
 
     // Valid type hints
-    function myFunction(array $arg1, array $arg2=array())
-    {
-    }
+    public function myFunction(array $arg1, array $arg2 = []) {}
 
     // Invalid
-    function myFunction($arg2='hello', $arg1)
-    {
-    }
+    public function myFunction($arg2 = 'hello', $arg1) {}
 
     // Invalid with lots of args
-    function myFunction($arg1, $arg2, $arg3, $arg4='hello', $arg5, $arg6='hello')
-    {
-    }
+    public function myFunction($arg1, $arg2, $arg3, $arg4 = 'hello', $arg5, $arg6 = 'hello') {}
 
     // Invalid type hints
-    function myFunction(array $arg2=array(), array $arg1)
-    {
-    }
+    public function myFunction(array $arg2 = [], array $arg1) {}
+
 }
 
 function myFunc($req, $opt=null, ...$params) {}

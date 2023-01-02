@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: StableCommentWhitespaceWinTest.php
+ *  Last Modified: 3.01.23 г., 0:07 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Tests the comment tokenization with Windows line endings.
  *
@@ -18,7 +37,6 @@ use PHP_CodeSniffer\Util\Tokens;
 class StableCommentWhitespaceWinTest extends AbstractMethodUnitTest
 {
 
-
     /**
      * Test that comment tokenization with new lines at the end of the comment is stable.
      *
@@ -32,7 +50,8 @@ class StableCommentWhitespaceWinTest extends AbstractMethodUnitTest
      */
     public function testCommentTokenization($testMarker, $expectedTokens)
     {
-        $tokens  = self::$phpcsFile->getTokens();
+
+        $tokens = self::$phpcsFile->getTokens();
         $comment = $this->getTargetToken($testMarker, Tokens::$commentTokens);
 
         foreach ($expectedTokens as $key => $tokenInfo) {
@@ -42,19 +61,18 @@ class StableCommentWhitespaceWinTest extends AbstractMethodUnitTest
 
             ++$comment;
         }
-
     }//end testCommentTokenization()
-
 
     /**
      * Data provider.
      *
+     * @return array
      * @see testCommentTokenization()
      *
-     * @return array
      */
     public function dataCommentTokenization()
     {
+
         return [
             [
                 '/* testSingleLineSlashComment */',
@@ -360,8 +378,6 @@ class StableCommentWhitespaceWinTest extends AbstractMethodUnitTest
                 ],
             ],
         ];
-
     }//end dataCommentTokenization()
-
 
 }//end class

@@ -1,3 +1,9 @@
+## v2.2.0 [Released 02.01.2023]
+
+* Install pages now use twig templates
+* Style fixes
+* Minor bug fixes
+
 ## v2.1.0 [Released 31.12.2022]
 
 * [NEW] template HERO added
@@ -16,7 +22,9 @@
 * [NEW] Improved Sys log for errors and debug
 
 ## v 1.0.1
+
 * minor style fixes
 
 ## v 1.0.0
+
 * Initial version [Released 27.12.2022]

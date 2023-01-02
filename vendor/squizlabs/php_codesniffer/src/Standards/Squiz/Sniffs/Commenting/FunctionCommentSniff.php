@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: FunctionCommentSniff.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Parses and verifies the doc comments for functions.
  *
@@ -20,14 +39,14 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
     /**
      * Whether to skip inheritdoc comments.
      *
-     * @var boolean
+     * @var bool
      */
     public $skipIfInheritdoc = false;
 
     /**
      * The current PHP version.
      *
-     * @var integer
+     * @var int
      */
     private $phpVersion = null;
 
@@ -35,10 +54,10 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
     /**
      * Process the return comment of this function comment.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile    The file being scanned.
-     * @param int                         $stackPtr     The position of the current token
+     * @param File $phpcsFile                           The file being scanned.
+     * @param int  $stackPtr                            The position of the current token
      *                                                  in the stack passed in $tokens.
-     * @param int                         $commentStart The position in the stack where the comment started.
+     * @param int  $commentStart                        The position in the stack where the comment started.
      *
      * @return void
      */
@@ -192,10 +211,10 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
     /**
      * Process any throw tags that this function comment has.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile    The file being scanned.
-     * @param int                         $stackPtr     The position of the current token
+     * @param File $phpcsFile                           The file being scanned.
+     * @param int  $stackPtr                            The position of the current token
      *                                                  in the stack passed in $tokens.
-     * @param int                         $commentStart The position in the stack where the comment started.
+     * @param int  $commentStart                        The position in the stack where the comment started.
      *
      * @return void
      */
@@ -268,10 +287,10 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
     /**
      * Process the function parameter comments.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile    The file being scanned.
-     * @param int                         $stackPtr     The position of the current token
+     * @param File $phpcsFile                           The file being scanned.
+     * @param int  $stackPtr                            The position of the current token
      *                                                  in the stack passed in $tokens.
-     * @param int                         $commentStart The position in the stack where the comment started.
+     * @param int  $commentStart                        The position in the stack where the comment started.
      *
      * @return void
      */
@@ -614,10 +633,10 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
     /**
      * Check the spacing after the type of a parameter.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param array                       $param     The parameter to be checked.
-     * @param int                         $maxType   The maxlength of the longest parameter type.
-     * @param int                         $spacing   The number of spaces to add after the type.
+     * @param File  $phpcsFile The file being scanned.
+     * @param array $param     The parameter to be checked.
+     * @param int   $maxType   The maxlength of the longest parameter type.
+     * @param int   $spacing   The number of spaces to add after the type.
      *
      * @return void
      */
@@ -673,10 +692,10 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
     /**
      * Check the spacing after the name of a parameter.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param array                       $param     The parameter to be checked.
-     * @param int                         $maxVar    The maxlength of the longest parameter name.
-     * @param int                         $spacing   The number of spaces to add after the type.
+     * @param File  $phpcsFile The file being scanned.
+     * @param array $param     The parameter to be checked.
+     * @param int   $maxVar    The maxlength of the longest parameter name.
+     * @param int   $spacing   The number of spaces to add after the type.
      *
      * @return void
      */
@@ -732,12 +751,12 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
     /**
      * Determines whether the whole comment is an inheritdoc comment.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile    The file being scanned.
-     * @param int                         $stackPtr     The position of the current token
+     * @param File $phpcsFile                           The file being scanned.
+     * @param int  $stackPtr                            The position of the current token
      *                                                  in the stack passed in $tokens.
-     * @param int                         $commentStart The position in the stack where the comment started.
+     * @param int  $commentStart                        The position in the stack where the comment started.
      *
-     * @return boolean TRUE if the docblock contains only {@inheritdoc} (case-insensitive).
+     * @return bool TRUE if the docblock contains only {@inheritdoc} (case-insensitive).
      */
     protected function checkInheritdoc(File $phpcsFile, $stackPtr, $commentStart)
     {

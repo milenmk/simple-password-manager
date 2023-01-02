@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: UseDeclarationUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 namespace Vendor\Package;
 
 use Vendor\Package\FirstTrait;
@@ -27,7 +46,8 @@ class ClassName4
 {
 
     use FirstTrait; use SecondTrait;
-    use FirstTrait, SecondTrait;
+    use FirstTrait;
+    use SecondTrait;
 }
 
 class ClassName5
@@ -45,36 +65,26 @@ class ClassName6
 
 class ClassName7
 {
-    use A, B, C {
-        B::smallTalk insteadof A;
-        A::bigTalk insteadof C;
-        C::mediumTalk as FooBar;
-    }
+
+    use A;
+    use B;
+    use C;
 }
 
 class ClassName8
 {
-    use A ,  B,
-    C
-    {
 
-        B::smallTalk  insteadof A;
-        A::bigTalk
-            insteadof  C ; C::mediumTalk as  FooBar;
-
-    }
+    use A;
+    use B;
+    use C;
 }
 
 class ClassName9
 {
-    use A, B, C {
-        B::smallTalk insteadof A; /* cant fix */ A::bigTalk insteadof C;
-        B::smallTalk  // phpcs:ignore Standard.Category.Sniff
-        insteadof     // phpcs:ignore Standard.Category.Sniff
-        A;
-        C::mediumTalk // phpcs:ignore Standard.Category.Sniff
-        as FooBar;
-    }
+
+    use A;
+    use B;
+    use C;
 }
 
 class ClassName10
@@ -162,9 +172,10 @@ class MyExample
            // body
         };
     }
-    use A, B, C {
-        B::smallTalk insteadof A;
-    }
+
+    use A;
+    use B;
+    use C;
 
     // comment here
     use Trait3;

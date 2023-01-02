@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: SwitchDeclarationSniff.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Ensures all switch statements are defined correctly.
  *
@@ -19,7 +38,7 @@ class SwitchDeclarationSniff implements Sniff
     /**
      * The number of spaces code should be indented.
      *
-     * @var integer
+     * @var int
      */
     public $indent = 4;
 
@@ -39,8 +58,8 @@ class SwitchDeclarationSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current token in the
+     * @param File $phpcsFile                        The file being scanned.
+     * @param int  $stackPtr                         The position of the current token in the
      *                                               stack passed in $tokens.
      *
      * @return void
@@ -208,9 +227,9 @@ class SwitchDeclarationSniff implements Sniff
      *
      * Note that nested switches are ignored.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position to start looking at.
-     * @param int                         $end       The position to stop looking at.
+     * @param File $phpcsFile The file being scanned.
+     * @param int  $stackPtr  The position to start looking at.
+     * @param int  $end       The position to stop looking at.
      *
      * @return int|false
      */
@@ -237,9 +256,9 @@ class SwitchDeclarationSniff implements Sniff
      *
      * Returns false if no terminating statement was found.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position to start looking at.
-     * @param int                         $end       The position to stop looking at.
+     * @param File $phpcsFile The file being scanned.
+     * @param int  $stackPtr  The position to start looking at.
+     * @param int  $end       The position to stop looking at.
      *
      * @return int|false
      */

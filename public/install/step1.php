@@ -1,14 +1,15 @@
 <?php
+
 /**
  *
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: step1.php
- *  Last Modified: 2.01.23 г., 1:26 ч.
+ *  Last Modified: 2.01.23 г., 22:18 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
- * @version       2.1.1
+ * @version       2.2.0
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+
@@ -17,195 +18,210 @@
  *
  */
 
-/** @noinspection LongLine */
+/**
+ * \file        step1.php
+ * \ingroup     Password Manager
+ * \brief       Configure application URL and database connection and then check for errors
+ *              If no errors, create database and database user if they do not exist
+ *              Write info on the config file
+ */
 
 declare(strict_types = 1);
 
-session_start();
+use PasswordManager\PassManDb;
 
-/**
- * \file        install/step1.php
+try {
+    include_once('inc.php');
+}
+catch (Exception $e) {
+    $error = $e->getMessage();
+    print 'File "inc.php" not found!';
+    die();
+}
+
+//Check for lock file
+$lockfile = '../../docs/install.lock';
+if (file_exists($lockfile)) {
+    $lockerror = 1;
+}
+
+//Check if install is permitted. No direct access to this page is allowed
+$url_query = $_SERVER['QUERY_STRING'];
+parse_str($url_query, $params);
+if (strcmp($params['checks'], 'ok') !== 0 || strcmp($params['allowinstall'], 'yes') !== 0) {
+    $installerror = 1;
+}
+
+/*
+ * Actions
  */
 
-?>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head><title>Install</title>
-        <meta charset="UTF-8">
-        <meta name="robots" content="noindex,nofollow">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="blacktiehost.com">
-        <?php
-        $favicon = '../themes/default/img/favicon.png';
-        print '<link rel="shortcut icon" type="image/x-icon" href="' . $favicon . '"/>' . "\n";
+if ($_GET['action'] == 'check_connection' || $_POST['action'] == 'check_connection') {
+    //var_dump($_POST);
 
-        $themepathcss = '../themes/default/css';
-        $themeuricss = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['CONTEXT_PREFIX'] . '/themes/default/css';
-        foreach (glob($themepathcss . '/*.css') as $css) {
-            $file = str_replace($themepathcss, $themeuricss, $css);
-            print '<link type="text/css" rel="stylesheet" href="' . $file . '">' . "\n";
+    $error = 0;
+    $dberror = '';
+
+    $main_url_root = $_POST['main_url_root'];
+    $main_app_root = $_POST['main_app_root'];
+    $main_document_root = $_POST['main_document_root'];
+    $db_host = $_POST['db_host'];
+    $db_port = $_POST['db_port'];
+    $db_prefix = $_POST['db_prefix'];
+    $db_name = $_POST['db_name'];
+    $db_user = $_POST['db_user'];
+    $db_pass = $_POST['db_pass'];
+    $db_character_set = $_POST['db_character_set'];
+    $db_collation = $_POST['db_collation'];
+    $application_title = $_POST['application_title'];
+    $create_database = $_POST['create_database'];
+    $root_db_user = $_POST['root_db_user'];
+    $root_db_pass = $_POST['root_db_pass'];
+
+    if (strlen($db_prefix) > 5) {
+        $error = 'PrefixError';
+    }
+
+    //If no error, try to connect to database
+    if (!$error) {
+        //Try to connect to server without database name set
+        $conn = new PassManDb($db_host, $db_user, $db_pass, '', (int)$db_port);
+
+        // If connection error, show it
+        if ($conn->error) {
+            $dberror = $conn->error;
         }
 
-        print '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>' . "\n";
-
-        print "</head>\n";
-
-        $error = '';
-
-        $lockerror = '';
-        $lockfile = '../../docs/install.lock';
-
-        if (file_exists($lockfile)) {
-            $lockerror = 'Install pages have been disabled for security (by the existence of a lock file <strong>install.lock</strong> in the docs directory).<br>';
-            $lockerror .= 'If you always reach this page, you must remove install.lock file manually.<br>';
-            $error++;
+        // If no error, user exists try connecting to database with database name set
+        if (!$db->error) {
+            $res = $conn->selectDb($db_host, $db_user, $db_pass, $db_name, $db_character_set, $db_collation, $db_port);
         }
 
-        if (!$error || !$lockerror) {
-            $main_url_root = $_SESSION['main_url_root'];
-            $main_document_root = $_SESSION['main_document_root'];
-            $server = $_SESSION['db_host'];
-            $port = $_SESSION['db_port'];
-            $db_prefix = $_SESSION['db_prefix'];
-            $db = $_SESSION['db_name'];
-            $username = $_SESSION['db_user'];
-            $password = $_SESSION['db_pass'];
-            $charset = $_SESSION['db_character_set'];
-            $collation = $_SESSION['db_collation'];
-            $create_db = $_SESSION['create_database'];
-            $root_user = $_SESSION['root_db_user'];
-            $root_password = $_SESSION['root_db_pass'];
-            $application_title = $_SESSION['application_title'];
-
-            $file = '../conf/conf.php';
-            if (!file_exists($file)) {
-                touch($file);
+        // If result is < 1, that means that the table is not existing OR the user doesn't have rights to access it.
+        if ($res < 1 && $create_database == 1) {
+            //Try connection with root user if specified
+            $res2 = $conn->selectDb($db_host, $root_db_user, $root_db_pass, '', $db_character_set, $db_collation, $db_port);
+            if ($res2 < 1) {
+                $dberror = $conn->error;
             } else {
-                $error = 'Config file already exists';
-                $_SESSION['error'] = $error;
-                header('Location: ../login.php');
-            }
-
-            if (!$error || !$lockerror) {
-                $new_file = fopen($file, 'w') or die("can't open/create config file");
-
-                fputs($new_file, '<?php' . "\n");
-                fputs($new_file, "\n");
-                fputs($new_file, 'declare(strict_types = 1);' . "\n");
-                fputs($new_file, "\n");
-                fputs($new_file, '/**' . "\n");
-                fputs($new_file, ' * \file        conf/conf.php' . "\n");
-                fputs($new_file, ' */' . "\n");
-                fputs($new_file, "\n");
-
-                fputs($new_file, '$main_url_root=\'' . $main_url_root . '\';');
-                fputs($new_file, "\n");
-                fputs($new_file, '$main_document_root=\'' . $main_document_root . '\';');
-                fputs($new_file, "\n");
-
-                fputs($new_file, '$db_host=\'' . $server . '\';');
-                fputs($new_file, "\n");
-
-                fputs($new_file, '$db_port=\'' . $port . '\';');
-                fputs($new_file, "\n");
-
-                fputs($new_file, '$db_name=\'' . $db . '\';');
-                fputs($new_file, "\n");
-
-                fputs($new_file, '$db_prefix=\'' . $db_prefix . '\';');
-                fputs($new_file, "\n");
-
-                fputs($new_file, '$db_user=\'' . $username . '\';');
-                fputs($new_file, "\n");
-                fputs($new_file, '$db_pass=\'' . $password . '\';');
-                fputs($new_file, "\n");
-
-                fputs($new_file, '$main_db_character_set=\'' . $charset . '\';');
-                fputs($new_file, "\n");
-
-                fputs($new_file, '$main_db_collation=\'' . $collation . '\';');
-                fputs($new_file, "\n");
-
-                fputs($new_file, '$main_application_title=\'' . $application_title . '\';');
-                fputs($new_file, "\n");
-
-                fputs($new_file, 'define(\'MAIN_DOCUMENT_ROOT\', $main_document_root);');
-                fputs($new_file, "\n");
-
-                fputs($new_file, 'define(\'MAIN_URL_ROOT\', $main_url_root);');
-                fputs($new_file, "\n");
-
-                fputs($new_file, 'define(\'MAIN_DB_PREFIX\', $db_prefix);');
-                fputs($new_file, "\n");
-
-                fputs($new_file, 'define(\'MAIN_APPLICATION_TITLE\', $main_application_title);');
-                fputs($new_file, "\n");
-
-                fclose($new_file);
-
-                if (isset($_SERVER['WINDIR'])) {
-                    // Host OS is Windows
-                    $file = str_replace('/', '\\', $file);
-                    unset($res);
-                    exec('attrib +R ' . escapeshellarg($file), $res);
-                    $res = $res[0];
-                } else {
-                    // Host OS is *nix
-                    $res = chmod($file, 0444);
+                if (!$conn->db->inTransaction()) {
+                    $conn->db->beginTransaction();
                 }
 
-                header('Location: step2.php');
+                $new_db_name = strip_tags($db_name);
+                $new_db_character_set = strip_tags($db_character_set);
+                $new_db_collation = strip_tags($db_collation);
+                $new_db_user = strip_tags($db_user);
+                $new_db_pass = strip_tags($db_pass);
+
+                $new_db_name2 = htmlspecialchars($new_db_name, ENT_QUOTES);
+                $new_db_character_set2 = htmlspecialchars($new_db_character_set, ENT_QUOTES);
+                $new_db_collation2 = htmlspecialchars($new_db_collation, ENT_QUOTES);
+                $new_db_user2 = htmlspecialchars($new_db_user, ENT_QUOTES);
+                $new_db_user2 = htmlspecialchars($new_db_pass, ENT_QUOTES);
+
+                //Create the database and the user if they do not exist
+                $conn->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                $conn->db->exec(
+                    "CREATE DATABASE IF NOT EXISTS $new_db_name2 DEFAULT CHARACTER SET $new_db_character_set2 COLLATE $new_db_collation2;
+                CREATE USER IF NOT EXISTS $new_db_user2@'localhost' IDENTIFIED BY '$new_db_pass2';
+                GRANT ALL ON $new_db_name2.* TO $new_db_user2@'localhost';
+                FLUSH PRIVILEGES;"
+                );
             }
+        } elseif ($res < 1 && empty($create_database)) {
+            $dberror = $conn->error . '. ' . $langs->trans('ConnError1');
         }
 
-        ?>
-    <body class="d-flex vh-100 flex-column">
-    <div class="flex-grow-1">
-        <nav class="navbar navbar-expand bg-body-tertiary">
-            <div class="container">
-                <a class="navbar-brand" href="#">Install</a>
-            </div>
-        </nav>
-        <div class="container mt-5">
-            <?php
-            if ($error && !is_int($error) && !is_numeric($error)) {
-                print '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
-                print '<strong>' . $error . '</strong>';
-                print '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-                print '</div>';
-            }
-            if ($lockerror) {
-                print '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
-                print '<strong>' . $lockerror . '</strong>';
-                print '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-                print '</div>';
-                print '</div>';
-                print '</div>';
-                print '<footer class="text-center text-lg-start bg-light text-muted mt-5">';
-                print '<div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">&copy; 2020 - 2022 All rights reserved.<a class="text-reset fw-bold" href="https://blacktiehost.com/">BlackTieHost.com</a>';
-                print '</div>';
-                print '</footer>';
-                print '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>';
-                print '</body>';
-                print '</html>';
-                exit();
-            }
-            ?>
-            <div class="alert alert-warning" role="alert">
-                DO NOT close this windows. When config file creation is completed you will be redirected automatically.
-            </div>
-        </div>
-    </div>
-    <footer class="text-center text-lg-start bg-light text-muted mt-5">
-        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-            &copy; 2020 - 2022 All rights reserved.
-            <a class="text-reset fw-bold" href="https://blacktiehost.com/">BlackTieHost.com</a>
-        </div>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
-            crossorigin="anonymous"></script>
-    </body>
-    </html>
+        //No errors, database is present, user has rights.
+        // Write data to config file and continue.
+        if (!$db->error) {
+            //Root user can connect. Write data to config file and continue.
+            $conffile = '../../conf/conf.php';
+            $new_file = fopen($conffile, 'w');
 
-<?php
-$conn = null;
+            fputs($new_file, '<?php' . "\n");
+            fputs($new_file, "\n");
+            fputs($new_file, 'declare(strict_types = 1);' . "\n");
+            fputs($new_file, "\n");
+            fputs($new_file, '/**' . "\n");
+            fputs($new_file, ' * \file        conf/conf.php' . "\n");
+            fputs($new_file, ' */' . "\n");
+            fputs($new_file, "\n");
+
+            fputs($new_file, '$main_url_root=\'' . $main_url_root . '\';');
+            fputs($new_file, "\n");
+            fputs($new_file, '$main_app_root=\'' . $main_app_root . '\';');
+            fputs($new_file, "\n");
+            fputs($new_file, '$main_document_root=\'' . $main_document_root . '\';');
+            fputs($new_file, "\n");
+
+            fputs($new_file, '$db_host=\'' . $db_host . '\';');
+            fputs($new_file, "\n");
+
+            fputs($new_file, '$db_port=\'' . $db_port . '\';');
+            fputs($new_file, "\n");
+
+            fputs($new_file, '$db_name=\'' . $db_name . '\';');
+            fputs($new_file, "\n");
+
+            fputs($new_file, '$db_prefix=\'' . $db_prefix . '\';');
+            fputs($new_file, "\n");
+
+            fputs($new_file, '$db_user=\'' . $db_user . '\';');
+            fputs($new_file, "\n");
+            fputs($new_file, '$db_pass=\'' . $db_pass . '\';');
+            fputs($new_file, "\n");
+
+            fputs($new_file, '$main_db_character_set=\'' . $db_character_set . '\';');
+            fputs($new_file, "\n");
+
+            fputs($new_file, '$main_db_collation=\'' . $db_collation . '\';');
+            fputs($new_file, "\n");
+
+            fputs($new_file, '$main_application_title=\'' . $application_title . '\';');
+            fputs($new_file, "\n");
+
+            fclose($new_file);
+
+            $conn = null;
+
+            header('Location: step2.php');
+        }
+        $conn = null;
+    }
+    $conn = null;
+}
+
+/*
+ * View
+ */
+
+print $twig->render(
+    'step1.body.html.twig',
+    [
+        'langs'        => $langs,
+        'main_url'     => PM_INSTALL_MAIN_URL,
+        'root_folder'  => PM_INSTALL_APP_ROOT_FOLDER,
+        'lockerror'    => $lockerror,
+        'installerror' => $installerror,
+        'title'        => $langs->trans('InstallConfigure'),
+        'ses_error'    => $error,
+        'db_error'     => $dberror,
+    ]
+);
+
+if ($lockerror) {
+    print $langs->trans('InstallLockfileError');
+}
+
+print $twig->render(
+    'install.footer.html.twig',
+    [
+        'langs'    => $langs,
+        'main_url' => PM_INSTALL_MAIN_URL,
+        'error'    => $errors,
+        'message'  => $messages,
+    ]
+);

@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: ObjectOperatorIndentSniff.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Checks that object operators are indented correctly.
  *
@@ -18,14 +37,14 @@ class ObjectOperatorIndentSniff implements Sniff
     /**
      * The number of spaces code should be indented.
      *
-     * @var integer
+     * @var int
      */
     public $indent = 4;
 
     /**
      * Indicates whether multilevel indenting is allowed.
      *
-     * @var boolean
+     * @var bool
      */
     public $multilevel = false;
 
@@ -55,8 +74,8 @@ class ObjectOperatorIndentSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile All the tokens found in the document.
-     * @param int                         $stackPtr  The position of the current token
+     * @param File $phpcsFile                        All the tokens found in the document.
+     * @param int  $stackPtr                         The position of the current token
      *                                               in the stack passed in $tokens.
      *
      * @return void

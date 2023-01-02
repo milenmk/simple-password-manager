@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: ControlStructureSpacingUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 if ($something) {
 }
 foreach ($this as $that ) {
@@ -54,7 +73,7 @@ foreach (  $something as $blah => $that  ) {}
 // phpcs:set PSR2.ControlStructures.ControlStructureSpacing requiredSpacesAfterOpen 0
 // phpcs:set PSR2.ControlStructures.ControlStructureSpacing requiredSpacesBeforeClose 0
 
-$binary = b"binary string";
+$binary = b'binary string';
 
 if ($expr1
     && $expr2             ) {

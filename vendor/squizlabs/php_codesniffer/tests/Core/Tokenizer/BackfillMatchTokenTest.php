@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: BackfillMatchTokenTest.php
+ *  Last Modified: 3.01.23 г., 0:07 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Tests the backfilling of the T_MATCH token to PHP < 8.0, as well as the
  * setting of parenthesis/scopes for match control structures across PHP versions.
@@ -16,7 +35,6 @@ use PHP_CodeSniffer\Util\Tokens;
 class BackfillMatchTokenTest extends AbstractMethodUnitTest
 {
 
-
     /**
      * Test tokenization of match expressions.
      *
@@ -30,31 +48,123 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testMatchExpression($testMarker, $openerOffset, $closerOffset, $testContent='match')
+    public function testMatchExpression($testMarker, $openerOffset, $closerOffset, $testContent = 'match')
     {
+
         $tokens = self::$phpcsFile->getTokens();
 
-        $token      = $this->getTargetToken($testMarker, [T_STRING, T_MATCH], $testContent);
+        $token = $this->getTargetToken($testMarker, [T_STRING, T_MATCH], $testContent);
         $tokenArray = $tokens[$token];
 
-        $this->assertSame(T_MATCH, $tokenArray['code'], 'Token tokenized as '.$tokenArray['type'].', not T_MATCH (code)');
-        $this->assertSame('T_MATCH', $tokenArray['type'], 'Token tokenized as '.$tokenArray['type'].', not T_MATCH (type)');
+        $this->assertSame(T_MATCH, $tokenArray['code'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_MATCH (code)');
+        $this->assertSame('T_MATCH', $tokenArray['type'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_MATCH (type)');
 
         $this->scopeTestHelper($token, $openerOffset, $closerOffset);
         $this->parenthesisTestHelper($token);
-
     }//end testMatchExpression()
 
+    /**
+     * Helper function to verify that all scope related array indexes for a control structure
+     * are set correctly.
+     *
+     * @param string $token                The control structure token to check.
+     * @param int    $openerOffset         The expected offset of the scope opener in relation to
+     *                                     the control structure token.
+     * @param int    $closerOffset         The expected offset of the scope closer in relation to
+     *                                     the control structure token.
+     * @param bool   $skipScopeCloserCheck Whether to skip the scope closer check.
+     *                                     This should be set to "true" when testing nested arrow functions,
+     *                                     where the "inner" arrow function shares a scope closer with the
+     *                                     "outer" arrow function, as the 'scope_condition' for the scope closer
+     *                                     of the "inner" arrow function will point to the "outer" arrow function.
+     *
+     * @return void
+     */
+    private function scopeTestHelper($token, $openerOffset, $closerOffset, $skipScopeCloserCheck = false)
+    {
+
+        $tokens = self::$phpcsFile->getTokens();
+        $tokenArray = $tokens[$token];
+        $tokenType = $tokenArray['type'];
+        $expectedScopeOpener = ($token + $openerOffset);
+        $expectedScopeCloser = ($token + $closerOffset);
+
+        $this->assertArrayHasKey('scope_condition', $tokenArray, 'Scope condition is not set');
+        $this->assertArrayHasKey('scope_opener', $tokenArray, 'Scope opener is not set');
+        $this->assertArrayHasKey('scope_closer', $tokenArray, 'Scope closer is not set');
+        $this->assertSame($token, $tokenArray['scope_condition'], 'Scope condition is not the ' . $tokenType . ' token');
+        $this->assertSame($expectedScopeOpener, $tokenArray['scope_opener'], 'Scope opener of the ' . $tokenType . ' token incorrect');
+        $this->assertSame($expectedScopeCloser, $tokenArray['scope_closer'], 'Scope closer of the ' . $tokenType . ' token incorrect');
+
+        $opener = $tokenArray['scope_opener'];
+        $this->assertArrayHasKey('scope_condition', $tokens[$opener], 'Opener scope condition is not set');
+        $this->assertArrayHasKey('scope_opener', $tokens[$opener], 'Opener scope opener is not set');
+        $this->assertArrayHasKey('scope_closer', $tokens[$opener], 'Opener scope closer is not set');
+        $this->assertSame($token, $tokens[$opener]['scope_condition'], 'Opener scope condition is not the ' . $tokenType . ' token');
+        $this->assertSame($expectedScopeOpener, $tokens[$opener]['scope_opener'], $tokenType . ' opener scope opener token incorrect');
+        $this->assertSame($expectedScopeCloser, $tokens[$opener]['scope_closer'], $tokenType . ' opener scope closer token incorrect');
+
+        $closer = $tokenArray['scope_closer'];
+        $this->assertArrayHasKey('scope_condition', $tokens[$closer], 'Closer scope condition is not set');
+        $this->assertArrayHasKey('scope_opener', $tokens[$closer], 'Closer scope opener is not set');
+        $this->assertArrayHasKey('scope_closer', $tokens[$closer], 'Closer scope closer is not set');
+        if ($skipScopeCloserCheck === false) {
+            $this->assertSame($token, $tokens[$closer]['scope_condition'], 'Closer scope condition is not the ' . $tokenType . ' token');
+        }
+
+        $this->assertSame($expectedScopeOpener, $tokens[$closer]['scope_opener'], $tokenType . ' closer scope opener token incorrect');
+        $this->assertSame($expectedScopeCloser, $tokens[$closer]['scope_closer'], $tokenType . ' closer scope closer token incorrect');
+
+        if (($opener + 1) !== $closer) {
+            for ($i = ($opener + 1); $i < $closer; $i++) {
+                $this->assertArrayHasKey(
+                    $token,
+                    $tokens[$i]['conditions'],
+                    $tokenType . ' condition not added for token belonging to the ' . $tokenType . ' structure'
+                );
+            }
+        }
+    }//end dataMatchExpression()
+
+    /**
+     * Helper function to verify that all parenthesis related array indexes for a control structure
+     * token are set correctly.
+     *
+     * @param int $token The position of the control structure token.
+     *
+     * @return void
+     */
+    private function parenthesisTestHelper($token)
+    {
+
+        $tokens = self::$phpcsFile->getTokens();
+        $tokenArray = $tokens[$token];
+        $tokenType = $tokenArray['type'];
+
+        $this->assertArrayHasKey('parenthesis_owner', $tokenArray, 'Parenthesis owner is not set');
+        $this->assertArrayHasKey('parenthesis_opener', $tokenArray, 'Parenthesis opener is not set');
+        $this->assertArrayHasKey('parenthesis_closer', $tokenArray, 'Parenthesis closer is not set');
+        $this->assertSame($token, $tokenArray['parenthesis_owner'], 'Parenthesis owner is not the ' . $tokenType . ' token');
+
+        $opener = $tokenArray['parenthesis_opener'];
+        $this->assertArrayHasKey('parenthesis_owner', $tokens[$opener], 'Opening parenthesis owner is not set');
+        $this->assertSame($token, $tokens[$opener]['parenthesis_owner'], 'Opening parenthesis owner is not the ' . $tokenType . ' token');
+
+        $closer = $tokenArray['parenthesis_closer'];
+        $this->assertArrayHasKey('parenthesis_owner', $tokens[$closer], 'Closing parenthesis owner is not set');
+        $this->assertSame($token, $tokens[$closer]['parenthesis_owner'], 'Closing parenthesis owner is not the ' . $tokenType . ' token');
+    }//end testNotAMatchStructure()
 
     /**
      * Data provider.
      *
+     * @return array
      * @see testMatchExpression()
      *
-     * @return array
      */
     public function dataMatchExpression()
     {
+
         return [
             'simple_match'                              => [
                 '/* testMatchSimple */',
@@ -194,9 +304,7 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
                 40,
             ],
         ];
-
-    }//end dataMatchExpression()
-
+    }//end dataNotAMatchStructure()
 
     /**
      * Verify that "match" keywords which are not match control structures get tokenized as T_STRING
@@ -211,15 +319,16 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testNotAMatchStructure($testMarker, $testContent='match')
+    public function testNotAMatchStructure($testMarker, $testContent = 'match')
     {
+
         $tokens = self::$phpcsFile->getTokens();
 
-        $token      = $this->getTargetToken($testMarker, [T_STRING, T_MATCH], $testContent);
+        $token = $this->getTargetToken($testMarker, [T_STRING, T_MATCH], $testContent);
         $tokenArray = $tokens[$token];
 
-        $this->assertSame(T_STRING, $tokenArray['code'], 'Token tokenized as '.$tokenArray['type'].', not T_STRING (code)');
-        $this->assertSame('T_STRING', $tokenArray['type'], 'Token tokenized as '.$tokenArray['type'].', not T_STRING (type)');
+        $this->assertSame(T_STRING, $tokenArray['code'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_STRING (code)');
+        $this->assertSame('T_STRING', $tokenArray['type'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_STRING (type)');
 
         $this->assertArrayNotHasKey('scope_condition', $tokenArray, 'Scope condition is set');
         $this->assertArrayNotHasKey('scope_opener', $tokenArray, 'Scope opener is set');
@@ -232,19 +341,18 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
         if ($next !== false && $tokens[$next]['code'] === T_OPEN_PARENTHESIS) {
             $this->assertArrayNotHasKey('parenthesis_owner', $tokenArray, 'Parenthesis owner is set for opener after');
         }
-
-    }//end testNotAMatchStructure()
-
+    }//end testSwitchExpression()
 
     /**
      * Data provider.
      *
+     * @return array
      * @see testNotAMatchStructure()
      *
-     * @return array
      */
     public function dataNotAMatchStructure()
     {
+
         return [
             'static_method_call'                   => ['/* testNoMatchStaticMethodCall */'],
             'class_constant_access'                => [
@@ -312,9 +420,7 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
             'unsupported_alternative_syntax'       => ['/* testNoMatchAlternativeSyntax */'],
             'live_coding'                          => ['/* testLiveCoding */'],
         ];
-
-    }//end dataNotAMatchStructure()
-
+    }//end dataSwitchExpression()
 
     /**
      * Verify that the tokenization of switch structures is not affected by the backfill.
@@ -331,23 +437,23 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
      */
     public function testSwitchExpression($testMarker, $openerOffset, $closerOffset)
     {
+
         $token = $this->getTargetToken($testMarker, T_SWITCH);
 
         $this->scopeTestHelper($token, $openerOffset, $closerOffset);
         $this->parenthesisTestHelper($token);
-
-    }//end testSwitchExpression()
-
+    }//end testSwitchCaseVersusMatch()
 
     /**
      * Data provider.
      *
+     * @return array
      * @see testSwitchExpression()
      *
-     * @return array
      */
     public function dataSwitchExpression()
     {
+
         return [
             'switch_containing_match'   => [
                 '/* testSwitchContainingMatch */',
@@ -365,9 +471,7 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
                 63,
             ],
         ];
-
-    }//end dataSwitchExpression()
-
+    }//end dataSwitchCaseVersusMatch()
 
     /**
      * Verify that the tokenization of a switch case/default structure containing a match structure
@@ -385,22 +489,22 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
      */
     public function testSwitchCaseVersusMatch($testMarker, $openerOffset, $closerOffset)
     {
+
         $token = $this->getTargetToken($testMarker, [T_CASE, T_DEFAULT]);
 
         $this->scopeTestHelper($token, $openerOffset, $closerOffset);
-
-    }//end testSwitchCaseVersusMatch()
-
+    }//end scopeTestHelper()
 
     /**
      * Data provider.
      *
+     * @return array
      * @see testSwitchCaseVersusMatch()
      *
-     * @return array
      */
     public function dataSwitchCaseVersusMatch()
     {
+
         return [
             'switch_with_nested_match_case_1'       => [
                 '/* testMatchWithDefaultNestedInSwitchCase1 */',
@@ -428,102 +532,6 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
                 20,
             ],
         ];
-
-    }//end dataSwitchCaseVersusMatch()
-
-
-    /**
-     * Helper function to verify that all scope related array indexes for a control structure
-     * are set correctly.
-     *
-     * @param string $token                The control structure token to check.
-     * @param int    $openerOffset         The expected offset of the scope opener in relation to
-     *                                     the control structure token.
-     * @param int    $closerOffset         The expected offset of the scope closer in relation to
-     *                                     the control structure token.
-     * @param bool   $skipScopeCloserCheck Whether to skip the scope closer check.
-     *                                     This should be set to "true" when testing nested arrow functions,
-     *                                     where the "inner" arrow function shares a scope closer with the
-     *                                     "outer" arrow function, as the 'scope_condition' for the scope closer
-     *                                     of the "inner" arrow function will point to the "outer" arrow function.
-     *
-     * @return void
-     */
-    private function scopeTestHelper($token, $openerOffset, $closerOffset, $skipScopeCloserCheck=false)
-    {
-        $tokens     = self::$phpcsFile->getTokens();
-        $tokenArray = $tokens[$token];
-        $tokenType  = $tokenArray['type'];
-        $expectedScopeOpener = ($token + $openerOffset);
-        $expectedScopeCloser = ($token + $closerOffset);
-
-        $this->assertArrayHasKey('scope_condition', $tokenArray, 'Scope condition is not set');
-        $this->assertArrayHasKey('scope_opener', $tokenArray, 'Scope opener is not set');
-        $this->assertArrayHasKey('scope_closer', $tokenArray, 'Scope closer is not set');
-        $this->assertSame($token, $tokenArray['scope_condition'], 'Scope condition is not the '.$tokenType.' token');
-        $this->assertSame($expectedScopeOpener, $tokenArray['scope_opener'], 'Scope opener of the '.$tokenType.' token incorrect');
-        $this->assertSame($expectedScopeCloser, $tokenArray['scope_closer'], 'Scope closer of the '.$tokenType.' token incorrect');
-
-        $opener = $tokenArray['scope_opener'];
-        $this->assertArrayHasKey('scope_condition', $tokens[$opener], 'Opener scope condition is not set');
-        $this->assertArrayHasKey('scope_opener', $tokens[$opener], 'Opener scope opener is not set');
-        $this->assertArrayHasKey('scope_closer', $tokens[$opener], 'Opener scope closer is not set');
-        $this->assertSame($token, $tokens[$opener]['scope_condition'], 'Opener scope condition is not the '.$tokenType.' token');
-        $this->assertSame($expectedScopeOpener, $tokens[$opener]['scope_opener'], $tokenType.' opener scope opener token incorrect');
-        $this->assertSame($expectedScopeCloser, $tokens[$opener]['scope_closer'], $tokenType.' opener scope closer token incorrect');
-
-        $closer = $tokenArray['scope_closer'];
-        $this->assertArrayHasKey('scope_condition', $tokens[$closer], 'Closer scope condition is not set');
-        $this->assertArrayHasKey('scope_opener', $tokens[$closer], 'Closer scope opener is not set');
-        $this->assertArrayHasKey('scope_closer', $tokens[$closer], 'Closer scope closer is not set');
-        if ($skipScopeCloserCheck === false) {
-            $this->assertSame($token, $tokens[$closer]['scope_condition'], 'Closer scope condition is not the '.$tokenType.' token');
-        }
-
-        $this->assertSame($expectedScopeOpener, $tokens[$closer]['scope_opener'], $tokenType.' closer scope opener token incorrect');
-        $this->assertSame($expectedScopeCloser, $tokens[$closer]['scope_closer'], $tokenType.' closer scope closer token incorrect');
-
-        if (($opener + 1) !== $closer) {
-            for ($i = ($opener + 1); $i < $closer; $i++) {
-                $this->assertArrayHasKey(
-                    $token,
-                    $tokens[$i]['conditions'],
-                    $tokenType.' condition not added for token belonging to the '.$tokenType.' structure'
-                );
-            }
-        }
-
-    }//end scopeTestHelper()
-
-
-    /**
-     * Helper function to verify that all parenthesis related array indexes for a control structure
-     * token are set correctly.
-     *
-     * @param int $token The position of the control structure token.
-     *
-     * @return void
-     */
-    private function parenthesisTestHelper($token)
-    {
-        $tokens     = self::$phpcsFile->getTokens();
-        $tokenArray = $tokens[$token];
-        $tokenType  = $tokenArray['type'];
-
-        $this->assertArrayHasKey('parenthesis_owner', $tokenArray, 'Parenthesis owner is not set');
-        $this->assertArrayHasKey('parenthesis_opener', $tokenArray, 'Parenthesis opener is not set');
-        $this->assertArrayHasKey('parenthesis_closer', $tokenArray, 'Parenthesis closer is not set');
-        $this->assertSame($token, $tokenArray['parenthesis_owner'], 'Parenthesis owner is not the '.$tokenType.' token');
-
-        $opener = $tokenArray['parenthesis_opener'];
-        $this->assertArrayHasKey('parenthesis_owner', $tokens[$opener], 'Opening parenthesis owner is not set');
-        $this->assertSame($token, $tokens[$opener]['parenthesis_owner'], 'Opening parenthesis owner is not the '.$tokenType.' token');
-
-        $closer = $tokenArray['parenthesis_closer'];
-        $this->assertArrayHasKey('parenthesis_owner', $tokens[$closer], 'Closing parenthesis owner is not set');
-        $this->assertSame($token, $tokens[$closer]['parenthesis_owner'], 'Closing parenthesis owner is not the '.$tokenType.' token');
-
     }//end parenthesisTestHelper()
-
 
 }//end class

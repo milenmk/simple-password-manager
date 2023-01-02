@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: ShortArrayTest.php
+ *  Last Modified: 3.01.23 г., 0:06 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Tests the conversion of square bracket tokens to short array tokens.
  *
@@ -14,7 +33,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class ShortArrayTest extends AbstractMethodUnitTest
 {
 
-
     /**
      * Test that real square brackets are still tokenized as square brackets.
      *
@@ -27,6 +45,7 @@ class ShortArrayTest extends AbstractMethodUnitTest
      */
     public function testSquareBrackets($testMarker)
     {
+
         $tokens = self::$phpcsFile->getTokens();
 
         $opener = $this->getTargetToken($testMarker, [T_OPEN_SQUARE_BRACKET, T_OPEN_SHORT_ARRAY]);
@@ -38,19 +57,18 @@ class ShortArrayTest extends AbstractMethodUnitTest
             $this->assertSame(T_CLOSE_SQUARE_BRACKET, $tokens[$closer]['code']);
             $this->assertSame('T_CLOSE_SQUARE_BRACKET', $tokens[$closer]['type']);
         }
-
     }//end testSquareBrackets()
-
 
     /**
      * Data provider.
      *
+     * @return array
      * @see testSquareBrackets()
      *
-     * @return array
      */
     public function dataSquareBrackets()
     {
+
         return [
             ['/* testArrayAccess1 */'],
             ['/* testArrayAccess2 */'],
@@ -76,9 +94,7 @@ class ShortArrayTest extends AbstractMethodUnitTest
             ['/* testInterpolatedStringDereferencing */'],
             ['/* testLiveCoding */'],
         ];
-
     }//end dataSquareBrackets()
-
 
     /**
      * Test that short arrays and short lists are still tokenized as short arrays.
@@ -92,6 +108,7 @@ class ShortArrayTest extends AbstractMethodUnitTest
      */
     public function testShortArrays($testMarker)
     {
+
         $tokens = self::$phpcsFile->getTokens();
 
         $opener = $this->getTargetToken($testMarker, [T_OPEN_SQUARE_BRACKET, T_OPEN_SHORT_ARRAY]);
@@ -103,19 +120,18 @@ class ShortArrayTest extends AbstractMethodUnitTest
             $this->assertSame(T_CLOSE_SHORT_ARRAY, $tokens[$closer]['code']);
             $this->assertSame('T_CLOSE_SHORT_ARRAY', $tokens[$closer]['type']);
         }
-
     }//end testShortArrays()
-
 
     /**
      * Data provider.
      *
+     * @return array
      * @see testShortArrays()
      *
-     * @return array
      */
     public function dataShortArrays()
     {
+
         return [
             ['/* testShortArrayDeclarationEmpty */'],
             ['/* testShortArrayDeclarationWithOneValue */'],
@@ -125,8 +141,6 @@ class ShortArrayTest extends AbstractMethodUnitTest
             ['/* testNestedListDeclaration */'],
             ['/* testArrayWithinFunctionCall */'],
         ];
-
     }//end dataShortArrays()
-
 
 }//end class

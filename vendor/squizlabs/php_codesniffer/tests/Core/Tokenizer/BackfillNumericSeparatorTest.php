@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: BackfillNumericSeparatorTest.php
+ *  Last Modified: 3.01.23 г., 0:07 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Tests the backfilling of numeric separators to PHP < 7.4.
  *
@@ -14,7 +33,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
 {
 
-
     /**
      * Test that numbers using numeric separators are tokenized correctly.
      *
@@ -27,25 +45,25 @@ class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
      */
     public function testBackfill($testData)
     {
+
         $tokens = self::$phpcsFile->getTokens();
         $number = $this->getTargetToken($testData['marker'], [T_LNUMBER, T_DNUMBER]);
 
         $this->assertSame(constant($testData['type']), $tokens[$number]['code']);
         $this->assertSame($testData['type'], $tokens[$number]['type']);
         $this->assertSame($testData['value'], $tokens[$number]['content']);
-
     }//end testBackfill()
-
 
     /**
      * Data provider.
      *
+     * @return array
      * @see testBackfill()
      *
-     * @return array
      */
     public function dataTestBackfill()
     {
+
         $testHexType = 'T_LNUMBER';
         if (PHP_INT_MAX < 0xCAFEF00D) {
             $testHexType = 'T_DNUMBER';
@@ -154,9 +172,7 @@ class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
                 ],
             ],
         ];
-
     }//end dataTestBackfill()
-
 
     /**
      * Test that numbers using numeric separators which are considered parse errors and/or
@@ -172,6 +188,7 @@ class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
      */
     public function testNoBackfill($testMarker, $expectedTokens)
     {
+
         $tokens = self::$phpcsFile->getTokens();
         $number = $this->getTargetToken($testMarker, [T_LNUMBER, T_DNUMBER]);
 
@@ -180,19 +197,18 @@ class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
             $this->assertSame($expectedToken['code'], $tokens[$i]['code']);
             $this->assertSame($expectedToken['content'], $tokens[$i]['content']);
         }
-
     }//end testNoBackfill()
-
 
     /**
      * Data provider.
      *
+     * @return array
      * @see testBackfill()
      *
-     * @return array
      */
     public function dataNoBackfill()
     {
+
         return [
             [
                 '/* testInvalid1 */',
@@ -413,8 +429,6 @@ class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
                 ],
             ],
         ];
-
     }//end dataNoBackfill()
-
 
 }//end class

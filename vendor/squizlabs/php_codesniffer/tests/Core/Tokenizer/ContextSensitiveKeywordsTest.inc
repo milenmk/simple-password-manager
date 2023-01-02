@@ -1,119 +1,154 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: ContextSensitiveKeywordsTest.inc
+ *  Last Modified: 3.01.23 г., 0:06 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /* testNamespaceIsKeyword */
 namespace SomeNamespace;
 
 class ContextSensitiveKeywords
 {
     const /* testAbstract */ ABSTRACT = 'ABSTRACT';
-    const /* testArray */ ARRAY = 'ARRAY';
-    const /* testAs */ AS = 'AS';
-    const /* testBreak */ BREAK = 'BREAK';
-    const /* testCallable */ CALLABLE = 'CALLABLE';
-    const /* testCase */ CASE = 'CASE';
-    const /* testCatch */ CATCH = 'CATCH';
-    const /* testClass */ CLASS = 'CLASS';
-    const /* testClone */ CLONE = 'CLONE';
-    const /* testConst */ CONST = 'CONST';
-    const /* testContinue */ CONTINUE = 'CONTINUE';
-    const /* testDeclare */ DECLARE = 'DECLARE';
-    const /* testDefault */ DEFAULT = 'DEFAULT';
-    const /* testDo */ DO = 'DO';
-    const /* testEcho */ ECHO = 'ECHO';
-    const /* testElse */ ELSE = 'ELSE';
-    const /* testElseIf */ ELSEIF = 'ELSEIF';
-    const /* testEmpty */ EMPTY = 'EMPTY';
-    const /* testEndDeclare */ ENDDECLARE = 'ENDDECLARE';
-    const /* testEndFor */ ENDFOR = 'ENDFOR';
-    const /* testEndForeach */ ENDFOREACH = 'ENDFOREACH';
-    const /* testEndIf */ ENDIF = 'ENDIF';
-    const /* testEndSwitch */ ENDSWITCH = 'ENDSWITCH';
-    const /* testEndWhile */ ENDWHILE = 'ENDWHILE';
-    const /* testEnum */ ENUM = 'ENUM';
-    const /* testEval */ EVAL = 'EVAL';
-    const /* testExit */ EXIT = 'EXIT';
-    const /* testExtends */ EXTENDS = 'EXTENDS';
-    const /* testFinal */ FINAL = 'FINAL';
-    const /* testFinally */ FINALLY = 'FINALLY';
-    const /* testFn */ FN = 'FN';
-    const /* testFor */ FOR = 'FOR';
-    const /* testForeach */ FOREACH = 'FOREACH';
-    const /* testFunction */ FUNCTION = 'FUNCTION';
-    const /* testGlobal */ GLOBAL = 'GLOBAL';
-    const /* testGoto */ GOTO = 'GOTO';
-    const /* testIf */ IF = 'IF';
-    const /* testImplements */ IMPLEMENTS = 'IMPLEMENTS';
-    const /* testInclude */ INCLUDE = 'INCLUDE';
-    const /* testIncludeOnce */ INCLUDE_ONCE = 'INCLUDE_ONCE';
-    const /* testInstanceOf */ INSTANCEOF = 'INSTANCEOF';
-    const /* testInsteadOf */ INSTEADOF = 'INSTEADOF';
-    const /* testInterface */ INTERFACE = 'INTERFACE';
-    const /* testIsset */ ISSET = 'ISSET';
-    const /* testList */ LIST = 'LIST';
-    const /* testMatch */ MATCH = 'MATCH';
-    const /* testNamespace */ NAMESPACE = 'NAMESPACE';
-    const /* testNew */ NEW = 'NEW';
-    const /* testParent */ PARENT = 'PARENT';
-    const /* testPrint */ PRINT = 'PRINT';
-    const /* testPrivate */ PRIVATE = 'PRIVATE';
-    const /* testProtected */ PROTECTED = 'PROTECTED';
-    const /* testPublic */ PUBLIC = 'PUBLIC';
-    const /* testReadonly */ READONLY = 'READONLY';
-    const /* testRequire */ REQUIRE = 'REQUIRE';
-    const /* testRequireOnce */ REQUIRE_ONCE = 'REQUIRE_ONCE';
-    const /* testReturn */ RETURN = 'RETURN';
-    const /* testSelf */ SELF = 'SELF';
-    const /* testStatic */ STATIC = 'STATIC';
-    const /* testSwitch */ SWITCH = 'SWITCH';
-    const /* testThrows */ THROW = 'THROW';
-    const /* testTrait */ TRAIT = 'TRAIT';
-    const /* testTry */ TRY = 'TRY';
-    const /* testUnset */ UNSET = 'UNSET';
-    const /* testUse */ USE = 'USE';
-    const /* testVar */ VAR = 'VAR';
-    const /* testWhile */ WHILE = 'WHILE';
-    const /* testYield */ YIELD = 'YIELD';
-    const /* testYieldFrom */ YIELD_FROM = 'YIELD_FROM';
+    constpublic /* testArray */
+        ARRAY = 'ARRAY';
+    constpublic /* testAs */ AS = 'AS';
+    constpublic /* testBreak */ BREAK = 'BREAK';
+    constpublic /* testCallable */ CALLABLE = 'CALLABLE';
+    constpublic /* testCase */ CASE   = 'CASE';
+    constpublic /* testCatch */ CATCH = 'CATCH';
+    constpublic /* testClass */ CLASS = 'CLASS';
+    constpublic /* testClone */ CLONE = 'CLONE';
+    constpublic /* testConst */ CONST = 'CONST';
+    constpublic /* testContinue */ CONTINUE = 'CONTINUE';
+    constpublic /* testDeclare */ DECLARE = 'DECLARE';
+    constpublic /* testDefault */ DEFAULT = 'DEFAULT';
+    constpublic /* testDo */ DO     = 'DO';
+    constpublic /* testEcho */ ECHO = 'ECHO';
+    constpublic /* testElse */ ELSE = 'ELSE';
+    constpublic /* testElseIf */ ELSEIF = 'ELSEIF';
+    constpublic /* testEmpty */ EMPTY = 'EMPTY';
+    constpublic /* testEndDeclare */ ENDDECLARE = 'ENDDECLARE';
+    constpublic /* testEndFor */ ENDFOR   = 'ENDFOR';
+    constpublic /* testEndForeach */ ENDFOREACH = 'ENDFOREACH';
+    constpublic /* testEndIf */ ENDIF     = 'ENDIF';
+    constpublic /* testEndSwitch */ ENDSWITCH = 'ENDSWITCH';
+    constpublic /* testEndWhile */ ENDWHILE = 'ENDWHILE';
+    constpublic /* testEnum */ENUM    = 'ENUM';
+    constpublic /* testEval */ EVAL = 'EVAL';
+    constpublic /* testExit */ EXIT = 'EXIT';
+    constpublic /* testExtends */ EXTENDS = 'EXTENDS';
+    constpublic /* testFinal */ FINAL = 'FINAL';
+    constpublic /* testFinally */ FINALLY = 'FINALLY';
+    constpublic /* testFn */ FN     = 'FN';
+    constpublic /* testFor */ FOR = 'FOR';
+    constpublic /* testForeach */ FOREACH = 'FOREACH';
+    constpublic /* testFunction */ FUNCTION = 'FUNCTION';
+    constpublic /* testGlobal */ GLOBAL = 'GLOBAL';
+    constpublic /* testGoto */ GOTO = 'GOTO';
+    constpublic /* testIf */ IF = 'IF';
+    constpublic /* testImplements */ IMPLEMENTS = 'IMPLEMENTS';
+    constpublic /* testInclude */ INCLUDE = 'INCLUDE';
+    constpublic /* testIncludeOnce */ INCLUDE_ONCE = 'INCLUDE_ONCE';
+    constpublic /* testInstanceOf */ INSTANCEOF = 'INSTANCEOF';
+    constpublic /* testInsteadOf */ INSTEADOF = 'INSTEADOF';
+    constpublic /* testInterface */ INTERFACE = 'INTERFACE';
+    constpublic /* testIsset */ ISSET   = 'ISSET';
+    constpublic /* testList */ LIST = 'LIST';
+    constpublic /* testMatch */MATCH = 'MATCH';
+    constpublic /* testNamespace */ NAMESPACE = 'NAMESPACE';
+    constpublic /* testNew */ NEW       = 'NEW';
+    constpublic /* testParent */PARENT = 'PARENT';
+    constpublic /* testPrint */ PRINT = 'PRINT';
+    constpublic /* testPrivate */ PRIVATE = 'PRIVATE';
+    constpublic /* testProtected */ PROTECTED = 'PROTECTED';
+    constpublic /* testPublic */ PUBLIC = 'PUBLIC';
+    constpublic /* testReadonly */READONLY = 'READONLY';
+    constpublic /* testRequire */ REQUIRE = 'REQUIRE';
+    constpublic /* testRequireOnce */ REQUIRE_ONCE = 'REQUIRE_ONCE';
+    constpublic /* testReturn */ RETURN      = 'RETURN';
+    constpublic /* testSelf */SELF = 'SELF';
+    constpublic /* testStatic */ STATIC = 'STATIC';
+    constpublic /* testSwitch */ SWITCH = 'SWITCH';
+    constpublic /* testThrows */ THROW = 'THROW';
+    constpublic /* testTrait */ TRAIT = 'TRAIT';
+    constpublic /* testTry */ TRY = 'TRY';
+    constpublic /* testUnset */ UNSET = 'UNSET';
+    constpublic /* testUse */ USE = 'USE';
+    constpublic /* testVar */ VAR = 'VAR';
+    constpublic /* testWhile */ WHILE = 'WHILE';
+    constpublic /* testYield */ YIELD = 'YIELD';
+    constpublic /* testYieldFrom */YIELD_FROM = 'YIELD_FROM';
 
-    const /* testAnd */ AND = 'LOGICAL_AND';
-    const /* testOr */ OR = 'LOGICAL_OR';
-    const /* testXor */ XOR = 'LOGICAL_XOR';
+    constpublic /* testAnd */ AND = 'LOGICAL_AND';
+    constpublic /* testOr */ OR = 'LOGICAL_OR';
+    constpublic /* testXor */ XOR = 'LOGICAL_XOR';
 }
 
 namespace /* testKeywordAfterNamespaceShouldBeString */ class;
-namespace /* testNamespaceNameIsString1 */ my\ /* testNamespaceNameIsString2 */ class\ /* testNamespaceNameIsString3 */ foreach;
+namespace /* testNamespaceNameIsString1 */ my\ /* testNamespaceNameIsString2 */ classuse const;
 
-/* testAbstractIsKeyword */ abstract /* testClassIsKeyword */ class SomeClass
-    /* testExtendsIsKeyword */ extends SomeParent
-    /* testImplementsIsKeyword */ implements SomeInterface
+/* testNamespaceNameIsString3 */ foreach;
+
+/* testAbstractIsKeyword */ abstract /* testClassIsKeyword */
+class SomeClass
+    /* testExtendsIsKeyword */
+    extends SomeParent
+    /* testImplementsIsKeyword */
+    implements SomeInterface
 {
-    /* testUseIsKeyword */ use SomeTrait, OtherTrait {
-        SomeTrait::a /* testInsteadOfIsKeyword */ insteadof A;
-        OtherTrait::a /* testAsIsKeyword */ as B;
-    }
 
-    /* testConstIsKeyword */ const CONSTANT = 'c';
+    /* testUseIsKeyword */
+    use OtherTrait;
+    use SomeTrait;
 
-    /* testPrivateIsKeyword */ private $private;
-    /* testProtectedIsKeyword */ protected $protected;
-    /* testPublicIsKeyword */ public $public;
+    /* testConstIsKeyword */
+    public const CONSTANT = 'c';
 
-    /* testVarIsKeyword */ var $var;
-    /* testStaticIsKeyword */ static $static;
+    /* testPrivateIsKeyword */
+    private $private;
+    /* testProtectedIsKeyword */
+    protected $protected;
+    /* testPublicIsKeyword */
+    public $public;
 
-    /* testReadonlyIsKeyword */ readonly $readonly;
+    /* testVarIsKeyword */
+    public $var;
+    /* testStaticIsKeyword */
+    static public $static;
 
-    /* testFinalIsKeyword */ final /* testFunctionIsKeyword */ function someFunction(
+    /* testReadonlyIsKeyword */
+    readonly $readonly;
+
+    /* testFinalIsKeyword */
+    public final /* testFunctionIsKeyword */ function someFunction(
         /* testCallableIsKeyword */
         callable $callable,
         /* testSelfIsKeyword */
-        self $self,
+        self     $self,
         /* testParentIsKeyword */
-        parent $parent
-    ) {
+        parent   $parent
+    )
+    {
+
         /* testReturnIsKeyword */
         return $this;
     }
+
 }
 
 /* testInterfaceIsKeyword */ interface SomeInterface {}
@@ -206,7 +241,7 @@ function () {
 };
 
 /* testDeclareIsKeyword */ declare(ticks=1):
-/* testEndDeclareIsKeyword */ enddeclare;
+/* testEndDeclareIsKeyword */ enddeclare
 
 if (true /* testAndIsKeyword */ and false /* testOrIsKeyword */ or null /* testXorIsKeyword */ xor 0) {
 
@@ -217,7 +252,7 @@ $anonymousClass2 = new class /* testExtendsInAnonymousClassIsKeyword */ extends 
 $anonymousClass3 = new class /* testImplementsInAnonymousClassIsKeyword */ implements SomeInterface {};
 
 $instantiated1 = new /* testClassInstantiationParentIsKeyword */ parent();
-$instantiated2 = new /* testClassInstantiationSelfIsKeyword */ SELF;
+$instantiated2 = new /* testClassInstantiationSelfIsKeyword */ SELF();
 $instantiated3 = new /* testClassInstantiationStaticIsKeyword */ static($param);
 
 class Foo extends /* testNamespaceInNameIsKeyword */ namespace\Exception

@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: NestingLevelSniff.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Checks the nesting level for methods.
  *
@@ -19,14 +38,14 @@ class NestingLevelSniff implements Sniff
     /**
      * A nesting level higher than this value will throw a warning.
      *
-     * @var integer
+     * @var int
      */
     public $nestingLevel = 5;
 
     /**
      * A nesting level higher than this value will throw an error.
      *
-     * @var integer
+     * @var int
      */
     public $absoluteNestingLevel = 10;
 
@@ -46,8 +65,8 @@ class NestingLevelSniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current token
+     * @param File $phpcsFile                        The file being scanned.
+     * @param int  $stackPtr                         The position of the current token
      *                                               in the stack passed in $tokens.
      *
      * @return void

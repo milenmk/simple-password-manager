@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: LineLengthUnitTest.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Unit test class for the LineLength sniff.
  *
@@ -9,6 +28,7 @@
 
 namespace PHP_CodeSniffer\Standards\Generic\Tests\Files;
 
+use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class LineLengthUnitTest extends AbstractSniffUnitTest
@@ -19,7 +39,7 @@ class LineLengthUnitTest extends AbstractSniffUnitTest
      * Get a list of CLI values to set before the file is tested.
      *
      * @param string                  $testFile The name of the file being tested.
-     * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
+     * @param Config $config   The config data for the test run.
      *
      * @return void
      */

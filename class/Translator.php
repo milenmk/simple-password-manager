@@ -4,11 +4,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: Translator.php
- *  Last Modified: 2.01.23 г., 1:27 ч.
+ *  Last Modified: 2.01.23 г., 13:31 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
- * @version       2.1.1
+ * @version       2.2.0
  * @author        Milen Karaganski <milen@blacktiehost.com>
  *
  * @license       GPL-3.0+
@@ -325,4 +325,5 @@ class Translator
             return 'NoTranslationYet';
         }
     }
+
 }

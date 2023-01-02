@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: ValidVariableNameSniff.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Checks the naming of member variables.
  *
@@ -19,8 +38,8 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     /**
      * Processes class member variables.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current token
+     * @param File $phpcsFile                        The file being scanned.
+     * @param int  $stackPtr                         The position of the current token
      *                                               in the stack passed in $tokens.
      *
      * @return void
@@ -69,8 +88,8 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     /**
      * Processes normal variables.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
-     * @param int                         $stackPtr  The position where the token was found.
+     * @param File $phpcsFile The file where this token was found.
+     * @param int  $stackPtr  The position where the token was found.
      *
      * @return void
      */
@@ -86,8 +105,8 @@ class ValidVariableNameSniff extends AbstractVariableSniff
     /**
      * Processes variables in double quoted strings.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
-     * @param int                         $stackPtr  The position where the token was found.
+     * @param File $phpcsFile The file where this token was found.
+     * @param int  $stackPtr  The position where the token was found.
      *
      * @return void
      */

@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: AbstractArraySniffTestable.php
+ *  Last Modified: 3.01.23 г., 0:07 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * A testable implementation of \PHP_CodeSniffer\Sniffs\AbstractArraySniff.
  *
@@ -9,6 +28,7 @@
 
 namespace PHP_CodeSniffer\Tests\Core\Sniffs;
 
+use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\AbstractArraySniff;
 
 class AbstractArraySniffTestable extends AbstractArraySniff
@@ -21,11 +41,10 @@ class AbstractArraySniffTestable extends AbstractArraySniff
      */
     public $indicies = [];
 
-
     /**
      * Processes a single-line array definition.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile  The current file being checked.
+     * @param File $phpcsFile  The current file being checked.
      * @param int                         $stackPtr   The position of the current token
      *                                                in the stack passed in $tokens.
      * @param int                         $arrayStart The token that starts the array definition.
@@ -37,15 +56,14 @@ class AbstractArraySniffTestable extends AbstractArraySniff
      */
     public function processSingleLineArray($phpcsFile, $stackPtr, $arrayStart, $arrayEnd, $indices)
     {
+
         $this->indicies = $indices;
-
     }//end processSingleLineArray()
-
 
     /**
      * Processes a multi-line array definition.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile  The current file being checked.
+     * @param File $phpcsFile  The current file being checked.
      * @param int                         $stackPtr   The position of the current token
      *                                                in the stack passed in $tokens.
      * @param int                         $arrayStart The token that starts the array definition.
@@ -57,9 +75,8 @@ class AbstractArraySniffTestable extends AbstractArraySniff
      */
     public function processMultiLineArray($phpcsFile, $stackPtr, $arrayStart, $arrayEnd, $indices)
     {
+
         $this->indicies = $indices;
-
     }//end processMultiLineArray()
-
 
 }//end class

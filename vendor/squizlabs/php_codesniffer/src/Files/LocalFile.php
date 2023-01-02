@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: LocalFile.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * A local file represents a chunk of text has a file system location.
  *
@@ -21,9 +40,9 @@ class LocalFile extends File
     /**
      * Creates a LocalFile object and sets the content.
      *
-     * @param string                   $path    The absolute path to the file.
-     * @param \PHP_CodeSniffer\Ruleset $ruleset The ruleset used for the run.
-     * @param \PHP_CodeSniffer\Config  $config  The config data for the run.
+     * @param string  $path    The absolute path to the file.
+     * @param Ruleset $ruleset The ruleset used for the run.
+     * @param Config  $config  The config data for the run.
      *
      * @return void
      */
@@ -115,7 +134,7 @@ class LocalFile extends File
             if (PHP_CODESNIFFER_VERBOSITY > 0
                 || (PHP_CODESNIFFER_CBF === true && empty($this->config->files) === false)
             ) {
-                echo "[loaded from cache]... ";
+                echo '[loaded from cache]... ';
             }
 
             $this->numTokens = $cache['numTokens'];

@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: SwitchDeclarationUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 // Valid SWITCH statement.
 switch ($something) {
     case '1':
@@ -170,13 +188,13 @@ switch ($var) {
 }
 
 switch ($name) {
-    case "1":
+    case '1':
         switch ($name2) {
-            case "1":
+            case '1':
                 return true;
             break;
 
-            case "2":
+            case '2':
             return true;
             break;
 
@@ -186,13 +204,13 @@ switch ($name) {
         }
     break;
 
-    case "2":
+    case '2':
 switch ($name2) {
-    case "1":
+    case '1':
         return true;
     break;
 
-    case "2":
+    case '2':
     return true;
     break;
 
@@ -204,9 +222,9 @@ switch ($name2) {
 }
 
 switch ($name) {
-    case "1":
+    case '1':
         switch ($name2) {
-            case "1":
+            case '1':
             return true;
 
             default:
@@ -227,7 +245,7 @@ switch ($name2) {
 }
 
 switch ($foo) {
-    case "1":
+    case '1':
     return true;
 
     default:
@@ -306,12 +324,12 @@ switch ($foo) {
 
 switch ($foo) {
     case 'bar':
-    throw new \Exception(
+    throw new Exception(
         'bar'
     );
 
     default:
-    throw new \Exception(
+    throw new Exception(
         'bar'
     );
 }

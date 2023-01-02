@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: Cbf.php
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * CBF report for PHP_CodeSniffer.
  *
@@ -34,7 +53,7 @@ class Cbf implements Report
      * @param int                   $width       Maximum allowed line width.
      *
      * @return bool
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     * @throws DeepExitException
      */
     public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
     {

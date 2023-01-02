@@ -1,5 +1,23 @@
 <?php
 
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: OperatorSpacingUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 $result = 1 + 2;
 $result = 1  + 2;
 $result = 1  +   2;
@@ -165,8 +183,8 @@ $y = array(&$x);
 $y = [&$x];
 $y = array(&$a, &$b, &$c);
 $y = [&$a, &$b, &$c];
-$y = array(&$a => 1, 2 => &$b, &$c);
-$y = [&$a => 1, 2 => &$b, &$c];
+$y = array(&$a => 1, 2 => &$b, &$c)
+$y = [&$a => 1, 2 => &$b, &$c]
 
 if ($a <=> $b) {
 }

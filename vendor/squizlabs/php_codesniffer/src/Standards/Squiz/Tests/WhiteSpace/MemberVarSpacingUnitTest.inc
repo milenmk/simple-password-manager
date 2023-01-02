@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: MemberVarSpacingUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 class MyClass
 {
     public $var1 = 'value';
@@ -44,11 +63,13 @@ class MyClass
     public $var1 = 'value';
 }//end class
 
-
 interface MyInterface
 {
+
     public $var1 = 'value';
-    function myFunction();
+
+    public function myFunction();
+
 }//end interface
 
 
@@ -67,7 +88,7 @@ class MyClass
     /**
      * TRUE if this step should be performed after the asset is created.
      *
-     * @var   boolean
+     * @var   bool
      * @since 4.0.0
      */
     protected $postStep = FALSE;
@@ -96,7 +117,7 @@ class MyClass
      * @var   array
      * @since 4.0.0
      */
-    var $actions = array();
+    public $actions = array();
 
     /**
      * The actions that this wizard step requires.
@@ -141,7 +162,7 @@ class Foo
 {
 
     /**
-     * @var integer
+     * @var int
      */
     private $foo; // comment
 
@@ -278,12 +299,9 @@ class ClassUsingSimpleTraits
 
 class ClassUsingComplexTraits
 {
-    use A, B {
-        B::smallTalk insteadof A;
-        A::bigTalk insteadof B;
-    }
 
-
+    use A;
+    use B;
 
     public $firstVar = array( 'a', 'b' );
 
@@ -341,7 +359,7 @@ class HasAttributes
      * @var array
      */
 
-    #[ORM\Id]#[ORM\Column("integer")]
+    #[ORM\Id]#[ORM\Column('integer')]
 
     private $id;
 

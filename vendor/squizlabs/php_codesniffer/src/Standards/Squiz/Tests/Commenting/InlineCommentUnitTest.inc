@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: InlineCommentUnitTest.inc
+ *  Last Modified: 18.06.22 г., 10:21 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 // Some code goes here.
 $code = 'hello';
 
@@ -72,10 +91,10 @@ class MyClass
     /**
      * Represents a left orientation for the widget.
      *
-     * @var   integer
+     * @var   int
      * @since 4.0.0
      */
-    const LEFT = 1;
+    public const LEFT = 1;
 }
 
 /**
@@ -131,12 +150,14 @@ echo $foo; // some comment without capital or full stop
 
 class Foo
 {
+
     // This is fine.
 
     /**
      * Spacing is ignored above.
      */
-    function bar(){}
+    public function bar() {}
+
 }
 
 if ($foo) {

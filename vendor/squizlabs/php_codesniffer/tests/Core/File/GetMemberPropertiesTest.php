@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: GetMemberPropertiesTest.php
+ *  Last Modified: 3.01.23 г., 0:06 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Tests for the \PHP_CodeSniffer\Files\File::getMemberProperties method.
  *
@@ -14,7 +33,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class GetMemberPropertiesTest extends AbstractMethodUnitTest
 {
 
-
     /**
      * Test the getMemberProperties() method.
      *
@@ -27,23 +45,23 @@ class GetMemberPropertiesTest extends AbstractMethodUnitTest
      */
     public function testGetMemberProperties($identifier, $expected)
     {
+
         $variable = $this->getTargetToken($identifier, T_VARIABLE);
-        $result   = self::$phpcsFile->getMemberProperties($variable);
+        $result = self::$phpcsFile->getMemberProperties($variable);
 
         $this->assertArraySubset($expected, $result, true);
-
     }//end testGetMemberProperties()
-
 
     /**
      * Data provider for the GetMemberProperties test.
      *
+     * @return array
      * @see testGetMemberProperties()
      *
-     * @return array
      */
     public function dataGetMemberProperties()
     {
+
         return [
             [
                 '/* testVar */',
@@ -799,9 +817,7 @@ class GetMemberPropertiesTest extends AbstractMethodUnitTest
                 ],
             ],
         ];
-
     }//end dataGetMemberProperties()
-
 
     /**
      * Test receiving an expected exception when a non property is passed.
@@ -817,21 +833,21 @@ class GetMemberPropertiesTest extends AbstractMethodUnitTest
      */
     public function testNotClassPropertyException($identifier)
     {
+
         $variable = $this->getTargetToken($identifier, T_VARIABLE);
-        $result   = self::$phpcsFile->getMemberProperties($variable);
-
+        $result = self::$phpcsFile->getMemberProperties($variable);
     }//end testNotClassPropertyException()
-
 
     /**
      * Data provider for the NotClassPropertyException test.
      *
+     * @return array
      * @see testNotClassPropertyException()
      *
-     * @return array
      */
     public function dataNotClassProperty()
     {
+
         return [
             ['/* testMethodParam */'],
             ['/* testImportedGlobal */'],
@@ -841,9 +857,7 @@ class GetMemberPropertiesTest extends AbstractMethodUnitTest
             ['/* testNestedMethodParam 2 */'],
             ['/* testEnumMethodParamNotProperty */'],
         ];
-
     }//end dataNotClassProperty()
-
 
     /**
      * Test receiving an expected exception when a non variable is passed.
@@ -855,10 +869,9 @@ class GetMemberPropertiesTest extends AbstractMethodUnitTest
      */
     public function testNotAVariableException()
     {
-        $next   = $this->getTargetToken('/* testNotAVariable */', T_RETURN);
+
+        $next = $this->getTargetToken('/* testNotAVariable */', T_RETURN);
         $result = self::$phpcsFile->getMemberProperties($next);
-
     }//end testNotAVariableException()
-
 
 }//end class

@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * Simple password manager written in PHP with Bootstrap and PDO database connections
+ *
+ *  File name: BackfillReadonlyTest.php
+ *  Last Modified: 3.01.23 г., 0:07 ч.
+ *
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
+ *
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *
+ */
+
 /**
  * Tests the support of PHP 8.1 "readonly" keyword.
  *
@@ -14,7 +33,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class BackfillReadonlyTest extends AbstractMethodUnitTest
 {
 
-
     /**
      * Test that the "readonly" keyword is tokenized as such.
      *
@@ -28,24 +46,24 @@ class BackfillReadonlyTest extends AbstractMethodUnitTest
      */
     public function testReadonly($testMarker, $testContent)
     {
+
         $tokens = self::$phpcsFile->getTokens();
 
         $target = $this->getTargetToken($testMarker, [T_READONLY, T_STRING], $testContent);
         $this->assertSame(T_READONLY, $tokens[$target]['code']);
         $this->assertSame('T_READONLY', $tokens[$target]['type']);
-
     }//end testReadonly()
-
 
     /**
      * Data provider.
      *
+     * @return array
      * @see testReadonly()
      *
-     * @return array
      */
     public function dataReadonly()
     {
+
         return [
             [
                 '/* testReadonlyProperty */',
@@ -156,9 +174,7 @@ class BackfillReadonlyTest extends AbstractMethodUnitTest
                 'readonly',
             ],
         ];
-
     }//end dataReadonly()
-
 
     /**
      * Test that "readonly" when not used as the keyword is still tokenized as `T_STRING`.
@@ -173,24 +189,24 @@ class BackfillReadonlyTest extends AbstractMethodUnitTest
      */
     public function testNotReadonly($testMarker, $testContent)
     {
+
         $tokens = self::$phpcsFile->getTokens();
 
         $target = $this->getTargetToken($testMarker, [T_READONLY, T_STRING], $testContent);
         $this->assertSame(T_STRING, $tokens[$target]['code']);
         $this->assertSame('T_STRING', $tokens[$target]['type']);
-
     }//end testNotReadonly()
-
 
     /**
      * Data provider.
      *
+     * @return array
      * @see testNotReadonly()
      *
-     * @return array
      */
     public function dataNotReadonly()
     {
+
         return [
             [
                 '/* testReadonlyUsedAsClassConstantName */',
@@ -229,8 +245,6 @@ class BackfillReadonlyTest extends AbstractMethodUnitTest
                 'READONLY',
             ],
         ];
-
     }//end dataNotReadonly()
-
 
 }//end class
