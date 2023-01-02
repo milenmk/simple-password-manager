@@ -201,7 +201,8 @@ class Domains
         $group = '',
         $limit = 0,
         $offset = 0
-    ) {
+    )
+    {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
@@ -249,7 +250,8 @@ class Domains
         $group = '',
         $limit = 0,
         $offset = 0
-    ) {
+    )
+    {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
@@ -272,4 +274,5 @@ class Domains
             return -1;
         }
     }
+
 }

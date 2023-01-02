@@ -215,7 +215,8 @@ class User
         $group = '',
         $limit = 0,
         $offset = 0
-    ) {
+    )
+    {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
@@ -302,7 +303,8 @@ class User
         $group = '',
         $limit = 0,
         $offset = 0
-    ) {
+    )
+    {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
@@ -325,4 +327,5 @@ class User
             return -1;
         }
     }
+
 }

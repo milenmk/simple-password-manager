@@ -334,7 +334,8 @@ function checkVal($out = '', $check = 'alphanohtml', $filter = null, $options = 
                     // Remove html tags
                     $out = string_nohtmltag($out, 0);
                     $out = str_ireplace(['&#38', '&#0000038', '&#x26', '&quot', '&#34', '&#0000034', '&#x22', '"', '&#47', '&#0000047', '&#92', '&#0000092', '&#x2F', '../', '..\\'], '', $out);
-                } while ($oldstringtoclean != $out);
+                }
+                while ($oldstringtoclean != $out);
             }
             break;
         case 'custom':
