@@ -5,16 +5,16 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: index.php
- *  Last Modified: 2.01.23 г., 18:20 ч.
+ *  Last Modified: 3.01.23 г., 10:41 ч.
  *
- * @link          https://blacktiehost.com
- * @since         1.0.0
- * @version       2.2.0
- * @author        Milen Karaganski <milen@blacktiehost.com>
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
- * @license       GPL-3.0+
- * @license       http://www.gnu.org/licenses/gpl-3.0.txt
- * @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
  *
  */
 
@@ -93,7 +93,7 @@ if (!function_exists('session_id')) {
 if (!function_exists('curl_init')) {
     print '<i class="bi bi-exclamation-circle-fill" style="color: #ffa500;"></i>&nbsp;';
     print $langs->trans('PhpSupportKo', 'CURL') . '<br>';
-    // $checksok = 0;
+// $checksok = 0;
 } else {
     print '<i class="bi bi-exclamation-circle-fill" style="color: #008000;"></i>&nbsp;';
     print $langs->trans('PhpSupportOk', 'CURL') . '<br>';
@@ -103,7 +103,7 @@ if (!function_exists('curl_init')) {
 if (!function_exists('utf8_encode')) {
     print '<i class="bi bi-exclamation-circle-fill" style="color: #ffa500;"></i>&nbsp;';
     print $langs->trans('PhpSupportKo', 'UTF-8') . '<br>';
-    // $checksok = 0;
+// $checksok = 0;
 } else {
     print '<i class="bi bi-exclamation-circle-fill" style="color: #008000;"></i>&nbsp;';
     print $langs->trans('PhpSupportOk', 'UTF-8') . '<br>';
@@ -113,7 +113,7 @@ if (!function_exists('utf8_encode')) {
 if (!extension_loaded('xml')) {
     print '<i class="bi bi-exclamation-circle-fill" style="color: #ffa500;"></i>&nbsp;';
     print $langs->trans('PhpSupportKo', 'XML') . '<br>';
-    // $checksok = 0;
+// $checksok = 0;
 } else {
     print '<i class="bi bi-exclamation-circle-fill" style="color: #008000;"></i>&nbsp;';
     print $langs->trans('PhpSupportOk', 'XML') . '<br>';
@@ -123,7 +123,7 @@ if (!extension_loaded('xml')) {
 if (!extension_loaded('json')) {
     print '<i class="bi bi-exclamation-circle-fill" style="color: #ffa500;"></i>&nbsp;';
     print $langs->trans('PhpSupportKo', 'JSON') . '<br>';
-    // $checksok = 0;
+// $checksok = 0;
 } else {
     print '<i class="bi bi-exclamation-circle-fill" style="color: #008000;"></i>&nbsp;';
     print $langs->trans('PhpSupportOk', 'JSON') . '<br>';
@@ -133,7 +133,7 @@ if (!extension_loaded('json')) {
 if (!extension_loaded('mbstring')) {
     print '<i class="bi bi-exclamation-circle-fill" style="color: #ffa500;"></i>&nbsp;';
     print $langs->trans('PhpSupportKo', 'MBString') . '<br>';
-    // $checksok = 0;
+// $checksok = 0;
 } else {
     print '<i class="bi bi-exclamation-circle-fill" style="color: #008000;"></i>&nbsp;';
     print $langs->trans('PhpSupportOk', 'MBString') . '<br>';

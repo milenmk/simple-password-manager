@@ -1,19 +1,20 @@
 <?php
+
 /**
  *
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: PassManDb.php
- *  Last Modified: 3.01.23 г., 0:00 ч.
+ *  Last Modified: 3.01.23 г., 10:41 ч.
  *
- * @link          https://blacktiehost.com
- * @since         1.0.0
- * @version       2.2.0
- * @author        Milen Karaganski <milen@blacktiehost.com>
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
- * @license       GPL-3.0+
- * @license       http://www.gnu.org/licenses/gpl-3.0.txt
- * @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
  *
  */
 
@@ -36,7 +37,6 @@ use PDOException;
  */
 class PassManDb
 {
-
     /**
      * @var string Holds error messages for output
      */
@@ -48,7 +48,7 @@ class PassManDb
     /**
      * @var PDO Database connection
      */
-    public $db;
+    public PDO $db;
     /**
      * @var string
      */
@@ -106,11 +106,10 @@ class PassManDb
      *
      * @throws PDOException|Exception
      */
-    public function __construct($host = '', $user = '', $pass = '', $name = '', $port = 0)
+    public function __construct(string $host = '', string $user = '', string $pass = '', string $name = '', int $port = 0)
     {
 
         global $config, $langs;
-
         // Note that having "static" property for "$forcecharset" and "$forcecollate" will make error here in strict mode, so they are not static
         if (empty($config->db_character_set)) {
             $this->forcecharset = 'utf8';
@@ -127,9 +126,7 @@ class PassManDb
         $this->database_password = !$pass ? $config->dbpass : $pass;
         $this->database_host = !$host ? $config->host : $host;
         $this->database_port = !$port ? $config->port : $port;
-
         $this->transaction_opened = 0;
-
         if (!$host) {
             $this->connected = false;
             $this->ok = false;
@@ -143,7 +140,6 @@ class PassManDb
 
         // Try server connection
         $this->db = $this->connect($this->database_host, $this->database_user, $this->database_password, '', $this->database_port);
-
         if ($this->error) {
             $this->connected = false;
             $this->ok = false;
@@ -201,11 +197,11 @@ class PassManDb
      * @param string $name   Name of database (not used for mysql, used for pgsql)
      * @param int    $port   Port of database server
      *
-     * @return int|PDO
+     * @return PDO|void
      * @throws PDOException|Exception
      * @see close()
      */
-    public function connect($host, $login, $passwd, $name, $port = 0)
+    public function connect(string $host, string $login, string $passwd, string $name, int $port = 0)
     {
 
         try {
@@ -235,7 +231,7 @@ class PassManDb
      * @return int|PDO            true if OK, false if KO
      * @throws PDOException|Exception
      */
-    public function selectDb($host, $login, $passwd, $name, $charset, $collation, $port = 0)
+    public function selectDb(string $host, string $login, string $passwd, string $name, string $charset, string $collation, int $port = 0)
     {
 
         if (PM_DISABLE_SYSLOG == 0) {
@@ -244,7 +240,6 @@ class PassManDb
 
         try {
             $this->db = new PDO("mysql:host=$host;dbname=$name;port=$port;charset=$charset;collation=$collation", $login, $passwd);
-
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             return $this->db;
@@ -268,7 +263,7 @@ class PassManDb
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function create($array_of_fields, $table_element)
+    public function create(array $array_of_fields, string $table_element)
     {
 
         $sql = 'INSERT INTO ' . PM_MAIN_DB_PREFIX . $table_element . '(';
@@ -282,11 +277,8 @@ class PassManDb
         }
         $sql = preg_replace('/,\s*$/', '', $sql);
         $sql .= ')';
-
         pm_syslog('query:: sql = ' . $sql, PM_LOG_DEBUG);
-
         $query = $this->db->prepare($sql);
-
         foreach ($array_of_fields as $key => $value) {
             $query->bindValue(':' . $key, $value);
         }
@@ -297,16 +289,13 @@ class PassManDb
 
         try {
             $result = $query->execute();
-
             if ($result) {
                 pm_syslog(get_class($this) . ':: record with id=' . $this->db->lastInsertId() . ' inserted into ' . $table_element, PM_LOG_INFO);
-
                 $this->db->commit();
 
                 return 1;
             } else {
                 $this->db->rollBack();
-
                 pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
 
                 return -1;
@@ -314,9 +303,7 @@ class PassManDb
         }
         catch (PDOException $e) {
             $this->db->rollBack();
-
             $this->error = $e->getMessage();
-
             pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
 
             return $this->error;
@@ -333,7 +320,7 @@ class PassManDb
      * @return int
      * @throws PDOException|Exception
      */
-    public function update($filter, $table_element, $record_id)
+    public function update(array $filter, string $table_element, int $record_id)
     {
 
         $sql = 'UPDATE ' . PM_MAIN_DB_PREFIX . $table_element . ' SET ';
@@ -342,18 +329,14 @@ class PassManDb
         }
         $sql = preg_replace('/,\s*$/', '', $sql);
         $sql .= ' WHERE rowid = :id';
-
         pm_syslog('query:: sql = ' . $sql, PM_LOG_DEBUG);
-
         $query = $this->db->prepare($sql);
-
         if (!empty($filter)) {
             foreach ($filter as $key => $value) {
                 $query->bindValue(':' . $key, $value);
             }
         }
         $query->bindParam(':id', $record_id, PDO::PARAM_INT);
-
         if (!$this->db->inTransaction()) {
             $this->db->beginTransaction();
         }
@@ -361,7 +344,6 @@ class PassManDb
         try {
             $query->execute();
             pm_syslog(get_class($this) . ':: record with id=' . $this->db->lastInsertId() . ' from ' . $table_element . 'was updated', PM_LOG_INFO);
-
             $this->db->commit();
 
             return 1;
@@ -369,7 +351,6 @@ class PassManDb
         catch (PDOException $e) {
             $this->db->rollBack();
             $this->error = $e->getMessage();
-
             pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
 
             return $this->error;
@@ -385,17 +366,13 @@ class PassManDb
      * @return int
      * @throws PDOException|Exception
      */
-    public function delete($table_element, $record_id)
+    public function delete(string $table_element, int $record_id)
     {
 
         $sql = 'DELETE FROM ' . PM_MAIN_DB_PREFIX . $table_element . ' WHERE rowid = :id';
-
         pm_syslog('query:: sql = ' . $sql, PM_LOG_DEBUG);
-
         $query = $this->db->prepare($sql);
-
         $query->bindParam(':id', $record_id, PDO::PARAM_INT);
-
         if (!$this->db->inTransaction()) {
             $this->db->beginTransaction();
         }
@@ -403,7 +380,6 @@ class PassManDb
         try {
             $query->execute();
             pm_syslog(get_class($this) . ':: record with id=' . $this->db->lastInsertId() . ' from ' . $table_element . 'was deleted', PM_LOG_INFO);
-
             $this->db->commit();
 
             return 1;
@@ -411,7 +387,6 @@ class PassManDb
         catch (PDOException $e) {
             $this->db->rollBack();
             $this->error = $e->getMessage();
-
             pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
 
             return $this->error;
@@ -436,28 +411,13 @@ class PassManDb
      * @param array  $parentClassFields    Fields of the parent class to fetch
      * @param string $childClassField      Child class field that matches parent ID
      *
-     * @return array|int
+     * @return array|false|string
      * @throws PDOException|Exception
      */
-    public function fetchAll(
-        $array_of_fields,
-        $table_element,
-        $filter = '',
-        $filter_mode = 'AND',
-        $sortfield = '',
-        $sortorder = '',
-        $group = '',
-        $limit = 0,
-        $offset = 0,
-        $hasParent = '',
-        $parentClassTable = '',
-        $parentClassFields = '',
-        $childClassField = ''
-    )
+    public function fetchAll(array $array_of_fields, string $table_element, $filter = '', string $filter_mode = 'AND', string $sortfield = '', string $sortorder = '', string $group = '', int $limit = 0, int $offset = 0, string $hasParent = '', string $parentClassTable = '', $parentClassFields = '', string $childClassField = '')
     {
 
         $sql = 'Select t.rowid as id,';
-
         if (is_iterable($array_of_fields)) {
             foreach ($array_of_fields as $key) {
                 $sql .= ' t.' . $key . ', ';
@@ -475,7 +435,6 @@ class PassManDb
             $sql .= ' INNER JOIN ' . PM_MAIN_DB_PREFIX . $parentClassTable . ' as p ON t.' . $childClassField . ' = p.rowid';
         }
         $sql .= ' Where 1 = 1';
-
         $search_user = 0;
         $user_key = '';
         $user_value = '';
@@ -514,9 +473,7 @@ class PassManDb
         }
 
         pm_syslog('query:: sql = ' . $sql, PM_LOG_DEBUG);
-
         $query = $this->db->prepare($sql);
-
         if (!empty($filter)) {
             foreach ($filter as $key => $value) {
                 if ($key == 'fk_user') {
@@ -544,7 +501,6 @@ class PassManDb
         }
         catch (PDOException $e) {
             $this->db->rollBack();
-
             $this->error = $e->getMessage();
             pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
 
@@ -575,22 +531,7 @@ class PassManDb
      * @return array|int
      * @throws PDOException|Exception
      */
-    public function fetch(
-        $id = '',
-        $array_of_fields,
-        $table_element,
-        $filter = '',
-        $filter_mode = 'AND',
-        $sortfield = '',
-        $sortorder = '',
-        $group = '',
-        $limit = 0,
-        $offset = 0,
-        $hasParent = '',
-        $parentClassTable = '',
-        $parentClassFields = '',
-        $childClassField = ''
-    )
+    public function fetch($id = '', array $array_of_fields, string $table_element, $filter = '', string $filter_mode = 'AND', string $sortfield = '', string $sortorder = '', string $group = '', int $limit = 0, int $offset = 0, string $hasParent = '', string $parentClassTable = '', $parentClassFields = '', string $childClassField = '')
     {
 
         $sql = 'Select t.rowid as id,';
@@ -641,9 +582,7 @@ class PassManDb
         }
 
         pm_syslog('query:: sql = ' . $sql, PM_LOG_DEBUG);
-
         $query = $this->db->prepare($sql);
-
         if (!empty($filter)) {
             foreach ($filter as $key => $value) {
                 if ($key == 'rowid' || $key == 'id') {
@@ -673,7 +612,6 @@ class PassManDb
         }
         catch (PDOException $e) {
             $this->db->rollBack();
-
             $this->error = $e->getMessage();
             pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
 
@@ -696,7 +634,6 @@ class PassManDb
                 pm_syslog(get_class($this) . ':: close Closing a connection with an opened transaction depth=' . $this->transaction_opened, PM_LOG_ERR);
             }
             $this->connected = false;
-
             $this->db = null;
             pm_syslog(get_class($this) . ' connection closed', PM_LOG_INFO);
 
@@ -705,5 +642,4 @@ class PassManDb
 
         return false;
     }
-
 }

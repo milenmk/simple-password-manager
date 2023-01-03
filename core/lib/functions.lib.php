@@ -1,10 +1,11 @@
 <?php
+
 /**
  *
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: functions.lib.php
- *  Last Modified: 3.01.23 г., 0:19 ч.
+ *  Last Modified: 3.01.23 г., 10:41 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
@@ -53,11 +54,10 @@ if (!function_exists('pm_syslog')) {
  * @return    void
  * @throws Exception
  */
-function pm_syslog($message, $level)
+function pm_syslog(string $message, int $level)
 {
 
     global $user;
-
     if (empty($level)) {
         $level = PM_LOG_DEBUG;
     }
@@ -85,8 +85,8 @@ function pm_syslog($message, $level)
             'user'    => ((is_object($user) && isset($user->id)) ? $user->username : false),
             'ip'      => false,
         ];
-
-        $remoteip = getUserRemoteIP(); // Get ip when page run on a web server
+        $remoteip = getUserRemoteIP();
+        // Get ip when page run on a web server
         if (!empty($remoteip)) {
             $data['ip'] = $remoteip;
             // This is when server run behind a reverse proxy
@@ -107,7 +107,6 @@ function pm_syslog($message, $level)
         }
 
         pm_export($data);
-
         unset($data);
     }
 }
@@ -119,25 +118,23 @@ function pm_syslog($message, $level)
  *
  * @return    void
  */
-function pm_export($content)
+function pm_export(array $content)
 {
 
     $logfile = PM_MAIN_DOCUMENT_ROOT . '/pm-log.log';
-
     /*
-    //Unlock file for writing
-    if (isset($_SERVER['WINDIR'])) {
-        // Host OS is Windows
-        exec('attrib -R ' . escapeshellarg($logfile), $res);
-        $res = $res[0];
-    } else {
-        // Host OS is *nix
-        chmod($logfile, 0755);
-    }
-    */
+        //Unlock file for writing
+        if (isset($_SERVER['WINDIR'])) {
+            // Host OS is Windows
+            exec('attrib -R ' . escapeshellarg($logfile), $res);
+            $res = $res[0];
+        } else {
+            // Host OS is *nix
+            chmod($logfile, 0755);
+        }
+        */
 
     $filefd = fopen($logfile, 'a+');
-
     if (!$filefd) {
         // Do not break usage if log fails
         //throw new Exception('Failed to open log file '.basename($logfile));
@@ -153,21 +150,20 @@ function pm_export($content)
             PM_LOG_INFO    => 'INFO',
             PM_LOG_DEBUG   => 'DEBUG',
         ];
-
         $message = strftime('%Y-%m-%d %H:%M:%S', time()) . ' ' . sprintf('%-7s', $log_levels[$content['level']]) . ' ' . sprintf('%-15s', $content['ip']) . ' ' . $content['message'];
         fwrite($filefd, $message . "\n");
         fclose($filefd);
         /*
-        //Lock file as read only
-        if (isset($_SERVER['WINDIR'])) {
-            // Host OS is Windows
-            exec('attrib +R ' . escapeshellarg($logfile), $res);
-            $res = $res[0];
-        } else {
-            // Host OS is *nix
-            chmod($logfile, 0444);
-        }
-        */
+            //Lock file as read only
+            if (isset($_SERVER['WINDIR'])) {
+                // Host OS is Windows
+                exec('attrib +R ' . escapeshellarg($logfile), $res);
+                $res = $res[0];
+            } else {
+                // Host OS is *nix
+                chmod($logfile, 0444);
+            }
+            */
     }
 }
 
@@ -179,7 +175,7 @@ function pm_export($content)
  *
  * @return    string        Ip of remote user.
  */
-function getUserRemoteIP()
+function getUserRemoteIP(): string
 {
 
     if (empty($_SERVER['HTTP_X_FORWARDED_FOR']) || preg_match('/[^0-9.:,\[\]]/', $_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -202,8 +198,8 @@ function getUserRemoteIP()
 /**
  *  Return value of a param into GET or POST super variable.
  *
- * @param string $paramname      Name of parameter to found
- * @param string $check          Type of check
+ * @param string   $paramname    Name of parameter to found
+ * @param string   $check        Type of check
  *                               ''=no check (deprecated)
  *                               'none'=no check (only for param that should have very rich content)
  *                               'array', 'array:restricthtml' or 'array:aZ09' to check it's an array
@@ -218,13 +214,13 @@ function getUserRemoteIP()
  *                               'nohtml'=check there is no html content and no " and no ../
  *                               'restricthtml'=check html content is restricted to some tags only
  *                               'custom'= custom filter specify $filter and $options)
- * @param int    $method         Type of method (0 = get then post, 1 = only get, 2 = only post, 3 = post then get)
- * @param int    $filter         Filter to apply when $check is set to 'custom'. (See http://php.net/manual/en/filter.filters.php for details)
- * @param mixed  $options        Options to pass to filter_var when $check is set to 'custom'
+ * @param int      $method       Type of method (0 = get then post, 1 = only get, 2 = only post, 3 = post then get)
+ * @param int|null $filter       Filter to apply when $check is set to 'custom'. (See http://php.net/manual/en/filter.filters.php for details)
+ * @param mixed    $options      Options to pass to filter_var when $check is set to 'custom'
  *
  * @return string|array         Value found (string or array), or '' if check fails
  */
-function GETPOST($paramname, $check = 'alphanohtml', $method = 0, $filter = null, $options = null)
+function GETPOST(string $paramname, string $check = 'alphanohtml', int $method = 0, int $filter = null, $options = null)
 {
 
     if (empty($paramname)) {
@@ -244,7 +240,8 @@ function GETPOST($paramname, $check = 'alphanohtml', $method = 0, $filter = null
     }
 
     // Check rule
-    if (preg_match('/^array/', $check)) {    // If 'array' or 'array:restricthtml' or 'array:aZ09'
+    if (preg_match('/^array/', $check)) {
+        // If 'array' or 'array:restricthtml' or 'array:aZ09'
         if (!is_array($out) || empty($out)) {
             $out = [];
         } else {
@@ -268,14 +265,14 @@ function GETPOST($paramname, $check = 'alphanohtml', $method = 0, $filter = null
 /**
  *  Return a value after checking on a rule. A sanitization may also have been done.
  *
- * @param string $out     Value to check/clear.
- * @param string $check   Type of check/sanitizing
- * @param int    $filter  Filter to apply when $check is set to 'custom'. (See http://php.net/manual/en/filter.filters.php for details)
- * @param mixed  $options Options to pass to filter_var when $check is set to 'custom'
+ * @param string   $out     Value to check/clear.
+ * @param string   $check   Type of check/sanitizing
+ * @param int|null $filter  Filter to apply when $check is set to 'custom'. (See http://php.net/manual/en/filter.filters.php for details)
+ * @param mixed    $options Options to pass to filter_var when $check is set to 'custom'
  *
  * @return string|array         Value sanitized (string or array). It may be '' if format check fails.
  */
-function checkVal($out = '', $check = 'alphanohtml', $filter = null, $options = null)
+function checkVal(string $out = '', string $check = 'alphanohtml', int $filter = null, $options = null)
 {
 
     // Check is done after replacement
@@ -286,17 +283,21 @@ function checkVal($out = '', $check = 'alphanohtml', $filter = null, $options = 
             if (!is_numeric($out)) {
                 $out = '';
             }
+
             break;
         case 'intcomma':
             if (preg_match('/[^0-9,-]+/i', $out)) {
                 $out = '';
             }
+
             break;
         case 'san_alpha':
             $out = filter_var($out, FILTER_SANITIZE_STRING);
+
             break;
         case 'email':
             $out = filter_var($out, FILTER_SANITIZE_EMAIL);
+
             break;
         case 'aZ':
             if (!is_array($out)) {
@@ -305,6 +306,7 @@ function checkVal($out = '', $check = 'alphanohtml', $filter = null, $options = 
                     $out = '';
                 }
             }
+
             break;
         case 'aZ09':
             if (!is_array($out)) {
@@ -313,6 +315,7 @@ function checkVal($out = '', $check = 'alphanohtml', $filter = null, $options = 
                     $out = '';
                 }
             }
+
             break;
         case 'aZ09comma':        // great to sanitize sortfield or sortorder params that can be t.abc,t.def_gh
             if (!is_array($out)) {
@@ -321,9 +324,11 @@ function checkVal($out = '', $check = 'alphanohtml', $filter = null, $options = 
                     $out = '';
                 }
             }
+
             break;
         case 'nohtml':        // No html
             $out = string_nohtmltag($out, 0);
+
             break;
         case 'alpha':        // No html and no ../ and "
         case 'alphanohtml':    // Recommended for most scalar parameters and search parameters
@@ -337,12 +342,14 @@ function checkVal($out = '', $check = 'alphanohtml', $filter = null, $options = 
                 }
                 while ($oldstringtoclean != $out);
             }
+
             break;
         case 'custom':
             if (empty($filter)) {
                 return 'BadFourthParameterForGETPOST';
             }
             $out = filter_var($out, $filter, $options);
+
             break;
     }
 
@@ -366,24 +373,25 @@ function checkVal($out = '', $check = 'alphanohtml', $filter = null, $options = 
  * @return string                        String cleaned
  *
  */
-function string_nohtmltag($stringtoclean, $removelinefeed = 1, $strip_tags = 0, $removedoublespaces = 1)
+function string_nohtmltag(string $stringtoclean, int $removelinefeed = 1, int $strip_tags = 0, int $removedoublespaces = 1): string
 {
 
     if ($removelinefeed == 2) {
         $stringtoclean = preg_replace('/<br[^>]*>([\n\r])+/im', '<br>', $stringtoclean);
     }
     $temp = preg_replace('/<br[^>]*>/i', "\n", $stringtoclean);
-
     $temp = str_replace('< ', '__ltspace__', $temp);
-
     if ($strip_tags) {
         $temp = strip_tags($temp);
     } else {
-        $temp = str_replace('<>', '', $temp);      // No reason to have this into a text, except if value is to try bypass the next html cleaning
+        $temp = str_replace('<>', '', $temp);
+        // No reason to have this into a text, except if value is to try bypass the next html cleaning
         $pattern = '/<[^<>]+>/';
         // Example of $temp: <a href="/myurl" title="<u>A title</u>">0000-021</a>
-        $temp = preg_replace($pattern, '', $temp); // pass 1 - $temp after pass 1: <a href="/myurl" title="A title">0000-021
-        $temp = preg_replace($pattern, '', $temp); // pass 2 - $temp after pass 2: 0000-021
+        $temp = preg_replace($pattern, '', $temp);
+        // pass 1 - $temp after pass 1: <a href="/myurl" title="A title">0000-021
+        $temp = preg_replace($pattern, '', $temp);
+        // pass 2 - $temp after pass 2: 0000-021
         // Remove '<' into remainging, so remove non closing html tags like '<abc' or '<<abc'. Note: '<123abc' is not a html tag (can be kept), but '<abc123' is (must be removed).
         $temp = preg_replace('/<+([a-z]+)/i', '\1', $temp);
     }
@@ -413,7 +421,7 @@ function string_nohtmltag($stringtoclean, $removelinefeed = 1, $strip_tags = 0, 
  *
  * @return    string                Encoded string (UTF-8, ISO-8859-1)
  */
-function get_osencode($str)
+function get_osencode(string $str): string
 {
 
     $tmp = ini_get('unicode.filesystem_encoding');
@@ -438,15 +446,11 @@ function get_osencode($str)
  */
 function pm_logout_block()
 {
-
     global $action;
-
     if ($action == 'logout') {
         session_unset();
-
         // Destroy the session.
         session_destroy();
-
         header('Location: ' . PM_MAIN_URL_ROOT);
     }
 }

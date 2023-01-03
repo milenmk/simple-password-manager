@@ -1,10 +1,11 @@
 <?php
+
 /**
  *
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: profile.php
- *  Last Modified: 3.01.23 г., 0:19 ч.
+ *  Last Modified: 3.01.23 г., 10:41 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0

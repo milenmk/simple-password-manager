@@ -1,10 +1,11 @@
 <?php
+
 /**
  *
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: Domains.php
- *  Last Modified: 3.01.23 г., 0:19 ч.
+ *  Last Modified: 3.01.23 г., 10:41 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
@@ -35,7 +36,6 @@ use PDOException;
  */
 class Domains
 {
-
     /**
      * @var int Object id
      */
@@ -104,7 +104,7 @@ class Domains
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function create()
+    public function create(): int
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -133,7 +133,7 @@ class Domains
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function update($fields)
+    public function update(array $fields): int
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -158,12 +158,12 @@ class Domains
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function delete()
+    public function delete(): int
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
-        $res = $this->db->fetchAll('', $this->child_table_element, ['fk_domain' => $this->id], '');
+        $res = $this->db->fetchAll((array)'', $this->child_table_element, ['fk_domain' => $this->id], '');
 
         foreach ($res as $child) {
             $this->db->delete($this->child_table_element, $child['id']);
@@ -190,18 +190,18 @@ class Domains
      * @param int    $limit           Limit
      * @param int    $offset          Offset
      *
-     * @return int
+     * @return int|array|false|string
      * @throws PDOException|Exception
      */
     public function fetchAll(
         $filter = '',
-        $filter_mode = 'AND',
-        $sortfield = '',
-        $sortorder = '',
-        $group = '',
-        $limit = 0,
-        $offset = 0
-    )
+        string $filter_mode = 'AND',
+        string $sortfield = '',
+        string $sortorder = '',
+        string $group = '',
+        int $limit = 0,
+        int $offset = 0
+    ): int
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -242,15 +242,15 @@ class Domains
      * @throws PDOException|Exception
      */
     public function fetch(
-        $id,
-        $filter = '',
-        $filter_mode = 'AND',
-        $sortfield = '',
-        $sortorder = '',
-        $group = '',
-        $limit = 0,
-        $offset = 0
-    )
+        int    $id,
+               $filter = '',
+        string $filter_mode = 'AND',
+        string $sortfield = '',
+        string $sortorder = '',
+        string $group = '',
+        int    $limit = 0,
+        int    $offset = 0
+    ): int
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -274,5 +274,4 @@ class Domains
             return -1;
         }
     }
-
 }

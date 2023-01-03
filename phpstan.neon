@@ -1,0 +1,11 @@
+parameters:
+  level: max
+  paths:
+    - src
+  exceptions:
+    check:
+      missingCheckedExceptionInThrows: true
+      tooWideThrowType: true
+    implicitThrows: false
+includes:
+  - vendor/phpstan/phpstan/conf/bleedingEdge.neon

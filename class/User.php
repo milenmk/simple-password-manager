@@ -1,10 +1,11 @@
 <?php
+
 /**
  *
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: User.php
- *  Last Modified: 3.01.23 г., 0:19 ч.
+ *  Last Modified: 3.01.23 г., 10:41 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
@@ -95,7 +96,7 @@ class User
      *
      * @param PassManDb $db Database handler
      */
-    public function __construct($db)
+    public function __construct(PassManDb $db)
     {
 
         $this->db = $db;
@@ -109,7 +110,7 @@ class User
      * @return int
      * @throws PDOException|Exception
      */
-    public function create($password)
+    public function create(string $password): int
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -146,7 +147,7 @@ class User
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function update($password, $update_password = '')
+    public function update(string $password, string $update_password = ''): int
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -178,7 +179,7 @@ class User
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function delete()
+    public function delete(): int
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -204,18 +205,18 @@ class User
      * @param int    $limit           Limit
      * @param int    $offset          Offset
      *
-     * @return int
+     * @return int|array|false|string
      * @throws PDOException|Exception
      */
     public function fetchAll(
         $filter = '',
-        $filter_mode = 'AND',
-        $sortfield = '',
-        $sortorder = '',
-        $group = '',
-        $limit = 0,
-        $offset = 0
-    )
+        string $filter_mode = 'AND',
+        string $sortfield = '',
+        string $sortorder = '',
+        string $group = '',
+        int $limit = 0,
+        int $offset = 0
+    ): int
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -245,10 +246,11 @@ class User
      * On registration: return <0 if username do not exist and return record id if it does
      *
      * @param string $username
+     * @param int    $return_password
      *
      * @return int|mixed
      */
-    public function check($username, $return_password = 0)
+    public function check(string $username, int $return_password = 0)
     {
 
         $sql = 'SELECT rowid as id';
@@ -297,12 +299,12 @@ class User
     public function fetch(
         $id,
         $filter = '',
-        $filter_mode = 'AND',
-        $sortfield = '',
-        $sortorder = '',
-        $group = '',
-        $limit = 0,
-        $offset = 0
+        string $filter_mode = 'AND',
+        string $sortfield = '',
+        string $sortorder = '',
+        string $group = '',
+        int $limit = 0,
+        int $offset = 0
     )
     {
 

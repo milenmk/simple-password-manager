@@ -3,7 +3,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: glightbox.css
- *  Last Modified: 2.01.23 г., 1:26 ч.
+ *  Last Modified: 3.01.23 г., 10:20 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
@@ -80,7 +80,7 @@
 */
 
 .glightbox-mobile .glightbox-container .gslide-desc a {
-    color: #fff;
+    color: rgb(255, 255, 255);
     font-weight: bold;
 }
 
@@ -89,7 +89,7 @@
 }
 
 .glightbox-mobile .glightbox-container .gslide-desc .desc-more {
-    color: #fff;
+    color: rgb(255, 255, 255);
     opacity: 0.4;
 }
 
@@ -113,7 +113,7 @@ iframe.wait-autoplay {
 .glightbox-clean .gprev path,
 .glightbox-clean .gnext path,
 .glightbox-clean .gclose path {
-    fill: #fff;
+    fill: rgb(255, 255, 255);
 }
 
 .glightbox-clean .gclose svg {

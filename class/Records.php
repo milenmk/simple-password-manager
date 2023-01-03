@@ -5,7 +5,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: Records.php
- *  Last Modified: 3.01.23 г., 0:19 ч.
+ *  Last Modified: 3.01.23 г., 10:41 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
@@ -36,7 +36,6 @@ use PDOException;
  */
 class Records
 {
-
     /**
      * @var int Object id
      */
@@ -99,7 +98,6 @@ class Records
      */
     public function __construct(PassManDb $db)
     {
-
         $this->db = $db;
     }
 
@@ -109,7 +107,7 @@ class Records
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function create()
+    public function create(): int
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -136,7 +134,7 @@ class Records
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function update()
+    public function update(): int
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -163,7 +161,7 @@ class Records
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function delete()
+    public function delete(): int
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -192,7 +190,7 @@ class Records
      * @return int
      * @throws PDOException|Exception
      */
-    public function fetchAll($filter = '', $filter_mode = 'AND', $sortfield = '', $sortorder = '', $group = '', $limit = 0, $offset = 0)
+    public function fetchAll($filter = '', string $filter_mode = 'AND', string $sortfield = '', string $sortorder = '', string $group = '', int $limit = 0, int $offset = 0): int
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -224,7 +222,8 @@ class Records
      *
      * Fetch single row from database
      *
-     * @param array  $filter          Array of filters. Example array:('field' => 'value'). If key is customsql,
+     * @param        $id
+     * @param string $filter          Array of filters. Example array:('field' => 'value'). If key is customsql,
      *                                it should be an array also like ('customsql' => array('field' = > 'value'))
      * @param string $filter_mode     Filter mode AND or OR. Default is AND
      * @param string $sortfield       Sort field
@@ -234,9 +233,9 @@ class Records
      * @param int    $offset          Offset
      *
      * @return int
-     * @throws PDOException|Exception
+     * @throws Exception
      */
-    public function fetch($id, $filter = '', $filter_mode = 'AND', $sortfield = '', $sortorder = '', $group = '', $limit = 0, $offset = 0)
+    public function fetch($id, string $filter = '', string $filter_mode = 'AND', string $sortfield = '', string $sortorder = '', string $group = '', int $limit = 0, int $offset = 0): int
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -264,5 +263,4 @@ class Records
             return -1;
         }
     }
-
 }

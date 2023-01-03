@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+  ~
+  ~ Simple password manager written in PHP with Bootstrap and PDO database connections
+  ~
+  ~  File name: psalm.xml
+  ~  Last Modified: 3.01.23 г., 9:53 ч.
+  ~
+  ~  @link          https://blacktiehost.com
+  ~  @since         1.0.0
+  ~  @version       2.2.0
+  ~  @author        Milen Karaganski <milen@blacktiehost.com>
+  ~
+  ~  @license       GPL-3.0+
+  ~  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+  ~  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+  ~
+  -->
+
+<psalm
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        errorLevel="2"
+        resolveFromConfigFile="true"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <directory name="."/>
+        <ignoreFiles>
+            <directory name="vendor"/>
+        </ignoreFiles>
+    </projectFiles>
+</psalm>

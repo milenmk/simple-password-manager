@@ -3,7 +3,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: variables.css
- *  Last Modified: 2.01.23 г., 1:26 ч.
+ *  Last Modified: 3.01.23 г., 10:20 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
@@ -47,69 +47,69 @@
     /* The *-rgb color names are simply the RGB converted value of the corresponding color for use in the rgba() function */
 
     /* Default text color */
-    --color-default: #1a1f24;
+    --color-default: rgb(26, 31, 36);
     --color-default-rgb: 26, 31, 36;
 
     /* Defult links color */
-    --color-links: #0ea2bd;
-    --color-links-hover: #1ec3e0;
+    --color-links: rgb(14, 162, 189);
+    --color-links-hover: rgb(30, 195, 224);
 
     /* Primay colors */
-    --color-primary: #0ea2bd;
-    --color-primary-light: #1ec3e0;
-    --color-primary-dark: #0189a1;
+    --color-primary: rgb(14, 162, 189);
+    --color-primary-light: rgb(30, 195, 224);
+    --color-primary-dark: rgb(1, 137, 161);
 
     --color-primary-rgb: 14, 162, 189;
     --color-primary-light-rgb: 30, 195, 224;
     --color-primary-dark-rgb: 1, 137, 161;
 
     /* Secondary colors */
-    --color-secondary: #485664;
-    --color-secondary-light: #8f9fae;
-    --color-secondary-dark: #3a4753;
+    --color-secondary: rgb(72, 86, 100);
+    --color-secondary-light: rgb(143, 159, 174);
+    --color-secondary-dark: rgb(58, 71, 83);
 
     --color-secondary-rgb: 72, 86, 100;
     --color-secondary-light-rgb: 143, 159, 174;
     --color-secondary-dark-rgb: 58, 71, 83;
 
     /* General colors */
-    --color-blue: #0d6efd;
+    --color-blue: rgb(13, 110, 253);
     --color-blue-rgb: 13, 110, 253;
 
-    --color-indigo: #6610f2;
+    --color-indigo: rgb(102, 16, 242);
     --color-indigo-rgb: 102, 16, 242;
 
-    --color-purple: #6f42c1;
+    --color-purple: rgb(111, 66, 193);
     --color-purple-rgb: 111, 66, 193;
 
-    --color-pink: #f3268c;
+    --color-pink: rgb(243, 38, 140);
     --color-pink-rgb: 243, 38, 140;
 
-    --color-red: #df1529;
+    --color-red: rgb(223, 21, 41);
     --color-red-rgb: 223, 21, 4;
 
-    --color-orange: #fd7e14;
+    --color-orange: rgb(253, 126, 20);
     --color-orange-rgb: 253, 126, 20;
 
-    --color-yellow: #ffc107;
+    --color-yellow: rgb(255, 193, 7);
     --color-yellow-rgb: 255, 193, 7;
 
-    --color-green: #059652;
+    --color-green: rgb(5, 150, 82);
     --color-green-rgb: 5, 150, 82;
 
-    --color-teal: #20c997;
+    --color-teal: rgb(32, 201, 151);
     --color-teal-rgb: 32, 201, 151;
 
-    --color-cyan: #0dcaf0;
+    --color-cyan: rgb(13, 202, 240);
     --color-cyan-rgb: 13, 202, 240;
 
-    --color-white: #ffffff;
+    --color-white: rgb(255, 255, 255);
     --color-white-rgb: 255, 255, 255;
 
-    --color-gray: #6c757d;
+    --color-gray: rgb(108, 117, 125);
     --color-gray-rgb: 108, 117, 125;
 
-    --color-black: #000000;
+    --color-black: rgb(0, 0, 0);
     --color-black-rgb: 0, 0, 0;
 
 }
@@ -131,24 +131,24 @@
     --bs-cyan: var(--color-cyan);
     --bs-white: var(--color-white);
     --bs-gray: var(--color-gray);
-    --bs-gray-dark: #343a40;
-    --bs-gray-100: #f8f9fa;
-    --bs-gray-200: #e9ecef;
-    --bs-gray-300: #dee2e6;
-    --bs-gray-400: #ced4da;
-    --bs-gray-500: #adb5bd;
-    --bs-gray-600: #6c757d;
-    --bs-gray-700: #495057;
-    --bs-gray-800: #343a40;
-    --bs-gray-900: #212529;
+    --bs-gray-dark: rgb(52, 58, 64);
+    --bs-gray-100: rgb(248, 249, 250);
+    --bs-gray-200: rgb(233, 236, 239);
+    --bs-gray-300: rgb(222, 226, 230);
+    --bs-gray-400: rgb(206, 212, 218);
+    --bs-gray-500: rgb(173, 181, 189);
+    --bs-gray-600: rgb(108, 117, 125);
+    --bs-gray-700: rgb(73, 80, 87);
+    --bs-gray-800: rgb(52, 58, 64);
+    --bs-gray-900: rgb(33, 37, 41);
     --bs-primary: var(--color-blue);
     --bs-secondary: var(--color-blue);
-    --bs-success: #198754;
-    --bs-info: #0dcaf0;
-    --bs-warning: #ffc107;
-    --bs-danger: #dc3545;
-    --bs-light: #f8f9fa;
-    --bs-dark: #212529;
+    --bs-success: rgb(25, 135, 84);
+    --bs-info: rgb(13, 202, 240);
+    --bs-warning: rgb(255, 193, 7);
+    --bs-danger: rgb(220, 53, 69);
+    --bs-light: rgb(248, 249, 250);
+    --bs-dark: rgb(33, 37, 41);
     --bs-primary-rgb: var(--color-primary-rgb);
     --bs-secondary-rgb: var(--color-secondary-rgb);
     --bs-success-rgb: 25, 135, 84;
@@ -169,7 +169,7 @@
     --bs-body-font-weight: 400;
     --bs-body-line-height: 1.5;
     --bs-body-color: var(--color-default);
-    --bs-body-bg: #fff;
+    --bs-body-bg: rgb(255, 255, 255);
 
 }
 

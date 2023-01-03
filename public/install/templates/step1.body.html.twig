@@ -41,14 +41,14 @@
             <div class="mb-3 row">
                 <label for="main_url_root" class="col-sm-3 col-form-label">{{ langs.trans('AppUrl') }}</label>
                 <div class="col-sm-9">
-                    <input type="text" name="main_url_root" class="form-control" id="mainUrlRoot"
-                           value="{{ main_url }}" required>
+                    <label for="mainUrlRoot"></label><input type="text" name="main_url_root" class="form-control" id="mainUrlRoot"
+                                                            value="{{ main_url }}" required>
                 </div>
             </div>
             <div class="mb-3 row">
                 <label for="main_document_root" class="col-sm-3 col-form-label">{{ langs.trans('AppInstallFolder') }}</label>
                 <div class="col-sm-9">
-                    <input type="text" name="main_app_root" class="form-control" id="main_app_root" value="{{ root_folder }}" required>
+                    <label for="main_app_root"></label><input type="text" name="main_app_root" class="form-control" id="main_app_root" value="{{ root_folder }}" required>
                 </div>
             </div>
             <div class="mb-3 row">

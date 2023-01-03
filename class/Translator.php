@@ -1,19 +1,20 @@
 <?php
+
 /**
  *
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: Translator.php
- *  Last Modified: 2.01.23 г., 13:31 ч.
+ *  Last Modified: 3.01.23 г., 10:41 ч.
  *
- * @link          https://blacktiehost.com
- * @since         1.0.0
- * @version       2.2.0
- * @author        Milen Karaganski <milen@blacktiehost.com>
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
- * @license       GPL-3.0+
- * @license       http://www.gnu.org/licenses/gpl-3.0.txt
- * @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
  *
  */
 
@@ -37,19 +38,19 @@ class Translator
 
     public string $dir;
     public string $defaultlang;
-
     public string $origlang;
     public string $shortlang;
-
-    public array  $tab_translate  = [];       // Array of all translations key=>value
-    public string $charset_output = 'UTF-8';  // Array to store result after loading each language file
+    public array  $tab_translate = [];
+    // Array of all translations key=>value
+    public string $charset_output = 'UTF-8';
+    // Array to store result after loading each language file
     public string $error;
-    private array $tab_loaded     = [];
+    private array $tab_loaded = [];
 
     /**
      * @param string $dir Force directory other than /langs subdirectory.
      */
-    public function __construct($dir)
+    public function __construct(string $dir)
     {
 
         if ($dir) {
@@ -64,7 +65,7 @@ class Translator
      *
      * @return false|string
      */
-    public function getDefaultLang($mode = 0)
+    public function getDefaultLang(int $mode = 0)
     {
 
         if (empty($mode)) {
@@ -82,14 +83,14 @@ class Translator
      * @return    void
      * @throws Exception
      */
-    public function setDefaultLang($srclang = 'en_US')
+    public function setDefaultLang(string $srclang = 'en_US')
     {
 
         $this->origlang = $srclang;
-
         if (empty($srclang) || $srclang == 'auto') {
             $langpref = empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? '' : $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-            $langpref = preg_replace('/;([^,]*)/i', '', $langpref); // Remove the 'q=x.y,' part
+            $langpref = preg_replace('/;([^,]*)/i', '', $langpref);
+            // Remove the 'q=x.y,' part
             $langpref = str_replace('-', '_', $langpref);
             $langlist = preg_split('/[;,]/', $langpref);
             $codetouse = preg_replace('/[^_a-zA-Z]/', '', $langlist[0]);
@@ -99,13 +100,15 @@ class Translator
 
         // We redefine $srclang
         $langpart = explode('_', $codetouse);
-        if (!empty($langpart[1])) {    // If it's for a codetouse that is a long code xx_YY
+        if (!empty($langpart[1])) {
+            // If it's for a codetouse that is a long code xx_YY
             // Array force long code from first part, even if long code is defined
             $longforshort = ['ar' => 'ar_SA'];
             $longforshortexcep = ['ar_EG'];
             if (isset($longforshort[strtolower($langpart[0])]) && !in_array($codetouse, $longforshortexcep)) {
                 $srclang = $longforshort[strtolower($langpart[0])];
-            } elseif (!is_numeric($langpart[1])) {        // Second part YY may be a numeric with some Chrome browser
+            } elseif (!is_numeric($langpart[1])) {
+                // Second part YY may be a numeric with some Chrome browser
                 $srclang = strtolower($langpart[0]) . '_' . strtoupper($langpart[1]);
                 $longforlong = ['no_nb' => 'nb_NO'];
                 if (isset($longforlong[strtolower($srclang)])) {
@@ -140,7 +143,7 @@ class Translator
      * @return void less than 0 if KO, 0 if already loaded or loading not required, >0 if OK
      * @throws Exception
      */
-    public function loadLangs($domains)
+    public function loadLangs(array $domains)
     {
 
         foreach ($domains as $domain) {
@@ -166,7 +169,7 @@ class Translator
      * @throws Exception
      * @see loadLangs()
      */
-    public function load($domain, $alt = 0, $stopafterdirection = 0, $forcelangdir = '')
+    public function load(string $domain, int $alt = 0, int $stopafterdirection = 0, $forcelangdir = ''): int
     {
 
         // Check parameters
@@ -180,10 +183,8 @@ class Translator
         }
 
         $newdomain = $domain;
-
         $fileread = 0;
         $langofdir = (empty($forcelangdir) ? $this->defaultlang : $forcelangdir);
-
         // Redefine alt
         $langarray = explode('_', $langofdir);
         if ($alt < 1 && isset($langarray[1]) && (strtolower($langarray[0]) == strtolower($langarray[1]) || strtolower($langofdir) == 'el_gr')) {
@@ -206,12 +207,9 @@ class Translator
         // Directory of translation files
         $file_lang = $this->dir . '/langs/' . $langofdir . '/' . $newdomain . '.lang';
         $file_lang_osencoded = get_osencode($file_lang);
-
         $filelangexists = is_file($file_lang_osencoded);
-
         if ($filelangexists) {
             if ($fp = fopen($file_lang, 'rt')) {
-
                 /**
                  * Read each lines until a '=' (with any combination of spaces around it)
                  * and split the rest until a line feed.
@@ -221,8 +219,10 @@ class Translator
                     if (isset($line[1])) {
                         [$key, $value] = $line;
                         if (empty($this->tab_translate[$key])) {
-                            if ($key == 'DIRECTION') { // This is to declare direction of language
-                                if ($alt < 2 || empty($this->tab_translate[$key])) { // We load direction only for primary files or if not yet loaded
+                            if ($key == 'DIRECTION') {
+                                // This is to declare direction of language
+                                if ($alt < 2 || empty($this->tab_translate[$key])) {
+                                    // We load direction only for primary files or if not yet loaded
                                     $this->tab_translate[$key] = $value;
                                     if ($stopafterdirection) {
                                         break;
@@ -253,7 +253,8 @@ class Translator
 
         if ($alt == 2) {
             if ($fileread) {
-                $this->tab_loaded[$newdomain] = 1; // Set domain file as found so loaded
+                $this->tab_loaded[$newdomain] = 1;
+                // Set domain file as found so loaded
             }
 
             if (empty($this->tab_loaded[$newdomain])) {
@@ -261,8 +262,10 @@ class Translator
             }
         }
 
-        if (!empty($this->tab_translate['SeparatorDecimal']) && !empty($this->tab_translate['SeparatorThousand'])
-            && $this->tab_translate['SeparatorDecimal'] == $this->tab_translate['SeparatorThousand']) {
+        if (
+            !empty($this->tab_translate['SeparatorDecimal']) && !empty($this->tab_translate['SeparatorThousand'])
+            && $this->tab_translate['SeparatorDecimal'] == $this->tab_translate['SeparatorThousand']
+        ) {
             $this->tab_translate['SeparatorThousand'] = '';
         }
 
@@ -283,12 +286,11 @@ class Translator
      * @return string            Translated string (encoded into HTML entities and UTF8)
      * @throws Exception
      */
-    public function trans($key, $param1 = '', $param2 = '', $param3 = '', $param4 = '')
+    public function trans(string $key, string $param1 = '', string $param2 = '', string $param3 = '', string $param4 = ''): string
     {
 
         if (!empty($this->tab_translate[$key])) {
             $str = $this->tab_translate[$key];
-
             $str = str_replace(
                 [
                     '"', '<b>', '</b>', '<u>', '</u>', '<i', '</i>',
@@ -302,12 +304,14 @@ class Translator
                 ],
                 $str
             );
-
             if (strpos($key, 'Format') !== 0) {
-                $str = sprintf($str, $param1, $param2, $param3, $param4); // Replace %s and %d except for FormatXXX strings.
+                $str = sprintf($str, $param1, $param2, $param3, $param4);
+                // Replace %s and %d except for FormatXXX strings.
             }
 
-            $str = htmlentities($str, ENT_COMPAT, $this->charset_output); // Do not convert simple quotes in translation
+            $str = htmlentities($str, ENT_COMPAT, $this->charset_output);
+
+            // Do not convert simple quotes in translation
 
             return str_replace(
                 [
@@ -325,5 +329,4 @@ class Translator
             return 'NoTranslationYet';
         }
     }
-
 }
