@@ -9,3 +9,5 @@ docs/sodium.key
 docs/install.lock
 /docs/install.lock
 .idea
+tests/*
+/tests*
