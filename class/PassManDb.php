@@ -5,7 +5,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: PassManDb.php
- *  Last Modified: 3.01.23 г., 11:20 ч.
+ *  Last Modified: 3.01.23 г., 11:58 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
@@ -131,7 +131,7 @@ class PassManDb
             $this->connected = false;
             $this->ok = false;
             $this->error = $langs->trans('ErrorWrongHostParameter');
-            if (PM_DISABLE_SYSLOG == 0) {
+            if (PM_DISABLE_SYSLOG != 1) {
                 pm_syslog(get_class($this) . ': Connect error, wrong host parameters', PM_LOG_ERR);
             }
 
@@ -149,7 +149,7 @@ class PassManDb
                 $this->error = $this->db->errorCode();
             }
 
-            if (PM_DISABLE_SYSLOG == 0) {
+            if (PM_DISABLE_SYSLOG != 1) {
                 pm_syslog(get_class($this) . ': Connect error: ' . $this->error, PM_LOG_ERR);
             }
 
@@ -179,7 +179,7 @@ class PassManDb
                 } elseif (isset($this->db) && $this->db->errorCode()) {
                     $this->error = $this->db->errorCode();
                 }
-                if (PM_DISABLE_SYSLOG == 0) {
+                if (PM_DISABLE_SYSLOG != 1) {
                     pm_syslog(get_class($this) . ': Select_db error ' . $this->error, PM_LOG_ERR);
                 }
 
@@ -209,7 +209,7 @@ class PassManDb
             return $this->db;
         } catch (PDOException $e) {
             $this->error = 'Connection failed: ' . $e->getMessage();
-            if (PM_DISABLE_SYSLOG == 0) {
+            if (PM_DISABLE_SYSLOG != 1) {
                 pm_syslog('ERROR: ' . $this->error . ' for method ' . __METHOD__ . ' in class ' . get_class($this), PM_LOG_ERR);
             }
         }
@@ -232,7 +232,7 @@ class PassManDb
     public function selectDb(string $host, string $login, string $passwd, string $name, string $charset, string $collation, int $port = 0)
     {
 
-        if (PM_DISABLE_SYSLOG == 0) {
+        if (PM_DISABLE_SYSLOG != 1) {
             pm_syslog(get_class($this) . '::select_db database=' . $name, PM_LOG_INFO);
         }
 
@@ -243,7 +243,7 @@ class PassManDb
             return $this->db;
         } catch (PDOException $e) {
             $this->error = 'Connection failed: ' . $e->getMessage();
-            if (PM_DISABLE_SYSLOG == 0) {
+            if (PM_DISABLE_SYSLOG != 1) {
                 pm_syslog('ERROR: ' . $this->error . ' for method construct in class ' . get_class($this), PM_LOG_ERR);
             }
 
@@ -274,7 +274,9 @@ class PassManDb
         }
         $sql = preg_replace('/,\s*$/', '', $sql);
         $sql .= ')';
-        pm_syslog('query:: sql = ' . $sql, PM_LOG_DEBUG);
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog('query:: sql = ' . $sql, PM_LOG_DEBUG);
+        }
         $query = $this->db->prepare($sql);
         foreach ($array_of_fields as $key => $value) {
             $query->bindValue(':' . $key, $value);
@@ -287,20 +289,26 @@ class PassManDb
         try {
             $result = $query->execute();
             if ($result) {
-                pm_syslog(get_class($this) . ':: record with id=' . $this->db->lastInsertId() . ' inserted into ' . $table_element, PM_LOG_INFO);
+                if (PM_DISABLE_SYSLOG != 1) {
+                    pm_syslog(get_class($this) . ':: record with id=' . $this->db->lastInsertId() . ' inserted into ' . $table_element, PM_LOG_INFO);
+                }
                 $this->db->commit();
 
                 return 1;
             } else {
                 $this->db->rollBack();
-                pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
+                if (PM_DISABLE_SYSLOG != 1) {
+                    pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
+                }
 
                 return -1;
             }
         } catch (PDOException $e) {
             $this->db->rollBack();
             $this->error = $e->getMessage();
-            pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
+            if (PM_DISABLE_SYSLOG != 1) {
+                pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
+            }
 
             return $this->error;
         }
@@ -325,7 +333,9 @@ class PassManDb
         }
         $sql = preg_replace('/,\s*$/', '', $sql);
         $sql .= ' WHERE rowid = :id';
-        pm_syslog('query:: sql = ' . $sql, PM_LOG_DEBUG);
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog('query:: sql = ' . $sql, PM_LOG_DEBUG);
+        }
         $query = $this->db->prepare($sql);
         if (!empty($filter)) {
             foreach ($filter as $key => $value) {
@@ -339,14 +349,18 @@ class PassManDb
 
         try {
             $query->execute();
-            pm_syslog(get_class($this) . ':: record with id=' . $this->db->lastInsertId() . ' from ' . $table_element . 'was updated', PM_LOG_INFO);
+            if (PM_DISABLE_SYSLOG != 1) {
+                pm_syslog(get_class($this) . ':: record with id=' . $this->db->lastInsertId() . ' from ' . $table_element . 'was updated', PM_LOG_INFO);
+            }
             $this->db->commit();
 
             return 1;
         } catch (PDOException $e) {
             $this->db->rollBack();
             $this->error = $e->getMessage();
-            pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
+            if (PM_DISABLE_SYSLOG != 1) {
+                pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
+            }
 
             return $this->error;
         }
@@ -365,7 +379,9 @@ class PassManDb
     {
 
         $sql = 'DELETE FROM ' . PM_MAIN_DB_PREFIX . $table_element . ' WHERE rowid = :id';
-        pm_syslog('query:: sql = ' . $sql, PM_LOG_DEBUG);
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog('query:: sql = ' . $sql, PM_LOG_DEBUG);
+        }
         $query = $this->db->prepare($sql);
         $query->bindParam(':id', $record_id, PDO::PARAM_INT);
         if (!$this->db->inTransaction()) {
@@ -374,14 +390,18 @@ class PassManDb
 
         try {
             $query->execute();
-            pm_syslog(get_class($this) . ':: record with id=' . $this->db->lastInsertId() . ' from ' . $table_element . 'was deleted', PM_LOG_INFO);
+            if (PM_DISABLE_SYSLOG != 1) {
+                pm_syslog(get_class($this) . ':: record with id=' . $this->db->lastInsertId() . ' from ' . $table_element . 'was deleted', PM_LOG_INFO);
+            }
             $this->db->commit();
 
             return 1;
         } catch (PDOException $e) {
             $this->db->rollBack();
             $this->error = $e->getMessage();
-            pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
+            if (PM_DISABLE_SYSLOG != 1) {
+                pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
+            }
 
             return $this->error;
         }
@@ -466,7 +486,9 @@ class PassManDb
             $sql .= ' LIMIT ' . $limit . ' OFFSET ' . $offset;
         }
 
-        pm_syslog('query:: sql = ' . $sql, PM_LOG_DEBUG);
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog('query:: sql = ' . $sql, PM_LOG_DEBUG);
+        }
         $query = $this->db->prepare($sql);
         if (!empty($filter)) {
             foreach ($filter as $key => $value) {
@@ -495,7 +517,9 @@ class PassManDb
         } catch (PDOException $e) {
             $this->db->rollBack();
             $this->error = $e->getMessage();
-            pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
+            if (PM_DISABLE_SYSLOG != 1) {
+                pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
+            }
 
             return $this->error;
         }
@@ -574,7 +598,9 @@ class PassManDb
             $sql .= ' LIMIT ' . $limit . ' OFFSET ' . $offset;
         }
 
-        pm_syslog('query:: sql = ' . $sql, PM_LOG_DEBUG);
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog('query:: sql = ' . $sql, PM_LOG_DEBUG);
+        }
         $query = $this->db->prepare($sql);
         if (!empty($filter)) {
             foreach ($filter as $key => $value) {
@@ -605,7 +631,9 @@ class PassManDb
         } catch (PDOException $e) {
             $this->db->rollBack();
             $this->error = $e->getMessage();
-            pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
+            if (PM_DISABLE_SYSLOG != 1) {
+                pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
+            }
 
             return $this->error;
         }

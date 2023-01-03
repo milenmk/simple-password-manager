@@ -107,8 +107,9 @@ class Domains
     public function create()
     {
 
-        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
         $array = [];
         foreach ($this->array_of_fields as $val) {
             if (!empty($this->$val)) {
@@ -136,8 +137,9 @@ class Domains
     public function update(array $fields)
     {
 
-        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
         $array_to_update = [];
         foreach ($fields as $field) {
             $array_to_update[$field] = $this->$field;
@@ -161,8 +163,9 @@ class Domains
     public function delete()
     {
 
-        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
         $res = $this->db->fetchAll([], $this->child_table_element, ['fk_domain' => $this->id], '');
 
         foreach ($res as $child) {
@@ -203,7 +206,9 @@ class Domains
         int $offset = 0
     ) {
 
-        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
 
         $result = $this->db->fetchAll(
             $this->array_of_fields,
@@ -251,7 +256,9 @@ class Domains
         int $offset = 0
     ) {
 
-        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
 
         $result = $this->db->fetch(
             $id,

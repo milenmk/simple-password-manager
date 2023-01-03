@@ -5,7 +5,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: User.php
- *  Last Modified: 3.01.23 г., 10:44 ч.
+ *  Last Modified: 3.01.23 г., 11:58 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
@@ -66,6 +66,10 @@ class User
      */
     public string $language;
     /**
+     * @var int 1 if user is admin and 0 if not
+     */
+    public int $admin;
+    /**
      * @var string Error
      */
     public string $error;
@@ -81,6 +85,7 @@ class User
      * @var string Name of table without prefix where object is stored.
      */
     public string $table_element = 'users';
+
     /**
      * @var PassManDb Database handler
      */
@@ -112,8 +117,9 @@ class User
     public function create(string $password)
     {
 
-        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
         $this->password = $password;
 
         if (empty($this->language)) {
@@ -149,8 +155,9 @@ class User
     public function update(string $password, string $update_password = '')
     {
 
-        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
         $array_to_update = [];
         if (!empty($update_password) && !empty($password)) {
             $this->password = password_hash($password, PASSWORD_DEFAULT);
@@ -181,8 +188,9 @@ class User
     public function delete()
     {
 
-        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
         $result = $this->db->delete($this->table_element, $this->id);
 
         if ($result > 0) {
@@ -217,8 +225,9 @@ class User
         int $offset = 0
     ) {
 
-        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
         $result = $this->db->fetchAll(
             $this->array_of_fields,
             $this->table_element,
@@ -305,8 +314,9 @@ class User
         int $offset = 0
     ) {
 
-        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
         $result = $this->db->fetch(
             $id,
             $this->array_of_fields,

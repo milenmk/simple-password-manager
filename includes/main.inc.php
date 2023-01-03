@@ -5,16 +5,16 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: main.inc.php
- *  Last Modified: 3.01.23 г., 10:44 ч.
+ *  Last Modified: 3.01.23 г., 11:54 ч.
  *
- * @link          https://blacktiehost.com
- * @since         1.0.0
- * @version       2.2.0
- * @author        Milen Karaganski <milen@blacktiehost.com>
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.2.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
- * @license       GPL-3.0+
- * @license       http://www.gnu.org/licenses/gpl-3.0.txt
- * @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
  *
  */
 
@@ -39,7 +39,9 @@ try {
 }
 catch (Exception $e) {
     $error = $e->getMessage();
-    pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
+    if (PM_DISABLE_SYSLOG != 1) {
+        pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
+    }
     print 'File "vendor/autoload.php!"not found';
     die();
 }
@@ -67,7 +69,9 @@ try {
 }
 catch (Exception $e) {
     $error = $e->getMessage();
-    pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
+    if (PM_DISABLE_SYSLOG != 1) {
+        pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
+    }
     print 'File "core/lib/functions.lib.php" not found!';
     die();
 }
@@ -96,10 +100,13 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         $user->username = $res['username'];
         $user->theme = $res['theme'];
         $user->language = $res['language'];
+        $user->admin = int($res['admin']);
     }
     catch (Exception $e) {
         $error = $e->getMessage();
-        pm_syslog('Error trying to fetch user with ID ' . $_SESSION['id'] . ' with error ' . $error, LOG_ERR);
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog('Error trying to fetch user with ID ' . $_SESSION['id'] . ' with error ' . $error, LOG_ERR);
+        }
     }
 }
 

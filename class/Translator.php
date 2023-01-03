@@ -194,11 +194,13 @@ class Translator
         }
 
         if (empty($langofdir)) {
-            pm_syslog(
-                'Error: ' . get_class($this) . '::load was called for domain=' . $domain . ' 
+            if (PM_DISABLE_SYSLOG != 1) {
+                pm_syslog(
+                    'Error: ' . get_class($this) . '::load was called for domain=' . $domain . ' 
 			but language was not set yet with langs->setDefaultLang(). Nothing will be loaded.',
-                PM_LOG_WARNING
-            );
+                    PM_LOG_WARNING
+                );
+            }
 
             return -1;
         }

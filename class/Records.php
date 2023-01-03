@@ -5,7 +5,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: Records.php
- *  Last Modified: 3.01.23 г., 10:45 ч.
+ *  Last Modified: 3.01.23 г., 12:00 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
@@ -111,8 +111,9 @@ class Records
     public function create()
     {
 
-        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
         $array = [];
         foreach ($this->array_of_fields as $val) {
             if (!empty($this->$val)) {
@@ -138,8 +139,9 @@ class Records
     public function update()
     {
 
-        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
         $array_to_update = [];
         foreach ($this->array_of_fields as $field) {
             if (isset($this->$field) && $this->$field != 0 || !empty($this->$field)) {
@@ -165,8 +167,9 @@ class Records
     public function delete()
     {
 
-        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
         $result = $this->db->delete($this->table_element, $this->id);
 
         if ($result > 0) {
@@ -194,8 +197,9 @@ class Records
     public function fetchAll($filter = '', string $filter_mode = 'AND', string $sortfield = '', string $sortorder = '', string $group = '', int $limit = 0, int $offset = 0)
     {
 
-        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
         $result = $this->db->fetchAll(
             $this->array_of_fields,
             $this->table_element,
@@ -239,8 +243,9 @@ class Records
     public function fetch($id, string $filter = '', string $filter_mode = 'AND', string $sortfield = '', string $sortorder = '', string $group = '', int $limit = 0, int $offset = 0)
     {
 
-        pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-
+        if (PM_DISABLE_SYSLOG != 1) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
         $result = $this->db->fetch(
             $id,
             $this->array_of_fields,
