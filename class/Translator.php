@@ -24,7 +24,7 @@
  * \brief       Class to manage translations to different languages
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace PasswordManager;
 
@@ -35,12 +35,11 @@ use Exception;
  */
 class Translator
 {
-
     public string $dir;
     public string $defaultlang;
     public string $origlang;
     public string $shortlang;
-    public array  $tab_translate = [];
+    public array $tab_translate = [];
     // Array of all translations key=>value
     public string $charset_output = 'UTF-8';
     // Array to store result after loading each language file
@@ -169,7 +168,7 @@ class Translator
      * @throws Exception
      * @see loadLangs()
      */
-    public function load(string $domain, int $alt = 0, int $stopafterdirection = 0, $forcelangdir = ''): int
+    public function load(string $domain, int $alt = 0, int $stopafterdirection = 0, $forcelangdir = '')
     {
 
         // Check parameters
@@ -286,7 +285,7 @@ class Translator
      * @return string            Translated string (encoded into HTML entities and UTF8)
      * @throws Exception
      */
-    public function trans(string $key, string $param1 = '', string $param2 = '', string $param3 = '', string $param4 = ''): string
+    public function trans(string $key, string $param1 = '', string $param2 = '', string $param3 = '', string $param4 = '')
     {
 
         if (!empty($this->tab_translate[$key])) {
@@ -329,5 +328,4 @@ class Translator
             return 'NoTranslationYet';
         }
     }
-
 }

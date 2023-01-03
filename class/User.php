@@ -24,7 +24,7 @@
  * \brief       This file is a CRUD file for User class (Create/Read/Update/Delete)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace PasswordManager;
 
@@ -37,7 +37,6 @@ use PDOException;
  */
 class User
 {
-
     /**
      * @var int User ID
      */
@@ -110,7 +109,7 @@ class User
      * @return int
      * @throws PDOException|Exception
      */
-    public function create(string $password): int
+    public function create(string $password)
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -147,7 +146,7 @@ class User
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function update(string $password, string $update_password = ''): int
+    public function update(string $password, string $update_password = '')
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -179,7 +178,7 @@ class User
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function delete(): int
+    public function delete()
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -216,8 +215,7 @@ class User
         string $group = '',
         int $limit = 0,
         int $offset = 0
-    ): int
-    {
+    ) {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
@@ -305,8 +303,7 @@ class User
         string $group = '',
         int $limit = 0,
         int $offset = 0
-    )
-    {
+    ) {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
@@ -329,5 +326,4 @@ class User
             return -1;
         }
     }
-
 }

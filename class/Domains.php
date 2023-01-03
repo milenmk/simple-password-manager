@@ -24,7 +24,7 @@
  * \brief       This file is a CRUD file for Domains class (Create/Read/Update/Delete)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace PasswordManager;
 
@@ -36,7 +36,6 @@ use PDOException;
  */
 class Domains
 {
-
     /**
      * @var int Object id
      */
@@ -105,7 +104,7 @@ class Domains
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function create(): int
+    public function create()
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -134,7 +133,7 @@ class Domains
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function update(array $fields): int
+    public function update(array $fields)
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -159,7 +158,7 @@ class Domains
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function delete(): int
+    public function delete()
     {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -202,8 +201,7 @@ class Domains
         string $group = '',
         int $limit = 0,
         int $offset = 0
-    ): int
-    {
+    ) {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
@@ -243,16 +241,15 @@ class Domains
      * @throws PDOException|Exception
      */
     public function fetch(
-        int    $id,
-               $filter = '',
+        int $id,
+        $filter = '',
         string $filter_mode = 'AND',
         string $sortfield = '',
         string $sortorder = '',
         string $group = '',
-        int    $limit = 0,
-        int    $offset = 0
-    ): int
-    {
+        int $limit = 0,
+        int $offset = 0
+    ) {
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
@@ -275,5 +272,4 @@ class Domains
             return -1;
         }
     }
-
 }
