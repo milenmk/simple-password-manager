@@ -156,5 +156,3 @@ print $twig->render(
 if ($created == 'OK') {
     echo '<script>setTimeout(function(){ window.location.href= "' . PM_MAIN_URL_ROOT . '/login.php";}, 2000);</script>';
 }
-
-$db->close();

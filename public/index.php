@@ -164,5 +164,3 @@ if ($action == 'add_domain') {
         ]
     );
 }
-
-$db->close();

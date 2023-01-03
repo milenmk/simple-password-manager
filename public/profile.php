@@ -177,5 +177,3 @@ if ($action == 'edit_password') {
         ]
     );
 }
-
-$db->close();

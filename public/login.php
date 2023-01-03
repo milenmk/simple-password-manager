@@ -122,5 +122,3 @@ print $twig->render(
         'message'   => $messages,
     ]
 );
-
-$db->close();

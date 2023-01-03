@@ -5,7 +5,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: PassManDb.php
- *  Last Modified: 3.01.23 г., 10:45 ч.
+ *  Last Modified: 3.01.23 г., 11:20 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
@@ -24,7 +24,7 @@
  * \brief       This file is a CRUD file for PassManDb class (Create/Read/Update/Delete)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace PasswordManager;
 
@@ -37,7 +37,6 @@ use PDOException;
  */
 class PassManDb
 {
-
     /**
      * @var string Holds error messages for output
      */
@@ -200,7 +199,6 @@ class PassManDb
      *
      * @return PDO|void
      * @throws PDOException|Exception
-     * @see close()
      */
     public function connect(string $host, string $login, string $passwd, string $name, int $port = 0)
     {
@@ -209,8 +207,7 @@ class PassManDb
             $this->db = new PDO("mysql:host=$host;dbname=$name;port=$port", $login, $passwd);
 
             return $this->db;
-        }
-        catch (PDOException $e) {
+        } catch (PDOException $e) {
             $this->error = 'Connection failed: ' . $e->getMessage();
             if (PM_DISABLE_SYSLOG == 0) {
                 pm_syslog('ERROR: ' . $this->error . ' for method ' . __METHOD__ . ' in class ' . get_class($this), PM_LOG_ERR);
@@ -244,8 +241,7 @@ class PassManDb
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             return $this->db;
-        }
-        catch (PDOException $e) {
+        } catch (PDOException $e) {
             $this->error = 'Connection failed: ' . $e->getMessage();
             if (PM_DISABLE_SYSLOG == 0) {
                 pm_syslog('ERROR: ' . $this->error . ' for method construct in class ' . get_class($this), PM_LOG_ERR);
@@ -301,8 +297,7 @@ class PassManDb
 
                 return -1;
             }
-        }
-        catch (PDOException $e) {
+        } catch (PDOException $e) {
             $this->db->rollBack();
             $this->error = $e->getMessage();
             pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
@@ -348,8 +343,7 @@ class PassManDb
             $this->db->commit();
 
             return 1;
-        }
-        catch (PDOException $e) {
+        } catch (PDOException $e) {
             $this->db->rollBack();
             $this->error = $e->getMessage();
             pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
@@ -384,8 +378,7 @@ class PassManDb
             $this->db->commit();
 
             return 1;
-        }
-        catch (PDOException $e) {
+        } catch (PDOException $e) {
             $this->db->rollBack();
             $this->error = $e->getMessage();
             pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
@@ -499,8 +492,7 @@ class PassManDb
             $query->execute();
 
             return $query->fetchAll();
-        }
-        catch (PDOException $e) {
+        } catch (PDOException $e) {
             $this->db->rollBack();
             $this->error = $e->getMessage();
             pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
@@ -610,8 +602,7 @@ class PassManDb
             $query->execute();
 
             return $query->fetch();
-        }
-        catch (PDOException $e) {
+        } catch (PDOException $e) {
             $this->db->rollBack();
             $this->error = $e->getMessage();
             pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $this->error, PM_LOG_ERR);
@@ -619,29 +610,4 @@ class PassManDb
             return $this->error;
         }
     }
-
-    /**
-     * Close database connection
-     *
-     * @return false|PDO|null
-     * @throws PDOException|Exception
-     * @see connect()
-     */
-    public function close()
-    {
-
-        if ($this->db) {
-            if ($this->transaction_opened > 0) {
-                pm_syslog(get_class($this) . ':: close Closing a connection with an opened transaction depth=' . $this->transaction_opened, PM_LOG_ERR);
-            }
-            $this->connected = false;
-            $this->db = null;
-            pm_syslog(get_class($this) . ' connection closed', PM_LOG_INFO);
-
-            return $this->db;
-        }
-
-        return false;
-    }
-
 }

@@ -207,5 +207,3 @@ if ($action == 'add_record') {
         ]
     );
 }
-
-$db->close();
