@@ -5,7 +5,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: index.php
- *  Last Modified: 3.01.23 г., 10:44 ч.
+ *  Last Modified: 3.01.23 г., 11:31 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
@@ -24,7 +24,7 @@
  * \brief       index file for Password Manager to manage Domains
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace PasswordManager;
 
@@ -34,8 +34,7 @@ $error = '';
 
 try {
     include_once('../includes/main.inc.php');
-}
-catch (Exception $e) {
+} catch (Exception $e) {
     $error = $e->getMessage();
     pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
     print 'File "includes/main.inc.php!"not found';
@@ -123,6 +122,7 @@ if ($action == 'add_domain') {
     );
 } elseif ($action == 'edit_domain') {
     $res = $domains->fetchAll(['rowid' => $id, 'fk_user' => $user->id]);
+
     print $twig->render(
         'index.edit.html.twig',
         [
@@ -137,7 +137,6 @@ if ($action == 'add_domain') {
             'error'     => $errors,
             'message'   => $messages,
             'res'       => $res,
-            'count'     => $langs->trans('NumRecords', count($res)),
         ]
     );
 } else {
@@ -146,6 +145,9 @@ if ($action == 'add_domain') {
     } else {
         $res = $domains->fetchAll(['fk_user' => $user->id]);
     }
+
+    $count = count($res) ? '' . count($res) : '0';
+
     print $twig->render(
         'index.view.html.twig',
         [
@@ -160,7 +162,7 @@ if ($action == 'add_domain') {
             'error'     => $errors,
             'message'   => $messages,
             'res'       => $res,
-            'count'     => $langs->trans('NumRecords', count($res)),
+            'count'     => $langs->trans('NumRecords', $count),
         ]
     );
 }

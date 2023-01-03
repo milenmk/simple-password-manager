@@ -5,7 +5,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: Domains.php
- *  Last Modified: 3.01.23 г., 10:44 ч.
+ *  Last Modified: 3.01.23 г., 11:37 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
@@ -163,10 +163,10 @@ class Domains
 
         pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
 
-        $res = $this->db->fetchAll((array)'', $this->child_table_element, ['fk_domain' => $this->id], '');
+        $res = $this->db->fetchAll([], $this->child_table_element, ['fk_domain' => $this->id], '');
 
         foreach ($res as $child) {
-            $this->db->delete($this->child_table_element, $child['id']);
+            $this->db->delete($this->child_table_element, (int)$child['id']);
         }
 
         $result = $this->db->delete($this->table_element, $this->id);

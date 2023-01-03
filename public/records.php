@@ -5,7 +5,7 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: records.php
- *  Last Modified: 3.01.23 г., 10:44 ч.
+ *  Last Modified: 3.01.23 г., 11:31 ч.
  *
  * @link          https://blacktiehost.com
  * @since         1.0.0
@@ -24,7 +24,7 @@
  * \brief        File to manage records for Password manager Domains
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace PasswordManager;
 
@@ -34,8 +34,7 @@ $error = '';
 
 try {
     include_once('../includes/main.inc.php');
-}
-catch (Exception $e) {
+} catch (Exception $e) {
     $error = $e->getMessage();
     pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
     print 'File "includes/main.inc.php!"not found';
@@ -183,11 +182,7 @@ if ($action == 'add_record') {
         $res = $records->fetchAll(['fk_user' => $user->id]);
     }
 
-    if (empty($res) || $res < 1) {
-        $count = $langs->trans('NumRecords', '0');
-    } else {
-        $count = $langs->trans('NumRecords', count($res));
-    }
+    $count = count($res) ? '' . count($res) : '0';
 
     print $twig->render(
         'records.view.html.twig',
@@ -202,7 +197,7 @@ if ($action == 'add_record') {
             'title'     => $title,
             'error'     => $errors,
             'message'   => $messages,
-            'count'     => $count,
+            'count'     => $langs->trans('NumRecords', $count),
             'res'       => $res,
         ]
     );
