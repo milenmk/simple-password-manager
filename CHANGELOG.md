@@ -1,3 +1,10 @@
+## v2.3.0 [Released 03.01.2023]
+
+* [NEW] ADMIN dashboard added
+* [NEW] Ability to manage global options like disable logging etc.
+* [NEW/IN DEV] Ability to manage users data
+* [NEW/IN DEV] Sodium extension for encrypting records password as alternative to OpenSSL
+
 ## v2.2.0 [Released 02.01.2023]
 
 * Install pages now use twig templates

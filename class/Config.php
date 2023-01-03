@@ -5,16 +5,16 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: Config.php
- *  Last Modified: 3.01.23 г., 10:44 ч.
+ *  Last Modified: 3.01.23 г., 21:19 ч.
  *
- * @link          https://blacktiehost.com
- * @since         1.0.0
- * @version       2.2.0
- * @author        Milen Karaganski <milen@blacktiehost.com>
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.3.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
- * @license       GPL-3.0+
- * @license       http://www.gnu.org/licenses/gpl-3.0.txt
- * @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
  *
  */
 
@@ -24,9 +24,11 @@
  * \brief       This file is a config file for config class
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace PasswordManager;
+
+use PDO;
 
 /**
  * Class for config
@@ -87,7 +89,11 @@ class Config
     public function __construct()
     {
 
-        include_once '../conf/conf.php';
+        if (file_exists('../conf/conf.php')) {
+            include_once '../conf/conf.php';
+        } elseif (file_exists('../../conf/conf.php')) {
+            include_once '../../conf/conf.php';
+        }
 
         //Define database variables from conf file
         $this->host = $db_host;
@@ -101,6 +107,33 @@ class Config
         $this->main_url_root = $main_url_root;
         $this->main_app_root = $main_app_root;
         $this->main_application_title = $main_application_title;
+
+        //Connect to database and initialize global options and constants
+        // For code consistency, all constants must be of type PM_*
+        // with value 0 or 1 (false/true)
+        $conn = new PDO("mysql:host=$db_host;dbname=$db_name;port=$db_port", $db_user, $db_pass);
+
+        $sql = 'SELECT name, value from ' . $db_prefix . 'options';
+        $query = $conn->prepare($sql);
+
+        if (!$conn->inTransaction()) {
+            $conn->beginTransaction();
+        }
+
+        $query->execute();
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            foreach ($result as $res) {
+                if ($res['value'] == 0) {
+                    define($res['name'], false);
+                } elseif ($res['value'] == 1) {
+                    define($res['name'], true);
+                } else {
+                    define($res['name'], $res['value']);
+                }
+            }
+        }
 
         return $this;
     }

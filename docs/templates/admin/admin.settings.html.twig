@@ -1,0 +1,45 @@
+{% extends 'admin.base.html.twig' %}
+{% block body %}
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+        </button>
+        <h1 class="h3 mb-2 text-gray-800"><i class="fas fa-fw fa-cog"></i>&nbsp;{{ langs.trans('Options') }}</h1>
+    </nav>
+    <div class="container-fluid">
+        <p class="mb-4">{{ langs.trans('OptionsDescription') }}</p>
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable">
+                        <thead>
+                        <tr>
+                            <th>{{ langs.trans('Option') }}</th>
+                            <th>{{ langs.trans('Value') }}</th>
+                            <th>{{ langs.trans('Description') }}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for res in result %}
+                            <tr id="idRow{{ res.id }}">
+                                <form method="post">
+                                    <input type="hidden" name="action" value="update_option"/>
+                                    <input type="hidden" name="option_id" value="{{ res.id }}"/>
+                                    <td><input class="form-control bg-gray-100 border-1 small" type="text" name="option_name" value="{{ res.name }}"/></td>
+                                    <td><input class="form-control bg-gray-100 border-1 small" type="number" name="option_value" value="{{ res.value }}"/></td>
+                                    <td><input class="form-control bg-gray-100 border-1 small" type="text" name="option_description" value="{{ res.description }}"/></td>
+                                    <td style="text-align: center;">
+                                        <button class="btn btn-info" onclick="submitRowAsForm('idRow{{ res.id }}')">{{ langs.trans('Update') }}</button>
+                                    </td>
+                                </form>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ main_url }}/themes/admin/js/form.admin.settings.js"></script>
+{% endblock %}

@@ -5,16 +5,16 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: profile.php
- *  Last Modified: 3.01.23 г., 10:44 ч.
+ *  Last Modified: 3.01.23 г., 13:29 ч.
  *
- * @link          https://blacktiehost.com
- * @since         1.0.0
- * @version       2.2.0
- * @author        Milen Karaganski <milen@blacktiehost.com>
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.3.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
- * @license       GPL-3.0+
- * @license       http://www.gnu.org/licenses/gpl-3.0.txt
- * @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
  *
  */
 
@@ -37,7 +37,7 @@ try {
 }
 catch (Exception $e) {
     $error = $e->getMessage();
-    pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
+    pm_syslog('Cannot load file includes/main.inc.php with error ' . $error, LOG_ERR);
     print 'File "includes/main.inc.php!"not found';
     die();
 }
@@ -149,7 +149,10 @@ if ($action == 'edit_password') {
     $theme_folders = array_filter(glob(PM_MAIN_APP_ROOT . '/public/themes/*'), 'is_dir');
     foreach ($theme_folders as $folder) {
         $folder = substr(strrchr($folder, '/'), 1);
-        $theme_array[] = $folder;
+        // Exclude admin theme, as it is tested only for admin dashboard
+        if ($folder !== 'admin') {
+            $theme_array[] = $folder;
+        }
     }
 
     $lang_array = [];

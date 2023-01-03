@@ -1,0 +1,137 @@
+{% extends 'admin.base.html.twig' %}
+{% block body %}
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+        </button>
+        <h1 class="h3 mb-2 text-gray-800"><i class="fas fa-fw fa-tachometer-alt"></i>&nbsp;{{ langs.trans('Dashboard') }}</h1>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    {{ langs.trans('Users') }}
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ user_num }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-user fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    {{ langs.trans('Domains') }}
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ domains_num }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-record-vinyl fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    {{ langs.trans('Records') }}
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ records_num }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-record-vinyl fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Accordion -->
+                    <a href="#collapseUsers" class="d-block card-header py-3" data-toggle="collapse"
+                       role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                        <h6 class="m-0 font-weight-bold text-primary">{{ lastXUsers }}</h6>
+                    </a>
+                    <div class="collapse show" id="collapseUsers">
+                        <div class="card-body">
+                            {{ Last10Users }}
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>{{ langs.trans('User') }}</th>
+                                    <th>{{ langs.trans('RegistrationDate') }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for result in resultLastXUsers %}
+                                    <tr>
+                                        {% if result.first_name > 1 and result.last_name > 1 %}
+                                            <td>{{ result.first_name }} {{ result.last_name }}</td>
+                                        {% else %}
+                                            <td>{{ result.username }}</td>
+                                        {% endif %}
+                                        <td>{{ result.created_at|date("H:i d-m-Y") }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Accordion -->
+                    <a href="#collapseDomains" class="d-block card-header py-3" data-toggle="collapse"
+                       role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                        <h6 class="m-0 font-weight-bold text-primary">{{ topXUsersByRecords }}</h6>
+                    </a>
+                    <div class="collapse show" id="collapseDomains">
+                        <div class="card-body">
+                            {{ Top10NUsersNumRecords }}
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>{{ langs.trans('User') }}</th>
+                                    <th class="text-right">{{ langs.trans('RecordsNum') }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for result in resultTopXbyRecords %}
+                                    <tr>
+                                        {% if result.first_name > 1 and result.last_name > 1 %}
+                                            <td>{{ result.first_name }} {{ result.last_name }}</td>
+                                        {% else %}
+                                            <td>{{ result.username }}</td>
+                                        {% endif %}
+                                        <td class="text-right">{{ result.numrec }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: main.inc.php
- *  Last Modified: 3.01.23 г., 11:54 ч.
+ *  Last Modified: 3.01.23 г., 13:18 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       2.2.0
+ *  @version       2.3.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -24,7 +24,7 @@
  * \brief       Dile to include main classes, functions, etc. before initiating the front end
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace PasswordManager;
 
@@ -34,19 +34,15 @@ use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
 
-try {
-    include_once('../vendor/autoload.php');
-}
-catch (Exception $e) {
-    $error = $e->getMessage();
-    if (PM_DISABLE_SYSLOG != 1) {
-        pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
-    }
-    print 'File "vendor/autoload.php!"not found';
-    die();
-}
+// We have to use silence operators here
+// Otherwise first include will trow errors when accessing from sub-folders
+@include_once('../vendor/autoload.php');
+@include_once('../../vendor/autoload.php');
 
 if (file_exists('../conf/conf.php')) {
+    $config = new Config();
+} elseif (file_exists('../../conf/conf.php')) {
+    // Used for access from admin pages
     $config = new Config();
 } else {
     header('Location: install/index.php');
@@ -58,16 +54,14 @@ define('PM_MAIN_APP_ROOT', $config->main_app_root);
 define('PM_MAIN_DOCUMENT_ROOT', PM_MAIN_APP_ROOT . '/docs');
 define('PM_MAIN_APPLICATION_TITLE', $config->main_application_title);
 define('PM_MAIN_DB_PREFIX', $config->dbprefix);
-define('PM_DISABLE_SYSLOG', 0);
 
 //Initiate translations
 $langs = new Translator('');
 
 //Load functions
 try {
-    include_once('../core/lib/functions.lib.php');
-}
-catch (Exception $e) {
+    include_once(PM_MAIN_APP_ROOT . '/core/lib/functions.lib.php');
+} catch (Exception $e) {
     $error = $e->getMessage();
     if (PM_DISABLE_SYSLOG != 1) {
         pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
@@ -100,9 +94,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         $user->username = $res['username'];
         $user->theme = $res['theme'];
         $user->language = $res['language'];
-        $user->admin = int($res['admin']);
-    }
-    catch (Exception $e) {
+        $user->admin = (int)$res['admin'];
+    } catch (Exception $e) {
         $error = $e->getMessage();
         if (PM_DISABLE_SYSLOG != 1) {
             pm_syslog('Error trying to fetch user with ID ' . $_SESSION['id'] . ' with error ' . $error, LOG_ERR);
@@ -127,7 +120,7 @@ $errors = $_SESSION['PM_ERROR'] ? $langs->trans('' . $_SESSION['PM_ERROR']) : ''
 
 //Define css and .js files array for loading for themes different from default
 if ($theme != 'default') {
-    $css_path = '../public/themes/' . $theme . '/css/';
+    $css_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/css/';
 
     if (is_dir($css_path)) {
         $css_array = [];
@@ -138,7 +131,7 @@ if ($theme != 'default') {
 }
 
 if ($theme != 'default') {
-    $js_path = '../public/themes/' . $theme . '/js/';
+    $js_path = PM_MAIN_APP_ROOT . '/public/themes/' . $theme . '/js/';
 
     if (is_dir($js_path)) {
         $js_array = [];
@@ -151,7 +144,7 @@ if ($theme != 'default') {
 /*
  * Load Twig environment
  */
-$loader = new FilesystemLoader('../docs/templates/' . $theme);
+$loader = new FilesystemLoader(PM_MAIN_APP_ROOT . '/docs/templates/' . $theme);
 $twig = new Environment(
     $loader,
     [
@@ -165,9 +158,8 @@ $open_ssl = new TwigFunction(
     function ($password) {
 
         try {
-            require('../docs/secret.key');
-        }
-        catch (Exception $e) {
+            require(PM_MAIN_APP_ROOT . '/docs/secret.key');
+        } catch (Exception $e) {
             $error = $e->getMessage();
             print 'Cannot load file "docs/secret.key"!';
             die();

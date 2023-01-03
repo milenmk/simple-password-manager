@@ -5,16 +5,16 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: User.php
- *  Last Modified: 3.01.23 г., 11:58 ч.
+ *  Last Modified: 3.01.23 г., 12:52 ч.
  *
- * @link          https://blacktiehost.com
- * @since         1.0.0
- * @version       2.2.0
- * @author        Milen Karaganski <milen@blacktiehost.com>
+ *  @link          https://blacktiehost.com
+ *  @since         1.0.0
+ *  @version       2.3.0
+ *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
- * @license       GPL-3.0+
- * @license       http://www.gnu.org/licenses/gpl-3.0.txt
- * @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ *  @license       GPL-3.0+
+ *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
  *
  */
 
@@ -80,7 +80,7 @@ class User
     /**
      * @var array Array of fields to fetch from database
      */
-    public array $array_of_fields = ['first_name', 'last_name', 'username', 'password', 'created_at', 'theme', 'language'];
+    public array $array_of_fields = ['first_name', 'last_name', 'username', 'password', 'created_at', 'theme', 'language', 'admin'];
     /**
      * @var string Name of table without prefix where object is stored.
      */

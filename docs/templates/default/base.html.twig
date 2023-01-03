@@ -47,12 +47,15 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="d-flex ms-auto">
                     {% if user.first_name or user.last_name %}
-                        <span class="me-3">{{ langs.trans('Hi') }}, <b>{{ user.first_name }} {{ user.last_name }}</b></span>
+                        <span>{{ langs.trans('Hi') }}, <b>{{ user.first_name }} {{ user.last_name }}</b></span>&nbsp;/&nbsp;
                     {% else %}
-                        <span class="me-3">{{ langs.trans('Hi') }}, <b>{{ user.username }}</b></span>
+                        <span>{{ langs.trans('Hi') }}, <b>{{ user.username }}</b></span>&nbsp;/&nbsp;
                     {% endif %}
-                    <a class="nav-link me-3" aria-current="page" href="profile.php"><i class="bi bi-person-fill"></i>&nbsp;{{ langs.trans('Profile') }}</a>
-                    <a class="nav-link" aria-current="page" href="{{ main_url }}?action=logout"><i class="bi bi-box-arrow-right"></i>&nbsp;{{ langs.trans('Logout') }}?</a>
+                    <a class="nav-link" href="profile.php"><i class="bi bi-person-fill"></i>&nbsp;{{ langs.trans('Profile') }}</a>&nbsp;/&nbsp;
+                    {% if user.admin == 1 %}
+                        <a class="nav-link" href="{{ main_url }}/admin"><i class="bi bi-gear"></i> {{ langs.trans('AdminDashboard') }}</a>&nbsp;/&nbsp;
+                    {% endif %}
+                    <a class="nav-link" href="{{ main_url }}?action=logout"><i class="bi bi-box-arrow-right"></i>&nbsp;{{ langs.trans('Logout') }}?</a>
                 </div>
             </div>
         </div>

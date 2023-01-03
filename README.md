@@ -18,12 +18,26 @@ Simple password manager written on PHP with Bootstrap and PDO database connectio
 
 ![Screenshot](public/themes/default/img/Screenshot_5.png?raw=true)
 
+#### ADMIN - Dashboard
+
+![Screenshot](public/themes/default/img/Screenshot_6.png?raw=true)
+
+#### ADMIN - Options
+
+![Screenshot](public/themes/default/img/Screenshot_7.png?raw=true)
+
+#### ADMIN - users
+
+![Screenshot](public/themes/default/img/Screenshot_8.png?raw=true)
+
 ## Requirements
 
-* PHP > 7.4
-* PHP PDO Extension
+* PHP > 7.4 with enabled
+    * PDO Extension
+    * OpenSSL or Sodium extension
 * MySQL Server 8 OR MariaDB 10
 * Apache > 2.4
+
 
 ## Install
 
