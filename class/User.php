@@ -117,7 +117,7 @@ class User
     public function create(string $password)
     {
 
-        if (emptyPM_DISABLE_SYSLOG) {
+        if (empty(PM_DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
         $this->password = $password;
@@ -155,7 +155,7 @@ class User
     public function update(string $password, string $update_password = '')
     {
 
-        if (emptyPM_DISABLE_SYSLOG) {
+        if (empty(PM_DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
         $array_to_update = [];
@@ -188,7 +188,7 @@ class User
     public function delete()
     {
 
-        if (emptyPM_DISABLE_SYSLOG) {
+        if (empty(PM_DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
         $result = $this->db->delete($this->table_element, $this->id);
@@ -225,7 +225,7 @@ class User
         int $offset = 0
     ) {
 
-        if (emptyPM_DISABLE_SYSLOG) {
+        if (empty(PM_DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
         $result = $this->db->fetchAll(
@@ -314,7 +314,7 @@ class User
         int $offset = 0
     ) {
 
-        if (emptyPM_DISABLE_SYSLOG) {
+        if (empty(PM_DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
         $result = $this->db->fetch(
