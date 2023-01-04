@@ -26,9 +26,7 @@
 
 declare(strict_types=1);
 
-namespace PasswordManager;
-
-use Exception;
+use PasswordManager\Domains;
 
 $error = '';
 

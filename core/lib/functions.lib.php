@@ -24,23 +24,16 @@
  * \brief       File to hold global functions
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace PasswordManager;
-
-use Exception;
-
-if (!function_exists('pm_syslog')) {
-    // For PHP versions without syslog (like running on Windows OS)
-    define('PM_LOG_EMERG', 0);
-    define('PM_LOG_ALERT', 1);
-    define('PM_LOG_CRIT', 2);
-    define('PM_LOG_ERR', 3);
-    define('PM_LOG_WARNING', 4);
-    define('PM_LOG_NOTICE', 5);
-    define('PM_LOG_INFO', 6);
-    define('PM_LOG_DEBUG', 7);
-}
+const PM_LOG_EMERG = 0;
+const PM_LOG_ALERT = 1;
+const PM_LOG_CRIT = 2;
+const PM_LOG_ERR = 3;
+const PM_LOG_WARNING = 4;
+const PM_LOG_NOTICE = 5;
+const PM_LOG_INFO = 6;
+const PM_LOG_DEBUG = 7;
 
 /**
  *  Write log message into outputs. Possible outputs can be:
@@ -339,8 +332,7 @@ function checkVal(string $out = '', string $check = 'alphanohtml', int $filter =
                     // Remove html tags
                     $out = string_nohtmltag($out, 0);
                     $out = str_ireplace(['&#38', '&#0000038', '&#x26', '&quot', '&#34', '&#0000034', '&#x22', '"', '&#47', '&#0000047', '&#92', '&#0000092', '&#x2F', '../', '..\\'], '', $out);
-                }
-                while ($oldstringtoclean != $out);
+                } while ($oldstringtoclean != $out);
             }
 
             break;

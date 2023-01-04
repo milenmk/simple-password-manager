@@ -147,12 +147,12 @@ class User
 
     /**
      * @param string $password        New password
-     * @param string $update_password If 1, we update password ONLY, else update everything BUT the password
+     * @param int $update_password If 1, we update password ONLY, else update everything BUT the password
      *
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function update(string $password, string $update_password = '')
+    public function update(string $password, int $update_password = 0)
     {
 
         if (empty(PM_DISABLE_SYSLOG)) {

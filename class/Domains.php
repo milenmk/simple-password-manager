@@ -90,7 +90,7 @@ class Domains
     private PassManDb $db;
 
     /**
-     * @param PassManDb $db
+     * @param PassManDb $db Database handler
      */
     public function __construct(PassManDb $db)
     {

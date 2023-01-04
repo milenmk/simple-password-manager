@@ -26,9 +26,10 @@
 
 declare(strict_types=1);
 
-namespace PasswordManager;
-
-use Exception;
+use PasswordManager\Config;
+use PasswordManager\PassManDb;
+use PasswordManager\Translator;
+use PasswordManager\User;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
@@ -51,7 +52,7 @@ if (file_exists('../conf/conf.php')) {
 //Define some global constants from conf file
 define('PM_MAIN_URL_ROOT', $config->main_url_root);
 define('PM_MAIN_APP_ROOT', $config->main_app_root);
-define('PM_MAIN_DOCUMENT_ROOT', PM_MAIN_APP_ROOT . '/docs');
+const PM_MAIN_DOCUMENT_ROOT = PM_MAIN_APP_ROOT . '/docs';
 define('PM_MAIN_APPLICATION_TITLE', $config->main_application_title);
 define('PM_MAIN_DB_PREFIX', $config->dbprefix);
 

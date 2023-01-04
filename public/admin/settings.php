@@ -26,9 +26,7 @@
 
 declare(strict_types=1);
 
-namespace PasswordManager;
-
-use Exeption;
+use PasswordManager\Admin;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;

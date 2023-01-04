@@ -28,8 +28,8 @@ declare(strict_types=1);
 
 namespace PasswordManager;
 
+use PasswordManagerCore\Triggers;
 use PDO;
-use PDOException;
 
 /**
  * Class for config

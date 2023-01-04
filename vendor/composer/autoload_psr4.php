@@ -10,4 +10,5 @@ return array(
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'PasswordManager\\' => array($baseDir . '/class'),
+    'PasswordManagerCore\\' => array($baseDir . '/core/class'),
 );

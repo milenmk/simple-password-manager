@@ -24,18 +24,15 @@
  * \brief       Registration page
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace PasswordManager;
-
-use Exception;
+use PasswordManager\User;
 
 $error = '';
 
 try {
     include_once('../includes/main.inc.php');
-}
-catch (Exception $e) {
+} catch (Exception $e) {
     $error = $e->getMessage();
     pm_syslog('Cannot load file includes/main.inc.php with error ' . $error, LOG_ERR);
     print 'File "includes/main.inc.php!"not found';

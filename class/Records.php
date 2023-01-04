@@ -29,6 +29,7 @@ declare(strict_types=1);
 namespace PasswordManager;
 
 use Exception;
+use PasswordManagerCore\Triggers;
 use PDOException;
 
 /**
@@ -92,14 +93,21 @@ class Records
      * @var PassManDb Database handler
      */
     private PassManDb $db;
+    /**
+     * @var Triggers Class to manage triggers
+     */
+    private Triggers $trigger;
 
     /**
-     * @param PassManDb $db
+     * @param PassManDb $db Database handler
+     *
+     * @throws Exception
      */
     public function __construct(PassManDb $db)
     {
 
         $this->db = $db;
+        $this->trigger = new Triggers($this->db);
     }
 
     /**

@@ -3,7 +3,7 @@
         'name' => 'milenmk/simple-password-manager',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => 'eb981a4fc67f66649b21e1493d1e3f4b9ef9eae7',
+        'reference' => '28a59a5de1f2fc6396939ce5eae70405f775537e',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'milenmk/simple-password-manager' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => 'eb981a4fc67f66649b21e1493d1e3f4b9ef9eae7',
+            'reference' => '28a59a5de1f2fc6396939ce5eae70405f775537e',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

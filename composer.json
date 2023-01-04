@@ -6,7 +6,8 @@
   "license": "GPL-3.0-or-later",
   "autoload": {
     "psr-4": {
-      "PasswordManager\\": "class"
+      "PasswordManager\\": "class",
+      "PasswordManagerCore\\": "core/class"
     }
   },
   "require": {
