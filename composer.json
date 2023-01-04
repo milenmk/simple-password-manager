@@ -16,7 +16,8 @@
     "twig/twig": "^3.5",
     "ext-pdo": "*",
     "ext-openssl": "*",
-    "paragonie/sodium_compat": "^1.19"
+    "paragonie/sodium_compat": "^1.19",
+    "phpstan/phpstan": "^1.9"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.7"
