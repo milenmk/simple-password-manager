@@ -1,3 +1,9 @@
+## v2.3.0 [Released 04.01.2023]
+
+* [FIX] Minor bug fixes
+* [FIX] Code styling
+* [FIX] PSR-4 Namespaces
+
 ## v2.3.0 [Released 03.01.2023]
 
 * [NEW] ADMIN dashboard added
