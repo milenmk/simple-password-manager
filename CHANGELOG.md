@@ -1,4 +1,4 @@
-## v2.3.0 [Released 04.01.2023]
+## v2.3.1 [Released 04.01.2023]
 
 * [FIX] Minor bug fixes
 * [FIX] Code styling
