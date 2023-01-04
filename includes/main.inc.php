@@ -63,7 +63,7 @@ try {
     include_once(PM_MAIN_APP_ROOT . '/core/lib/functions.lib.php');
 } catch (Exception $e) {
     $error = $e->getMessage();
-    if (PM_DISABLE_SYSLOG != 1) {
+    if (emptyPM_DISABLE_SYSLOG) {
         pm_syslog('Cannot load file vendor/autoload.php with error ' . $error, LOG_ERR);
     }
     print 'File "core/lib/functions.lib.php" not found!';
@@ -97,7 +97,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         $user->admin = (int)$res['admin'];
     } catch (Exception $e) {
         $error = $e->getMessage();
-        if (PM_DISABLE_SYSLOG != 1) {
+        if (emptyPM_DISABLE_SYSLOG) {
             pm_syslog('Error trying to fetch user with ID ' . $_SESSION['id'] . ' with error ' . $error, LOG_ERR);
         }
     }

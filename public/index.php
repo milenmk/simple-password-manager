@@ -104,6 +104,7 @@ if ($action == 'delete') {
 /*
  * View
  */
+
 if ($action == 'add_domain') {
     print $twig->render(
         'index.add.html.twig',

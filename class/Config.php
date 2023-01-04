@@ -29,6 +29,7 @@ declare(strict_types=1);
 namespace PasswordManager;
 
 use PDO;
+use PDOException;
 
 /**
  * Class for config

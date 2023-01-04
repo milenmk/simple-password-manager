@@ -111,7 +111,7 @@ class Records
     public function create()
     {
 
-        if (PM_DISABLE_SYSLOG != 1) {
+        if (emptyPM_DISABLE_SYSLOG) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
         $array = [];
@@ -139,7 +139,7 @@ class Records
     public function update()
     {
 
-        if (PM_DISABLE_SYSLOG != 1) {
+        if (emptyPM_DISABLE_SYSLOG) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
         $array_to_update = [];
@@ -167,7 +167,7 @@ class Records
     public function delete()
     {
 
-        if (PM_DISABLE_SYSLOG != 1) {
+        if (emptyPM_DISABLE_SYSLOG) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
         $result = $this->db->delete($this->table_element, $this->id);
@@ -197,7 +197,7 @@ class Records
     public function fetchAll($filter = '', string $filter_mode = 'AND', string $sortfield = '', string $sortorder = '', string $group = '', int $limit = 0, int $offset = 0)
     {
 
-        if (PM_DISABLE_SYSLOG != 1) {
+        if (emptyPM_DISABLE_SYSLOG) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
         $result = $this->db->fetchAll(
@@ -243,7 +243,7 @@ class Records
     public function fetch($id, string $filter = '', string $filter_mode = 'AND', string $sortfield = '', string $sortorder = '', string $group = '', int $limit = 0, int $offset = 0)
     {
 
-        if (PM_DISABLE_SYSLOG != 1) {
+        if (emptyPM_DISABLE_SYSLOG) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
         $result = $this->db->fetch(

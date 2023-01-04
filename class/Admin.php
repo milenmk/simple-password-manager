@@ -63,7 +63,7 @@ class Admin
     public function fetchNumRecords(string $table)
     {
 
-        if (PM_DISABLE_SYSLOG != 1) {
+        if (empty(PM_DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
 
@@ -90,7 +90,7 @@ class Admin
     public function lastXrecords(array $columns, string $table, int $limit = 0)
     {
 
-        if (PM_DISABLE_SYSLOG != 1) {
+        if (empty(PM_DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
 
@@ -115,7 +115,7 @@ class Admin
      */
     public function topXbyRecords(string $table, int $limit = 0)
     {
-        if (PM_DISABLE_SYSLOG != 1) {
+        if (empty(PM_DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
 
@@ -165,7 +165,7 @@ class Admin
         int $offset = 0
     ) {
 
-        if (PM_DISABLE_SYSLOG != 1) {
+        if (empty(PM_DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
 
@@ -202,7 +202,7 @@ class Admin
     public function update(array $fields, string $table, int $id)
     {
 
-        if (PM_DISABLE_SYSLOG != 1) {
+        if (empty(PM_DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
 
@@ -231,7 +231,7 @@ class Admin
 
         try {
             $query->execute();
-            if (PM_DISABLE_SYSLOG != 1) {
+            if (empty(PM_DISABLE_SYSLOG)) {
                 pm_syslog(get_class($this) . ':: record with id=' . $id . ' from ' . $table . 'was updated', PM_LOG_INFO);
             }
             $this->db->db->commit();
@@ -239,7 +239,7 @@ class Admin
             return 1;
         } catch (PDOException $e) {
             $this->db->db->rollBack();
-            if (PM_DISABLE_SYSLOG != 1) {
+            if (empty(PM_DISABLE_SYSLOG)) {
                 pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $e->getMessage(), PM_LOG_ERR);
             }
 
