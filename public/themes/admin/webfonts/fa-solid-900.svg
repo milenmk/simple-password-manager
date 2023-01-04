@@ -4,11 +4,11 @@
   - Simple password manager written in PHP with Bootstrap and PDO database connections
   -
   -  File name: fa-solid-900.svg
-  -  Last Modified: 29.04.21 г., 4:21 ч.
+  -  Last Modified: 3.01.23 г., 23:11 ч.
   -
   -  @link          https://blacktiehost.com
   -  @since         1.0.0
-  -  @version       2.3.0
+  -  @version       2.3.1
   -  @author        Milen Karaganski <milen@blacktiehost.com>
   -
   -  @license       GPL-3.0+
