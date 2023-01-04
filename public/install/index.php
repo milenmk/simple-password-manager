@@ -24,12 +24,11 @@
  * \brief       Pre-checks before install start
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 try {
     include_once('inc.php');
-}
-catch (Exception $e) {
+} catch (Exception $e) {
     $error = $e->getMessage();
     print 'File "vendor/autoload.php!"not found';
     die();

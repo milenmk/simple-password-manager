@@ -24,14 +24,13 @@
  * \brief       Create database tables
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 $allow_continue = 0;
 
 try {
     include_once('inc.php');
-}
-catch (Exception $e) {
+} catch (Exception $e) {
     $error = $e->getMessage();
     print 'File "inc.php" not found!';
     die();
@@ -119,8 +118,7 @@ if (!$lockerror) {
 
             try {
                 $conn->exec($buffer);
-            }
-            catch (PDOException $e) {
+            } catch (PDOException $e) {
                 $error = $langs->trans('Cannot create database tables from file') . ' ' . $file . '. ' . $e->getMessage();
             }
         } else {
@@ -193,8 +191,7 @@ if (!$lockerror) {
 
                     try {
                         $conn->exec($buffer);
-                    }
-                    catch (PDOException $e) {
+                    } catch (PDOException $e) {
                         $error = $langs->trans('Cannot create database tables from file') . ' ' . $file . '. ' . $e->getMessage();
                     }
                 }

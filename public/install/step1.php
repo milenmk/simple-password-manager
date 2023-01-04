@@ -26,14 +26,13 @@
  *              Write info on the config file
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use PasswordManager\PassManDb;
 
 try {
     include_once('inc.php');
-}
-catch (Exception $e) {
+} catch (Exception $e) {
     $error = $e->getMessage();
     print 'File "inc.php" not found!';
     die();

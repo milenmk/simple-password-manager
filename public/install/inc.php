@@ -24,7 +24,7 @@
  * \brief       Include files required for installation
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use PasswordManager\Translator;
 use Twig\Environment;
@@ -33,8 +33,7 @@ use Twig\Loader\FilesystemLoader;
 
 try {
     include_once('../../vendor/autoload.php');
-}
-catch (Exception $e) {
+} catch (Exception $e) {
     $error = $e->getMessage();
     print $error . ' File "vendor/autoload.php"not found!';
     die();
@@ -49,8 +48,7 @@ const PM_DISABLE_SYSLOG = 1;
 //Load functions
 try {
     include_once('../../core/lib/functions.lib.php');
-}
-catch (Exception $e) {
+} catch (Exception $e) {
     $error = $e->getMessage();
     print $error . ' File "core/lib/functions.lib.php" not found!';
     die();

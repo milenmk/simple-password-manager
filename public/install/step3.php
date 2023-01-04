@@ -24,14 +24,13 @@
  * \brief       Create admin user
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 $allow_continue = 0;
 
 try {
     include_once('inc.php');
-}
-catch (Exception $e) {
+} catch (Exception $e) {
     $error = $e->getMessage();
     print 'File "inc.php" not found!';
     die();
