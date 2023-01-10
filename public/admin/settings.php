@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: settings.php
- *  Last Modified: 4.01.23 г., 20:56 ч.
+ *  Last Modified: 4.01.23 г., 23:56 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       2.3.1
+ *  @version       2.4.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
