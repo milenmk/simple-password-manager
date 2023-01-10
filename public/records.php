@@ -94,6 +94,11 @@ if ($action == 'create') {
 }
 //Action to edit
 if ($action == 'edit') {
+    $obj = new Records($db);
+    $res = $obj->fetch($id);
+
+    $records->old_type = (int)$res['type'];
+
     $records->id = (int)$id;
     if ($fk_domain) {
         $records->fk_domain = (int)$fk_domain;

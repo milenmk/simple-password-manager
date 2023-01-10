@@ -43,7 +43,7 @@ try {
 session_start();
 
 //Disable syslog
-const PM_DISABLE_SYSLOG = 1;
+const DISABLE_SYSLOG = 1;
 
 //Load functions
 try {

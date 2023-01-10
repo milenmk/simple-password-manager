@@ -27,7 +27,7 @@
                                     <input type="hidden" name="action" value="update_option"/>
                                     <input type="hidden" name="option_id" value="{{ res.id }}"/>
                                     <td><input class="form-control bg-gray-100 border-1 small" type="text" name="option_name" value="{{ res.name }}"/></td>
-                                    <td><input class="form-control bg-gray-100 border-1 small" type="number" name="option_value" value="{{ res.value }}"/></td>
+                                    <td><input class="form-control bg-gray-100 border-1 small" type="text" name="option_value" value="{{ res.value }}"/></td>
                                     <td><input class="form-control bg-gray-100 border-1 small" type="text" name="option_description" value="{{ res.description }}"/></td>
                                     <td style="text-align: center;">
                                         <button class="btn btn-info" onclick="submitRowAsForm('idRow{{ res.id }}')">{{ langs.trans('Update') }}</button>

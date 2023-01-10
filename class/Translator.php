@@ -194,7 +194,7 @@ class Translator
         }
 
         if (empty($langofdir)) {
-            if (empty(PM_DISABLE_SYSLOG)) {
+            if (empty(DISABLE_SYSLOG)) {
                 pm_syslog(
                     'Error: ' . get_class($this) . '::load was called for domain=' . $domain . ' 
 			but language was not set yet with langs->setDefaultLang(). Nothing will be loaded.',

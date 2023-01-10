@@ -51,6 +51,10 @@ class Records
      */
     public int $type;
     /**
+     * @var int
+     */
+    public int $old_type;
+    /**
      * @var string
      */
     public string $url;
@@ -119,7 +123,7 @@ class Records
     public function create()
     {
 
-        if (empty(PM_DISABLE_SYSLOG)) {
+        if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
         $array = [];
@@ -132,9 +136,14 @@ class Records
         $result = $this->db->create($array, $this->table_element);
 
         if ($result > 0) {
-            return 1;
+            $res = $this->trigger->runTrigger('RECORD_INSERT', $this);
+            if ($res > 0) {
+                return 1;
+            } else {
+                return -1;
+            }
         } else {
-            return -1;
+            return -2;
         }
     }
 
@@ -147,7 +156,7 @@ class Records
     public function update()
     {
 
-        if (empty(PM_DISABLE_SYSLOG)) {
+        if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
         $array_to_update = [];
@@ -160,7 +169,12 @@ class Records
         $result = $this->db->update($array_to_update, $this->table_element, $this->id);
 
         if ($result > 0) {
-            return 1;
+            $res = $this->trigger->runTrigger('RECORD_UPDATE', $this);
+            if ($res > 0) {
+                return 1;
+            } else {
+                return -1;
+            }
         } else {
             return -1;
         }
@@ -175,15 +189,21 @@ class Records
     public function delete()
     {
 
-        if (empty(PM_DISABLE_SYSLOG)) {
+        if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
-        $result = $this->db->delete($this->table_element, $this->id);
 
-        if ($result > 0) {
-            return 1;
+        $res = $this->trigger->runTrigger('RECORD_DELETE', $this);
+
+        if ($res >= 0) {
+            $result = $this->db->delete($this->table_element, $this->id);
+            if ($result > 0) {
+                return 1;
+            } else {
+                return -1;
+            }
         } else {
-            return -1;
+            return -2;
         }
     }
 
@@ -205,7 +225,7 @@ class Records
     public function fetchAll($filter = '', string $filter_mode = 'AND', string $sortfield = '', string $sortorder = '', string $group = '', int $limit = 0, int $offset = 0)
     {
 
-        if (empty(PM_DISABLE_SYSLOG)) {
+        if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
 
@@ -252,7 +272,7 @@ class Records
     public function fetch($id, string $filter = '', string $filter_mode = 'AND', string $sortfield = '', string $sortorder = '', string $group = '', int $limit = 0, int $offset = 0)
     {
 
-        if (empty(PM_DISABLE_SYSLOG)) {
+        if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
 

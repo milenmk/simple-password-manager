@@ -20,20 +20,20 @@
                         <td><label>
                                 <input type="text" name="label" value="{{ result.label }}"/>
                             </label></td>
-                        {% if result.website %}
-                            <td><img src="{{ main_url }}/themes/{{ theme }}/img/yes.png" alt="yes.png"/></td>
+                        {% if result.website > 0 %}
+                            <td class="text-center"><img src="{{ main_url }}/themes/{{ theme }}/img/yes.png" alt="yes.png"/></td>
                         {% else %}
-                            <td><img src="{{ main_url }}/themes/{{ theme }}/img/no.png" alt="no.png"/></td>
+                            <td class="text-center"><img src="{{ main_url }}/themes/{{ theme }}/img/no.png" alt="no.png"/></td>
                         {% endif %}
-                        {% if result.ftp %}
-                            <td><img src="{{ main_url }}/themes/{{ theme }}/img/yes.png" alt="yes.png"/></td>
+                        {% if result.ftp > 0 %}
+                            <td class="text-center"><img src="{{ main_url }}/themes/{{ theme }}/img/yes.png" alt="yes.png"/></td>
                         {% else %}
-                            <td><img src="{{ main_url }}/themes/{{ theme }}/img/no.png" alt="no.png"/></td>
+                            <td class="text-center"><img src="{{ main_url }}/themes/{{ theme }}/img/no.png" alt="no.png"/></td>
                         {% endif %}
-                        {% if result.data_base %}
-                            <td><img src="{{ main_url }}/themes/{{ theme }}/img/yes.png" alt="yes.png"/></td>
+                        {% if result.data_base > 0 %}
+                            <td class="text-center"><img src="{{ main_url }}/themes/{{ theme }}/img/yes.png" alt="yes.png"/></td>
                         {% else %}
-                            <td><img src="{{ main_url }}/themes/{{ theme }}/img/no.png" alt="no.png"/></td>
+                            <td class="text-center"><img src="{{ main_url }}/themes/{{ theme }}/img/no.png" alt="no.png"/></td>
                         {% endif %}
                         <td>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">

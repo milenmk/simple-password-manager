@@ -93,13 +93,13 @@ if ($_GET['action'] == 'check_connection' || $_POST['action'] == 'check_connecti
 
         // If no error, user exists try connecting to database with database name set
         if (!$db->error) {
-            $res = $conn->selectDb($db_host, $db_user, $db_pass, $db_name, $db_character_set, $db_collation, $db_port);
+            $res = $conn->selectDb($db_host, $db_user, $db_pass, $db_name, $db_character_set, $db_collation, (int)$db_port);
         }
 
         // If result is < 1, that means that the table is not existing OR the user doesn't have rights to access it.
         if ($res < 1 && $create_database == 1) {
             //Try connection with root user if specified
-            $res2 = $conn->selectDb($db_host, $root_db_user, $root_db_pass, '', $db_character_set, $db_collation, $db_port);
+            $res2 = $conn->selectDb($db_host, $root_db_user, $root_db_pass, '', $db_character_set, $db_collation, (int)$db_port);
             if ($res2 < 1) {
                 $dberror = $conn->error;
             } else {
@@ -117,7 +117,7 @@ if ($_GET['action'] == 'check_connection' || $_POST['action'] == 'check_connecti
                 $new_db_character_set2 = htmlspecialchars($new_db_character_set, ENT_QUOTES);
                 $new_db_collation2 = htmlspecialchars($new_db_collation, ENT_QUOTES);
                 $new_db_user2 = htmlspecialchars($new_db_user, ENT_QUOTES);
-                $new_db_user2 = htmlspecialchars($new_db_pass, ENT_QUOTES);
+                $new_db_pass2 = htmlspecialchars($new_db_pass, ENT_QUOTES);
 
                 //Create the database and the user if they do not exist
                 $conn->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

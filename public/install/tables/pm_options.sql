@@ -13,3 +13,7 @@ CREATE TABLE `pm_options` (
   `tms` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (rowid)
 ) ENGINE=InnoDB DEFAULT CHARSET=table_character_set COLLATE=table_collation;
+
+INSERT INTO `pm_options` (`rowid`, `name`, `value`, `description`) VALUES
+(1, 'DISABLE_SYSLOG', '0', ''),
+(2, 'NUM_LIMIT_ADMIN_DASHBOARD', '10', NULL);
