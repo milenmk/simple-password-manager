@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: index.php
- *  Last Modified: 19.01.23 г., 22:19 ч.
+ *  Last Modified: 4.01.23 г., 23:56 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       3.0.0
+ *  @version       2.4.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -90,9 +90,8 @@ pm_logout_block();
 $domains_num = $admin->fetchNumRecords('domains');
 $records_num = $admin->fetchNumRecords('records');
 $users_num = $admin->fetchNumRecords('users');
-$topXbyRecords = $admin->topXby('records', (int)NUM_LIMIT_ADMIN_DASHBOARD);
-$topXbyDomains = $admin->topXby('domains', (int)NUM_LIMIT_ADMIN_DASHBOARD);
-$lastXUsers = $admin->lastXrecords('users', '', [], 'LIMIT ' . (int)NUM_LIMIT_ADMIN_DASHBOARD);
+$resultTopXbyRecords = $admin->topXbyRecords('records', (int)NUM_LIMIT_ADMIN_DASHBOARD);
+$resultLastXUsers = $admin->lastXrecords(['first_name', 'last_name', 'username', 'created_at'], 'users', (int)NUM_LIMIT_ADMIN_DASHBOARD);
 
 print $twig->render(
     'admin.dashboard.html.twig',
@@ -105,11 +104,9 @@ print $twig->render(
         'user_num'  => $users_num,
         'domains_num' => $domains_num,
         'records_num' => $records_num,
-        'lastXUsersTitle'  => $langs->trans('LastXUsers', NUM_LIMIT_ADMIN_DASHBOARD),
+        'lastXUsers'  => $langs->trans('LastXUsers', NUM_LIMIT_ADMIN_DASHBOARD),
         'topXUsersByRecords' => $langs->trans('TopXUsersNumRecords', NUM_LIMIT_ADMIN_DASHBOARD),
-        'topXUsersByDomains' => $langs->trans('TopXUsersNumDomains', NUM_LIMIT_ADMIN_DASHBOARD),
-        'topXbyRecords' => $topXbyRecords,
-        'topXbyDomains' => $topXbyDomains,
-        'lastXUsers' => $lastXUsers,
+        'resultTopXbyRecords' => $resultTopXbyRecords,
+        'resultLastXUsers' => $resultLastXUsers,
     ]
 );

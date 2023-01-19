@@ -9,7 +9,6 @@ All=All
 HomePage=Home page
 LastXUsers=Last %s users
 TopXUsersNumRecords=Top %s users by number of records
-TopXUsersNumDomains=Top %s users by number of domains
 RecordsNum=Number of records
 Date=Date
 RegistrationDate=Registration date

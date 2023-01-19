@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: User.php
- *  Last Modified: 17.01.23 г., 14:01 ч.
+ *  Last Modified: 10.01.23 г., 20:17 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       3.0.0
+ *  @version       2.4.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -19,7 +19,7 @@
  */
 
 /**
- * \file        class/User.php
+ * \file        class/user.php
  * \ingroup     Password Manager
  * \brief       This file is a CRUD file for User class (Create/Read/Update/Delete)
  */
@@ -29,10 +29,11 @@ declare(strict_types=1);
 namespace PasswordManager;
 
 use Exception;
+use PDO;
 use PDOException;
 
 /**
- * Class to manage users
+ * Class for user
  */
 class User
 {
@@ -49,15 +50,15 @@ class User
      */
     public string $last_name;
     /**
-     * @var string user email address
+     * @var string user username, defaults to email address
      */
     public string $username;
     /**
-     * @var string user date of creation
+     * @var int Number of affected rows
      */
-    public string $created_at;
+    public int $num;
     /**
-     * @var string user theme
+     * @var string User theme
      */
     public string $theme;
     /**
@@ -77,18 +78,22 @@ class User
      */
     public string $message;
     /**
-     * @var string user password
+     * @var array Array of fields to fetch from database
      */
-    public string $password;
+    public array $array_of_fields = ['first_name', 'last_name', 'username', 'password', 'created_at', 'theme', 'language', 'admin'];
     /**
-     * @var PassManDb DB Handler
+     * @var string Name of table without prefix where object is stored.
      */
-    private PassManDb $db;
+    public string $table_element = 'users';
 
     /**
-     * @var string Database table name
+     * @var PassManDb Database handler
      */
-    private string $table_element = 'users';
+    private PassManDb $db;
+    /**
+     * @var string User password
+     */
+    private string $password;
 
     /**
      *    Constructor of the class
@@ -99,80 +104,86 @@ class User
     {
 
         $this->db = $db;
-        $this->db->error = '';
     }
 
     /**
      * Insert record in database
      *
-     * @return int 1 if OK, <0 if KO
+     * @param string $password Hashed password
+     *
+     * @return int
      * @throws PDOException|Exception
      */
-    public function create()
+    public function create(string $password)
     {
 
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
+        $this->password = $password;
 
-        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
-        $data = [
-            'first_name' => $this->first_name,
-            'last_name'  => $this->last_name,
-            'username'   => $this->username,
-            'password'   => $this->password,
-        ];
-        $result = $this->db->create($this->table_element, $data);
+        if (empty($this->language)) {
+            $this->language = 'en_US';
+        }
+        if (empty($this->theme)) {
+            $this->theme = 'default';
+        }
+
+        $array = [];
+        foreach ($this->array_of_fields as $val) {
+            if (!empty($this->$val)) {
+                $array[$val] = $this->$val;
+            }
+        }
+
+        $result = $this->db->create($array, $this->table_element);
 
         if ($result > 0) {
             return 1;
         } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
-
             return -1;
         }
     }
 
     /**
-     * Update user data
+     * @param string $password        New password
+     * @param int $update_password If 1, we update password ONLY, else update everything BUT the password
      *
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function update()
+    public function update(string $password, int $update_password = 0)
     {
 
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
-
-        $data = [
-            'first_name' => $this->first_name,
-            'last_name'  => $this->last_name,
-            'username'   => $this->username,
-            'theme'      => $this->theme,
-            'language'   => $this->language,
-        ];
-        if (!empty($this->password)) {
-            $data['password'] = password_hash($this->password, PASSWORD_DEFAULT);
+        $array_to_update = [];
+        if (!empty($update_password) && !empty($password)) {
+            $this->password = password_hash($password, PASSWORD_DEFAULT);
+            $array_to_update = ['password' => $this->password];
+        } else {
+            foreach ($this->array_of_fields as $field) {
+                if (isset($this->$field) && $this->$field != 0 || !empty($this->$field)) {
+                    $array_to_update[$field] = $this->$field;
+                }
+            }
         }
 
-        $result = $this->db->update($this->table_element, $data, "rowid = $this->id");
+        $result = $this->db->update($array_to_update, $this->table_element, $this->id);
 
         if ($result > 0) {
             return 1;
         } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
-
             return -1;
         }
     }
 
     /**
-     * Delete a user
+     * Delete record from database
      *
      * @return int 1 if OK, <0 if KO
-     * @throws Exception
+     * @throws PDOException|Exception
      */
     public function delete()
     {
@@ -180,242 +191,149 @@ class User
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
-
-        $result = $this->db->delete($this->table_element, 'rowid = :id', [':id' => $this->id]);
-
-        if ($result > 0) {
-            return 1;
-        } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
-
-            return -1;
-        }
-    }
-
-    /**
-     * Fetch all records from database
-     *
-     * @param string $where  The WHERE clause of the query
-     * @param array  $params An array of parameters to bind to the query
-     *
-     * @return array|int Array of objects or <0 on error
-     * @throws Exception
-     */
-    public function fetchAll(string $where, array $params = [])
-    {
-
-        if (empty(DISABLE_SYSLOG)) {
-            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-        }
-
-        $result = $this->db->fetchAll($this->table_element, $where, $params);
-        $users = [];
-        if ($result) {
-            foreach ($result as $row) {
-                $user = new self($this->db);
-                $user->id = (int)$row['rowid'];
-                if ($result['first_name']) {
-                    $user->first_name = $result['first_name'];
-                }
-                if ($result['last_name']) {
-                    $user->last_name = $result['last_name'];
-                }
-                $user->username = $row['username'];
-                if ($row['theme']) {
-                    $user->theme = $row['theme'];
-                }
-                if ($row['language']) {
-                    $user->language = $row['language'];
-                }
-                if ($row['admin']) {
-                    $user->admin = (int)$row['admin'];
-                }
-                $users[] = $user;
-            }
-
-            return $users;
-        } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
-
-            return -1;
-        }
-    }
-
-    /**
-     * Check if user exist
-     *
-     * @param string $username
-     *
-     * @return int User id if OK, <0 if KO
-     * @throws Exception
-     */
-    public function userExist(string $username)
-    {
-
-        if (empty(DISABLE_SYSLOG)) {
-            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-        }
-
-        $result = $this->db->fetch($this->table_element, 'username = :username', [':username' => $username]);
-
-        if ($result) {
-            return (int)$result['rowid'];
-        } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
-
-            return -1;
-        }
-    }
-
-    /**
-     * Fetch a single record from database
-     *
-     * @param int $id The ID of the record to fetch
-     *
-     * @return User|int Return Object or <0 on error
-     * @throws Exception
-     */
-    public function fetch(int $id)
-    {
-
-        if (empty(DISABLE_SYSLOG)) {
-            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-        }
-
-        $result = $this->db->fetch($this->table_element, 'rowid = :id', [':id' => $id]);
-        if ($result) {
-            $this->id = (int)$result['rowid'];
-            if ($result['first_name']) {
-                $this->first_name = $result['first_name'];
-            }
-            if ($result['last_name']) {
-                $this->last_name = $result['last_name'];
-            }
-            $this->username = $result['username'];
-            if ($result['theme']) {
-                $this->theme = $result['theme'];
-            }
-            if ($result['language']) {
-                $this->language = $result['language'];
-            }
-            if ($result['admin']) {
-                $this->admin = (int)$result['admin'];
-            }
-            $this->password = $result['password'];
-
-            return $this;
-        } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
-
-            return -1;
-        }
-    }
-
-    /**
-     * Check if user is admin
-     *
-     * @param string $username
-     *
-     * @return int 1 if OK, <0 if KO
-     * @throws Exception
-     */
-    public function isAdmin(string $username)
-    {
-
-        if (empty(DISABLE_SYSLOG)) {
-            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-        }
-
-        $result = $this->db->fetch($this->table_element, 'username = :username', [':username' => $username]);
-        if ($result && $result['admin'] == 1) {
-            return 1;
-        } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
-
-            return -1;
-        }
-    }
-
-    /**
-     * @return int 1 if OK, <0 if KO
-     * @throws Exception
-     */
-    public function login()
-    {
-
-        if (empty(DISABLE_SYSLOG)) {
-            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-        }
-
-        $result = $this->db->fetch($this->table_element, 'username = :username', [':username' => $this->username]);
-
-        if ($result && password_verify($this->password, $result['password'])) {
-            return 1;
-        } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
-
-            return -1;
-        }
-    }
-
-    /**
-     * @param string $password user plain password
-     *
-     * @return void
-     */
-    public function setPassword(string $password)
-    {
-
-        $this->password = $password;
-    }
-
-    /**
-     * @return int 1 if OK, <0 if KO
-     * @throws Exception
-     */
-    public function updatePassword()
-    {
-        if (empty(DISABLE_SYSLOG)) {
-            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-        }
-
-        $data['password'] = password_hash($this->password, PASSWORD_DEFAULT);
-
-        $result = $this->db->update($this->table_element, $data, "rowid = $this->id");
+        $result = $this->db->delete($this->table_element, $this->id);
 
         if ($result > 0) {
             return 1;
         } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
-
             return -1;
         }
     }
 
     /**
-     * @return int 1 if OK, <0 if KO
-     * @throws Exception
+     * Fetch all records from database into array
+     *
+     * @param array  $filter          Array of filters. Example array:('field' => 'value'). If key is customsql,
+     *                                it should be an array also like ('customsql' => array('field' = > 'value'))
+     * @param string $filter_mode     Filter mode AND or OR. Default is AND
+     * @param string $sortfield       Sort field
+     * @param string $sortorder       Sort order
+     * @param string $group           Group BY field name
+     * @param int    $limit           Limit
+     * @param int    $offset          Offset
+     *
+     * @return int|array|false|string
+     * @throws PDOException|Exception
      */
-    public function checkPassword()
-    {
-        if (empty(DISABLE_SYSLOG)) {
-            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-        }
+    public function fetchAll(
+        $filter = '',
+        string $filter_mode = 'AND',
+        string $sortfield = '',
+        string $sortorder = '',
+        string $group = '',
+        int $limit = 0,
+        int $offset = 0
+    ) {
 
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
+        $result = $this->db->fetchAll(
+            $this->array_of_fields,
+            $this->table_element,
+            $filter,
+            $filter_mode,
+            $sortfield,
+            $sortorder,
+            $group,
+            $limit,
+            $offset
+        );
 
-        $result = $this->db->fetch($this->table_element, 'username = :username', [':username' => $this->username]);
-
-        if (password_verify($this->password, $result['password'])) {
-            return 1;
-        } elseif ($result < 1 || empty($result)) {
-            return -1;
+        if ($result > 0) {
+            return $result;
         } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
+            return -1;
+        }
+    }
 
-            return -2;
+    /**
+     * Check for login or register
+     * On login: return hashed password
+     * On registration: return <0 if username do not exist and return record id if it does
+     *
+     * @param string $username
+     * @param int    $return_password
+     *
+     * @return int|mixed
+     */
+    public function check(string $username, int $return_password = 0)
+    {
+
+        $sql = 'SELECT rowid as id';
+
+        if (!empty($return_password)) {
+            $sql .= ', password';
+        }
+
+        $sql .= ' FROM ' . PM_MAIN_DB_PREFIX . $this->table_element . ' WHERE username = :username';
+
+        $query = $this->db->db->prepare($sql);
+
+        $query->bindValue(':username', $username);
+
+        if (!$this->db->db->inTransaction()) {
+            $this->db->db->beginTransaction();
+        }
+
+        $query->execute();
+
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            return $result;
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+     *
+     * Fetch single row from database
+     *
+     * @param array  $filter          Array of filters. Example array:('field' => 'value'). If key is customsql,
+     *                                it should be an array also like ('customsql' => array('field' = > 'value'))
+     * @param string $filter_mode     Filter mode AND or OR. Default is AND
+     * @param string $sortfield       Sort field
+     * @param string $sortorder       Sort order
+     * @param string $group           Group BY field name
+     * @param int    $limit           Limit
+     * @param int    $offset          Offset
+     *
+     * @return int|array
+     * @throws PDOException|Exception
+     */
+    public function fetch(
+        $id,
+        $filter = '',
+        string $filter_mode = 'AND',
+        string $sortfield = '',
+        string $sortorder = '',
+        string $group = '',
+        int $limit = 0,
+        int $offset = 0
+    ) {
+
+        if (empty(DISABLE_SYSLOG)) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
+        $result = $this->db->fetch(
+            $id,
+            $this->array_of_fields,
+            $this->table_element,
+            $filter,
+            $filter_mode,
+            $sortfield,
+            $sortorder,
+            $group,
+            $limit,
+            $offset
+        );
+
+        if ($result > 0) {
+            return $result;
+        } else {
+            return -1;
         }
     }
 }

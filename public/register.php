@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: register.php
- *  Last Modified: 17.01.23 г., 13:58 ч.
+ *  Last Modified: 10.01.23 г., 20:07 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       3.0.0
+ *  @version       2.4.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -107,7 +107,7 @@ if ($action == 'create') {
         $_SESSION['PM_ERROR'] = 'UsernameContentError';
     }
     if (!$error) {
-        $result = $user->userExist($username);
+        $result = $user->check($username);
 
         if ($result > 0) {
             $_SESSION['PM_ERROR'] = 'UserNameTaken';
@@ -116,9 +116,9 @@ if ($action == 'create') {
             $usertmp->first_name = $first_name;
             $usertmp->last_name = $last_name;
             $usertmp->username = $username;
-            $usertmp->setPassword($password);
+            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
 
-            $res = $usertmp->create();
+            $res = $usertmp->create($param_password);
 
             if ($res > 0) {
                 $_SESSION['PM_MESSAGE'] = 'UserCreated';

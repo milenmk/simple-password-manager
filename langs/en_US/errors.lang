@@ -20,5 +20,3 @@ ErrorWrongHostParameter=Connect error, wrong host parameters
 AddDomainFirst=Please first add domain
 ProfileUpdated=Data modified successfully
 ProfileUpdatedError=Error updating data
-RecordAddedSuccess=Record added
-RecordUpdatedSuccess=record updated

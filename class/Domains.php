@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: Domains.php
- *  Last Modified: 17.01.23 г., 13:12 ч.
+ *  Last Modified: 10.01.23 г., 20:17 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       3.0.0
+ *  @version       2.4.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -80,20 +80,22 @@ class Domains
     public string $child_table_element = 'records';
 
     /**
+     * @var array Array of fields to fetch from database
+     */
+    public array $array_of_fields = ['label', 'website', 'ftp', 'data_base', 'fk_user'];
+
+    /**
      * @var PassManDb Database handler
      */
     private PassManDb $db;
 
     /**
-     *    Constructor of the class
-     *
      * @param PassManDb $db Database handler
      */
     public function __construct(PassManDb $db)
     {
 
         $this->db = $db;
-        $this->db->error = '';
     }
 
     /**
@@ -108,21 +110,18 @@ class Domains
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
+        $array = [];
+        foreach ($this->array_of_fields as $val) {
+            if (!empty($this->$val)) {
+                $array[$val] = $this->$val;
+            }
+        }
 
-        $data = [
-            'label'     => $this->label,
-            'website'   => $this->website,
-            'ftp'       => $this->ftp,
-            'data_base' => $this->data_base,
-            'fk_user'   => $this->fk_user,
-        ];
-        $result = $this->db->create($this->table_element, $data);
+        $result = $this->db->create($array, $this->table_element);
 
         if ($result > 0) {
             return 1;
         } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
-
             return -1;
         }
     }
@@ -130,30 +129,27 @@ class Domains
     /**
      * Update record in database
      *
+     * @param array $fields Array fo fields to update
+     *
      * @return int 1 if OK, <0 if KO
      * @throws PDOException|Exception
      */
-    public function update()
+    public function update(array $fields)
     {
 
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
-
-        $data = [
-            'label' => $this->label,
-        ];
-        if (!empty($this->password)) {
-            $data['password'] = password_hash($this->password, PASSWORD_DEFAULT);
+        $array_to_update = [];
+        foreach ($fields as $field) {
+            $array_to_update[$field] = $this->$field;
         }
 
-        $result = $this->db->update($this->table_element, $data, "rowid = $this->id");
+        $result = $this->db->update($array_to_update, $this->table_element, $this->id);
 
         if ($result > 0) {
             return 1;
         } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
-
             return -1;
         }
     }
@@ -162,7 +158,7 @@ class Domains
      * Delete record from database
      *
      * @return int 1 if OK, <0 if KO
-     * @throws Exception
+     * @throws PDOException|Exception
      */
     public function delete()
     {
@@ -170,113 +166,116 @@ class Domains
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
+        $res = $this->db->fetchAll([], $this->child_table_element, ['fk_domain' => $this->id], '');
 
-        $res = $this->db->fetchAll(
-            $this->child_table_element,
-            'fk_domain = :fk_domain',
-            [':fk_domain' => $this->id]
-        );
-
-        if ($res) {
-            foreach ($res as $child) {
-                $result = $this->db->delete($this->child_table_element, 'rowid = :id', [':id' => (int)$child['rowid']]);
-                if ($result < 1) {
-                    $_SESSION['PM_ERROR'] = $this->db->error;
-
-                    return -1;
-                }
-            }
+        foreach ($res as $child) {
+            $this->db->delete($this->child_table_element, (int)$child['id']);
         }
 
-        $delete = $this->db->delete($this->table_element, 'rowid = :id', [':id' => $this->id]);
+        $result = $this->db->delete($this->table_element, $this->id);
 
-        if ($delete > 0) {
+        if ($result > 0) {
             return 1;
         } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
-
-            return -2;
-        }
-    }
-
-    /**
-     * Fetch all records from database
-     *
-     * @param string $where  The WHERE clause of the query
-     * @param array  $params An array of parameters to bind to the query
-     *
-     * @return array|int Array of objects or <0 on error
-     * @throws Exception
-     */
-    public function fetchAll(string $where, array $params = [])
-    {
-
-        if (empty(DISABLE_SYSLOG)) {
-            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
-        }
-
-        $result = $this->db->fetchAll($this->table_element, $where, $params);
-        $domains = [];
-        if ($result) {
-            foreach ($result as $row) {
-                $domain = new self($this->db);
-                $domain->id = (int)$row['rowid'];
-                $domain->label = $row['label'];
-                if ($row['website']) {
-                    $domain->website = (int)$row['website'];
-                }
-                if ($row['ftp']) {
-                    $domain->ftp = (int)$row['ftp'];
-                }
-                if ($row['data_base']) {
-                    $domain->data_base = (int)$row['data_base'];
-                }
-                $domain->fk_user = (int)$row['fk_user'];
-                $domains[] = $domain;
-            }
-
-            return $domains;
-        } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
-
             return -1;
         }
     }
 
     /**
-     * Fetch a single record from database
+     * Fetch all records from database into array
      *
-     * @param int $id The ID of the record to fetch
+     * @param array  $filter          Array of filters. Example array:('field' => 'value'). If key is customsql,
+     *                                it should be an array also like ('customsql' => array('field' = > 'value'))
+     * @param string $filter_mode     Filter mode AND or OR. Default is AND
+     * @param string $sortfield       Sort field
+     * @param string $sortorder       Sort order
+     * @param string $group           Group BY field name
+     * @param int    $limit           Limit
+     * @param int    $offset          Offset
      *
-     * @return Domains|int Return Object or <0 on error
-     * @throws Exception
+     * @return int|array|false|string
+     * @throws PDOException|Exception
      */
-    public function fetch(int $id)
-    {
+    public function fetchAll(
+        $filter = '',
+        string $filter_mode = 'AND',
+        string $sortfield = '',
+        string $sortorder = '',
+        string $group = '',
+        int $limit = 0,
+        int $offset = 0
+    ) {
 
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
 
-        $result = $this->db->fetch($this->table_element, 'rowid = :id', [':id' => $id]);
-        if ($result) {
-            $this->id = (int)$result['rowid'];
-            $this->label = $result['label'];
-            if ($result['website']) {
-                $this->website = (int)$result['website'];
-            }
-            if ($result['ftp']) {
-                $this->ftp = (int)$result['ftp'];
-            }
-            if ($result['data_base']) {
-                $this->data_base = (int)$result['data_base'];
-            }
-            $this->fk_user = (int)$result['fk_user'];
+        $result = $this->db->fetchAll(
+            $this->array_of_fields,
+            $this->table_element,
+            $filter,
+            $filter_mode,
+            $sortfield,
+            $sortorder,
+            $group,
+            $limit,
+            $offset
+        );
 
-            return $this;
+        if ($result > 0) {
+            return $result;
         } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
+            return -1;
+        }
+    }
 
+    /**
+     * Fetch single row from database
+     *
+     * @param int    $id              ID of the record to fetch
+     * @param array  $filter          Array of filters. Example array:('field' => 'value'). If key is customsql,
+     *                                it should be an array also like ('customsql' => array('field' = > 'value'))
+     * @param string $filter_mode     Filter mode AND or OR. Default is AND
+     * @param string $sortfield       Sort field
+     * @param string $sortorder       Sort order
+     * @param string $group           Group BY field name
+     * @param int    $limit           Limit
+     * @param int    $offset          Offset
+     *
+     * @return int
+     * @throws PDOException|Exception
+     */
+    public function fetch(
+        int $id,
+        $filter = '',
+        string $filter_mode = 'AND',
+        string $sortfield = '',
+        string $sortorder = '',
+        string $group = '',
+        int $limit = 0,
+        int $offset = 0
+    ) {
+
+        if (empty(DISABLE_SYSLOG)) {
+            pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
+        }
+
+        $result = $this->db->fetch(
+            $id,
+            $this->array_of_fields,
+            $this->table_element,
+            $filter,
+            $filter_mode,
+            $sortfield,
+            $sortorder,
+            $group,
+            $limit,
+            $offset
+        );
+
+        if ($result > 0) {
+            return $result;
+        } else {
             return -1;
         }
     }

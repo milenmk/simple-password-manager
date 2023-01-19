@@ -3,11 +3,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: main.css
- *  Last Modified: 19.01.23 г., 21:33 ч.
+ *  Last Modified: 4.01.23 г., 23:56 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       3.0.0
+ *  @version       2.4.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -269,6 +269,10 @@ section {
 .header .logo h1 span {
     color: var(--color-primary);
     font-weight: 500;
+}
+
+@media (max-width: 1279px) {
+
 }
 
 /*--------------------------------------------------------------
@@ -890,6 +894,8 @@ section {
 # Fullscreen Hero Section
 --------------------------------------------------------------*/
 
+@media (min-width: 1365px) {
+}
 
 .hero-fullscreen h2 {
     margin: 0 0 10px 0;
@@ -1051,6 +1057,10 @@ section {
 /*--------------------------------------------------------------
 # About Section
 --------------------------------------------------------------*/
+
+@media (max-width: 575px) {
+
+}
 
 .about h3 {
     color: var(--color-secondary);
@@ -1585,6 +1595,8 @@ section {
 /*--------------------------------------------------------------
 # F.A.Q Section
 --------------------------------------------------------------*/
+@media (max-width: 991px) {
+}
 
 .faq .content h3 {
     font-weight: 400;

@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: Admin.php
- *  Last Modified: 19.01.23 г., 22:28 ч.
+ *  Last Modified: 10.01.23 г., 20:17 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       3.0.0
+ *  @version       2.4.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -38,28 +38,6 @@ use PDOException;
 class Admin
 {
     /**
-     * @var int Option id
-     */
-    public int $id;
-
-    /**
-     * @var string Option name
-     */
-    public string $name;
-
-    /**
-     * @var string Option value
-     */
-    public string $value;
-
-    /**
-     * @var string Option description
-     */
-    public string $description;
-
-    public string $error;
-
-    /**
      * @var PassManDb Database handler
      */
     private PassManDb $db;
@@ -71,7 +49,6 @@ class Admin
     {
 
         $this->db = $db;
-        $this->error = $this->db->error;
     }
 
     /**
@@ -90,7 +67,7 @@ class Admin
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
 
-        $query = $this->db->fetchAll($table, '');
+        $query = $this->db->fetchAll([], $table);
 
         if ($query > 0) {
             return count($query);
@@ -102,23 +79,22 @@ class Admin
     /**
      * Fetch last X records from table
      *
-     * @param string $table The table to fetch from
-     * @param string $where     The WHERE clause of the query
-     * @param array  $params    An array of parameters to bind to the query
-     * @param string $other     Other options like GROUP BY, SORT BY, LIMIT, etc.
+     * @param array  $columns Array with columns to fetch i.e. ['first_name', 'last_name' ...]
+     * @param string $table   Table name
+     * @param int    $limit   Records limit
      *
-     * @return array|false|int
+     * @return array|false|int|string
      * @throws Exception
      *
      */
-    public function lastXrecords(string $table, string $where = '', array $params = [], string $other = '')
+    public function lastXrecords(array $columns, string $table, int $limit = 0)
     {
 
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
 
-        $query = $this->db->fetchAll($table, $where, $params, $other);
+        $query = $this->db->fetchAll($columns, $table, '', '', 'rowid', 'DESC', '', $limit);
 
         if ($query > 0) {
             return $query;
@@ -137,7 +113,7 @@ class Admin
      * @throws Exception
      *
      */
-    public function topXby(string $table, int $limit = 0)
+    public function topXbyRecords(string $table, int $limit = 0)
     {
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
@@ -161,65 +137,113 @@ class Admin
     }
 
     /**
+     * Fetch all records from database into array
+     *
+     * @param array  $array_of_fields Array of fields to update
+     * @param string $table           Table to update
+     * @param array  $filter          Array of filters. Example array:('field' => 'value'). If key is customsql,
+     *                                it should be an array also like ('customsql' => array('field' = > 'value'))
+     * @param string $filter_mode     Filter mode AND or OR. Default is AND
+     * @param string $sortfield       Sort field
+     * @param string $sortorder       Sort order
+     * @param string $group           Group BY field name
+     * @param int    $limit           Limit
+     * @param int    $offset          Offset
+     *
+     * @return array|false|int|string
      * @throws Exception
      */
-    public function fetchOptions()
-    {
+    public function fetchAll(
+        array $array_of_fields = [],
+        string $table = '',
+        array $filter = [],
+        string $filter_mode = 'AND',
+        string $sortfield = '',
+        string $sortorder = '',
+        string $group = '',
+        int $limit = 0,
+        int $offset = 0
+    ) {
 
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
 
-        $result = $this->db->fetchAll('options', '');
-        $options = [];
-        if ($result) {
-            foreach ($result as $row) {
-                $option = new self($this->db);
-                $option->id = (int)$row['rowid'];
-                $option->name = (string)$row['name'];
-                $option->value = (string)$row['value'];
-                if ($row['description']) {
-                    $option->description = $row['description'];
-                }
-                $options[] = $option;
-            }
+        $result = $this->db->fetchAll(
+            $array_of_fields,
+            $table,
+            $filter,
+            $filter_mode,
+            $sortfield,
+            $sortorder,
+            $group,
+            $limit,
+            $offset
+        );
 
-            return $options;
+        if ($result > 0) {
+            return $result;
         } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
-
             return -1;
         }
     }
 
     /**
-     * Update options data
+     * Update record in database
+     *
+     * @param array  $fields Array of fields to update. Must be with format like [$key => $value]
+     * @param string $table  Table to update
+     * @param int    $id     ID of the records to update
      *
      * @return int 1 if OK, <0 if KO
-     * @throws PDOException|Exception
+     * @throws Exception
+     *
      */
-    public function updateOption()
+    public function update(array $fields, string $table, int $id)
     {
+
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
 
-        $data = [
-            'name' => $this->name,
-            'value'  => $this->value,
-        ];
-        if (!empty($this->description)) {
-            $data['description'] = $this->description;
+        $sql = 'UPDATE ' . PM_MAIN_DB_PREFIX . $table . ' SET ';
+        $i = 0;
+        foreach ($fields as $key => $value) {
+            $sql .= trim($key) . ' = :' . $key;
+            if ($i < count($fields) - 1) {
+                $sql .= ' , ';
+            }
+            $i++;
+        }
+        $sql .= ' Where rowid = :id';
+
+        $query = $this->db->db->prepare($sql);
+
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+
+        foreach ($fields as $key => $value) {
+            $query->bindValue(':' . $key, $value);
         }
 
-        $result = $this->db->update('options', $data, "rowid = $this->id");
+        if (!$this->db->db->inTransaction()) {
+            $this->db->db->beginTransaction();
+        }
 
-        if ($result > 0) {
+        try {
+            $query->execute();
+            if (empty(DISABLE_SYSLOG)) {
+                pm_syslog(get_class($this) . ':: record with id=' . $id . ' from ' . $table . 'was updated', PM_LOG_INFO);
+            }
+            $this->db->db->commit();
+
             return 1;
-        } else {
-            $_SESSION['PM_ERROR'] = $this->db->error;
+        } catch (PDOException $e) {
+            $this->db->db->rollBack();
+            if (empty(DISABLE_SYSLOG)) {
+                pm_syslog(get_class($this) . ':: ' . __METHOD__ . ' error: ' . $e->getMessage(), PM_LOG_ERR);
+            }
 
-            return -1;
+            return $e->getMessage();
         }
     }
 }

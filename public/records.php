@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: records.php
- *  Last Modified: 17.01.23 г., 13:08 ч.
+ *  Last Modified: 10.01.23 г., 20:06 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       3.0.0
+ *  @version       2.4.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -95,13 +95,14 @@ if ($action == 'create') {
 //Action to edit
 if ($action == 'edit') {
     $obj = new Records($db);
-    $obj->fetch((int)$id);
+    $res = $obj->fetch($id);
 
-    $records->old_type = $obj->type;
-    $records->old_fk_domain = $obj->fk_domain;
+    $records->old_type = (int)$res['type'];
 
     $records->id = (int)$id;
-    $records->fk_domain = (int)$fk_domain;
+    if ($fk_domain) {
+        $records->fk_domain = (int)$fk_domain;
+    }
     $records->type = (int)$type;
     $records->url = $url;
     if ($username) {
@@ -131,7 +132,7 @@ if ($action == 'delete') {
  * View
  */
 if ($action == 'add_record') {
-    $res = $domains->fetchAll('fk_user = :fk_user', [':fk_user' => $user->id]);
+    $res = $domains->fetchAll(['fk_user' => $user->id]);
     print $twig->render(
         'records.add.html.twig',
         [
@@ -149,8 +150,8 @@ if ($action == 'add_record') {
         ]
     );
 } elseif ($action == 'edit_record') {
-    $res1 = $domains->fetchAll('fk_user = :fk_user', [':fk_user' => $user->id]);
-    $res2 = $records->fetch((int)$id);
+    $res1 = $domains->fetchAll(['fk_user' => $user->id]);
+    $res2 = $records->fetch($id);
     print $twig->render(
         'records.edit.html.twig',
         [
@@ -171,21 +172,21 @@ if ($action == 'add_record') {
 } else {
     if ($action == 'search') {
         $res = $records->fetchAll(
-            'fk_user = :fk_user AND (username LIKE :username OR url LIKE :url)',
             [
-                ':fk_user'    => $user->id,
-                ':username' => '%' . $search_string . '%',
-                ':url'        => '%' . $search_string . '%',
+                'fk_user'    => $user->id,
+                'dbase_name' => $search_string,
+                'ftp_server' => $search_string,
+                'url'        => $search_string,
             ],
             'OR'
         );
     } elseif ($fk_domain) {
-        $res = $records->fetchAll('fk_user = :fk_user AND fk_domain = :fk_domain', [':fk_user' => $user->id, ':fk_domain' => $fk_domain]);
+        $res = $records->fetchAll(['fk_user' => $user->id, 'fk_domain' => $fk_domain]);
     } else {
-        $res = $records->fetchAll('fk_user = :fk_user', [':fk_user' => $user->id]);
+        $res = $records->fetchAll(['fk_user' => $user->id]);
     }
 
-    $count = $res > 1 ? count($res) : 0;
+    $count = count($res) ? '' . count($res) : '0';
 
     print $twig->render(
         'records.view.html.twig',
@@ -200,9 +201,8 @@ if ($action == 'add_record') {
             'title'     => $title,
             'error'     => $errors,
             'message'   => $messages,
-            'count'     => $langs->trans('NumRecords', (string)$count),
+            'count'     => $langs->trans('NumRecords', $count),
             'res'       => $res,
-            'domains'   => $domains,
         ]
     );
 }
