@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: Triggers.php
- *  Last Modified: 10.01.23 г., 19:28 ч.
+ *  Last Modified: 17.01.23 г., 12:55 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       2.4.0
+ *  @version       3.0.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -88,21 +88,32 @@ class Triggers
                     $this->db->db->beginTransaction();
                 }
 
-                if ($object->old_type == 1) {
-                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET data_base = data_base - 1 WHERE rowid = ' . $object->fk_domain);
-                    $this->db->db->commit();
-                } elseif ($object->old_type == 2) {
-                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET website = website - 1 WHERE rowid = ' . $object->fk_domain);
-                    $this->db->db->commit();
-                } elseif ($object->old_type == 3) {
-                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET ftp = ftp - 1 WHERE rowid = ' . $object->fk_domain);
-                    $this->db->db->commit();
+                if ($object->old_fk_domain) {
+                    if ($object->old_type == 1) {
+                        $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET data_base = data_base - 1 WHERE rowid = ' . $object->old_fk_domain);
+                        $this->db->db->commit();
+                    } elseif ($object->old_type == 2) {
+                        $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET website = website - 1 WHERE rowid = ' . $object->old_fk_domain);
+                        $this->db->db->commit();
+                    } elseif ($object->old_type == 3) {
+                        $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET ftp = ftp - 1 WHERE rowid = ' . $object->old_fk_domain);
+                        $this->db->db->commit();
+                    }
+                } else {
+                    if ($object->old_type == 1) {
+                        $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET data_base = data_base - 1 WHERE rowid = ' . $object->fk_domain);
+                        $this->db->db->commit();
+                    } elseif ($object->old_type == 2) {
+                        $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET website = website - 1 WHERE rowid = ' . $object->fk_domain);
+                        $this->db->db->commit();
+                    } elseif ($object->old_type == 3) {
+                        $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET ftp = ftp - 1 WHERE rowid = ' . $object->fk_domain);
+                        $this->db->db->commit();
+                    }
                 }
-
                 if (!$this->db->db->inTransaction()) {
                     $this->db->db->beginTransaction();
                 }
-
                 if ($object->type == 1) {
                     $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET data_base = data_base + 1 WHERE rowid = ' . $object->fk_domain);
                     $this->db->db->commit();
@@ -123,14 +134,14 @@ class Triggers
                     $this->db->db->beginTransaction();
                 }
 
-                if ($res['type'] == 1) {
-                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET data_base = data_base - 1 WHERE rowid = ' . $res['fk_domain']);
+                if ($res->type == 1) {
+                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET data_base = data_base - 1 WHERE rowid = ' . $res->fk_domain);
                     $this->db->db->commit();
-                } elseif ($res['type'] == 2) {
-                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET website = website - 1 WHERE rowid = ' . $res['fk_domain']);
+                } elseif ($res->type == 2) {
+                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET website = website - 1 WHERE rowid = ' . $res->fk_domain);
                     $this->db->db->commit();
-                } elseif ($res['type'] == 3) {
-                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET ftp = ftp - 1 WHERE rowid = ' . $res['fk_domain']);
+                } elseif ($res->type == 3) {
+                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET ftp = ftp - 1 WHERE rowid = ' . $res->fk_domain);
                     $this->db->db->commit();
                 }
                 break;

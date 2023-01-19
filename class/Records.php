@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: Records.php
- *  Last Modified: 10.01.23 г., 20:17 ч.
+ *  Last Modified: 17.01.23 г., 12:43 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       2.4.0
+ *  @version       3.0.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -47,6 +47,10 @@ class Records
      */
     public int $fk_domain;
     /**
+     * @var int Parent ID
+     */
+    public int $old_fk_domain;
+    /**
      * @var int
      */
     public int $type;
@@ -74,24 +78,6 @@ class Records
      * @var string Name of table without prefix where object is stored.
      */
     public string $table_element = 'records';
-    /**
-     * @var array Array of fields to fetch from database
-     */
-    public array $array_of_fields = ['fk_domain', 'type', 'url', 'username', 'pass_crypted', 'fk_user'];
-
-    /**
-     * @var string Does the object has Parent class to call values from
-     */
-    public string $hasParentClass = 'yes';
-    /**
-     * @var string Name of the parent class table
-     */
-    public string $parentClass = 'domains';
-
-    /**
-     * @var string[] Fields of the parent class to fetch
-     */
-    public array $parentClassFields = ['label'];
 
     /**
      * @var PassManDb Database handler
@@ -111,6 +97,7 @@ class Records
     {
 
         $this->db = $db;
+        $this->db->error = '';
         $this->trigger = new Triggers($this->db);
     }
 
@@ -126,23 +113,30 @@ class Records
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
-        $array = [];
-        foreach ($this->array_of_fields as $val) {
-            if (!empty($this->$val)) {
-                $array[$val] = $this->$val;
-            }
-        }
 
-        $result = $this->db->create($array, $this->table_element);
+        $this->pass_crypted = password_hash($this->pass_crypted, PASSWORD_DEFAULT);
+        $data = [
+            'fk_domain'    => $this->fk_domain,
+            'type'         => $this->type,
+            'url'          => $this->url,
+            'username'     => $this->username,
+            'pass_crypted' => $this->pass_crypted,
+            'fk_user'      => $this->fk_user,
+        ];
+        $result = $this->db->create($this->table_element, $data);
 
         if ($result > 0) {
             $res = $this->trigger->runTrigger('RECORD_INSERT', $this);
             if ($res > 0) {
                 return 1;
             } else {
+                $_SESSION['PM_ERROR'] = $this->db->error;
+
                 return -1;
             }
         } else {
+            $_SESSION['PM_ERROR'] = $this->db->error;
+
             return -2;
         }
     }
@@ -159,24 +153,34 @@ class Records
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
-        $array_to_update = [];
-        foreach ($this->array_of_fields as $field) {
-            if (isset($this->$field) && $this->$field != 0 || !empty($this->$field)) {
-                $array_to_update[$field] = $this->$field;
-            }
+
+        $this->pass_crypted = password_hash($this->pass_crypted, PASSWORD_DEFAULT);
+        $data = [
+            'fk_domain'    => $this->fk_domain,
+            'type'         => $this->type,
+            'url'          => $this->url,
+            'username'     => $this->username,
+            'pass_crypted' => $this->pass_crypted,
+        ];
+        if (!empty($this->password)) {
+            $data['password'] = password_hash($this->password, PASSWORD_DEFAULT);
         }
 
-        $result = $this->db->update($array_to_update, $this->table_element, $this->id);
+        $result = $this->db->update($this->table_element, $data, "rowid = $this->id");
 
         if ($result > 0) {
             $res = $this->trigger->runTrigger('RECORD_UPDATE', $this);
             if ($res > 0) {
                 return 1;
             } else {
+                $_SESSION['PM_ERROR'] = $this->db->error;
+
                 return -1;
             }
         } else {
-            return -1;
+            $_SESSION['PM_ERROR'] = $this->db->error;
+
+            return -2;
         }
     }
 
@@ -184,7 +188,7 @@ class Records
      * Delete record from database
      *
      * @return int 1 if OK, <0 if KO
-     * @throws PDOException|Exception
+     * @throws Exception
      */
     public function delete()
     {
@@ -196,106 +200,89 @@ class Records
         $res = $this->trigger->runTrigger('RECORD_DELETE', $this);
 
         if ($res >= 0) {
-            $result = $this->db->delete($this->table_element, $this->id);
+            $result = $this->db->delete($this->table_element, 'rowid = :id', [':id' => $this->id]);
             if ($result > 0) {
                 return 1;
             } else {
+                $_SESSION['PM_ERROR'] = $this->db->error;
+
                 return -1;
             }
         } else {
+            $_SESSION['PM_ERROR'] = $this->db->error;
+
             return -2;
         }
     }
 
     /**
-     * Fetch all records from database into array
+     * Fetch all records from database
      *
-     * @param array  $filter          Array of filters. Example array:('field' => 'value'). If key is customsql,
-     *                                it should be an array also like ('customsql' => array('field' = > 'value'))
-     * @param string $filter_mode     Filter mode AND or OR. Default is AND
-     * @param string $sortfield       Sort field
-     * @param string $sortorder       Sort order
-     * @param string $group           Group BY field name
-     * @param int    $limit           Limit
-     * @param int    $offset          Offset
+     * @param string $where  The WHERE clause of the query
+     * @param array  $params An array of parameters to bind to the query
      *
-     * @return int
-     * @throws PDOException|Exception
+     * @return array|int Array of objects or <0 on error
+     * @throws Exception
      */
-    public function fetchAll($filter = '', string $filter_mode = 'AND', string $sortfield = '', string $sortorder = '', string $group = '', int $limit = 0, int $offset = 0)
+    public function fetchAll(string $where, array $params = [])
     {
 
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
 
-        $result = $this->db->fetchAll(
-            $this->array_of_fields,
-            $this->table_element,
-            $filter,
-            $filter_mode,
-            $sortfield,
-            $sortorder,
-            $group,
-            $limit,
-            $offset,
-            $this->hasParentClass,
-            $this->parentClass,
-            $this->parentClassFields,
-            'fk_domain'
-        );
+        $result = $this->db->fetchAll($this->table_element, $where, $params);
+        $records = [];
+        if ($result) {
+            foreach ($result as $row) {
+                $record = new self($this->db);
+                $record->id = (int)$row['rowid'];
+                $record->fk_domain = (int)$row['fk_domain'];
+                $record->type = (int)$row['type'];
+                $record->url = $row['url'];
+                $record->username = $row['username'];
+                $record->pass_crypted = $row['pass_crypted'];
+                $record->fk_user = (int)$row['fk_user'];
+                $records[] = $record;
+            }
 
-        if ($result > 0) {
-            return $result;
+            return $records;
         } else {
+            $_SESSION['PM_ERROR'] = $this->db->error;
+
             return -1;
         }
     }
 
     /**
+     * Fetch a single record from database
      *
-     * Fetch single row from database
+     * @param int $id The ID of the record to fetch
      *
-     * @param        $id
-     * @param string $filter          Array of filters. Example array:('field' => 'value'). If key is customsql,
-     *                                it should be an array also like ('customsql' => array('field' = > 'value'))
-     * @param string $filter_mode     Filter mode AND or OR. Default is AND
-     * @param string $sortfield       Sort field
-     * @param string $sortorder       Sort order
-     * @param string $group           Group BY field name
-     * @param int    $limit           Limit
-     * @param int    $offset          Offset
-     *
-     * @return int
+     * @return Records|int Return Object or <0 on error
      * @throws Exception
      */
-    public function fetch($id, string $filter = '', string $filter_mode = 'AND', string $sortfield = '', string $sortorder = '', string $group = '', int $limit = 0, int $offset = 0)
+    public function fetch(int $id)
     {
 
         if (empty(DISABLE_SYSLOG)) {
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
 
-        $result = $this->db->fetch(
-            $id,
-            $this->array_of_fields,
-            $this->table_element,
-            $filter,
-            $filter_mode,
-            $sortfield,
-            $sortorder,
-            $group,
-            $limit,
-            $offset,
-            $this->hasParentClass,
-            $this->parentClass,
-            $this->parentClassFields,
-            'fk_domain'
-        );
+        $result = $this->db->fetch($this->table_element, 'rowid = :id', [':id' => $id]);
+        if ($result) {
+            $this->id = (int)$result['rowid'];
+            $this->fk_domain = (int)$result['fk_domain'];
+            $this->type = (int)$result['type'];
+            $this->url = $result['url'];
+            $this->username = $result['username'];
+            $this->pass_crypted = $result['pass_crypted'];
+            $this->fk_user = (int)$result['fk_user'];
 
-        if ($result > 0) {
-            return $result;
+            return $this;
         } else {
+            $_SESSION['PM_ERROR'] = $this->db->error;
+
             return -1;
         }
     }

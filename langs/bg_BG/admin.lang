@@ -9,6 +9,7 @@ All=Всички
 HomePage=Начална страница
 LastXUsers=Последни %s потребителя
 TopXUsersNumRecords=Топ %s потребителя по брой записи
+TopXUsersNumDomains=Топ %s потребителя по брой домейни
 RecordsNum=Брой записи
 Date=Дата
 RegistrationDate=Дата на регистрация

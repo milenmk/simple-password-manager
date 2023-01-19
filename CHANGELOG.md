@@ -1,3 +1,14 @@
+## v2.3.1 [Released 19.01.2023]
+
+* [NEW] All classes and their methods are rewritten. Now methods are more abstract.
+* [FIX] Minor fixes
+
+## v2.4.0 [Released 10.01.2023]
+
+* [NEW] Update domains table on record create/update/delete
+* [FIX] PM_DISABLE_SYSLOG renamed to DISABLE_SYSLOG
+* [FIX] minor bug fixes
+
 ## v2.3.1 [Released 04.01.2023]
 
 * [FIX] Minor bug fixes

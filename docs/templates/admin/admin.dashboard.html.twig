@@ -67,9 +67,43 @@
             <div class="col-lg-6">
                 <div class="card shadow mb-4">
                     <!-- Card Header - Accordion -->
+                    <a href="#collapseDomains" class="d-block card-header py-3" data-toggle="collapse"
+                       role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                        <h6 class="m-0 font-weight-bold text-primary">{{ topXUsersByDomains }}</h6>
+                    </a>
+                    <div class="collapse show" id="collapseDomains">
+                        <div class="card-body">
+                            {{ Top10NUsersNumDomains }}
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>{{ langs.trans('User') }}</th>
+                                    <th class="text-right">{{ langs.trans('RecordsNum') }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for result in topXbyDomains %}
+                                    <tr>
+                                        {% if result.first_name > 1 and result.last_name > 1 %}
+                                            <td>{{ result.first_name }} {{ result.last_name }}</td>
+                                        {% else %}
+                                            <td>{{ result.username }}</td>
+                                        {% endif %}
+                                        <td class="text-right">{{ result.numrec }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Accordion -->
                     <a href="#collapseUsers" class="d-block card-header py-3" data-toggle="collapse"
                        role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                        <h6 class="m-0 font-weight-bold text-primary">{{ lastXUsers }}</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">{{ lastXUsersTitle }}</h6>
                     </a>
                     <div class="collapse show" id="collapseUsers">
                         <div class="card-body">
@@ -82,7 +116,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for result in resultLastXUsers %}
+                                {% for result in lastXUsers %}
                                     <tr>
                                         {% if result.first_name > 1 and result.last_name > 1 %}
                                             <td>{{ result.first_name }} {{ result.last_name }}</td>
@@ -98,6 +132,8 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-lg-6">
                 <div class="card shadow mb-4">
                     <!-- Card Header - Accordion -->
@@ -116,7 +152,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for result in resultTopXbyRecords %}
+                                {% for result in topXbyRecords %}
                                     <tr>
                                         {% if result.first_name > 1 and result.last_name > 1 %}
                                             <td>{{ result.first_name }} {{ result.last_name }}</td>

@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: index.php
- *  Last Modified: 10.01.23 г., 20:06 ч.
+ *  Last Modified: 17.01.23 г., 13:02 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       2.4.0
+ *  @version       3.0.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -69,6 +69,9 @@ pm_logout_block();
 //Action to create
 if ($action == 'create') {
     $domains->label = $label;
+    $domains->website = 0;
+    $domains->ftp = 0;
+    $domains->data_base = 0;
     $domains->fk_user = $user->id;
     $result = $domains->create();
     if ($result > 0) {
@@ -79,9 +82,9 @@ if ($action == 'create') {
 }
 //Action to edit
 if ($action == 'edit') {
-    $domains->id = (int)$id;
+    $domains->fetch((int)$id);
     $domains->label = $label;
-    $result = $domains->update(['label']);
+    $result = $domains->update();
     if ($result > 0) {
         $action = 'view';
     } else {
@@ -120,7 +123,7 @@ if ($action == 'add_domain') {
         ]
     );
 } elseif ($action == 'edit_domain') {
-    $res = $domains->fetchAll(['rowid' => $id, 'fk_user' => $user->id]);
+    $res = $domains->fetchAll('rowid = :id AND fk_user = :fk_user', [':id' => $id, ':fk_user' => $user->id]);
 
     print $twig->render(
         'index.edit.html.twig',
@@ -140,12 +143,18 @@ if ($action == 'add_domain') {
     );
 } else {
     if ($action == 'search') {
-        $res = $domains->fetchAll(['fk_user' => $user->id, 'label' => $search_string]);
+        $res = $domains->fetchAll(
+            'fk_user = :fk_user AND label LIKE :label',
+            [':fk_user' => $user->id, ':label' => '%' . $search_string . '%']
+        );
     } else {
-        $res = $domains->fetchAll(['fk_user' => $user->id]);
+        $res = $domains->fetchAll(
+            'fk_user = :fk_user',
+            [':fk_user' => $user->id]
+        );
     }
 
-    $count = count($res) ? '' . count($res) : '0';
+    $count = $res > 1 ? count($res) : 0;
 
     print $twig->render(
         'index.view.html.twig',
@@ -161,7 +170,7 @@ if ($action == 'add_domain') {
             'error'     => $errors,
             'message'   => $messages,
             'res'       => $res,
-            'count'     => $langs->trans('NumRecords', $count),
+            'count'     => $langs->trans('NumRecords', (string)$count),
         ]
     );
 }
