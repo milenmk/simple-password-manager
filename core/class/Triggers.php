@@ -7,14 +7,14 @@
  *  File name: Triggers.php
  *  Last Modified: 19.01.23 г., 22:46 ч.
  *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       3.0.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
+ * @link          https://blacktiehost.com
+ * @since         1.0.0
+ * @version       3.0.0
+ * @author        Milen Karaganski <milen@blacktiehost.com>
  *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ * @license       GPL-3.0+
+ * @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
  *
  */
 
@@ -24,7 +24,7 @@
  * \brief       This file is a CRUD file for Triggers class (Create/Read/Update/Delete)
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace PasswordManagerCore;
 
@@ -38,6 +38,7 @@ use PasswordManager\Records;
  */
 class Triggers
 {
+
     /**
      * @var PassManDb Database handler
      */
@@ -59,91 +60,73 @@ class Triggers
      * @return int
      * @throws Exception
      */
-    public function runTrigger($action, $object)
+    public function runTrigger(string $action, object $object)
     {
+
+        $obj = new Domains($this->db);
+
+        if (!empty($object->type)) {
+            if ($object->type == 1) {
+                $object->type = 'data_base';
+            } elseif ($object->type == 2) {
+                $object->type = 'website';
+            } elseif ($object->type == 3) {
+                $object->type = 'ftp';
+            }
+        }
+
+        if (!$this->db->db->inTransaction()) {
+            $this->db->db->beginTransaction();
+        }
 
         switch ($action) {
             case 'RECORD_INSERT':
-                $obj = new Domains($this->db);
-
                 if (!$this->db->db->inTransaction()) {
                     $this->db->db->beginTransaction();
                 }
 
-                if ($object->type == 1) {
-                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET data_base = data_base + 1 WHERE rowid = ' . $object->fk_domain);
-                    $this->db->db->commit();
-                } elseif ($object->type == 2) {
-                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET website = website + 1 WHERE rowid = ' . $object->fk_domain);
-                    $this->db->db->commit();
-                } elseif ($object->type == 3) {
-                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET ftp = ftp + 1 WHERE rowid = ' . $object->fk_domain);
-                    $this->db->db->commit();
-                }
+                $this->db->db->exec(
+                    'UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' 
+                    SET ' . $object->type . ' = ' . $object->type . ' + 1 WHERE rowid = ' . $object->fk_domain
+                );
+                $this->db->db->commit();
                 break;
             case 'RECORD_UPDATE':
-                $obj = new Domains($this->db);
-
-                if (!$this->db->db->inTransaction()) {
-                    $this->db->db->beginTransaction();
+                if ($object->old_type == 1) {
+                    $object->old_type = 'data_base';
+                } elseif ($object->old_type == 2) {
+                    $object->old_type = 'website';
+                } elseif ($object->old_type == 3) {
+                    $object->old_type = 'ftp';
                 }
 
                 if ($object->old_fk_domain) {
-                    if ($object->old_type == 1) {
-                        $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET data_base = data_base - 1 WHERE rowid = ' . $object->old_fk_domain);
-                        $this->db->db->commit();
-                    } elseif ($object->old_type == 2) {
-                        $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET website = website - 1 WHERE rowid = ' . $object->old_fk_domain);
-                        $this->db->db->commit();
-                    } elseif ($object->old_type == 3) {
-                        $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET ftp = ftp - 1 WHERE rowid = ' . $object->old_fk_domain);
-                        $this->db->db->commit();
-                    }
+                    $this->db->db->exec(
+                        'UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . '
+                        SET ' . $object->old_type . ' = ' . $object->old_type . ' - 1 
+                        WHERE rowid = ' . $object->old_fk_domain
+                    );
                 } else {
-                    if ($object->old_type == 1) {
-                        $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET data_base = data_base - 1 WHERE rowid = ' . $object->fk_domain);
-                        $this->db->db->commit();
-                    } elseif ($object->old_type == 2) {
-                        $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET website = website - 1 WHERE rowid = ' . $object->fk_domain);
-                        $this->db->db->commit();
-                    } elseif ($object->old_type == 3) {
-                        $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET ftp = ftp - 1 WHERE rowid = ' . $object->fk_domain);
-                        $this->db->db->commit();
-                    }
+                    $this->db->db->exec(
+                        'UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . '
+                        SET ' . $object->old_type . ' = ' . $object->old_type . ' - 1 
+                        WHERE rowid = ' . $object->fk_domain
+                    );
                 }
-                if (!$this->db->db->inTransaction()) {
-                    $this->db->db->beginTransaction();
-                }
-                if ($object->type == 1) {
-                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET data_base = data_base + 1 WHERE rowid = ' . $object->fk_domain);
-                    $this->db->db->commit();
-                } elseif ($object->type == 2) {
-                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET website = website + 1 WHERE rowid = ' . $object->fk_domain);
-                    $this->db->db->commit();
-                } elseif ($object->type == 3) {
-                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET ftp = ftp + 1 WHERE rowid = ' . $object->fk_domain);
-                    $this->db->db->commit();
-                }
+
+                $this->db->db->exec(
+                    'UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . '
+                    SET ' . $object->type . ' = ' . $object->type . ' + 1 WHERE rowid = ' . $object->fk_domain
+                );
+                $this->db->db->commit();
+
                 break;
             case 'RECORD_DELETE':
-                $objsrc = new Records($this->db);
-                $res = $objsrc->fetch($object->id);
-                $obj = new Domains($this->db);
-
-                if (!$this->db->db->inTransaction()) {
-                    $this->db->db->beginTransaction();
-                }
-
-                if ($res->type == 1) {
-                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET data_base = data_base - 1 WHERE rowid = ' . $res->fk_domain);
-                    $this->db->db->commit();
-                } elseif ($res->type == 2) {
-                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET website = website - 1 WHERE rowid = ' . $res->fk_domain);
-                    $this->db->db->commit();
-                } elseif ($res->type == 3) {
-                    $this->db->db->exec('UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' SET ftp = ftp - 1 WHERE rowid = ' . $res->fk_domain);
-                    $this->db->db->commit();
-                }
+                $this->db->db->exec(
+                    'UPDATE ' . PM_MAIN_DB_PREFIX . $obj->table_element . ' 
+                    SET ' . $object->type . ' = ' . $object->type . ' - 1 WHERE rowid = ' . $object->fk_domain
+                );
+                $this->db->db->commit();
                 break;
             default:
                 pm_syslog(

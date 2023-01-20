@@ -51,13 +51,13 @@ class Records
      */
     public int $old_fk_domain;
     /**
-     * @var int
+     * @var string
      */
-    public int $type;
+    public string $type;
     /**
-     * @var int
+     * @var string
      */
-    public int $old_type;
+    public string $old_type;
     /**
      * @var string
      */
@@ -197,7 +197,10 @@ class Records
             pm_syslog(__METHOD__ . ' called from ' . get_class($this), PM_LOG_INFO);
         }
 
-        $res = $this->trigger->runTrigger('RECORD_DELETE', $this);
+        $obj = new self($this->db);
+        $obj->fetch($this->id);
+
+        $res = $this->trigger->runTrigger('RECORD_DELETE', $obj);
 
         if ($res >= 0) {
             $result = $this->db->delete($this->table_element, 'rowid = :id', [':id' => $this->id]);
@@ -238,7 +241,7 @@ class Records
                 $record = new self($this->db);
                 $record->id = (int)$row['rowid'];
                 $record->fk_domain = (int)$row['fk_domain'];
-                $record->type = (int)$row['type'];
+                $record->type = $row['type'];
                 $record->url = $row['url'];
                 $record->username = $row['username'];
                 $record->pass_crypted = $row['pass_crypted'];
@@ -273,7 +276,7 @@ class Records
         if ($result) {
             $this->id = (int)$result['rowid'];
             $this->fk_domain = (int)$result['fk_domain'];
-            $this->type = (int)$result['type'];
+            $this->type = $result['type'];
             $this->url = $result['url'];
             $this->username = $result['username'];
             $this->pass_crypted = $result['pass_crypted'];

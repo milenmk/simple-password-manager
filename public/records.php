@@ -76,7 +76,7 @@ pm_logout_block();
 if ($action == 'create') {
     $records->fk_domain = (int)$fk_domain;
     $records->fk_user = $user->id;
-    $records->type = (int)$type;
+    $records->type = $type;
     $records->url = $url;
     $records->username = $username;
 
@@ -102,7 +102,7 @@ if ($action == 'edit') {
 
     $records->id = (int)$id;
     $records->fk_domain = (int)$fk_domain;
-    $records->type = (int)$type;
+    $records->type = $type;
     $records->url = $url;
     if ($username) {
         $records->username = $username;
@@ -188,7 +188,8 @@ if ($action == 'add_record') {
             'OR'
         );
     } elseif ($fk_domain) {
-        $res = $records->fetchAll('fk_user = :fk_user AND fk_domain = :fk_domain', [':fk_user' => $user->id, ':fk_domain' => $fk_domain]);
+        $res = $records->fetchAll('fk_user = :fk_user 
+        AND fk_domain = :fk_domain', [':fk_user' => $user->id, ':fk_domain' => $fk_domain]);
     } else {
         $res = $records->fetchAll('fk_user = :fk_user', [':fk_user' => $user->id]);
     }
