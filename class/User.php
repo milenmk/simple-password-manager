@@ -192,14 +192,14 @@ class User
         }
 
         //Delete records first
-        $delete_records = $this->db->delete('records', 'fk_user = :id', [':id' => $this->id]);
+        $this->db->delete('records', 'fk_user = :id', [':id' => $this->id]);
         if ($this->db->error) {
             $this->error = $this->db->error;
         }
 
         //Then if no error, delete domains
         if (!$this->error) {
-            $delete_domains = $this->db->delete('domains', 'fk_user = :id', [':id' => $this->id]);
+            $this->db->delete('domains', 'fk_user = :id', [':id' => $this->id]);
             if ($this->db->error) {
                 $this->error = $this->db->error;
             }
@@ -215,6 +215,8 @@ class User
                 $this->error = $this->db->error;
                 return -1;
             }
+        } else {
+            return -2;
         }
     }
 

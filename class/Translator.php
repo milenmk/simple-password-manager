@@ -7,14 +7,14 @@
  *  File name: Translator.php
  *  Last Modified: 19.01.23 г., 22:46 ч.
  *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       3.0.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
+ * @link          https://blacktiehost.com
+ * @since         1.0.0
+ * @version       3.0.0
+ * @author        Milen Karaganski <milen@blacktiehost.com>
  *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ * @license       GPL-3.0+
+ * @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
  *
  */
 
@@ -62,7 +62,7 @@ class Translator
     /**
      * @param int $mode 0 = long language code (en_US, de_DE, etc.), 1 = short language code (en, de, etc.)
      *
-     * @return false|string
+     * @return string
      */
     public function getDefaultLang(int $mode = 0)
     {
@@ -118,10 +118,13 @@ class Translator
             }
         } else {
             $longforshort = [
-                'am' => 'am_ET', 'ar' => 'ar_SA', 'bn' => 'bn_DB', 'el' => 'el_GR', 'ca' => 'ca_ES', 'cs' => 'cs_CZ', 'en' => 'en_US', 'fa' => 'fa_IR',
+                'am' => 'am_ET', 'ar' => 'ar_SA', 'bn' => 'bn_DB', 'el' => 'el_GR',
+                'ca' => 'ca_ES', 'cs' => 'cs_CZ', 'en' => 'en_US', 'fa' => 'fa_IR',
                 'gl' => 'gl_ES', 'he' => 'he_IL', 'hi' => 'hi_IN', 'ja' => 'ja_JP',
-                'ka' => 'ka_GE', 'km' => 'km_KH', 'kn' => 'kn_IN', 'ko' => 'ko_KR', 'lo' => 'lo_LA', 'nb' => 'nb_NO', 'no' => 'nb_NO', 'ne' => 'ne_NP',
-                'sl' => 'sl_SI', 'sq' => 'sq_AL', 'sr' => 'sr_RS', 'sv' => 'sv_SE', 'uk' => 'uk_UA', 'vi' => 'vi_VN', 'zh' => 'zh_CN',
+                'ka' => 'ka_GE', 'km' => 'km_KH', 'kn' => 'kn_IN', 'ko' => 'ko_KR',
+                'lo' => 'lo_LA', 'nb' => 'nb_NO', 'no' => 'nb_NO', 'ne' => 'ne_NP',
+                'sl' => 'sl_SI', 'sq' => 'sq_AL', 'sr' => 'sr_RS', 'sv' => 'sv_SE',
+                'uk' => 'uk_UA', 'vi' => 'vi_VN', 'zh' => 'zh_CN',
             ];
             if (isset($longforshort[strtolower($langpart[0])])) {
                 $srclang = $longforshort[strtolower($langpart[0])];
@@ -162,13 +165,13 @@ class Translator
      * @param string $domain             File name to load (.lang file). Must be "file"
      * @param int    $alt                0 (try xx_ZZ then 1), 1 (try xx_XX then 2), 2 (try en_US)
      * @param int    $stopafterdirection Stop when the DIRECTION tag is found (optimize speed)
-     * @param int    $forcelangdir       To force a different lang directory
+     * @param string $forcelangdir       To force a different lang directory
      *
      * @return    int                    less than 0 if KO, 0 if already loaded or loading not required, >0 if OK
      * @throws Exception
      * @see loadLangs()
      */
-    public function load(string $domain, int $alt = 0, int $stopafterdirection = 0, $forcelangdir = '')
+    public function load(string $domain, int $alt = 0, int $stopafterdirection = 0, string $forcelangdir = '')
     {
 
         // Check parameters
@@ -275,8 +278,10 @@ class Translator
 
     /**
      *  Return text translated of text received as parameter (and encode it into HTML)
-     *  If there is no match for this text, we look in alternative file and if still not found, it is returned as it is.
-     *  The parameters of this method should not contain HTML tags. If there is, they will be htmlencoded to have no effect.
+     *  If there is no match for this text, we look in alternative file
+     * and if still not found, it is returned as it is.
+     *  The parameters of this method should not contain HTML tags.
+     * If there is, they will be htmlencoded to have no effect.
      *
      * @param string $key    Key to translate
      * @param string $param1 param1 string
@@ -287,8 +292,13 @@ class Translator
      * @return string            Translated string (encoded into HTML entities and UTF8)
      * @throws Exception
      */
-    public function trans(string $key, string $param1 = '', string $param2 = '', string $param3 = '', string $param4 = '')
-    {
+    public function trans(
+        string $key,
+        string $param1 = '',
+        string $param2 = '',
+        string $param3 = '',
+        string $param4 = ''
+    ) {
 
         if (!empty($this->tab_translate[$key])) {
             $str = $this->tab_translate[$key];

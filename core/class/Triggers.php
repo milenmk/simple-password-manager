@@ -24,21 +24,19 @@
  * \brief       This file is a CRUD file for Triggers class (Create/Read/Update/Delete)
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace PasswordManagerCore;
 
 use Exception;
 use PasswordManager\Domains;
 use PasswordManager\PassManDb;
-use PasswordManager\Records;
 
 /**
  * Class for Triggers
  */
 class Triggers
 {
-
     /**
      * @var PassManDb Database handler
      */

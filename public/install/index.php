@@ -7,14 +7,14 @@
  *  File name: index.php
  *  Last Modified: 19.01.23 г., 22:46 ч.
  *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       3.0.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
+ * @link          https://blacktiehost.com
+ * @since         1.0.0
+ * @version       3.0.0
+ * @author        Milen Karaganski <milen@blacktiehost.com>
  *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ * @license       GPL-3.0+
+ * @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
  *
  */
 
@@ -51,9 +51,12 @@ if (file_exists($lockfile)) {
     exit();
 }
 
-print '<i class="bi bi-exclamation-circle-fill" style="color: #ff0000;"></i>&nbsp;' . $langs->trans('ErrorExplanation') . '<br>';
-print '<i class="bi bi-exclamation-circle-fill" style="color: #ffa500;"></i>&nbsp;' . $langs->trans('WarningExplanation') . '<br>';
-print '<i class="bi bi-exclamation-circle-fill" style="color: #008000;"></i>&nbsp;' . $langs->trans('OkExplanation') . '<br>';
+print '<i class="bi bi-exclamation-circle-fill" style="color: #ff0000;"></i>
+&nbsp;' . $langs->trans('ErrorExplanation') . '<br>';
+print '<i class="bi bi-exclamation-circle-fill" style="color: #ffa500;"></i>
+&nbsp;' . $langs->trans('WarningExplanation') . '<br>';
+print '<i class="bi bi-exclamation-circle-fill" style="color: #008000;"></i>
+&nbsp;' . $langs->trans('OkExplanation') . '<br>';
 print  '<hr>';
 $checksok = 1;
 

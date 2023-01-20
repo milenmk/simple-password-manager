@@ -7,14 +7,14 @@
  *  File name: step1.php
  *  Last Modified: 19.01.23 г., 22:46 ч.
  *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       3.0.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
+ * @link          https://blacktiehost.com
+ * @since         1.0.0
+ * @version       3.0.0
+ * @author        Milen Karaganski <milen@blacktiehost.com>
  *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ * @license       GPL-3.0+
+ * @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
  *
  */
 
@@ -26,13 +26,14 @@
  *              Write info on the config file
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 use PasswordManager\PassManDb;
 
 try {
     include_once('inc.php');
-} catch (Exception $e) {
+}
+catch (Exception $e) {
     $error = $e->getMessage();
     print 'File "inc.php" not found!';
     die();
@@ -84,7 +85,7 @@ if ($_GET['action'] == 'check_connection' || $_POST['action'] == 'check_connecti
     //If no error, try to connect to database
     if (!$error) {
         //Try to connect to server without database name set
-        $conn = new PassManDb($db_host, $db_user, $db_pass, '', (int)$db_port);
+        $conn = new PassManDb();
 
         // If connection error, show it
         if ($conn->error) {
@@ -93,13 +94,27 @@ if ($_GET['action'] == 'check_connection' || $_POST['action'] == 'check_connecti
 
         // If no error, user exists try connecting to database with database name set
         if (!$db->error) {
-            $res = $conn->selectDb($db_host, $db_user, $db_pass, $db_name, $db_character_set, $db_collation, (int)$db_port);
+            //$res = $conn->selectDb($db_host, $db_user, $db_pass, $db_name, $db_character_set, $db_collation, (int)$db_port);
+            $conn->db = new PDO(
+                'mysql:host=' . $db_host . ';
+                dbname=' . $db_name . ';
+                port=' . $db_port,
+                $db_user,
+                $db_pass
+            );
         }
 
         // If result is < 1, that means that the table is not existing OR the user doesn't have rights to access it.
         if ($res < 1 && $create_database == 1) {
             //Try connection with root user if specified
-            $res2 = $conn->selectDb($db_host, $root_db_user, $root_db_pass, '', $db_character_set, $db_collation, (int)$db_port);
+            //$res2 = $conn->selectDb($db_host, $root_db_user, $root_db_pass, '', $db_character_set, $db_collation, (int)$db_port);
+            $conn->db = new PDO(
+                'mysql:host=' . $db_host . ';
+                dbname=' . $db_name . ';
+                port=' . $db_port,
+                $root_db_user,
+                $root_db_pass
+            );
             if ($res2 < 1) {
                 $dberror = $conn->error;
             } else {
@@ -123,7 +138,8 @@ if ($_GET['action'] == 'check_connection' || $_POST['action'] == 'check_connecti
                 $conn->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                 $conn->db->exec(
-                    "CREATE DATABASE IF NOT EXISTS $new_db_name2 DEFAULT CHARACTER SET $new_db_character_set2 COLLATE $new_db_collation2;
+                    "CREATE DATABASE IF NOT EXISTS $new_db_name2 
+                    DEFAULT CHARACTER SET $new_db_character_set2 COLLATE $new_db_collation2;
                 CREATE USER IF NOT EXISTS $new_db_user2@'localhost' IDENTIFIED BY '$new_db_pass2';
                 GRANT ALL ON $new_db_name2.* TO $new_db_user2@'localhost';
                 FLUSH PRIVILEGES;"

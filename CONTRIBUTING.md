@@ -103,7 +103,8 @@ a process to follow to optimize the chance to have PRs merged efficiently...
 * A PR must be atomic. It means it must contain the lower possible changes for 1 need (1 bug fix or 1 new feature) without breaking usability of code. If a PR can be split into
   several PRs, it often means your PR is not atomic.
 
-* When submitting a pull request, use same rule as [Commits](#commits) for the message. If your pull request only contains 1 commit, GitHub will be smart enough to fill it for you.
+* When submitting a pull request, use same rule as [Commits](#commits) for the message. If your pull request only contains 1 commit, GitHub will be smart enough to fill it for
+  you.
   Otherwise, please be a bit verbose about what you're providing.
 
 Also, some code changes need a prior approbation:
@@ -114,8 +115,8 @@ Also, some code changes need a prior approbation:
 * if you add a new tables or fields, you MUST first submit a standalone PR with the data structure changes you plan to add/modify (and only data structure changes). Start
   development only once this data structure has been accepted.
 
-Once a PR has been submitted, you may need to wait for its integration. It is common that the project leader let the PR open for a long delay to allow every developer discuss about
-the PR (A label is added in such a case).
+Once a PR has been submitted, you may need to wait for its integration. It is common that the project leader let the PR open for a long delay to allow every developer discuss
+PR (A label is added in such a case).
 
 If the label of PR start with "Draft" or "WIP" (Work In Progress), it will not be analyzed for merging until you change the label of the PR (but it can be analyzed for discussion).
 

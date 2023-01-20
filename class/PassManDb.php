@@ -131,7 +131,8 @@ class PassManDb extends Config
             }
             if ($stmt->execute()) {
                 if (empty(DISABLE_SYSLOG)) {
-                    pm_syslog(get_class($this) . ':: record with id=' . $this->db->lastInsertId() . ' inserted into ' . $tableName, PM_LOG_INFO);
+                    pm_syslog(get_class($this) . ':: record with 
+                    id=' . $this->db->lastInsertId() . ' inserted into ' . $tableName, PM_LOG_INFO);
                 }
 
                 return $this->db->lastInsertId();
@@ -182,7 +183,8 @@ class PassManDb extends Config
             }
             if ($stmt->execute()) {
                 if (empty(DISABLE_SYSLOG)) {
-                    pm_syslog(get_class($this) . ':: record where ' . $where . ' from ' . $tableName . 'was updated', PM_LOG_INFO);
+                    pm_syslog(get_class($this) . ':: record 
+                    where ' . $where . ' from ' . $tableName . 'was updated', PM_LOG_INFO);
                 }
 
                 return $stmt->rowCount();
@@ -224,7 +226,8 @@ class PassManDb extends Config
             }
             if ($stmt->execute()) {
                 if (empty(DISABLE_SYSLOG)) {
-                    pm_syslog(get_class($this) . ':: record with id=' . $params[':id'] . ' from ' . $tableName . 'was deleted', PM_LOG_INFO);
+                    pm_syslog(get_class($this) . ':: 
+                    record with id=' . $params[':id'] . ' from ' . $tableName . 'was deleted', PM_LOG_INFO);
                 }
 
                 return $stmt->rowCount();

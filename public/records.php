@@ -184,8 +184,7 @@ if ($action == 'add_record') {
                 ':fk_user'    => $user->id,
                 ':username' => '%' . $search_string . '%',
                 ':url'        => '%' . $search_string . '%',
-            ],
-            'OR'
+            ]
         );
     } elseif ($fk_domain) {
         $res = $records->fetchAll('fk_user = :fk_user 

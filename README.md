@@ -43,7 +43,6 @@ Simple password manager written on PHP with Bootstrap and PDO database connectio
 * MySQL Server 8 OR MariaDB 10
 * Apache > 2.4
 
-
 ## Install
 
 ### From the ZIP file and GUI interface
