@@ -329,7 +329,6 @@ section {
         visibility: hidden;
         transition: all 0.3s ease-in-out 0s;
         transform: scaleX(0);
-        transition: all 0.3s ease-in-out 0s;
     }
 
     .navbar a:hover:before,
@@ -741,7 +740,6 @@ section {
 
 .hero .carousel-control-next-icon,
 .hero .carousel-control-prev-icon {
-    background: none;
     font-size: 26px;
     line-height: 0;
     background: rgba(var(--color-secondary-rgb), 0.4);
@@ -1387,7 +1385,6 @@ section {
     padding: 50px 30px;
     margin: -100px 30px 0 30px;
     transition: all ease-in-out 0.3s;
-    background: var(--color-white);
     position: relative;
     background: rgba(var(--color-white-rgb), 0.9);
     text-align: center;
@@ -1723,7 +1720,6 @@ section {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    transition: 0.3s;
 }
 
 .team .team-member .social a i {
@@ -2258,7 +2254,6 @@ section {
     font-size: 16px;
     padding: 0 15px;
     margin: -1px;
-    background: var(--color-primary);
     color: var(--color-white);
     transition: 0.3s;
     border-radius: 0 4px 4px 0;
@@ -2604,7 +2599,6 @@ section {
     background: none;
     font-size: 16px;
     padding: 0 20px;
-    background: var(--color-primary);
     color: var(--color-white);
     transition: 0.3s;
     border-radius: 0 4px 4px 0;
