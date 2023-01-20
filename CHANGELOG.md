@@ -1,5 +1,6 @@
 ## v3.0.0 [Released 20.01.2023]
 
+* [IMPORTANT] Minimum PHP version from now on is PHP8.x.x
 * [NEW] All classes and their methods are rewritten. Now methods are more abstract.
 * [FIX] Minor fixes
 * [NEW] Option to delete users (and all their records) from Admin panel
