@@ -3,80 +3,78 @@
     <form method="post">
         <input type="hidden" name="action" value="edit"/>
         <input type="hidden" name="id" value="{{ res2.id }}"/>
-        <div class="table-responsive">
-            <table class="table table-info table-striped rounded rounded-3 overflow-hidden">
-                <thead>
+        <table class="table table-info table-striped table-responsive rounded rounded-3 overflow-hidden">
+            <thead>
+            <tr class="align-middle">
+                <th scope="col">{{ langs.trans('Domain') }}</th>
+                <th scope="col">{{ langs.trans('Type') }}</th>
+                <th scope="col">{{ langs.trans('Link') }}</th>
+                <th scope="col">{{ langs.trans('Username') }}</th>
+                <th scope="col">{{ langs.trans('Password') }}</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if res2 > 0 %}
                 <tr class="align-middle">
-                    <th scope="col">{{ langs.trans('Domain') }}</th>
-                    <th scope="col">{{ langs.trans('Type') }}</th>
-                    <th scope="col">{{ langs.trans('Link') }}</th>
-                    <th scope="col">{{ langs.trans('Username') }}</th>
-                    <th scope="col">{{ langs.trans('Password') }}</th>
-                    <th scope="col"></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% if res2 > 0 %}
-                    <tr class="align-middle">
-                        <td>
-                            <label>
-                                <select name="fk_domain">
-                                    {% for result in res1 %}
-                                        {% if result.id == res2.fk_domain %}
-                                            <option value="{{ result.id }}" selected>{{ result.label }}</option>
-                                        {% else %}
-                                            <option value="{{ result.id }}">{{ result.label }}</option>
-                                        {% endif %}
-                                    {% endfor %}
-                                </select>
-                            </label>
-                        </td>
-
-                        <td>
-                            <label>
-                                <select name="type">
-                                    {% if res2.type == 1 %}
-                                        <option value="1" selected>{{ langs.trans('Database') }}</option>
-                                        <option value="2">{{ langs.trans('Website') }}</option>
-                                        <option value="3">{{ langs.trans('FTP') }}</option>
-                                    {% elseif res2.type == 2 %}
-                                        <option value="1">{{ langs.trans('Database') }}</option>
-                                        <option value="2" selected>{{ langs.trans('Website') }}</option>
-                                        <option value="3">{{ langs.trans('FTP') }}</option>
-                                    {% elseif res2.type == 3 %}
-                                        <option value="1">{{ langs.trans('Database') }}</option>
-                                        <option value="2">{{ langs.trans('Website') }}</option>
-                                        <option value="3" selected>{{ langs.trans('FTP') }}</option>
+                    <td>
+                        <label>
+                            <select class="form-select" name="fk_domain">
+                                {% for result in res1 %}
+                                    {% if result.id == res2.fk_domain %}
+                                        <option value="{{ result.id }}" selected>{{ result.label }}</option>
+                                    {% else %}
+                                        <option value="{{ result.id }}">{{ result.label }}</option>
                                     {% endif %}
-                                </select>
-                            </label>
-                        </td>
-                        <td>
-                            <label>
-                                <input type="text" name="url" value="{{ res2.url }}"/>
-                            </label>
-                        </td>
-                        <td>
-                            <label>
-                                <input type="text" name="username" value="{{ res2.username }}"/>
-                            </label>
-                        </td>
-                        <td>
-                            <label>
-                                {% set password = openssl(res2.pass_crypted) %}
-                                <input type="password" name="password" value="{{ password }}"/>
-                            </label>
-                        </td>
-                        <td>
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <input class="btn btn-info" type="submit" name="submit" value="{{ langs.trans('Confirm') }}"/>
-                                <input type="button" class="btn btn-danger" value="{{ langs.trans('Cancel') }}" onclick="javascript:history.go(-1)">
-                            </div>
-                        </td>
-                    </tr>
-                {% endif %}
-                </tbody>
-            </table>
-        </div>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    </td>
+
+                    <td>
+                        <label>
+                            <select class="form-select" name="type">
+                                {% if res2.type == 1 %}
+                                    <option value="1" selected>{{ langs.trans('Database') }}</option>
+                                    <option value="2">{{ langs.trans('Website') }}</option>
+                                    <option value="3">{{ langs.trans('FTP') }}</option>
+                                {% elseif res2.type == 2 %}
+                                    <option value="1">{{ langs.trans('Database') }}</option>
+                                    <option value="2" selected>{{ langs.trans('Website') }}</option>
+                                    <option value="3">{{ langs.trans('FTP') }}</option>
+                                {% elseif res2.type == 3 %}
+                                    <option value="1">{{ langs.trans('Database') }}</option>
+                                    <option value="2">{{ langs.trans('Website') }}</option>
+                                    <option value="3" selected>{{ langs.trans('FTP') }}</option>
+                                {% endif %}
+                            </select>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <input class="form-control" type="text" name="url" value="{{ res2.url }}"/>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <input class="form-control" type="text" name="username" value="{{ res2.username }}"/>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            {% set password = openssl(res2.pass_crypted) %}
+                            <input class="form-control" type="password" name="password" value="{{ password }}"/>
+                        </label>
+                    </td>
+                    <td>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <input class="btn btn-info" type="submit" name="submit" value="{{ langs.trans('Confirm') }}"/>
+                            <input type="button" class="btn btn-danger" value="{{ langs.trans('Cancel') }}" onclick="javascript:history.go(-1)">
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
     </form>
 {% endblock %}

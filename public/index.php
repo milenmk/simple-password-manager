@@ -77,7 +77,7 @@ if ($action == 'create') {
     if ($result > 0) {
         $action = 'view';
     } else {
-        print $result;
+        $errors = $domains->error;
     }
 }
 //Action to edit
@@ -88,7 +88,7 @@ if ($action == 'edit') {
     if ($result > 0) {
         $action = 'view';
     } else {
-        print $result;
+        $errors = $domains->error;
     }
 }
 //Action to delete
@@ -98,7 +98,7 @@ if ($action == 'delete') {
     if ($result > 0) {
         $action = 'view';
     } else {
-        print $result;
+        $errors = $domains->error;
     }
 }
 

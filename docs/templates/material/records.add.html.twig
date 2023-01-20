@@ -19,7 +19,7 @@
                     <tr class="align-middle">
                         <td>
                             <label>
-                                <select name="fk_domain">
+                                <select class="form-select" name="fk_domain">
                                     {% for result in res %}
                                         <option value="{{ result.id }}">{{ result.label }}</option>
                                     {% endfor %}
@@ -29,7 +29,7 @@
 
                         <td>
                             <label>
-                                <select name="type">
+                                <select class="form-select" name="type">
                                     <option value="1">DATABASE</option>
                                     <option value="2">WEBSITE</option>
                                     <option value="3">FTP_SERVER</option>
@@ -38,17 +38,17 @@
                         </td>
                         <td>
                             <label>
-                                <input type="text" name="url"/>
+                                <input class="form-control" type="text" name="url"/>
                             </label>
                         </td>
                         <td>
                             <label>
-                                <input type="text" name="username"/>
+                                <input class="form-control" type="text" name="username"/>
                             </label>
                         </td>
                         <td>
                             <label>
-                                <input type="password" name="password"/>
+                                <input class="form-control" type="password" name="password"/>
                             </label>
                         </td>
                         <td>

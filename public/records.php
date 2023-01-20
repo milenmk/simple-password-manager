@@ -130,7 +130,7 @@ if ($action == 'delete') {
     $records->id = (int)$id;
     $result = $records->delete();
     if ($result < 0) {
-        print $result;
+        $errors = $records->error;
     }
 }
 

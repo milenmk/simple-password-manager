@@ -75,6 +75,10 @@ class Records
      */
     public int $fk_user;
     /**
+     * @var string Object error handler
+     */
+    public string $error;
+    /**
      * @var string Name of table without prefix where object is stored.
      */
     public string $table_element = 'records';
