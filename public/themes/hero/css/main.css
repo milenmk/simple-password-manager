@@ -2496,7 +2496,7 @@ section {
 .footer .footer-content .footer-info h3 {
     font-size: 28px;
     margin: 0 0 20px;
-    padding: 2px 0 2px;
+    padding: 2px 0;
     line-height: 1;
     font-weight: 700;
     text-transform: uppercase;
