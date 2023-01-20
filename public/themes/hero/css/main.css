@@ -365,7 +365,7 @@ section {
         left: 0;
         top: 100%;
         margin: 0;
-        padding: 0 0 10px 0;
+        padding: 0 0 10px;
         z-index: 99;
         opacity: 0;
         visibility: hidden;
@@ -1303,7 +1303,7 @@ section {
 .features .nav-link h4 {
     font-size: 20px;
     font-weight: 600;
-    margin: 10px 0 0 0;
+    margin: 10px 0 0;
     color: var(--color-secondary);
 }
 
@@ -1383,7 +1383,7 @@ section {
 
 .services .details {
     padding: 50px 30px;
-    margin: -100px 30px 0 30px;
+    margin: -100px 30px 0;
     transition: all ease-in-out 0.3s;
     position: relative;
     background: rgba(var(--color-white-rgb), 0.9);
@@ -1413,7 +1413,7 @@ section {
 .services .details h3 {
     color: var(--color-default);
     font-weight: 700;
-    margin: 10px 0 15px 0;
+    margin: 10px 0 15px;
     font-size: 22px;
     transition: ease-in-out 0.3s;
 }
@@ -1452,14 +1452,14 @@ section {
 .testimonials .testimonial-item h3 {
     font-size: 20px;
     font-weight: bold;
-    margin: 10px 0 5px 0;
+    margin: 10px 0 5px;
     color: var(--color-white);
 }
 
 .testimonials .testimonial-item h4 {
     font-size: 14px;
     color: rgba(var(--color-white-rgb), 0.6);
-    margin: 0 0 15px 0;
+    margin: 0 0 15px;
 }
 
 .testimonials .testimonial-item .stars i {
@@ -1490,7 +1490,7 @@ section {
 
 .testimonials .testimonial-item p {
     font-style: italic;
-    margin: 0 auto 15px auto;
+    margin: 0 auto 15px;
 }
 
 .testimonials .swiper-pagination {
@@ -1772,7 +1772,7 @@ section {
 }
 
 .recent-blog-posts .post-box p {
-    margin: 15px 0 0 0;
+    margin: 15px 0 0;
     color: rgba(var(--color-secondary-dark-rgb), 0.7);
 }
 
@@ -2010,7 +2010,7 @@ section {
 
 .blog .posts-list .post-img {
     max-height: 240px;
-    margin: -30px -30px 0 -30px;
+    margin: -30px -30px 0;
     overflow: hidden;
 }
 
@@ -2018,7 +2018,7 @@ section {
     font-size: 24px;
     font-weight: 700;
     padding: 0;
-    margin: 20px 0 0 0;
+    margin: 20px 0 0;
 }
 
 .blog .posts-list .title a {
@@ -2080,7 +2080,7 @@ section {
 --------------------------------------------------------------*/
 
 .blog .blog-details .post-img {
-    margin: -30px -30px 20px -30px;
+    margin: -30px -30px 20px;
     overflow: hidden;
 }
 
@@ -2088,7 +2088,7 @@ section {
     font-size: 28px;
     font-weight: 700;
     padding: 0;
-    margin: 20px 0 0 0;
+    margin: 20px 0 0;
     color: var(--color-secondary);
 }
 
@@ -2407,7 +2407,7 @@ section {
 
 .blog .comments .reply-form input {
     border-radius: 4px;
-    padding: 10px 10px;
+    padding: 10px;
     font-size: 14px;
 }
 
@@ -2418,7 +2418,7 @@ section {
 
 .blog .comments .reply-form textarea {
     border-radius: 4px;
-    padding: 10px 10px;
+    padding: 10px;
     font-size: 14px;
 }
 
@@ -2486,7 +2486,7 @@ section {
 
 .footer .footer-content {
     background: var(--color-secondary);
-    padding: 60px 0 30px 0;
+    padding: 60px 0 30px;
 }
 
 .footer .footer-content .footer-info {
@@ -2495,8 +2495,8 @@ section {
 
 .footer .footer-content .footer-info h3 {
     font-size: 28px;
-    margin: 0 0 20px 0;
-    padding: 2px 0 2px 0;
+    margin: 0 0 20px;
+    padding: 2px 0 2px;
     line-height: 1;
     font-weight: 700;
     text-transform: uppercase;
