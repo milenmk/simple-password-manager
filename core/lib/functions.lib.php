@@ -53,9 +53,6 @@ function pm_syslog(string $message, int $level)
 {
 
     global $user;
-    if (empty($level)) {
-        $level = PM_LOG_DEBUG;
-    }
 
     if (!empty($message)) {
         // Test log level
@@ -69,8 +66,8 @@ function pm_syslog(string $message, int $level)
             PM_LOG_INFO    => 'INFO',
             PM_LOG_DEBUG   => 'DEBUG',
         ];
-        if (!array_key_exists($level, $log_levels)) {
-            throw new Exception('Incorrect log level');
+        if (!array_key_exists($level, $log_levels) || empty($level)) {
+            $level = PM_LOG_DEBUG;
         }
 
         $data = [
@@ -90,18 +87,6 @@ function pm_syslog(string $message, int $level)
             } elseif (!empty($_SERVER['HTTP_CLIENT_IP']) && $_SERVER['HTTP_CLIENT_IP'] != $remoteip) {
                 $data['ip'] = $_SERVER['HTTP_CLIENT_IP'] . ' -> ' . $data['ip'];
             }
-        } elseif (!empty($_SERVER['SERVER_ADDR'])) {
-            // This is when PHP session is running inside a web server
-            // but not inside a client request (example: init code of apache)
-            $data['ip'] = $_SERVER['SERVER_ADDR'];
-        } elseif (!empty($_SERVER['COMPUTERNAME'])) {
-            // This is when PHP session is running outside a web server,
-            // like from Windows command line (Not always defined, but useful if OS defined it).
-            $data['ip'] = $_SERVER['COMPUTERNAME'] . (empty($_SERVER['USERNAME']) ? '' : '@' . $_SERVER['USERNAME']);
-        } elseif (!empty($_SERVER['LOGNAME'])) {
-            // This is when PHP session is running outside a web server,
-            // like from Linux command line (Not always defined, but useful if OS defined it).
-            $data['ip'] = '???@' . $_SERVER['LOGNAME'];
         }
 
         pm_export($data);
@@ -120,7 +105,7 @@ function pm_export(array $content)
 {
 
     $logfile = PM_MAIN_DOCUMENT_ROOT . '/pm-log.log';
-        //Unlock file for writing
+    //Unlock file for writing
     if (isset($_SERVER['WINDIR'])) {
         // Host OS is Windows
         exec('attrib -R ' . escapeshellarg($logfile), $res);
@@ -151,7 +136,7 @@ function pm_export(array $content)
                    sprintf('%-15s', $content['ip']) . ' ' . $content['message'];
         fwrite($filefd, $message . "\n");
         fclose($filefd);
-            //Lock file as read only
+        //Lock file as read only
         if (isset($_SERVER['WINDIR'])) {
             // Host OS is Windows
             exec('attrib +R ' . escapeshellarg($logfile), $res);
@@ -188,6 +173,22 @@ function getUserRemoteIP(): string
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
     }
 
+    if (empty($ip)) {
+        if (!empty($_SERVER['SERVER_ADDR'])) {
+            // This is when PHP session is running inside a web server
+            // but not inside a client request (example: init code of apache)
+            $data['ip'] = $_SERVER['SERVER_ADDR'];
+        } elseif (!empty($_SERVER['COMPUTERNAME'])) {
+            // This is when PHP session is running outside a web server,
+            // like from Windows command line (Not always defined, but useful if OS defined it).
+            $data['ip'] = $_SERVER['COMPUTERNAME'] . (empty($_SERVER['USERNAME']) ? '' : '@' . $_SERVER['USERNAME']);
+        } elseif (!empty($_SERVER['LOGNAME'])) {
+            // This is when PHP session is running outside a web server,
+            // like from Linux command line (Not always defined, but useful if OS defined it).
+            $data['ip'] = '???@' . $_SERVER['LOGNAME'];
+        }
+    }
+
     return $ip;
 }
 
@@ -211,7 +212,6 @@ function getUserRemoteIP(): string
  *                               'nohtml'=check there is no html content and no " and no ../
  *                               'restricthtml'=check html content is restricted to some tags only
  *                               'custom'= custom filter specify $filter and $options)
- * @param int        $method     Type of method (0 = get then post, 1 = only get, 2 = only post, 3 = post then get)
  * @param int|null   $filter     Filter to apply when $check is set to 'custom'.
  *                               (See http://php.net/manual/en/filter.filters.php for details)
  * @param mixed|null $options    Options to pass to filter_var when $check is set to 'custom'
@@ -221,7 +221,6 @@ function getUserRemoteIP(): string
 function GETPOST(
     string $paramname,
     string $check = 'alphanohtml',
-    int $method = 0,
     int $filter = null,
     mixed $options = null
 ) {
@@ -230,20 +229,10 @@ function GETPOST(
         return 'BadFirstParameterForGETPOST';
     }
 
-    if (empty($method)) {
-        $out = $_GET[$paramname] ?? ($_POST[$paramname] ?? '');
-    } elseif ($method == 1) {
-        $out = $_GET[$paramname] ?? '';
-    } elseif ($method == 2) {
-        $out = $_POST[$paramname] ?? '';
-    } elseif ($method == 3) {
-        $out = $_POST[$paramname] ?? ($_GET[$paramname] ?? '');
-    } else {
-        return 'BadThirdParameterForGETPOST';
-    }
+    $out = $_GET[$paramname] ?? ($_POST[$paramname] ?? '');
 
     // Check rule
-    if (str_starts_with($check, 'array')) {
+    if (preg_match('/^array/', $check)) {
         // If 'array' or 'array:restricthtml' or 'array:aZ09'
         if (!is_array($out) || empty($out)) {
             $out = [];
