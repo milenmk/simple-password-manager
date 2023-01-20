@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <form method="post">
+        <table class="table table-info table-striped table-responsive">
+            <thead>
+            <tr class="align-middle">
+                <th scope="col">{{ langs.trans('Label') }}</th>
+                <th scope="col">{{ langs.trans('HasWebsite') }}</th>
+                <th scope="col">{{ langs.trans('HasFTP') }}</th>
+                <th scope="col">{{ langs.trans('HasDatabase') }}</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if res > 0 %}
+                {% for result in res %}
+                    <tr class="align-middle">
+                        <input type="hidden" name="id" value="{{ result.id }}"/>
+                        <input type="hidden" name="action" value="edit"/>
+                        <td><label>
+                                <input type="text" name="label" value="{{ result.label }}"/>
+                            </label></td>
+                        {% if result.website > 0 %}
+                            <td class="text-center"><i class="bi bi-check-circle-fill" style="font-size: 1.5rem;color: #008000;"></i></td>
+                        {% else %}
+                            <td class="text-center"><i class="bi bi-x-circle-fill" style="font-size: 1.5rem;color: #ff0000;"></i></td>
+                        {% endif %}
+                        {% if result.ftp > 0 %}
+                            <td class="text-center"><i class="bi bi-check-circle-fill" style="font-size: 1.5rem;color: #008000;"></i></td>
+                        {% else %}
+                            <td class="text-center"><i class="bi bi-x-circle-fill" style="font-size: 1.5rem;color: #ff0000;"></i></td>
+                        {% endif %}
+                        {% if result.data_base > 0 %}
+                            <td class="text-center"><i class="bi bi-check-circle-fill" style="font-size: 1.5rem;color: #008000;"></i></td>
+                        {% else %}
+                            <td class="text-center"><i class="bi bi-x-circle-fill" style="font-size: 1.5rem;color: #ff0000;"></i></td>
+                        {% endif %}
+                        <td>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <input class="btn btn-info" type="submit" name="submit" value="{{ langs.trans('Confirm') }}"/>
+                                <input type="button" class="btn btn-danger" value="{{ langs.trans('Cancel') }}" onclick="javascript:history.go(-1)">
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </form>
+{% endblock %}

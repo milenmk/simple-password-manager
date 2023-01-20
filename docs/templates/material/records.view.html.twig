@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <form method="post">
+            <input type="hidden" name="action" value="add_record"/>
+            <h4><i class="bi bi-plus-square" onclick="this.closest('form').submit();"></i></h4>
+        </form>
+        <h6>
+            {{ count }}
+        </h6>
+    </div>
+    <table class="table table-info table-striped table-responsive">
+        <thead>
+        <tr class="align-middle">
+            <th scope="col">{{ langs.trans('Domain') }}</th>
+            <th scope="col">{{ langs.trans('Type') }}</th>
+            <th scope="col">{{ langs.trans('Link') }}</th>
+            <th scope="col">{{ langs.trans('Username') }}</th>
+            <th scope="col">{{ langs.trans('Password') }}</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if res %}
+            {% for record in res %}
+                <tr class="align-middle">
+                    {% set domain = domains.fetch(record.fk_domain) %}
+                    <td><a href="https://{{ domain.label }}" target="_blank">{{ domain.label }}</a></td>
+                    {% if record.type == 1 %}
+                        <td>{{ langs.trans('Database') }}</td>
+                    {% elseif record.type == 2 %}
+                        <td>{{ langs.trans('Website') }}</td>
+                    {% elseif record.type == 3 %}
+                        <td>{{ langs.trans('FTP') }}</td>
+                    {% endif %}
+                    <td><a href="https://{{ record.url }}" target="_blank">{{ record.url }}</a></td>
+                    <td>{{ record.username }}&nbsp;
+                        <i class="bi bi-clipboard-plus" id="copy_icon" onclick="copyToClipboard('{{ record.username }}')" data-toggle="tooltip"
+                           title="{{ langs.trans('Copy') }}"></i>
+                    </td>
+                    <td>
+                        {% set password = openssl(record.pass_crypted) %}
+                        {{ password }}&nbsp;
+                        <i class="bi bi-clipboard-plus" id="copy_icon" onclick="copyToClipboard('{{ password }}')" data-toggle="tooltip" title="{{ langs.trans('Copy') }}"></i>
+                    </td>
+                    <td>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <form method="post">
+                                <input type="hidden" name="id" value="{{ record.id }}"/>
+                                <input type="hidden" name="action" value="edit_record"/>
+                                <input class="btn btn-success btn-sm" type="submit" name="submit" value="{{ langs.trans('Edit') }}"/>
+                            </form>
+                            <form method="post">
+                                <input type="hidden" name="id" value="{{ record.id }}"/>
+                                <input type="hidden" name="action" value="delete"/>
+                                <input class="btn btn-danger btn-sm" type="submit" name="submit" value="{{ langs.trans('Delete') }}"/>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+{% endblock %}

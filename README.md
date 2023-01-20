@@ -6,10 +6,6 @@ Simple password manager written on PHP with Bootstrap and PDO database connectio
 
 ![Screenshot](public/themes/default/img/Screenshot_1.png?raw=true)
 
-#### Domains [Default template]
-
-![Screenshot](public/themes/default/img/Screenshot_2.png?raw=true)
-
 #### Records [Default template]
 
 ![Screenshot](public/themes/default/img/Screenshot_4.png?raw=true)
@@ -17,6 +13,10 @@ Simple password manager written on PHP with Bootstrap and PDO database connectio
 #### Records [HERO template]
 
 ![Screenshot](public/themes/default/img/Screenshot_5.png?raw=true)
+
+#### Records [MATERIAL template]
+
+![Screenshot](public/themes/default/img/Screenshot_9.png?raw=true)
 
 #### ADMIN - Dashboard
 

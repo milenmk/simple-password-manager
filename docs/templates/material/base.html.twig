@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="{{ langs.getDefaultLang }}">
+<head>
+    <title>{{ app_title }}</title>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="author" content="blacktiehost.com">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ main_url }}/themes/{{ theme }}/img/favicon.png"/>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
+    {% for cssfile in css_array %}
+        <link type="text/css" rel="stylesheet" href="{{ main_url }}/themes/{{ theme }}/css/{{ cssfile }}">
+    {% endfor %}
+
+    {% for jsfile in js_array %}
+        <script src="{{ main_url }}/themes/{{ theme }}/js/{{ jsfile }}"></script>
+    {% endfor %}
+
+    <script src="{{ main_url }}/themes/default/js/copy.js"></script>
+    <script src="{{ main_url }}/themes/default/js/tooltip.js"></script>
+</head>
+<body class="d-flex vh-100 flex-column">
+<header id="header" class="header" data-scrollto-offset="0">
+    <style>
+        .navbar .nav-link {
+            color: #3d3d3d !important;
+        }
+    </style>
+    <nav class="navbar navbar-expand-lg navbar-dark d-none d-lg-block" style="z-index: 2000;">
+        <div class="container-fluid">
+            <a class="nav-link" href="{{ main_url }}">
+                <img src="{{ main_url }}/themes/{{ theme }}/img/logo.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top me-2">
+                {{ app_title }}</a>
+
+            <div class="collapse navbar-collapse ms-2 me-2" id="navbar">
+                <ul class="navbar-nav ms-5 me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="{{ main_url }}"><span>{{ langs.trans('Domains') }}</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ main_url }}/records.php"><span>{{ langs.trans('Records') }}</span></a></li>
+                </ul>
+                <ul class="navbar-nav d-flex flex-row">
+                    {% if user.id > 0 %}
+                        {% if user.first_name or user.last_name %}
+                            <li class="nav-item me-3 me-lg-0 nav-link">{{ langs.trans('Hi') }}, <b>{{ user.first_name }} {{ user.last_name }}</b></li>
+                        {% else %}
+                            <li class="nav-item me-3 me-lg-0 nav-link">{{ langs.trans('Hi') }}, <b>{{ user.username }}</b></li>
+                        {% endif %}
+                        <li class="nav-item me-3 me-lg-0"><a class="nav-link" href="profile.php"><i class="bi bi-person-fill"></i>&nbsp;{{ langs.trans('Profile') }}</a></li>
+                        {% if user.isAdmin(user.username) == 1 %}
+                            <li class="nav-item me-3 me-lg-0"><a class="nav-link" href="{{ main_url }}/admin/index.php"><i
+                                            class="bi bi-gear"></i> {{ langs.trans('AdminDashboard') }}</a></li>
+                        {% endif %}
+                        <li class="nav-item me-3 me-lg-0 pr"><a class="nav-link" href="{{ main_url }}?action=logout"><i
+                                        class="bi bi-box-arrow-right"></i>&nbsp;{{ langs.trans('Logout') }}?</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="flex-grow-1">
+    <div class="breadcrumbs mt-3 mb-5">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>{{ title }}</h2>
+                {% if user.id > 0 %}
+                    <form class="d-flex" role="search" method="post">
+                        <input type="hidden" name="action" value="search"/>
+                        <input class="form-control me-2" name="search_string" type="text" placeholder="{{ langs.trans('Search') }}..." aria-label="Search">
+                        <input class="btn btn-outline-success" type="submit" name="submit" value="{{ langs.trans('Search') }}"/>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <main id="main">
+            <section class="inner-page">
+                <div class="container" data-aos="fade-up">
+                    {% if error %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col"></div>
+                                <div class="col">
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>{{ error }}</strong>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{ unset('PM_ERROR') }}
+                    {% endif %}
+                    {% if message %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col"></div>
+                                <div class="col">
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <strong>{{ message }}</strong>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{ unset('PM_MESSAGE') }}
+                    {% endif %}
+                    {% block body %}{% endblock %}
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+<footer class="bg-light text-lg-start mt-3">
+    <div class="py-4 text-center">
+        <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
+            <div class="d-flex flex-column align-items-center align-items-lg-start">
+                <div class="copyright">
+                    &copy; 2021 - 2023 {{ langs.trans('AllRightsReserved') }}
+                    <a class="text-reset fw-bold" href="https://blacktiehost.com/">BlackTieHost.com</a>
+                </div>
+            </div>
+            <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
+                <a href="https://github.com/milenmk" class="github" target="_blank"><i class="bi bi-git"></i></a>
+                <a href="skype:milenmk1?chat" class="skype" target="_blank"><i class="bi bi-skype"></i></a>
+                <a href="https://www.linkedin.com/in/milen-karaganski-0664a1255/" class="linkedin" target="_blank"><i class="bi bi-linkedin"></i></a>
+            </div>
+
+        </div>
+    </div>
+</footer>
+{% block javascripts %}
+    {% for jsfile in js_array %}
+        <script src="{{ main_url }}/themes/{{ theme }}/js/{{ jsfile }}"></script>
+    {% endfor %}
+{% endblock %}
+</body>
+</html>
