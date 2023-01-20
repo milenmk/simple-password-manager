@@ -7,14 +7,14 @@
  *  File name: functions.lib.php
  *  Last Modified: 19.01.23 г., 22:46 ч.
  *
- *  @link          https://blacktiehost.com
- *  @since         1.0.0
- *  @version       3.0.0
- *  @author        Milen Karaganski <milen@blacktiehost.com>
+ * @link          https://blacktiehost.com
+ * @since         1.0.0
+ * @version       3.0.0
+ * @author        Milen Karaganski <milen@blacktiehost.com>
  *
- *  @license       GPL-3.0+
- *  @license       http://www.gnu.org/licenses/gpl-3.0.txt
- *  @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
+ * @license       GPL-3.0+
+ * @license       http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright     Copyright (c)  2020 - 2022 blacktiehost.com
  *
  */
 
@@ -41,8 +41,10 @@ const PM_LOG_DEBUG = 7;
  *
  * @param string $message                         Line to log. ''=Show nothing
  * @param int    $level                           Log level
- *                                                On Windows PM_LOG_ERR=4, PM_LOG_WARNING=5, PM_LOG_NOTICE=PM_LOG_INFO=6, PM_LOG_DEBUG=6
- *                                                On Linux   PM_LOG_ERR=3, PM_LOG_WARNING=4, PM_LOG_NOTICE=5, PM_LOG_INFO=6, PM_LOG_DEBUG=7
+ *                                                On Windows PM_LOG_ERR=4, PM_LOG_WARNING=5,
+ *                                                PM_LOG_NOTICE=PM_LOG_INFO=6, PM_LOG_DEBUG=6
+ *                                                On Linux   PM_LOG_ERR=3, PM_LOG_WARNING=4,
+ *                                                PM_LOG_NOTICE=5, PM_LOG_INFO=6, PM_LOG_DEBUG=7
  *
  * @return    void
  * @throws Exception
@@ -89,13 +91,16 @@ function pm_syslog(string $message, int $level)
                 $data['ip'] = $_SERVER['HTTP_CLIENT_IP'] . ' -> ' . $data['ip'];
             }
         } elseif (!empty($_SERVER['SERVER_ADDR'])) {
-            // This is when PHP session is running inside a web server but not inside a client request (example: init code of apache)
+            // This is when PHP session is running inside a web server
+            // but not inside a client request (example: init code of apache)
             $data['ip'] = $_SERVER['SERVER_ADDR'];
         } elseif (!empty($_SERVER['COMPUTERNAME'])) {
-            // This is when PHP session is running outside a web server, like from Windows command line (Not always defined, but useful if OS defined it).
+            // This is when PHP session is running outside a web server,
+            // like from Windows command line (Not always defined, but useful if OS defined it).
             $data['ip'] = $_SERVER['COMPUTERNAME'] . (empty($_SERVER['USERNAME']) ? '' : '@' . $_SERVER['USERNAME']);
         } elseif (!empty($_SERVER['LOGNAME'])) {
-            // This is when PHP session is running outside a web server, like from Linux command line (Not always defined, but useful if OS defined it).
+            // This is when PHP session is running outside a web server,
+            // like from Linux command line (Not always defined, but useful if OS defined it).
             $data['ip'] = '???@' . $_SERVER['LOGNAME'];
         }
 
@@ -115,17 +120,15 @@ function pm_export(array $content)
 {
 
     $logfile = PM_MAIN_DOCUMENT_ROOT . '/pm-log.log';
-    /*
         //Unlock file for writing
-        if (isset($_SERVER['WINDIR'])) {
-            // Host OS is Windows
-            exec('attrib -R ' . escapeshellarg($logfile), $res);
-            $res = $res[0];
-        } else {
-            // Host OS is *nix
-            chmod($logfile, 0755);
-        }
-        */
+    if (isset($_SERVER['WINDIR'])) {
+        // Host OS is Windows
+        exec('attrib -R ' . escapeshellarg($logfile), $res);
+        $res = $res[0];
+    } else {
+        // Host OS is *nix
+        chmod($logfile, 0755);
+    }
 
     $filefd = fopen($logfile, 'a+');
     if (!$filefd) {
@@ -143,20 +146,20 @@ function pm_export(array $content)
             PM_LOG_INFO    => 'INFO',
             PM_LOG_DEBUG   => 'DEBUG',
         ];
-        $message = strftime('%Y-%m-%d %H:%M:%S', time()) . ' ' . sprintf('%-7s', $log_levels[$content['level']]) . ' ' . sprintf('%-15s', $content['ip']) . ' ' . $content['message'];
+        $message = date('Y-m-d H:i:s') . ' ' .
+                   sprintf('%-7s', $log_levels[$content['level']]) . ' ' .
+                   sprintf('%-15s', $content['ip']) . ' ' . $content['message'];
         fwrite($filefd, $message . "\n");
         fclose($filefd);
-        /*
             //Lock file as read only
-            if (isset($_SERVER['WINDIR'])) {
-                // Host OS is Windows
-                exec('attrib +R ' . escapeshellarg($logfile), $res);
-                $res = $res[0];
-            } else {
-                // Host OS is *nix
-                chmod($logfile, 0444);
-            }
-            */
+        if (isset($_SERVER['WINDIR'])) {
+            // Host OS is Windows
+            exec('attrib +R ' . escapeshellarg($logfile), $res);
+            $res = $res[0];
+        } else {
+            // Host OS is *nix
+            chmod($logfile, 0444);
+        }
     }
 }
 
@@ -191,8 +194,8 @@ function getUserRemoteIP(): string
 /**
  *  Return value of a param into GET or POST super variable.
  *
- * @param string   $paramname    Name of parameter to found
- * @param string   $check        Type of check
+ * @param string     $paramname  Name of parameter to found
+ * @param string     $check      Type of check
  *                               ''=no check (deprecated)
  *                               'none'=no check (only for param that should have very rich content)
  *                               'array', 'array:restricthtml' or 'array:aZ09' to check it's an array
@@ -203,18 +206,25 @@ function getUserRemoteIP(): string
  *                               'alphanohtml'=check there is no html content and no " and no ../
  *                               'aZ'=check it's a-z only
  *                               'aZ09'=check it's simple alpha string (recommended for keys)
- *                               'san_alpha'=Use filter_var with FILTER_SANITIZE_STRING (do not use this for free text string)
+ *                               'san_alpha'=Use filter_var with FILTER_SANITIZE_STRING
+ *                               (do not use this for free text string)
  *                               'nohtml'=check there is no html content and no " and no ../
  *                               'restricthtml'=check html content is restricted to some tags only
  *                               'custom'= custom filter specify $filter and $options)
- * @param int      $method       Type of method (0 = get then post, 1 = only get, 2 = only post, 3 = post then get)
- * @param int|null $filter       Filter to apply when $check is set to 'custom'. (See http://php.net/manual/en/filter.filters.php for details)
- * @param mixed    $options      Options to pass to filter_var when $check is set to 'custom'
+ * @param int        $method     Type of method (0 = get then post, 1 = only get, 2 = only post, 3 = post then get)
+ * @param int|null   $filter     Filter to apply when $check is set to 'custom'.
+ *                               (See http://php.net/manual/en/filter.filters.php for details)
+ * @param mixed|null $options    Options to pass to filter_var when $check is set to 'custom'
  *
  * @return string|array         Value found (string or array), or '' if check fails
  */
-function GETPOST(string $paramname, string $check = 'alphanohtml', int $method = 0, int $filter = null, $options = null)
-{
+function GETPOST(
+    string $paramname,
+    string $check = 'alphanohtml',
+    int $method = 0,
+    int $filter = null,
+    mixed $options = null
+) {
 
     if (empty($paramname)) {
         return 'BadFirstParameterForGETPOST';
@@ -233,7 +243,7 @@ function GETPOST(string $paramname, string $check = 'alphanohtml', int $method =
     }
 
     // Check rule
-    if (preg_match('/^array/', $check)) {
+    if (str_starts_with($check, 'array')) {
         // If 'array' or 'array:restricthtml' or 'array:aZ09'
         if (!is_array($out) || empty($out)) {
             $out = [];
@@ -258,14 +268,15 @@ function GETPOST(string $paramname, string $check = 'alphanohtml', int $method =
 /**
  *  Return a value after checking on a rule. A sanitization may also have been done.
  *
- * @param string   $out     Value to check/clear.
- * @param string   $check   Type of check/sanitizing
- * @param int|null $filter  Filter to apply when $check is set to 'custom'. (See http://php.net/manual/en/filter.filters.php for details)
- * @param mixed    $options Options to pass to filter_var when $check is set to 'custom'
+ * @param string     $out     Value to check/clear.
+ * @param string     $check   Type of check/sanitizing
+ * @param int|null   $filter  Filter to apply when $check is set to 'custom'.
+ *                            (See http://php.net/manual/en/filter.filters.php for details)
+ * @param mixed|null $options Options to pass to filter_var when $check is set to 'custom'
  *
  * @return string|array         Value sanitized (string or array). It may be '' if format check fails.
  */
-function checkVal(string $out = '', string $check = 'alphanohtml', int $filter = null, $options = null)
+function checkVal(string $out = '', string $check = 'alphanohtml', int $filter = null, mixed $options = null)
 {
 
     // Check is done after replacement
@@ -285,7 +296,8 @@ function checkVal(string $out = '', string $check = 'alphanohtml', int $filter =
 
             break;
         case 'san_alpha':
-            $out = filter_var($out, FILTER_SANITIZE_STRING);
+            //$out = filter_var($out, FILTER_SANITIZE_STRING);
+            $out = htmlspecialchars($out);
 
             break;
         case 'email':
@@ -331,7 +343,15 @@ function checkVal(string $out = '', string $check = 'alphanohtml', int $filter =
                     $oldstringtoclean = $out;
                     // Remove html tags
                     $out = string_nohtmltag($out, 0);
-                    $out = str_ireplace(['&#38', '&#0000038', '&#x26', '&quot', '&#34', '&#0000034', '&#x22', '"', '&#47', '&#0000047', '&#92', '&#0000092', '&#x2F', '../', '..\\'], '', $out);
+                    $out = str_ireplace(
+                        [
+                            '&#38', '&#0000038', '&#x26', '&quot', '&#34', '&#0000034',
+                            '&#x22', '"', '&#47', '&#0000047', '&#92', '&#0000092',
+                            '&#x2F', '../', '..\\',
+                        ],
+                        '',
+                        $out
+                    );
                 } while ($oldstringtoclean != $out);
             }
 
@@ -356,17 +376,26 @@ function checkVal(string $out = '', string $check = 'alphanohtml', int $filter =
  *  - you can decide to convert line feed into a space
  *
  * @param string $stringtoclean       String to clean
- * @param int    $removelinefeed      1=Replace all new lines by 1 space, 0=Only ending new lines are removed others are replaced with \n, 2=Ending new lines are removed but
- *                                    others are kept with a same number of \n than nb of <br> when there is both "...<br>\n..."
- * @param int    $strip_tags          0=Use internal strip, 1=Use strip_tags() php function (bugged when text contains a < char that is not for a html tag or when tags are not
+ * @param int    $removelinefeed      1=Replace all new lines by 1 space, 0=Only ending new lines
+ *                                    are removed others are replaced with \n,
+ *                                    2=Ending new lines are removed but
+ *                                    others are kept with a same number of \n than nb of <br>
+ *                                    when there is both "...<br>\n..."
+ * @param int    $strip_tags          0=Use internal strip, 1=Use strip_tags() php function
+ *                                    (bugged when text contains a < char that is not
+ *                                    for a html tag or when tags are not
  *                                    closed like '<img onload=aaa')
  * @param int    $removedoublespaces  Replace double space into one space
  *
  * @return string                        String cleaned
  *
  */
-function string_nohtmltag(string $stringtoclean, int $removelinefeed = 1, int $strip_tags = 0, int $removedoublespaces = 1): string
-{
+function string_nohtmltag(
+    string $stringtoclean,
+    int $removelinefeed = 1,
+    int $strip_tags = 0,
+    int $removedoublespaces = 1
+): string {
 
     if ($removelinefeed == 2) {
         $stringtoclean = preg_replace('/<br[^>]*>([\n\r])+/im', '<br>', $stringtoclean);
@@ -384,7 +413,9 @@ function string_nohtmltag(string $stringtoclean, int $removelinefeed = 1, int $s
         // pass 1 - $temp after pass 1: <a href="/myurl" title="A title">0000-021
         $temp = preg_replace($pattern, '', $temp);
         // pass 2 - $temp after pass 2: 0000-021
-        // Remove '<' into remainging, so remove non closing html tags like '<abc' or '<<abc'. Note: '<123abc' is not a html tag (can be kept), but '<abc123' is (must be removed).
+        // Remove '<' into remainging, so remove non closing html tags like
+        // '<abc' or '<<abc'. Note: '<123abc' is not a html tag (can be kept),
+        // but '<abc123' is (must be removed).
         $temp = preg_replace('/<+([a-z]+)/i', '\1', $temp);
     }
 
