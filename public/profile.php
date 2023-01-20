@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: profile.php
- *  Last Modified: 10.01.23 г., 20:07 ч.
+ *  Last Modified: 19.01.23 г., 22:46 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       2.4.0
+ *  @version       3.0.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -63,8 +63,16 @@ $title = $langs->trans('Profile');
  * Actions
  */
 if ($action == 'update_user') {
-    $user->first_name = $first_name;
-    $user->last_name = $last_name;
+    if ($first_name) {
+        $user->first_name = $first_name;
+    } else {
+        $user->first_name = '';
+    }
+    if ($last_name) {
+        $user->last_name = $last_name;
+    } else {
+        $user->last_name = '';
+    }
     $user->username = $username;
     $user->theme = $user_theme;
     $user->language = $user_language;
@@ -103,17 +111,20 @@ if ($action == 'change_password') {
     }
 
     if (!$error) {
-        $result = $user->fetch($user->id);
-        if (password_verify($old_password, $result['password'])) {
-            $res = $user->update($new_password, 1);
-            if ($res > 0) {
-                $messages = $langs->trans('PassUpdateSuccess');
-            } else {
-                $errors = $langs->trans('PassUpdateError');
-            }
-        } else {
+        $user->setPassword($old_password);
+        $check = $user->checkPassword();
+
+        if ($check == 1) {
+            $user->setPassword($new_password);
+            $user->updatePassword();
+            $messages = $langs->trans('PassUpdateSuccess');
+        } elseif ($check == -2) {
             $errors = $langs->trans('WrongPassword');
+        } else {
+            $errors = $langs->trans('PassUpdateError');
         }
+    } else {
+        print 'error';
     }
     $action = 'edit_password';
 }

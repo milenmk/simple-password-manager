@@ -17,6 +17,10 @@
                             <th>{{ langs.trans('User') }}</th>
                             <th>{{ langs.trans('EmailAddress') }}</th>
                             <th>{{ langs.trans('RegistrationDate') }}</th>
+                            <th>{{ langs.trans('Theme') }}</th>
+                            <th>{{ langs.trans('Language') }}</th>
+                            <th>{{ langs.trans('IsAdmin') }}?</th>
+                            <th>{{ langs.trans('Actions') }}</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -24,14 +28,33 @@
                             <th>{{ langs.trans('User') }}</th>
                             <th>{{ langs.trans('EmailAddress') }}</th>
                             <th>{{ langs.trans('RegistrationDate') }}</th>
+                            <th>{{ langs.trans('Theme') }}</th>
+                            <th>{{ langs.trans('Language') }}</th>
+                            <th>{{ langs.trans('IsAdmin') }}?</th>
+                            <th>{{ langs.trans('Actions') }}</th>
                         </tr>
                         </tfoot>
                         <tbody>
                         {% for result in resultLastXUsers %}
-                            <tr>
-                                <td>{{ result.first_name }} {{ result.last_name }}</td>
-                                <td>{{ result.username }}</td>
-                                <td>{{ result.created_at|date("H:i d-m-Y") }}</td>
+                            <tr id="idRow{{ result.rowid }}">
+                                <form method="post">
+                                    <input type="hidden" name="action" value="delete_user"/>
+                                    <input type="hidden" name="user_id" value="{{ result.rowid }}"/>
+                                    <td>{{ result.first_name }} {{ result.last_name }}</td>
+                                    <td>{{ result.username }}</td>
+                                    <td>{{ result.created_at|date("H:i d-m-Y") }}</td>
+                                    <td>{{ result.theme }}</td>
+                                    <td>{{ result.language }}</td>
+                                    {% if result.admin == 1 %}
+                                        <td class="text-center"><i class="bi bi-check-circle-fill" style="color: #008000;"></i></td>
+                                        <td></td>
+                                    {% else %}
+                                        <td class="text-center"><i class="bi bi-x-circle-fill" style="color: #ff0000;"></i></td>
+                                        <td style="text-align: center;">
+                                            <button class="btn btn-info" onclick="submitRowAsForm('idRow{{ result.rowid }}')">{{ langs.trans('Delete') }}</button>
+                                        </td>
+                                    {% endif %}
+                                </form>
                             </tr>
                         {% endfor %}
                         </tbody>

@@ -24,7 +24,8 @@
         {% if res %}
             {% for record in res %}
                 <tr>
-                    <td><a href="https://{{ record.label }}" target="_blank">{{ record.label }}</a></td>
+                    {% set domain = domains.fetch(record.fk_domain) %}
+                    <td><a href="https://{{ domain.label }}" target="_blank">{{ domain.label }}</a></td>
                     {% if record.type == 1 %}
                         <td>{{ langs.trans('Database') }}</td>
                     {% elseif record.type == 2 %}

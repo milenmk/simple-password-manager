@@ -32,9 +32,14 @@ Simple password manager written on PHP with Bootstrap and PDO database connectio
 
 ## Requirements
 
-* PHP > 7.4 with enabled
+* PHP > 7 (for versions up to 2.4)
+* PHP > 8 (for versions starting from 3.0.0)
+
+* PHP extensions
     * PDO Extension
-    * OpenSSL or Sodium extension
+    * OpenSSL
+    * Sodium extension (optional)
+
 * MySQL Server 8 OR MariaDB 10
 * Apache > 2.4
 

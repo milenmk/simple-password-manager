@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: login.php
- *  Last Modified: 10.01.23 г., 20:07 ч.
+ *  Last Modified: 19.01.23 г., 22:46 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       2.4.0
+ *  @version       3.0.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -74,29 +74,33 @@ if ($action == 'login_user') {
     }
 
     if (empty($error)) {
-        $result = $user->check($username, 1);
+        $result = $user->userExist($username);
 
         if ($result < 1 || empty($result)) {
             $errors = $langs->trans('InvalidNameOrPassword');
             $error++;
-        }
-
-        if (!$error && password_verify($password, $result['password'])) {
-            // Password is correct, so start a new session
-            $user->id = (int)$result['id'];
-            session_start();
-
-            // Store data in session variables
-            $_SESSION['loggedin'] = true;
-            $_SESSION['id'] = $user->id;
-            $_SESSION['username'] = $username;
-
-            // Redirect user to home page
-            header('location: ' . PM_MAIN_URL_ROOT);
-            exit;
         } else {
-            // Username doesn't exist, display a generic error message
-            $errors = $langs->trans('InvalidNameOrPassword');
+            $user->id = $result;
+            $user->username = $username;
+            $user->setPassword($password);
+            $res = $user->login();
+
+            if ($res > 0) {
+                session_start();
+
+                // Store data in session variables
+                $_SESSION['loggedin'] = true;
+                $_SESSION['id'] = $user->id;
+                $_SESSION['username'] = $username;
+
+                // Redirect user to home page
+                header('location: ' . PM_MAIN_URL_ROOT);
+                exit;
+            } else {
+                unset($user);
+                unset($_SESSION);
+                $errors = $langs->trans('InvalidNameOrPassword');
+            }
         }
     }
 }

@@ -55,7 +55,7 @@
                             <li><span class="me-3">{{ langs.trans('Hi') }}, <b>{{ user.username }}</b></span></li>
                         {% endif %}
                         <li><a href="profile.php"><i class="bi bi-person-fill"></i>&nbsp;{{ langs.trans('Profile') }}</a></li>
-                        {% if user.admin == 1 %}
+                        {% if user.isAdmin(user.username) == 1 %}
                             <li><a href="{{ main_url }}/admin/index.php"><i class="bi bi-gear"></i> {{ langs.trans('AdminDashboard') }}</a></li>
                         {% endif %}
                         <li><a href="{{ main_url }}?action=logout"><i class="bi bi-box-arrow-right"></i>&nbsp;{{ langs.trans('Logout') }}?</a></li>

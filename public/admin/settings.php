@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: settings.php
- *  Last Modified: 4.01.23 г., 23:56 ч.
+ *  Last Modified: 19.01.23 г., 22:46 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       2.4.0
+ *  @version       3.0.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -90,22 +90,20 @@ $twig->addExtension(new DebugExtension());
 pm_logout_block();
 
 if ($action == 'update_option') {
-    $result = $admin->update(
-        [
-            'name' => '' . $option_name,
-            'value' => '' . $option_value,
-            'description' => '' . $option_description
-        ],
-        'options',
-        (int)$option_id
-    );
+    $admin->id = (int)$option_id;
+    $admin->name = $option_name;
+    $admin->value = $option_value;
+    if ($option_description) {
+        $admin->description = $option_description;
+    }
+    $result = $admin->updateOption();
 }
 
 /*
  * View
  */
 
-$result = $admin->fetchAll(['name', 'value', 'description'], 'options');
+$result = $admin->fetchOptions();
 
 print $twig->render(
     'admin.settings.html.twig',

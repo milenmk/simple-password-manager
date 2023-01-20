@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: main.inc.php
- *  Last Modified: 10.01.23 г., 20:17 ч.
+ *  Last Modified: 20.01.23 г., 8:21 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       2.4.0
+ *  @version       3.0.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -26,7 +26,6 @@
 
 declare(strict_types=1);
 
-use PasswordManager\Config;
 use PasswordManager\PassManDb;
 use PasswordManager\Translator;
 use PasswordManager\User;
@@ -40,21 +39,10 @@ use Twig\TwigFunction;
 @include_once('../vendor/autoload.php');
 @include_once('../../vendor/autoload.php');
 
-if (file_exists('../conf/conf.php')) {
-    $config = new Config();
-} elseif (file_exists('../../conf/conf.php')) {
-    // Used for access from admin pages
-    $config = new Config();
-} else {
-    header('Location: install/index.php');
-}
+//Load the database handler
+$db = new PassManDb();
 
-//Define some global constants from conf file
-define('PM_MAIN_URL_ROOT', $config->main_url_root);
-define('PM_MAIN_APP_ROOT', $config->main_app_root);
 const PM_MAIN_DOCUMENT_ROOT = PM_MAIN_APP_ROOT . '/docs';
-define('PM_MAIN_APPLICATION_TITLE', $config->main_application_title);
-define('PM_MAIN_DB_PREFIX', $config->dbprefix);
 
 //Initiate translations
 $langs = new Translator('');
@@ -71,11 +59,6 @@ try {
     die();
 }
 
-//Load the database handler
-$db = new PassManDb($config->host, $config->dbuser, $config->dbpass, $config->dbname, $config->port);
-
-unset($config->dbpass);
-
 // Initialize the session
 session_start();
 
@@ -84,18 +67,7 @@ $user = new User($db);
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     try {
-        $res = $user->fetch($_SESSION['id']);
-        $user->id = (int)$res['id'];
-        if ($res['first_name']) {
-            $user->first_name = $res['first_name'];
-        }
-        if ($res['last_name']) {
-            $user->last_name = $res['last_name'];
-        }
-        $user->username = $res['username'];
-        $user->theme = $res['theme'];
-        $user->language = $res['language'];
-        $user->admin = (int)$res['admin'];
+        $user->fetch($_SESSION['id']);
     } catch (Exception $e) {
         $error = $e->getMessage();
         if (empty(DISABLE_SYSLOG)) {
@@ -105,11 +77,10 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 }
 
 //Define language and theme
-if (isset($user->id) && $user->id > 0) {
-    $theme = $user->theme;
+$theme = $user->theme ?? 'default';
+if (isset($user->language)) {
     $langs->setDefaultLang($user->language);
 } else {
-    $theme = 'default';
     $langs->setDefaultLang('auto');
 }
 
@@ -162,7 +133,7 @@ $open_ssl = new TwigFunction(
             require(PM_MAIN_APP_ROOT . '/docs/secret.key');
         } catch (Exception $e) {
             $error = $e->getMessage();
-            print 'Cannot load file "docs/secret.key"!';
+            print $error . ': Cannot load file "docs/secret.key"!';
             die();
         }
 

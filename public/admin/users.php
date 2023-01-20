@@ -5,11 +5,11 @@
  * Simple password manager written in PHP with Bootstrap and PDO database connections
  *
  *  File name: users.php
- *  Last Modified: 4.01.23 г., 23:56 ч.
+ *  Last Modified: 20.01.23 г., 8:50 ч.
  *
  *  @link          https://blacktiehost.com
  *  @since         1.0.0
- *  @version       2.4.0
+ *  @version       3.0.0
  *  @author        Milen Karaganski <milen@blacktiehost.com>
  *
  *  @license       GPL-3.0+
@@ -85,10 +85,22 @@ $twig->addExtension(new DebugExtension());
 //Action for logout
 pm_logout_block();
 
+//Delete user
+if ($action == 'delete_user') {
+    $user->id = (int)GETPOST('user_id', 'alpha');
+
+    $result = $user->delete();
+
+    if ($result < 1) {
+        print $user->error;
+    }
+}
+
 /*
  * View
  */
-$resultLastXUsers = $admin->lastXrecords(['first_name', 'last_name', 'username', 'created_at'], 'users');
+//Must be fetchAll
+$resultLastXUsers = $admin->lastXrecords('users');
 
 print $twig->render(
     'admin.users.html.twig',
