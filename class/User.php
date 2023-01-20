@@ -165,9 +165,6 @@ class User
             'theme'      => $this->theme,
             'language'   => $this->language,
         ];
-        if (!empty($this->password)) {
-            $data['password'] = password_hash($this->password, PASSWORD_DEFAULT);
-        }
 
         $result = $this->db->update($this->table_element, $data, "rowid = $this->id");
 

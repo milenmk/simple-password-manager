@@ -77,7 +77,7 @@ if ($action == 'update_user') {
     $user->theme = $user_theme;
     $user->language = $user_language;
 
-    $result = $user->update('');
+    $result = $user->update();
 
     if ($result < 1) {
         $_SESSION['PM_ERROR'] = 'ProfileUpdatedError';
