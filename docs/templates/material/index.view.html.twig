@@ -9,56 +9,58 @@
             {{ count }}
         </h6>
     </div>
-    <table class="table table-info table-striped table-responsive">
-        <thead>
-        <tr class="align-middle">
-            <th scope="col">{{ langs.trans('Label') }}</th>
-            <th scope="col">{{ langs.trans('HasWebsite') }}</th>
-            <th scope="col">{{ langs.trans('HasFTP') }}</th>
-            <th scope="col">{{ langs.trans('HasDatabase') }}</th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% if res > 0 %}
-            {% for result in res %}
-                <tr class="align-middle">
-                    <td class="text-center"><a href="https://{{ result.label }}" target="_blank">{{ result.label }}</a></td>
-                    {% if result.website > 0 %}
-                        <td class="text-center"><i class="bi bi-check-circle-fill" style="font-size: 1.5rem;color: #008000;"></i></td>
-                    {% else %}
-                        <td class="text-center"><i class="bi bi-x-circle-fill" style="font-size: 1.5rem;color: #ff0000;"></i></td>
-                    {% endif %}
-                    {% if result.ftp > 0 %}
-                        <td class="text-center"><i class="bi bi-check-circle-fill" style="font-size: 1.5rem;color: #008000;"></i></td>
-                    {% else %}
-                        <td class="text-center"><i class="bi bi-x-circle-fill" style="font-size: 1.5rem;color: #ff0000;"></i></td>
-                    {% endif %}
-                    {% if result.data_base > 0 %}
-                        <td class="text-center"><i class="bi bi-check-circle-fill" style="font-size: 1.5rem;color: #008000;"></i></td>
-                    {% else %}
-                        <td class="text-center"><i class="bi bi-x-circle-fill" style="font-size: 1.5rem;color: #ff0000;"></i></td>
-                    {% endif %}
-                    <td>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a href="{{ main_url }}/records.php?fk_domain={{ result.id }}">
-                                <button class="btn btn-primary btn-sm">{{ langs.trans('ViewRecords') }}</button>
-                            </a>
-                            <form method="post">
-                                <input type="hidden" name="id" value="{{ result.id }}"/>
-                                <input type="hidden" name="action" value="edit_domain"/>
-                                <input class="btn btn-success btn-sm" type="submit" name="submit" value="{{ langs.trans('Edit') }}"/>
-                            </form>
-                            <form method="post">
-                                <input type="hidden" name="id" value="{{ result.id }}"/>
-                                <input type="hidden" name="action" value="delete"/>
-                                <input class="btn btn-danger btn-sm" type="submit" name="submit" value="{{ langs.trans('Delete') }}"/>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            {% endfor %}
-        {% endif %}
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-info table-striped rounded rounded-3 overflow-hidden">
+            <thead>
+            <tr class="align-middle">
+                <th scope="col">{{ langs.trans('Label') }}</th>
+                <th scope="col">{{ langs.trans('HasWebsite') }}</th>
+                <th scope="col">{{ langs.trans('HasFTP') }}</th>
+                <th scope="col">{{ langs.trans('HasDatabase') }}</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if res > 0 %}
+                {% for result in res %}
+                    <tr class="align-middle">
+                        <td class="text-center"><a href="https://{{ result.label }}" target="_blank">{{ result.label }}</a></td>
+                        {% if result.website > 0 %}
+                            <td class="text-center"><i class="bi bi-check-circle-fill" style="font-size: 1.5rem;color: #008000;"></i></td>
+                        {% else %}
+                            <td class="text-center"><i class="bi bi-x-circle-fill" style="font-size: 1.5rem;color: #ff0000;"></i></td>
+                        {% endif %}
+                        {% if result.ftp > 0 %}
+                            <td class="text-center"><i class="bi bi-check-circle-fill" style="font-size: 1.5rem;color: #008000;"></i></td>
+                        {% else %}
+                            <td class="text-center"><i class="bi bi-x-circle-fill" style="font-size: 1.5rem;color: #ff0000;"></i></td>
+                        {% endif %}
+                        {% if result.data_base > 0 %}
+                            <td class="text-center"><i class="bi bi-check-circle-fill" style="font-size: 1.5rem;color: #008000;"></i></td>
+                        {% else %}
+                            <td class="text-center"><i class="bi bi-x-circle-fill" style="font-size: 1.5rem;color: #ff0000;"></i></td>
+                        {% endif %}
+                        <td>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="{{ main_url }}/records.php?fk_domain={{ result.id }}">
+                                    <button class="btn btn-primary btn-sm">{{ langs.trans('ViewRecords') }}</button>
+                                </a>
+                                <form method="post">
+                                    <input type="hidden" name="id" value="{{ result.id }}"/>
+                                    <input type="hidden" name="action" value="edit_domain"/>
+                                    <input class="btn btn-success btn-sm" type="submit" name="submit" value="{{ langs.trans('Edit') }}"/>
+                                </form>
+                                <form method="post">
+                                    <input type="hidden" name="id" value="{{ result.id }}"/>
+                                    <input type="hidden" name="action" value="delete"/>
+                                    <input class="btn btn-danger btn-sm" type="submit" name="submit" value="{{ langs.trans('Delete') }}"/>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

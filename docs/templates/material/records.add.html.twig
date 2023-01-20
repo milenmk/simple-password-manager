@@ -3,62 +3,64 @@
     {% if res > 0 %}
         <form method="post">
             <input type="hidden" name="action" value="create"/>
-            <table class="table table-info table-striped table-responsive">
-                <thead>
-                <tr class="align-middle">
-                    <th scope="col">{{ langs.trans('Domain') }}</th>
-                    <th scope="col">{{ langs.trans('Type') }}</th>
-                    <th scope="col">{{ langs.trans('Link') }}</th>
-                    <th scope="col">{{ langs.trans('Username') }}</th>
-                    <th scope="col">{{ langs.trans('Password') }}</th>
-                    <th scope="col"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="align-middle">
-                    <td>
-                        <label>
-                            <select name="fk_domain">
-                                {% for result in res %}
-                                    <option value="{{ result.id }}">{{ result.label }}</option>
-                                {% endfor %}
-                            </select>
-                        </label>
-                    </td>
+            <div class="table-responsive">
+                <table class="table table-info table-striped rounded rounded-3 overflow-hidden">
+                    <thead>
+                    <tr class="align-middle">
+                        <th scope="col">{{ langs.trans('Domain') }}</th>
+                        <th scope="col">{{ langs.trans('Type') }}</th>
+                        <th scope="col">{{ langs.trans('Link') }}</th>
+                        <th scope="col">{{ langs.trans('Username') }}</th>
+                        <th scope="col">{{ langs.trans('Password') }}</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="align-middle">
+                        <td>
+                            <label>
+                                <select name="fk_domain">
+                                    {% for result in res %}
+                                        <option value="{{ result.id }}">{{ result.label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        </td>
 
-                    <td>
-                        <label>
-                            <select name="type">
-                                <option value="1">DATABASE</option>
-                                <option value="2">WEBSITE</option>
-                                <option value="3">FTP_SERVER</option>
-                            </select>
-                        </label>
-                    </td>
-                    <td>
-                        <label>
-                            <input type="text" name="url"/>
-                        </label>
-                    </td>
-                    <td>
-                        <label>
-                            <input type="text" name="username"/>
-                        </label>
-                    </td>
-                    <td>
-                        <label>
-                            <input type="password" name="password"/>
-                        </label>
-                    </td>
-                    <td>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <input class="btn btn-info" type="submit" name="submit" value="{{ langs.trans('Confirm') }}"/>
-                            <input type="button" class="btn btn-danger" value="{{ langs.trans('Cancel') }}" onclick="javascript:history.go(-1)">
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                        <td>
+                            <label>
+                                <select name="type">
+                                    <option value="1">DATABASE</option>
+                                    <option value="2">WEBSITE</option>
+                                    <option value="3">FTP_SERVER</option>
+                                </select>
+                            </label>
+                        </td>
+                        <td>
+                            <label>
+                                <input type="text" name="url"/>
+                            </label>
+                        </td>
+                        <td>
+                            <label>
+                                <input type="text" name="username"/>
+                            </label>
+                        </td>
+                        <td>
+                            <label>
+                                <input type="password" name="password"/>
+                            </label>
+                        </td>
+                        <td>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <input class="btn btn-info" type="submit" name="submit" value="{{ langs.trans('Confirm') }}"/>
+                                <input type="button" class="btn btn-danger" value="{{ langs.trans('Cancel') }}" onclick="javascript:history.go(-1)">
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </form>
     {% else %}
         {{ langs.trans('AddDomainFirst') }}
