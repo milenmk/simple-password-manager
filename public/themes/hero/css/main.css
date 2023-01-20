@@ -555,7 +555,7 @@ section {
 --------------------------------------------------------------*/
 
 .hero-animated h2 {
-    margin: 0 0 10px 0;
+    margin: 0 0 10px;
     font-size: 48px;
     font-weight: 300;
     color: var(--color-secondary);
@@ -568,7 +568,7 @@ section {
 
 .hero-animated p {
     color: rgba(var(--color-secondary-rgb), 0.8);
-    margin: 0 0 30px 0;
+    margin: 0 0 30px;
     font-size: 20px;
     font-weight: 400;
 }
@@ -892,7 +892,7 @@ section {
 
 
 .hero-fullscreen h2 {
-    margin: 0 0 10px 0;
+    margin: 0 0 10px;
     font-size: 48px;
     font-weight: 300;
     color: var(--color-secondary);
@@ -905,7 +905,7 @@ section {
 
 .hero-fullscreen p {
     color: rgba(var(--color-secondary-rgb), 0.8);
-    margin: 0 0 30px 0;
+    margin: 0 0 30px;
     font-size: 20px;
     font-weight: 400;
 }
@@ -955,7 +955,7 @@ section {
 --------------------------------------------------------------*/
 
 .hero-static h2 {
-    margin: 0 0 10px 0;
+    margin: 0 0 10px;
     font-size: 48px;
     font-weight: 300;
     color: var(--color-secondary);
@@ -968,7 +968,7 @@ section {
 
 .hero-static p {
     color: rgba(var(--color-secondary-rgb), 0.8);
-    margin: 0 0 30px 0;
+    margin: 0 0 30px;
     font-size: 20px;
     font-weight: 400;
 }
