@@ -58,7 +58,7 @@ Simple password manager written on PHP with Bootstrap and PDO database connectio
 ### On the server
 
 * Create vhost file for your installation and restart apache server
-* The Directory in the vhost file must point to the script's `web` folder
+* The Directory in the vhost file must point to the script's `public` folder
 *
 * <b>`docs` folder contains sensitive information and MUST NOT be accessible from browser, but only locally</b>
 *
